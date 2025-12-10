@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer-bar">
       <Container className="text-center py-2">
-        <span className="footer-text">© 2020 - CBEU - HESTIA</span>
+        <span className="footer-text">© 2020 - CBEU - HESTIA hestia@gmail.com</span>
       </Container>
     </footer>
   );
