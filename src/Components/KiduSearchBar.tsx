@@ -42,7 +42,7 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
         <Button
           onClick={handleSearch}
           style={{
-            backgroundColor: "#882626ff",
+            backgroundColor: "#1B3763",
             border: "none",
             color: "white",
             paddingLeft: "1rem",

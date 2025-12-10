@@ -31,14 +31,14 @@ const Sidebar: React.FC = () => {
   };
 
   const settingsSubMenu = [
-    { label: "Category", path: "/dashboard/settings/category", icon: <BsListUl /> },
+    { label: "Category", path: "/settings/category", icon: <BsListUl /> },
     { label: "States", path: "/dashboard/settings/states", icon: <BsGeoAlt /> },
     { label: "User Types", path: "/dashboard/settings/usertypes", icon: <BsPersonCheck /> },
     { label: "Status", path: "/dashboard/settings/status", icon: <BsToggleOn /> },
     { label: "Designation", path: "/dashboard/settings/designation", icon: <BsAward /> },
     { label: "Circles", path: "/dashboard/settings/circles", icon: <BsCircle /> },
     { label: "Branches", path: "/dashboard/settings/branches", icon: <BsBuildingGear /> },
-    { label: "Users", path: "/dashboard/settings/users", icon: <BsPersonFillGear /> }
+    { label: "Users", path: "settings/user-list", icon: <BsPersonFillGear /> }
   ];
 
   const contribSubMenu = [
@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
         style={{
           width: hovered ? "220px" : "70px",
           minHeight: "100vh",
-          backgroundColor: "#004587",
+          backgroundColor: "#1B3763",
           transition: "width 0.3s",
           zIndex: 1000,
         }}
@@ -384,7 +384,7 @@ const Sidebar: React.FC = () => {
               style={{
                 fontSize: "15px",
                 textDecoration: "none",
-                backgroundColor: "#003366",
+                backgroundColor: "#1B3763",
                 cursor: "pointer",
               }}
             >
@@ -400,7 +400,7 @@ const Sidebar: React.FC = () => {
         fixed="bottom"
         expand="md"
         className="d-md-none"
-        style={{ backgroundColor: "#004587" }}
+        style={{ backgroundColor: "#1B3763" }}
       >
         <Container fluid className="justify-content-around">
           <NavLink
