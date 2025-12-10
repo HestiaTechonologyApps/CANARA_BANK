@@ -1,0 +1,10 @@
+.footer-bar {
+  background-color: #2b5c84; /* dark-blue like sample */
+  border-top: 4px solid #5aa7ff; /* light blue thin line */
+}
+
+.footer-text {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
