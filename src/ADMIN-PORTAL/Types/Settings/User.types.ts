@@ -7,7 +7,7 @@ export interface User {
   userEmail: string;
   phoneNumber: string;
   address: string;
-  passwordHash?: string; // Optional since you typically won't return this from API
+  passwordHash?: string; 
   isActive: boolean;
   islocked: boolean;
   createAt: Date | string;

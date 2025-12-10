@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { 
-  BsGridFill, 
-  BsGearFill, 
-  BsCashStack, 
-  BsPeople, 
-  BsNewspaper, 
-  BsBarChart, 
-  BsBag, 
+import {
+  BsGridFill,
+  BsGearFill,
+  BsCashStack,
+  BsPeople,
+  BsNewspaper,
+  BsBarChart,
+  BsBag,
   BsChevronDown,
   BsListUl,
   BsGeoAlt,
@@ -124,15 +124,21 @@ const Sidebar: React.FC = () => {
               to="/dashboard"
               end
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-white" : ""}`
+                `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-white" : ""}`
               }
-              style={{ fontSize: "15px", textDecoration: "none", padding: "8px 0" }}
+              style={{
+                fontSize: "15px",
+                textDecoration: "none",
+                padding: "8px 0",
+                width: hovered ? "85%" : "45px",
+                transition: "width 0.3s"
+              }}
             >
               {({ isActive }) => (
                 <>
-                  <BsGridFill 
-                    className={isActive ? "text-primary" : "text-white"} 
-                    style={{ fontSize: "20px", minWidth: "20px" }} 
+                  <BsGridFill
+                    className={isActive ? "text-primary" : "text-white"}
+                    style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
                     <span className={`fw-bold flex-grow-1 ${isActive ? "text-primary" : "text-white"}`}>
@@ -142,6 +148,7 @@ const Sidebar: React.FC = () => {
                 </>
               )}
             </NavLink>
+
 
             {/* Settings Menu */}
             <div>
@@ -318,9 +325,9 @@ const Sidebar: React.FC = () => {
             >
               {({ isActive }) => (
                 <>
-                  <BsBarChart 
-                    className={isActive ? "text-primary" : "text-white"} 
-                    style={{ fontSize: "20px", minWidth: "20px" }} 
+                  <BsBarChart
+                    className={isActive ? "text-primary" : "text-white"}
+                    style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
                     <span className={`fw-bold flex-grow-1 ${isActive ? "text-primary" : "text-white"}`}>
@@ -341,9 +348,9 @@ const Sidebar: React.FC = () => {
             >
               {({ isActive }) => (
                 <>
-                  <BsBag 
-                    className={isActive ? "text-primary" : "text-white"} 
-                    style={{ fontSize: "20px", minWidth: "20px" }} 
+                  <BsBag
+                    className={isActive ? "text-primary" : "text-white"}
+                    style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
                     <span className={`fw-bold flex-grow-1 ${isActive ? "text-primary" : "text-white"}`}>
@@ -364,9 +371,9 @@ const Sidebar: React.FC = () => {
             >
               {({ isActive }) => (
                 <>
-                  <BsPeople 
-                    className={isActive ? "text-primary" : "text-white"} 
-                    style={{ fontSize: "20px", minWidth: "20px" }} 
+                  <BsPeople
+                    className={isActive ? "text-primary" : "text-white"}
+                    style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
                     <span className={`fw-bold flex-grow-1 ${isActive ? "text-primary" : "text-white"}`}>
@@ -384,7 +391,7 @@ const Sidebar: React.FC = () => {
               style={{
                 fontSize: "15px",
                 textDecoration: "none",
-                backgroundColor: "#1B3763",
+                backgroundColor: "#3d5272ff",
                 cursor: "pointer",
               }}
             >

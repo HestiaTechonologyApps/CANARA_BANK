@@ -59,7 +59,7 @@ const UserList: React.FC = () => {
       columns={columns}
       idKey="userId"
       addButtonLabel="Add User"
-      addRoute="/dashboard/users/create"
+      addRoute="/dashboard/settings/user-create"
       editRoute="/dashboard/users/edit"
       viewRoute="/dashboard/users/view"
       showAddButton={true}

@@ -8,7 +8,7 @@ export interface ValidationResult {
 }
 
 export interface ValidationRule {
-  type?: "text" | "number" | "email" | "url" | "textarea" | "popup" | "password" | "select" | "dropLocations" | "image" | "date" | "radio";
+  type?: "text" | "number" | "email" | "url" | "textarea" | "popup" | "password" | "select" | "dropDown" | "image" | "date" | "radio" | "toggle" | "checkbox";
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -22,7 +22,7 @@ export const KiduValidation = {
     const label = rules.required ? `${rawLabel} <span style="color:#EF4444;">*</span>` : rawLabel;
     const val = value;
 
-    if (rules.type === "dropLocations") {
+    if (rules.type === "dropDown") {
       const arr = Array.isArray(val) ? val : [];
       if (rules.required && arr.filter(v => v.trim() !== "").length === 0)
         return { isValid: false, message: `${rawLabel} is required.`, label };
@@ -53,9 +53,15 @@ export const KiduValidation = {
         return { isValid: false, message: `${rawLabel} is required.`, label };
     }
 
-    /* ⭐ NEW RADIO BUTTON VALIDATION */
     if (rules.type === "radio") {
       if (rules.required && (!val || String(val).trim() === ""))
+        return { isValid: false, message: `${rawLabel} is required.`, label };
+      return { isValid: true, label };
+    }
+
+    if (rules.type === "toggle" || rules.type === "checkbox") {
+      // Toggle/checkbox validation - usually boolean values
+      if (rules.required && !val)
         return { isValid: false, message: `${rawLabel} is required.`, label };
       return { isValid: true, label };
     }

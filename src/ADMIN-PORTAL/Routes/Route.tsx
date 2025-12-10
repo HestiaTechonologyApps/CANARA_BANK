@@ -2,10 +2,12 @@ import { Routes, Route } from 'react-router-dom';
 import DashBoard from '../Pages/Dashboard/DashBoard';
 import HomePage from '../Layout/HomePage';
 import PageNotFound from '../Pages/Dashboard/PageNotFound';
+import Login from '../../Auth/Login';
 
 //User
 import UserList from '../Pages/User/List';
-import Login from '../../Auth/Login';
+import UserCreate from '../Pages/User/Create';
+
 
 export default function AdminRoutes() {
   return (
@@ -17,6 +19,7 @@ export default function AdminRoutes() {
         
         <Route index element={<HomePage />} />
          <Route path='settings/user-list' element={<UserList />} />
+        <Route path='settings/user-create' element={<UserCreate />} />
       </Route>
       
       {/* Catch-All Route for 404 */}

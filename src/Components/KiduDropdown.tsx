@@ -3,12 +3,12 @@ import { Row, Col, Form, Button, InputGroup } from "react-bootstrap";
 import { BsTrash } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa6";
 
-interface AddDropLocationProps {
+interface AddDropDown {
   values: string[];
   onChange: (values: string[]) => void;
 }
 
-const AddDropLocation: React.FC<AddDropLocationProps> = ({ values, onChange }) => {
+const AddDropDown: React.FC<AddDropDown> = ({ values, onChange }) => {
   // FIX: Guarantee values is always an array
   const safeValues = Array.isArray(values) ? values : [""];
 
@@ -72,4 +72,4 @@ const AddDropLocation: React.FC<AddDropLocationProps> = ({ values, onChange }) =
   );
 };
 
-export default AddDropLocation;
+export default AddDropDown;
