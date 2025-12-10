@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
         style={{
           width: hovered ? "220px" : "70px",
           minHeight: "100vh",
-          backgroundColor: "#1B3763",
+          backgroundColor: "#1e3a5f",
           transition: "width 0.3s",
           zIndex: 1000,
         }}
