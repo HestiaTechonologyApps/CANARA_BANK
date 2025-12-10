@@ -11,9 +11,6 @@ const columns = [
   { key: "phoneNumber", label: "Phone", enableSorting: true, type: "text" as const },
   { key: "address", label: "Address", enableSorting: false, type: "text" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
-  { key: "islocked", label: "Locked", enableSorting: true, type: "checkbox" as const },
-  { key: "createAt", label: "Created At", enableSorting: true, type: "date" as const },
-  { key: "lastlogin", label: "Last Login", enableSorting: true, type: "date" as const },
   { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
 ];
 

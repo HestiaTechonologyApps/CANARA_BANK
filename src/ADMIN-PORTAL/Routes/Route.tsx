@@ -3,11 +3,20 @@ import DashBoard from '../Pages/Dashboard/DashBoard';
 import HomePage from '../Layout/HomePage';
 import PageNotFound from '../Pages/Dashboard/PageNotFound';
 
+//User
+import UserList from '../Pages/User/List';
+import Login from '../../Auth/Login';
+
 export default function AdminRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<DashBoard />}>
+      <Route path="/" element={<Login />} />
+      
+      <Route path="/dashboard" element={<DashBoard />}>
+      
+        
         <Route index element={<HomePage />} />
+         <Route path='settings/user-list' element={<UserList />} />
       </Route>
       
       {/* Catch-All Route for 404 */}
