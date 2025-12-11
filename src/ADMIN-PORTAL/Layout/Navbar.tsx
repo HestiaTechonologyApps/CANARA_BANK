@@ -9,7 +9,7 @@ import { useYear } from "./YearContext";
 import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
 import KiduYearSelector from "../../Components/KiduYearSelector";
 import AuthService from "../../Services/Auth.services";
-import ProfileSettings from "../Assets/Images/profile.webp"; 
+import Profile from "../Assets/Images/profile.jpg"; 
 
 const NavbarComponent: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -177,7 +177,7 @@ const NavbarComponent: React.FC = () => {
           </h5>
         </Offcanvas.Header>
         <Offcanvas.Body className="p-0">
-          <ProfileSettings />
+          <Profile />
         </Offcanvas.Body>
       </Offcanvas>
     </>

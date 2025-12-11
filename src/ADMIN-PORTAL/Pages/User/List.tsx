@@ -60,7 +60,7 @@ const UserList: React.FC = () => {
       idKey="userId"
       addButtonLabel="Add User"
       addRoute="/dashboard/settings/user-create"
-      editRoute="/dashboard/users/edit"
+      editRoute="/dashboard/settings/user-edit"
       viewRoute="/dashboard/users/view"
       showAddButton={true}
       showExport={true}
