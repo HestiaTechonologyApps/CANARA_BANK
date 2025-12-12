@@ -20,6 +20,7 @@ export interface MainPage {
   email: string;               // e.g., "hi@gmail.com"
   rulesRegulation: string;     // e.g., "no rules"
   dayQuote: string;            // e.g., "hi"
-  companyId: number;           // e.g., 1
+  companyId: number;   
+  companyName:string;     
   auditLogs?: AuditTrails[];   // optional audit trail entries
 }
