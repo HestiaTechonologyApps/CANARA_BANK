@@ -79,7 +79,7 @@ export default function AdminRoutes() {
         {/* Circles */}
         <Route path="/dashboard/settings/circles-list" element={<CircleList />} />
         <Route path="/dashboard/settings/circles-create" element={<CircleCreate />} />
-        <Route path="/dashboard/settings/circles-edit/:branchId" element={<CircleEdit />} />
+        <Route path="/dashboard/settings/circles-edit/:circleId" element={<CircleEdit />} />
         {/* <Route path="/dashboard/settings/circles-view/:stateId" element={<StateView />} /> */}
 
         {/* Manage Committe */}
