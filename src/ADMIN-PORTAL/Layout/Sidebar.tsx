@@ -53,10 +53,10 @@ const Sidebar: React.FC = () => {
   ];
 
   const cmsSubMenu = [
-    { label: "Main Page", path: "/dashboard/cms/mainpage" },
+    { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Quotes", path: "/dashboard/cms/quotes" },
     { label: "Daily News", path: "/dashboard/cms/dailynews" },
-    { label: "Managing Committee", path: "/dashboard/cms/committee" }
+    { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" }
   ];
 
   const navigate = useNavigate();
@@ -363,7 +363,7 @@ const Sidebar: React.FC = () => {
 
             {/* Customers Menu */}
             <NavLink
-              to="/dashboard/customers"
+              to="settings/customer-list"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
               }

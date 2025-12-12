@@ -11,7 +11,7 @@ const columns = [
   { key: "customerPhone", label: "Phone", enableSorting: true, type: "text" as const },
   { key: "customerAddress", label: "Address", enableSorting: false, type: "text" as const },
   { key: "dob", label: "Date of Birth", enableSorting: true, type: "date" as const },
-  { key: "nationalilty", label: "Nationality", enableSorting: true, type: "text" as const }, // note: matches your interface key
+  { key: "nationality", label: "nationality", enableSorting: true, type: "text" as const }, // note: matches your interface key
   { key: "createdAt", label: "Created At", enableSorting: true, type: "date" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
   { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
@@ -41,7 +41,7 @@ const CustomerList: React.FC = () => {
           const email = c.customerEmail?.toLowerCase() || "";
           const phone = c.customerPhone?.toLowerCase?.() || String(c.customerPhone || "");
           const address = c.customerAddress?.toLowerCase() || "";
-          const nation = (c.nationalilty as string)?.toLowerCase?.() || "";
+          const nation = (c.nationality as string)?.toLowerCase?.() || "";
           const id = String(c.customerId || "");
           const company = String(c.companyId || "");
           return (
@@ -75,9 +75,9 @@ const CustomerList: React.FC = () => {
       columns={columns}
       idKey="customerId"
       addButtonLabel="Add Customer"
-      addRoute="/dashboard/customers/create"
-      editRoute="/dashboard/customers/edit"
-      viewRoute="/dashboard/customers/view"
+      addRoute="/dashboard/settings/customer-create"
+      editRoute="/dashboard/settings/customer-edit"
+      viewRoute="/dashboard/settings/customer-view"
       showAddButton={true}
       showExport={true}
       showSearch={true}

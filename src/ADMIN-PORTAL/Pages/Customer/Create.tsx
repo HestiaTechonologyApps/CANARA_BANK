@@ -143,7 +143,7 @@ const CustomerCreate: React.FC = () => {
       loadingState={isLoading}
       successMessage="Customer created successfully!"
       errorMessage="Failed to create customer. Please try again."
-      navigateOnSuccess="/dashboard/customers/customer-list"
+      navigateOnSuccess="/dashboard/settings/customer-list"
       navigateDelay={1500}
       themeColor="#18575A"
     />

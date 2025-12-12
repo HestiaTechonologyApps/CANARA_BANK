@@ -15,13 +15,13 @@ const CustomerService = {
     return response.value;
   },
 
-  async getCustomerById(id: number): Promise<Customer> {
-    const response = await HttpService.callApi<CustomResponse<Customer>>(
-      API_ENDPOINTS.CUSTOMER.GET_BY_ID(id),
-      "GET"
-    );
-    return response.value;
-  },
+ async getCustomerById(id: number): Promise<CustomResponse<Customer>> {
+  const response = await HttpService.callApi<CustomResponse<Customer>>(
+    API_ENDPOINTS.CUSTOMER.GET_BY_ID(id),
+    "GET"
+  );
+  return response; // Return full response, not just value
+},
 
   async createCustomer(
     data: Omit<Customer, "customerId" | "auditLogs">

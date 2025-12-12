@@ -60,9 +60,9 @@ const ManagingCommitteeList: React.FC = () => {
       columns={columns}
       idKey="managingComitteeId"
       addButtonLabel="Add Member"
-      addRoute="/dashboard/cms/managing-committee-create"
-      editRoute="/dashboard/cms/managing-committee-edit"
-      viewRoute="/dashboard/cms/managing-committee-view"
+      addRoute="/dashboard/cms/manage-committe-create"
+      editRoute="/dashboard/cms/manage-committe-edit"
+      viewRoute="/dashboardcms/manage-committe-view"
       showAddButton={true}
       showExport={true}
       showSearch={true}

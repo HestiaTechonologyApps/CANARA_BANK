@@ -90,8 +90,8 @@ const MainPageList: React.FC = () => {
       idKey="mainPageId"
       addButtonLabel="Add Main Page"
       addRoute="/dashboard/cms/mainpage-create"
-      editRoute="/dashboard/cms/mainpage-edit"
-      viewRoute="/dashboard/cms/mainpage-view"
+      editRoute="/dashboard/cms/mainpage-edit/:mainPageId"
+      viewRoute="/dashboard/cms/mainpage-view/:mainPageId"
       showAddButton={true}
       showExport={true}
       showSearch={true}
