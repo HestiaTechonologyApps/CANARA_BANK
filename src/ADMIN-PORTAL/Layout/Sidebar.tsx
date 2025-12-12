@@ -36,8 +36,8 @@ const Sidebar: React.FC = () => {
     { label: "User Types", path: "/dashboard/settings/usertypes", icon: <BsPersonCheck /> },
     { label: "Status", path: "/dashboard/settings/status", icon: <BsToggleOn /> },
     { label: "Designation", path: "/dashboard/settings/designation", icon: <BsAward /> },
-    { label: "Circles", path: "/dashboard/settings/circles", icon: <BsCircle /> },
-    { label: "Branches", path: "/dashboard/settings/branches", icon: <BsBuildingGear /> },
+    { label: "Circles", path: "/dashboard/settings/circles-list", icon: <BsCircle /> },
+    { label: "Branches", path: "/dashboard/settings/branch-list", icon: <BsBuildingGear /> },
     { label: "Users", path: "settings/user-list", icon: <BsPersonFillGear /> }
   ];
 

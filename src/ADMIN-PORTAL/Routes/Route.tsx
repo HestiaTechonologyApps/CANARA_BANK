@@ -34,6 +34,16 @@ import StateCreate from '../Pages/Settings/State/StateCreate';
 import StateEdit from '../Pages/Settings/State/StateEdit';
 import StateView from '../Pages/Settings/State/StateView';
 
+//Branch
+import BranchList from '../Pages/Branch/List';
+import BranchCreate from '../Pages/Branch/Create';
+import BranchEdit from '../Pages/Branch/Edit';
+
+//Circle
+import CircleList from '../Pages/Circle/List';
+import CircleCreate from '../Pages/Circle/Create';
+import CircleEdit from '../Pages/Circle/Edit';
+
 export default function AdminRoutes() {
   return (
     <Routes>
@@ -58,6 +68,18 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/state-create" element={<StateCreate />} />
         <Route path="/dashboard/settings/state-edit/:stateId" element={<StateEdit />} />
         <Route path="/dashboard/settings/state-view/:stateId" element={<StateView />} />
+
+        {/* Branch */}
+        <Route path="/dashboard/settings/branch-list" element={<BranchList />} />
+        <Route path="/dashboard/settings/branch-create" element={<BranchCreate />} />
+        <Route path="/dashboard/settings/branch-edit/:branchId" element={<BranchEdit />} />
+        {/* <Route path="/dashboard/settings/branch-view/:stateId" element={<StateView />} /> */}
+
+        {/* Circles */}
+        <Route path="/dashboard/settings/circles-list" element={<CircleList />} />
+        <Route path="/dashboard/settings/circles-create" element={<CircleCreate />} />
+        <Route path="/dashboard/settings/circles-edit/:branchId" element={<CircleEdit />} />
+        {/* <Route path="/dashboard/settings/circles-view/:stateId" element={<StateView />} /> */}
 
         {/* Manage Committe */}
         {/* ///demo */}

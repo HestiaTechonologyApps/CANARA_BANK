@@ -64,9 +64,9 @@ const CircleList: React.FC = () => {
       columns={columns}
       idKey="circleId"
       addButtonLabel="Add Circle"
-      addRoute="/dashboard/settings/circle-create"
-      editRoute="/dashboard/settings/circle-edit"
-      viewRoute="/dashboard/settings/circle-view"
+      addRoute="/dashboard/settings/circles-create"
+      editRoute="/dashboard/settings/circles-edit"
+      viewRoute="/dashboard/settings/circles-view"
       showAddButton={true}
       showExport={true}
       showSearch={true}
