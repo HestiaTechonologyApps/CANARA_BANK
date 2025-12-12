@@ -214,10 +214,9 @@ const MainPageEdit: React.FC = () => {
 
   // Service getById returns the entity directly (not CustomResponse).
   // If your KiduEdit expects { value }, wrap it like below.
-  const handleFetch = async (mainPageId: string) => {
-    const data = await MainPageService.getMainPageById(Number(mainPageId));
-    return { value: data };
-  };
+const handleFetch = async (mainPageId: string) => {   try {     const response = await MainPageService.getMainPageById(Number(mainPageId));    return response; // Now returns CustomResponse<MainPage>  
+  } catch (error: any) {     console.error("Error fetching main page:", error);     throw error;   } };
+ 
 
   const handleUpdate = async (mainPageId: string, formData: Record<string, any>) => {
     const email = (formData.email || "").trim();

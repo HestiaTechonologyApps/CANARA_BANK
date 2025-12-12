@@ -1,3 +1,4 @@
+// src/services/MainPageService.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -13,13 +14,13 @@ const MainPageService = {
     return response.value;
   },
 
-  /** Get main page by ID */
-  async getMainPageById(id: number): Promise<MainPage> {
+  /** Get main page by ID — return full CustomResponse (parity with CustomerService) */
+  async getMainPageById(id: number): Promise<CustomResponse<MainPage>> {
     const response = await HttpService.callApi<CustomResponse<MainPage>>(
       API_ENDPOINTS.MAIN_PAGE.GET_BY_ID(id),
       "GET"
     );
-    return response.value;
+    return response; // return full response, not just value
   },
 
   /** Create a main page */
