@@ -103,14 +103,15 @@ const ManagingCommitteeCreate: React.FC = () => {
     setIsLoading(true);
     try {
       const payload: Omit<ManagingCommittee, "managingComitteeId" | "auditLogs"> = {
-        managingComitteeName: (formData.managingComitteeName || "").trim(),
-        position: (formData.position || "").trim(),
-        description1: (formData.description1 || "").trim(),
-        description2: (formData.description2 || "").trim(),
-        imageLocation: (formData.imageLocation || "").trim(),
-        companyId: Number(formData.companyId),
-        companyName: (formData.companyName || "").trim(),
-        order: Number(formData.order),
+          managingComitteeName: (formData.managingComitteeName || "").trim(),
+          position: (formData.position || "").trim(),
+          description1: (formData.description1 || "").trim(),
+          description2: (formData.description2 || "").trim(),
+          imageLocation: (formData.imageLocation || "").trim(),
+          companyId: Number(formData.companyId),
+          companyName: (formData.companyName || "").trim(),
+          order: Number(formData.order),
+          managingComiteeId: 0
       };
 
       if (!payload.managingComitteeName) throw new Error("Name is required.");
