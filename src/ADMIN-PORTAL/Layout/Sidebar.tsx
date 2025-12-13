@@ -31,11 +31,11 @@ const Sidebar: React.FC = () => {
   };
 
   const settingsSubMenu = [
-    { label: "Category", path: "/settings/category", icon: <BsListUl /> },
+    { label: "Category", path: "/dashboard/settings/category-list", icon: <BsListUl /> },
     { label: "States", path: "/dashboard/settings/state-list", icon: <BsGeoAlt /> },
-    { label: "User Types", path: "/dashboard/settings/usertypes", icon: <BsPersonCheck /> },
-    { label: "Status", path: "/dashboard/settings/status", icon: <BsToggleOn /> },
-    { label: "Designation", path: "/dashboard/settings/designation", icon: <BsAward /> },
+    { label: "User Types", path: "/dashboard/settings/usertypes-list", icon: <BsPersonCheck /> },
+    { label: "Status", path: "/dashboard/settings/status-list", icon: <BsToggleOn /> },
+    { label: "Designation", path: "/dashboard/settings/designation-list", icon: <BsAward /> },
     { label: "Circles", path: "/dashboard/settings/circles-list", icon: <BsCircle /> },
     { label: "Branches", path: "/dashboard/settings/branch-list", icon: <BsBuildingGear /> },
     { label: "Users", path: "settings/user-list", icon: <BsPersonFillGear /> }

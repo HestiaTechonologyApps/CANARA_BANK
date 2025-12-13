@@ -1,8 +1,7 @@
 import React from "react";
-import type { Field } from "../../../Components/KiduCreate";
 import StateService from "../../../Services/Settings/State.services";
 import type { State } from "../../../Types/Settings/States.types";
-import KiduEdit from "../../../Components/KiduEdit";
+import KiduEdit, { type Field } from "../../../Components/KiduEdit";
 
 
 const StateEdit: React.FC = () => {
@@ -45,18 +44,22 @@ const StateEdit: React.FC = () => {
 
   // Fetch state data by ID
   const handleFetch = async (stateId: string) => {
+    console.log("🔍 StateEdit handleFetch called with:", stateId);
     try {
-      // StateService.getStateById now returns CustomResponse<State>
       const response = await StateService.getStateById(Number(stateId));
+      console.log("📥 StateEdit response:", response);
+      console.log("📥 Response.value:", response?.value);
+      console.log("📥 Response.isSucess:", response?.isSucess);
       return response;
     } catch (error: any) {
-      console.error("Error fetching state:", error);
+      console.error("❌ Error fetching state:", error);
       throw error;
     }
   };
 
   // Handle form update
   const handleUpdate = async (stateId: string, formData: Record<string, any>) => {
+    console.log("💾 StateEdit handleUpdate called with:", stateId, formData);
     try {
       // Transform form data to match State type
       const stateData: Partial<Omit<State, 'stateId' | 'auditLogs'>> = {
@@ -65,10 +68,12 @@ const StateEdit: React.FC = () => {
         isActive: Boolean(formData.isActive),
       };
 
+      console.log("💾 Sending stateData:", stateData);
       await StateService.updateState(Number(stateId), stateData);
+      console.log("✅ State updated successfully");
       
     } catch (error: any) {
-      console.error("Error updating state:", error);
+      console.error("❌ Error updating state:", error);
       throw error;
     }
   };

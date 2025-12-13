@@ -158,6 +158,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
 
         const response = await onFetch(recordId);
         
+        // Check for isSucess (with typo as per API)
         if (!response || !response.isSucess) {
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
@@ -168,7 +169,17 @@ const KiduEdit: React.FC<KiduEditProps> = ({
         const formattedData: Record<string, any> = {};
         fields.forEach(f => {
           if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-            formattedData[f.name] = data[f.name] ?? false;
+            // Handle boolean conversion for toggle/checkbox
+            const rawValue = data[f.name];
+            if (typeof rawValue === 'boolean') {
+              formattedData[f.name] = rawValue;
+            } else if (typeof rawValue === 'string') {
+              formattedData[f.name] = rawValue.toLowerCase() === 'true' || rawValue === '1';
+            } else if (typeof rawValue === 'number') {
+              formattedData[f.name] = rawValue !== 0;
+            } else {
+              formattedData[f.name] = false;
+            }
           } else if (f.rules.type === "date") {
             // Format date fields to YYYY-MM-DD for input type="date"
             const dateValue = data[f.name];
@@ -707,7 +718,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                           id={field.name} 
                           name={field.name} 
                           label={field.rules.label}
-                          checked={formData[field.name] || false} 
+                          checked={!!formData[field.name]} 
                           onChange={handleChange} 
                           className="fw-semibold" 
                         />

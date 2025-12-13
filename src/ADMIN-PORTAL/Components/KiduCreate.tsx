@@ -12,7 +12,7 @@ import KiduSubmit from "./KiduSubmit";
 
 // ==================== TYPES ====================
 export interface FieldRule {
-  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle";
+  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak";
   label: string;
   required?: boolean;
   minLength?: number;
@@ -93,8 +93,9 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const initialErrors: Record<string, string> = {};
   
   fields.forEach(f => {
+    if (f.rules.type === "rowbreak") return; // Skip rowbreak fields
+    
     if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-      // Set isActive toggle to true by default
       initialValues[f.name] = f.name === "isActive" ? true : false;
     } else if (f.rules.type === "radio" && options[f.name]?.length) {
       const firstOption = options[f.name][0];
@@ -217,6 +218,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     const newErrors: Record<string, string> = {};
     
     fields.forEach(f => {
+      if (f.rules.type === "rowbreak") return; // Skip rowbreak
+      
       const rule = f.rules;
       const value = formData[f.name];
       
@@ -444,8 +447,14 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   };
 
   // ==================== RENDER FIELD ====================
-  const renderField = (field: Field) => {
+  const renderField = (field: Field, index: number) => {
     const { name, rules } = field;
+    
+    // Handle row break
+    if (rules.type === "rowbreak") {
+      return <div key={`rowbreak-${index}`} className="w-100"></div>;
+    }
+    
     const colWidth = rules.colWidth || 4;
     
     return (
@@ -535,7 +544,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
               {/* Form Fields Section */}
               <Col xs={12} md={imageConfig ? 8 : 12}>
                 <Row className="g-2">
-                  {regularFields.map(renderField)}
+                  {regularFields.map((field, index) => renderField(field, index))}
                 </Row>
               </Col>
             </Row>

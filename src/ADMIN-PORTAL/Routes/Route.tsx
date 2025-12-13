@@ -29,10 +29,10 @@ import MainPageEdit from '../Pages/MainPage/Edit';
 // import MainPageView from '../Pages/MainPage/View';
 
 //State
-import StateList from '../Pages/Settings/State/StateList';
-import StateCreate from '../Pages/Settings/State/StateCreate';
-import StateEdit from '../Pages/Settings/State/StateEdit';
-import StateView from '../Pages/Settings/State/StateView';
+import StateList from '../Pages/Settings/State/List';
+import StateCreate from '../Pages/Settings/State/Create';
+import StateEdit from '../Pages/Settings/State/Edit';
+import StateView from '../Pages/Settings/State/View';
 
 //Branch
 import BranchList from '../Pages/Branch/List';
@@ -44,6 +44,26 @@ import BranchView from '../Pages/Branch/View';
 import CircleList from '../Pages/Circle/List';
 import CircleCreate from '../Pages/Circle/Create';
 import CircleEdit from '../Pages/Circle/Edit';
+
+//Status
+import StatusList from '../Pages/Settings/Status/List';
+import StatusCreate from '../Pages/Settings/Status/Create';
+import StatusEdit from '../Pages/Settings/Status/Edit';
+import StatusView from '../Pages/Settings/Status/View';
+
+//Category
+import CategoryList from '../Pages/Settings/Category/List';
+import CategoryCreate from '../Pages/Settings/Category/Create';
+import CategoryEdit from '../Pages/Settings/Category/Edit';
+import CategoryView from '../Pages/Settings/Category/View';
+
+//Designation
+import DesignationList from '../Pages/Settings/Designation/List';
+import DesignationCreate from '../Pages/Settings/Designation/Create';
+import DesignationEdit from '../Pages/Settings/Designation/Edit';
+import DesignationView from '../Pages/Settings/Designation/View';
+
+
 
 export default function AdminRoutes() {
   return (
@@ -76,11 +96,29 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/branch-edit/:branchId" element={<BranchEdit />} />
         <Route path="/dashboard/settings/branch-view/:stateId" element={<BranchView />} />
 
+        {/* Status */}
+        <Route path="/dashboard/settings/status-list" element={<StatusList />} />
+        <Route path="/dashboard/settings/status-create" element={<StatusCreate />} />
+        <Route path="/dashboard/settings/status-edit/:statusId" element={<StatusEdit />} />
+        <Route path="/dashboard/settings/status-view/:statusId" element={<StatusView />} />
+
+        {/* Category */}
+        <Route path="/dashboard/settings/category-list" element={<CategoryList />} />
+        <Route path="/dashboard/settings/category-create" element={<CategoryCreate />} />
+        <Route path="/dashboard/settings/category-edit/:categoryId" element={<CategoryEdit />} />
+        <Route path="/dashboard/settings/category-view/:categoryId" element={<CategoryView />} />
+
         {/* Circles */}
         <Route path="/dashboard/settings/circles-list" element={<CircleList />} />
         <Route path="/dashboard/settings/circles-create" element={<CircleCreate />} />
         <Route path="/dashboard/settings/circles-edit/:circleId" element={<CircleEdit />} />
         {/* <Route path="/dashboard/settings/circles-view/:stateId" element={<StateView />} /> */}
+
+        {/* Designation */}
+        <Route path="/dashboard/settings/designation-list" element={<DesignationList />} />
+        <Route path="/dashboard/settings/designation-create" element={<DesignationCreate />} />
+        <Route path="/dashboard/settings/designation-edit/:designationId" element={<DesignationEdit />} />
+        <Route path="/dashboard/settings/designation-view/:designationId" element={<DesignationView />} />
 
         {/* Manage Committe */}
         {/* ///demo */}

@@ -74,13 +74,33 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
   },
   STATE: {
-  GET_ALL: `${API_BASE_URL}/State`,
-  GET_BY_ID: (id: number) => `${API_BASE_URL}/State/${id}`,
-  CREATE: `${API_BASE_URL}/State`,
-  UPDATE: (id: number) => `${API_BASE_URL}/State/${id}`,
-  DELETE: (id: number) => `${API_BASE_URL}/State/${id}`,
-},
-
+    GET_ALL: `${API_BASE_URL}/State`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/State/${id}`,
+    CREATE: `${API_BASE_URL}/State`,
+    UPDATE: (id: number) => `${API_BASE_URL}/State/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/State/${id}`,
+  },
+  STATUS: {
+    GET_ALL: `${API_BASE_URL}/api/Status`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/api/Status/${id}`,
+    CREATE: `${API_BASE_URL}/api/Status`,
+    UPDATE: (id: number) => `${API_BASE_URL}/api/Status/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/api/Status/${id}`,
+  },
+  CATEGORY: {
+    GET_ALL: `${API_BASE_URL}/Category`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Category/${id}`,
+    CREATE: `${API_BASE_URL}/Category`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Category/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Category/${id}`,
+  },
+  DESIGNATION: {
+    GET_ALL: `${API_BASE_URL}/Designation`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+    CREATE: `${API_BASE_URL}/Designation`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+  },
 };
 
 // ✅ Helper function to get full image URL
