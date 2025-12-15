@@ -86,7 +86,7 @@ const PublicNavbar: React.FC = () => {
                   Managing Committee
                 </Nav.Link>
 
-                <Nav.Link className="nav-item">Claims Settled</Nav.Link>
+                <Nav.Link  className={`nav-item ${isActive("/claims")}`}  onClick={() => navigate("/claims")}>Claims Settled</Nav.Link>
 
                 <Nav.Link
                   className={`nav-item ${isActive("/contact-us")}`}

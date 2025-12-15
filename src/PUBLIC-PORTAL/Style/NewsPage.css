@@ -1,0 +1,95 @@
+/* ===============================
+   HERO SECTION
+================================*/
+.news-hero {
+  background-color: #0a2a57; /* Deep blue like screenshot */
+  padding: 60px 0;
+  color: white;
+}
+
+.news-tag {
+  color: #fcbc3c;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.news-title {
+  font-size: 38px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.news-subtext {
+  max-width: 650px;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* ===============================
+   BREADCRUMB
+================================*/
+.news-breadcrumb {
+  background-color: #f3f4f6;
+  padding: 12px 0;
+  font-size: 14px;
+}
+
+.breadcrumb-link {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  color: #0a2a57;
+}
+
+.breadcrumb-active {
+  font-weight: 600;
+  color: #0a2a57;
+}
+
+/* ===============================
+   NEWS CARDS
+================================*/
+.news-section {
+  background: #fafafa;
+  padding: 40px 0 70px 0;
+}
+
+.news-card {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  padding: 15px;
+  transition: box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.news-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #d19923;
+  margin-bottom: 10px;
+}
+
+.news-calendar-icon {
+  color: #d19923;
+}
+
+.news-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0a2a57;
+  margin-bottom: 10px;
+}
+
+.news-excerpt {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { HiOutlineCalendar, HiOutlineArrowRight } from "react-icons/hi";
 import "../../Style/Home/News.css";
+import { useNavigate } from "react-router-dom";
 
 const newsItems = [
   {
@@ -25,6 +26,7 @@ const newsItems = [
 ];
 
 const NewsSection: React.FC = () => {
+    const navigate = useNavigate()
   return (
     <section className="py-5 news-section">
       <Container>
@@ -52,7 +54,7 @@ const NewsSection: React.FC = () => {
               ))}
             </Row>
 
-            <Button variant="outline-primary" className="mt-4 d-flex align-items-center gap-2">
+            <Button variant="warning"  onClick={() => navigate("/news")} className="mt-4 d-flex align-items-center gap-2 text-white">
               View All News
               <HiOutlineArrowRight />
             </Button>

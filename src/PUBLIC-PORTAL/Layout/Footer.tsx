@@ -2,8 +2,10 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import "../Style/Footer.css";
 import logo from "../Assets/Images/AIBEA_logo.jpg"
+import { useNavigate } from "react-router-dom";
 
 const Footer: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <footer className="footer-wrapper mt-auto">
       <Container className="py-5">
@@ -90,7 +92,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="small footer-links d-flex gap-3">
-            <span>Privacy Policy</span>
+            <span onClick={() => navigate("/privacy-policy")}>Privacy Policy</span>
             <span>Terms of Service</span>
           </div>
         </Container>
