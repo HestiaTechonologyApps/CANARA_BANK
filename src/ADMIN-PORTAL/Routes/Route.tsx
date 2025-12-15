@@ -70,6 +70,12 @@ import CategoryView from '../Pages/Settings/Category/View';
 import CategoryCreate from '../Pages/Settings/Category/Create';
 import CategoryList from '../Pages/Settings/Category/List';
 
+//Month
+import MonthList from '../Pages/Settings/Month/List';
+import MonthCreate from '../Pages/Settings/Month/Create';
+import MonthEdit from '../Pages/Settings/Month/Edit';
+import MonthView from '../Pages/Settings/Month/View';
+
 export default function AdminRoutes() {
   return (
     <Routes>
@@ -131,6 +137,12 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/usertype-create" element={<UserTypeCreate />} />
         <Route path="/dashboard/settings/usertype-edit/:userTypeId" element={<UserTypeEdit />} />
         <Route path="/dashboard/settings/usertype-view/:userTypeId" element={<UserTypeView />} />
+
+        {/* Month */}
+        <Route path="/dashboard/settings/month-list" element={<MonthList />} />
+        <Route path="/dashboard/settings/month-create" element={<MonthCreate />} />
+        <Route path="/dashboard/settings/month-edit/:monthCode" element={<MonthEdit />} />
+        <Route path="/dashboard/settings/month-view/:monthCode" element={<MonthView />} />
 
         {/* Manage Committe */}
         <Route path='cms/manage-committe-list' element={<ManagingCommitteeList />} />

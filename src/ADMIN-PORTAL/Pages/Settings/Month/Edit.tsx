@@ -7,22 +7,63 @@ import KiduEdit from "../../../Components/KiduEdit";
 
 const MonthEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "monthCode", rules: { type: "number", label: "Month ID", required: false, disabled: true, colWidth: 3 } },
-    { name: "monthName", rules: { type: "text", label: "Month Name", required: true, colWidth: 6 } },
-    { name: "abbrivation", rules: { type: "text", label: "Abbreviation", required: true, colWidth: 6 } },
+    { 
+      name: "monthCode", 
+      rules: { 
+        type: "number", 
+        label: "Month Code", 
+        required: false, 
+        disabled: true, 
+        colWidth: 3 
+      } 
+    },
+    { 
+      name: "monthName", 
+      rules: { 
+        type: "text", 
+        label: "Month Name", 
+        required: true, 
+        minLength: 2,
+        maxLength: 50,
+        placeholder: "Enter month name",
+        colWidth: 6 
+      } 
+    },
+    { 
+      name: "abbrivation", 
+      rules: { 
+        type: "text", 
+        label: "Abbreviation", 
+        required: true,
+        minLength: 1,
+        maxLength: 10,
+        placeholder: "Enter abbreviation", 
+        colWidth: 3 
+      } 
+    },
   ];
 
-  const handleFetch = async (id: string) => {
-    const response = await MonthService.getMonthById(Number(id));
-    return response;
+  const handleFetch = async (monthCode: string) => {
+    try {
+      const response = await MonthService.getMonthById(Number(monthCode));
+      return response;
+    } catch (error: any) {
+      console.error("Error fetching month:", error);
+      throw error;
+    }
   };
 
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    const payload: Partial<Omit<Month, "monthCode" | "auditLogs">> = {
-      monthName: formData.monthName.trim(),
-      abbrivation: formData.abbrivation.trim(),
-    };
-    await MonthService.updateMonth(Number(id), payload);
+  const handleUpdate = async (monthCode: string, formData: Record<string, any>) => {
+    try {
+      const payload: Partial<Omit<Month, "monthCode" | "auditLogs">> = {
+        monthName: formData.monthName.trim(),
+        abbrivation: formData.abbrivation.trim(),
+      };
+      await MonthService.updateMonth(Number(monthCode), payload);
+    } catch (error: any) {
+      console.error("Error updating month:", error);
+      throw error;
+    }
   };
 
   return (
@@ -32,7 +73,7 @@ const MonthEdit: React.FC = () => {
       onFetch={handleFetch}
       onUpdate={handleUpdate}
       submitButtonText="Update Month"
-      showResetButton
+      showResetButton={true}
       successMessage="Month updated successfully!"
       errorMessage="Failed to update month. Please try again."
       paramName="monthCode"

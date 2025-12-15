@@ -2,7 +2,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { Month } from "../../Types/Settings/Month.types"; // adjust path if needed
+import type { Month } from "../../Types/Settings/Month.types";
 
 const MonthService = {
   // Get all months
@@ -20,7 +20,6 @@ const MonthService = {
       API_ENDPOINTS.MONTH.GET_BY_ID(id),
       "GET"
     );
-    // Return full CustomResponse to match your other services
     return response;
   },
 
