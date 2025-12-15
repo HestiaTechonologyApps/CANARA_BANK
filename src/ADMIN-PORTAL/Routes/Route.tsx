@@ -129,8 +129,8 @@ export default function AdminRoutes() {
         {/* UserType */}
         <Route path="/dashboard/settings/usertype-list" element={<UserTypeList />} />
         <Route path="/dashboard/settings/usertype-create" element={<UserTypeCreate />} />
-        <Route path="/dashboard/settings/usertype-edit/:statusId" element={<UserTypeEdit />} />
-        <Route path="/dashboard/settings/usertype-view/:statusId" element={<UserTypeView />} />
+        <Route path="/dashboard/settings/usertype-edit/:userTypeId" element={<UserTypeEdit />} />
+        <Route path="/dashboard/settings/usertype-view/:userTypeId" element={<UserTypeView />} />
 
         {/* Manage Committe */}
         <Route path='cms/manage-committe-list' element={<ManagingCommitteeList />} />

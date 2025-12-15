@@ -6,16 +6,7 @@ import type { UserType } from "../../Types/Settings/UserType.types";
 
 const UserTypeEdit: React.FC = () => {
   const fields: Field[] = [
-    {
-      name: "userTypeId",
-      rules: {
-        type: "number",
-        label: "User Type ID",
-        required: false,
-        disabled: true,
-        colWidth: 3,
-      },
-    },
+   
     {
       name: "abbreviation",
       rules: {
@@ -71,7 +62,7 @@ const UserTypeEdit: React.FC = () => {
       successMessage="User Type updated successfully!"
       errorMessage="Failed to update User Type. Please try again."
       paramName="userTypeId"
-      navigateBackPath="/dashboard/user/usertype-list"
+      navigateBackPath="/dashboard/settings/usertype-list"
       loadingText="Loading User Type..."
       auditLogConfig={{
         tableName: "UserType",

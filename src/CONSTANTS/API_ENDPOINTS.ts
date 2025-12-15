@@ -122,6 +122,13 @@ export const API_ENDPOINTS = {
    UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
    DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
   },
+  MONTH: {
+  GET_ALL: `${API_BASE_URL}/Month`,
+  GET_BY_ID: (id: number) => `${API_BASE_URL}/Month/${id}`,
+  CREATE: `${API_BASE_URL}/Month`,
+  UPDATE: (id: number) => `${API_BASE_URL}/Month/${id}`,
+  DELETE: (id: number) => `${API_BASE_URL}/Month/${id}`,
+},
   
 };
 

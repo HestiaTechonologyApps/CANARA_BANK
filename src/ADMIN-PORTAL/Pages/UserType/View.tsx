@@ -26,8 +26,8 @@ const UserTypeView: React.FC = () => {
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
-      editRoute="/dashboard/user/usertype-edit"
-      listRoute="/dashboard/user/usertype-list"
+      editRoute="/dashboard/settings/usertype-edit"
+      listRoute="/dashboard/settings/usertype-list"
       paramName="userTypeId"
       auditLogConfig={{
         tableName: "UserType",

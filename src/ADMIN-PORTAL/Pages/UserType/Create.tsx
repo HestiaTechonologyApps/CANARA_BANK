@@ -65,7 +65,7 @@ const UserTypeCreate: React.FC = () => {
       loadingState={isLoading}
       successMessage="User Type created successfully!"
       errorMessage="Failed to create User Type. Please check the details and try again."
-      navigateOnSuccess="/dashboard/user/usertype-list"
+      navigateOnSuccess="/dashboard/settings/usertype-list"
       navigateDelay={1200}
       themeColor="#18575A"
     />
