@@ -28,11 +28,11 @@ import MainPageCreate from '../Pages/MainPage/Create';
 import MainPageEdit from '../Pages/MainPage/Edit';
 // import MainPageView from '../Pages/MainPage/View';
 
-//State
-import StateList from '../Pages/Settings/State/StateList';
-import StateCreate from '../Pages/Settings/State/StateCreate';
-import StateEdit from '../Pages/Settings/State/StateEdit';
-import StateView from '../Pages/Settings/State/StateView';
+// //State
+// import StateList from '../Pages/Settings/State/StateList';
+// import StateCreate from '../Pages/Settings/State/StateCreate';
+// import StateEdit from '../Pages/Settings/State/StateEdit';
+// import StateView from '../Pages/Settings/State/StateView';
 
 //Branch
 import BranchList from '../Pages/Branch/List';
@@ -65,10 +65,10 @@ export default function AdminRoutes() {
         <Route path='settings/customer-edit/:customerId' element={<CustomerEdit />} />
 
         {/* State */}
-        <Route path="/dashboard/settings/state-list" element={<StateList />} />
+        {/* <Route path="/dashboard/settings/state-list" element={<StateList />} />
         <Route path="/dashboard/settings/state-create" element={<StateCreate />} />
         <Route path="/dashboard/settings/state-edit/:stateId" element={<StateEdit />} />
-        <Route path="/dashboard/settings/state-view/:stateId" element={<StateView />} />
+        <Route path="/dashboard/settings/state-view/:stateId" element={<StateView />} /> */}
 
         {/* Branch */}
         <Route path="/dashboard/settings/branch-list" element={<BranchList />} />
@@ -83,10 +83,10 @@ export default function AdminRoutes() {
         {/* <Route path="/dashboard/settings/circles-view/:stateId" element={<StateView />} /> */}
 
         {/* Designation */}
-        <Route path="/dashboard/settings/designation-list" element={<DesignationList />} />
+        {/* <Route path="/dashboard/settings/designation-list" element={<DesignationList />} />
         <Route path="/dashboard/settings/designation-create" element={<DesignationCreate />} />
         <Route path="/dashboard/settings/designation-edit/:designationId" element={<DesignationEdit />} />
-        <Route path="/dashboard/settings/designation-view/:designationId" element={<DesignationView />} />
+        <Route path="/dashboard/settings/designation-view/:designationId" element={<DesignationView />} /> */}
 
         {/* Manage Committe */}
         {/* ///demo */}
