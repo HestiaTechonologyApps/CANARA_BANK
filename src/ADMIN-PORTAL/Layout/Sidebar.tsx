@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
   const settingsSubMenu = [
     { label: "Category", path: "/dashboard/settings/category-list", icon: <BsListUl /> },
     { label: "States", path: "/dashboard/settings/state-list", icon: <BsGeoAlt /> },
-    { label: "User Types", path: "/dashboard/settings/usertypes-list", icon: <BsPersonCheck /> },
+    { label: "User Types", path: "/dashboard/settings/usertype-list", icon: <BsPersonCheck /> },
     { label: "Status", path: "/dashboard/settings/status-list", icon: <BsToggleOn /> },
     { label: "Designation", path: "/dashboard/settings/designation-list", icon: <BsAward /> },
     { label: "Circles", path: "/dashboard/settings/circles-list", icon: <BsCircle /> },

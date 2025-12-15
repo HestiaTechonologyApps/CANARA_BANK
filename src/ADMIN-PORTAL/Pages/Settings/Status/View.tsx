@@ -1,7 +1,7 @@
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
-import StatusService from "../../../Services/Settings/StatusService";
 import KiduView from "../../../Components/KiduView";
+import StatusService from "../../../Services/Settings/StatusService";
 
 
 const StatusView: React.FC = () => {

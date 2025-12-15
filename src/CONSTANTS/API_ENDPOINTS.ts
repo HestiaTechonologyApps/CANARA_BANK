@@ -101,6 +101,28 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
   },
+  USER_TYPE: {
+    GET_ALL: `${API_BASE_URL}/UserType`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/UserType/${id}`,
+    CREATE: `${API_BASE_URL}/UserType`,
+    UPDATE: (id: number) => `${API_BASE_URL}/UserType/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/UserType/${id}`,
+  },
+   MEMBER:{
+   GET_ALL: `${API_BASE_URL}/Member`,
+   GET_BY_ID: (id: number) => `${API_BASE_URL}/Member/${id}`,
+   CREATE: `${API_BASE_URL}/Member`,
+   UPDATE: (id: number) => `${API_BASE_URL}/Member/${id}`,
+   DELETE: (id: number) => `${API_BASE_URL}/Member/${id}`,
+  },
+  DEATH_CLAIMS:{
+   GET_ALL: `${API_BASE_URL}/DeathClaim`,
+   GET_BY_ID: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+   CREATE: `${API_BASE_URL}/DeathClaim`,
+   UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+   DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+  },
+  
 };
 
 // ✅ Helper function to get full image URL

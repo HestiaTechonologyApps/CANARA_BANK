@@ -1,8 +1,8 @@
 import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
-import StatusService from "../../../Services/Settings/StatusService";
 import type { Status } from "../../../Types/Settings/Status";
 import KiduEdit from "../../../Components/KiduEdit";
+import StatusService from "../../../Services/Settings/StatusService";
 
 
 const StatusEdit: React.FC = () => {

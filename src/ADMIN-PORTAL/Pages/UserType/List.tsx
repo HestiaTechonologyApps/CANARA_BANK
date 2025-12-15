@@ -49,9 +49,9 @@ const UserTypeList: React.FC = () => {
       columns={columns}
       idKey="userTypeId"
       addButtonLabel="Add User Type"
-      addRoute="/dashboard/user/usertype-create"
-      editRoute="/dashboard/user/usertype-edit"
-      viewRoute="/dashboard/user/usertype-view"
+      addRoute="/dashboard/settings/usertype-create"
+      editRoute="/dashboard/settings/usertype-edit"
+      viewRoute="/dashboard/settings/usertype-view"
       showAddButton
       showExport
       showSearch
