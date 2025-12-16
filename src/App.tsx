@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
 import AdminRoutes from "./ADMIN-PORTAL/Routes/Route";
 import PublicRoutes from "./PUBLIC-PORTAL/Routes/Route";
+import StaffRoutes from "./STAFF-PORTAL/Routes/Routes";
 // import StaffRoutes from "./STAFF-PORTAL/Routes/Route";
 
 // For Vite projects, use import.meta.env with VITE_ prefix
@@ -10,7 +11,7 @@ const portal = import.meta.env.VITE_PORTAL;
 function App() {
   if (portal === "admin") return <AdminRoutes />;
   if (portal === "public") return <PublicRoutes />;
-  // if (portal === "staff") return <StaffRoutes />;
+  if (portal === "staff") return <StaffRoutes />;
   
   
   // Error message if no portal is specified

@@ -1,0 +1,32 @@
+.staff-navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 260px;
+  height: 70px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+  align-items: center;
+  z-index: 90;
+}
+
+.staff-navbar .left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.staff-navbar .right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.logout-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+}

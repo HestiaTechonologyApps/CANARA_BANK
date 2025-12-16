@@ -1,0 +1,47 @@
+/* Root layout */
+.staff-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* Main area (right side of sidebar) */
+.staff-main {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+}
+
+/* When sidebar is open */
+.staff-main.expanded {
+  margin-left: 260px; /* must match sidebar open width */
+}
+
+/* When sidebar is collapsed */
+.staff-main.collapsed {
+  margin-left: 70px; /* must match sidebar collapsed width */
+}
+
+/* Page content area below navbar */
+.staff-content {
+  padding-top: 70px; /* navbar height */
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+}
+
+/* Mobile handling */
+@media (max-width: 768px) {
+  .staff-main.expanded {
+    margin-left: 0;
+  }
+
+  .staff-main.collapsed {
+    margin-left: 0;
+  }
+
+  .staff-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
