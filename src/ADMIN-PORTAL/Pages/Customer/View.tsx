@@ -27,18 +27,25 @@ const CustomerView: React.FC = () => {
     return CustomerService.getCustomerById(Number(id));
   };
 
+  function handleDelete(id: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <KiduView
       title="View Customer"
       fields={fields}
       onFetch={handleFetch}
+      onDelete={handleDelete}
+      editRoute="/dashboard/customer-edit"
+      listRoute="/dashboard/customer-list"
       paramName="customerId"
-      listRoute="/dashboard/settings/customer-list"
-      editRoute="/dashboard/settings/customer-edit"
       auditLogConfig={{ tableName: "Customer", recordIdField: "customerId" }}
       themeColor="#18575A"
       loadingText="Loading customer details..."
-      showDeleteButton={false}
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this customer? This action cannot be undone."
     />
   );
 };

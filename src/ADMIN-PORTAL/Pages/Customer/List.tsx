@@ -75,9 +75,9 @@ const CustomerList: React.FC = () => {
       columns={columns}
       idKey="customerId"
       addButtonLabel="Add Customer"
-      addRoute="/dashboard/settings/customer-create"
-      editRoute="/dashboard/settings/customer-edit"
-      viewRoute="/dashboard/settings/customer-view"
+      addRoute="/dashboard/customer-create"
+      editRoute="/dashboard/customer-edit"
+      viewRoute="/dashboard/customer-view"
       showAddButton={true}
       showExport={true}
       showSearch={true}

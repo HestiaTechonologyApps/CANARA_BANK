@@ -19,9 +19,9 @@ import CustomerView from '../Pages/Customer/View';
 
 //Manage Committe
 import ManagingCommitteeList from '../Pages/ManagingCommittee/List';
-import ManagingCommitteeCreate from '../Pages/ManagingCommittee/List';
-import ManagingCommitteeEdit from '../Pages/ManagingCommittee/List';
-import ManagingCommitteeView from '../Pages/ManagingCommittee/List';
+import ManagingCommitteeCreate from '../Pages/ManagingCommittee/Create';
+import ManagingCommitteeEdit from '../Pages/ManagingCommittee/Edit';
+import ManagingCommitteeView from '../Pages/ManagingCommittee/View';
 
 //MainPage
 import MainPageList from '../Pages/MainPage/List';
@@ -101,6 +101,18 @@ import DeathClaimCreate from '../Pages/Claims/DeathClaims/Create';
 import DeathClaimEdit from '../Pages/Claims/DeathClaims/Edit';
 import DeathClaimView from '../Pages/Claims/DeathClaims/View';
 
+//Day Quote
+import DayQuoteList from '../Pages/DayQuote/List';
+import DayQuoteCreate from '../Pages/DayQuote/Create';
+import DayQuoteEdit from '../Pages/DayQuote/Edit';
+import DayQuoteView from '../Pages/DayQuote/View';
+
+//Daily News
+import DailyNewsList from '../Pages/DailyNews/List';
+import DailyNewsCreate from '../Pages/DailyNews/Create';
+import DailyNewsEdit from '../Pages/DailyNews/Edit';
+import DailyNewsView from '../Pages/DailyNews/View';
+
 
 export default function AdminRoutes() {
   return (
@@ -111,16 +123,16 @@ export default function AdminRoutes() {
         <Route index element={<HomePage />} />
 
         {/* User */}
-        <Route path='settings/user-list' element={<UserList />} />
-        <Route path='settings/user-create' element={<UserCreate />} />
-        <Route path='settings/user-edit/:userId' element={<UserEdit />} />
-        <Route path='settings/user-view/:userId' element={<UserView />} />
+        <Route path='/dashboard/settings/user-list' element={<UserList />} />
+        <Route path='/dashboard/settings/user-create' element={<UserCreate />} />
+        <Route path='/dashboard/settings/user-edit/:userId' element={<UserEdit />} />
+        <Route path='/dashboard/settings/user-view/:userId' element={<UserView />} />
 
         {/* Customer */}
-        <Route path='settings/customer-list' element={<CustomerList />} />
-        <Route path='settings/customer-create' element={<CustomerCreate />} />
-        <Route path='settings/customer-edit/:customerId' element={<CustomerEdit />} />
-        <Route path='settings/customer-view/:customerId' element={<CustomerView />} />
+        <Route path='/dashboard/customer-list' element={<CustomerList />} />
+        <Route path='/dashboard/customer-create' element={<CustomerCreate />} />
+        <Route path='/dashboard/customer-edit/:customerId' element={<CustomerEdit />} />
+        <Route path='/dashboard/customer-view/:customerId' element={<CustomerView />} />
 
         {/* State */}
         <Route path="/dashboard/settings/state-list" element={<StateList />} />
@@ -177,16 +189,16 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/month-view/:monthCode" element={<MonthView />} />
 
         {/* Manage Committe */}
-        <Route path='cms/manage-committe-list' element={<ManagingCommitteeList />} />
-        <Route path='cms/manage-committe-create' element={<ManagingCommitteeCreate />} />
-        <Route path='cms/manage-committe-edit/:managingComitteeId' element={<ManagingCommitteeEdit />} />
-        <Route path='cms/manage-committe-view/:managingComitteeId' element={<ManagingCommitteeView />} />
+        <Route path='/dashboard/cms/manage-committe-list' element={<ManagingCommitteeList />} />
+        <Route path='/dashboard/cms/manage-committe-create' element={<ManagingCommitteeCreate />} />
+        <Route path='/dashboard/cms/manage-committe-edit/:managingComitteeId' element={<ManagingCommitteeEdit />} />
+        <Route path='/dashboard/cms/manage-committe-view/:managingComitteeId' element={<ManagingCommitteeView />} />
 
         {/* Main Page */}
-        <Route path='cms/mainpage-list' element={<MainPageList />} />
-        <Route path='cms/mainpage-create' element={<MainPageCreate />} />
-        <Route path='cms/mainpage-edit/:mainPageId' element={<MainPageEdit />} />
-        <Route path='cms/mainpage-view/:mainPageId' element={<MainPageView />} />
+        <Route path='/dashboard/cms/mainpage-list' element={<MainPageList />} />
+        <Route path='/dashboard/cms/mainpage-create' element={<MainPageCreate />} />
+        <Route path='/dashboard/cms/mainpage-edit/:mainPageId' element={<MainPageEdit />} />
+        <Route path='/dashboard/cms/mainpage-view/:mainPageId' element={<MainPageView />} />
 
         {/* Member */}
         <Route path='/dashboard/contributions/member-list' element={<MemberList />} />
@@ -205,6 +217,18 @@ export default function AdminRoutes() {
          <Route path='/dashboard/claims/deathclaims-create' element={<DeathClaimCreate/>}/>
          <Route path='/dashboard/claims/deathclaims-edit/:deathClaimId' element={<DeathClaimEdit/>}/>
          <Route path='/dashboard/claims/deathclaims-view/:deathClaimId' element={<DeathClaimView/>}/>
+
+         {/* Day Quote */}
+         <Route path='/dashboard/cms/dayquote-list' element={<DayQuoteList/>}/>
+         <Route path='/dashboard/cms/dayquote-create' element={<DayQuoteCreate/>}/>
+         <Route path='/dashboard/cms/dayquote-edit/:dayQuoteId' element={<DayQuoteEdit/>}/>
+         <Route path='/dashboard/cms/dayquote-view/:dayQuoteId' element={<DayQuoteView/>}/>
+
+         {/* Daily News */}
+          <Route path='/dashboard/cms/dailynews-list' element={<DailyNewsList/>}/>
+          <Route path='/dashboard/cms/dailynews-create' element={<DailyNewsCreate/>}/>
+          <Route path='/dashboard/cms/dailynews-edit/:dailyNewsId' element={<DailyNewsEdit/>}/>
+          <Route path='/dashboard/cms/dailynews-view/:dailyNewsId' element={<DailyNewsView/>}/>
       </Route>
 
       {/* Catch-All Route for 404 */}

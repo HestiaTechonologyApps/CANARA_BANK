@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
   };
 
   const settingsSubMenu = [
-    { label: "Category", path: "/dashboard/settings/category-list", icon: <BsListUl /> },
+    { label: "Category", path: "/dashboard/settings//category-list", icon: <BsListUl /> },
     { label: "States", path: "/dashboard/settings/state-list", icon: <BsGeoAlt /> },
     { label: "User Types", path: "/dashboard/settings/usertype-list", icon: <BsPersonCheck /> },
     { label: "Status", path: "/dashboard/settings/status-list", icon: <BsToggleOn /> },
@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
     { label: "Branches", path: "/dashboard/settings/branch-list", icon: <BsBuildingGear /> },
     { label: "Company", path: "/dashboard/settings/company-list", icon: <BsBuilding /> },
     { label: "Month", path: "/dashboard/settings/month-list", icon: <BsCalendar3 /> },
-    { label: "Users", path: "settings/user-list", icon: <BsPersonFillGear /> }
+    { label: "Users", path: "/dashboard/settings/user-list", icon: <BsPersonFillGear /> }
   ];
 
   const contribSubMenu = [
@@ -58,8 +58,8 @@ const Sidebar: React.FC = () => {
 
   const cmsSubMenu = [
     { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
-    { label: "Quotes", path: "/dashboard/cms/quotes" },
-    { label: "Daily News", path: "/dashboard/cms/dailynews" },
+    { label: "Quotes", path: "/dashboard/cms/dayquote-list" },
+    { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" }
   ];
 
@@ -367,7 +367,7 @@ const Sidebar: React.FC = () => {
 
             {/* Customers Menu */}
             <NavLink
-              to="settings/customer-list"
+              to="/dashboard/customer-list"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
               }

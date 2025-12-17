@@ -172,6 +172,13 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
   },
+  DAILY_NEWS:{
+    GET_ALL: `${API_BASE_URL}/DailyNews`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+    CREATE: `${API_BASE_URL}/DailyNews`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+  },
 };
 
 // ✅ Helper function to get full image URL

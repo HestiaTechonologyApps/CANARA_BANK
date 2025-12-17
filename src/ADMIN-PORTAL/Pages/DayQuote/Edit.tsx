@@ -64,6 +64,8 @@ const DayQuoteEdit: React.FC = () => {
   // so wrap it to match KiduEdit’s expected shape if it expects { value }.
   const handleFetch = async (id: string) => {
     const data = await DayQuoteService.getDayQuoteById(Number(id));
+    console.log(data);
+    
     return { value: data }; // if KiduEdit expects value; otherwise, just return data
   };
 

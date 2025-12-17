@@ -138,7 +138,7 @@ const CustomerEdit: React.FC = () => {
       successMessage="Customer updated successfully!"
       errorMessage="Failed to update customer. Please try again."
       paramName="customerId"
-      navigateBackPath="/dashboard/settings/customer-list"
+      navigateBackPath="/dashboard/customer-list"
       loadingText="Loading Customer..."
       imageConfig={{
         fieldName: "profileImage",
