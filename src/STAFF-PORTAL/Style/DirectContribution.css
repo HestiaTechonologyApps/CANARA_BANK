@@ -1,43 +1,65 @@
 .dc-card {
   border-radius: 10px;
   border: 1px solid #dfe3eb;
+  max-width: 100%;
+  background: #fff;
 }
 
+/* HEADER */
 .dc-header {
-  background: linear-gradient(180deg, #173a6a, #1f4e8c);
+ background: linear-gradient(180deg, #173a6a, #1f4e8c);
   color: #fff;
   padding: 10px;
-  text-align: center;
   font-weight: 600;
-  border-radius: 10px 10px 0 0;
+  text-align: center;
+  /* border-radius: 10px 10px 0 0; */
 }
 
+/* LABELS */
 .dc-card .form-label {
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: #1f3d6b;
 }
 
+/* INPUTS */
 .dc-card .form-control,
 .dc-card .form-select {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  background-color: #f8f9fb;
+  border-radius: 6px;
 }
 
+/* DISABLED */
+.dc-card .form-control:disabled {
+  background-color: #f1f3f6;
+  color: #6c757d;
+}
+
+/* ACTION BAR */
 .dc-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  border-top: 1px solid #dfe3eb;
-  padding-top: 12px;
+  padding-top: 16px;
 }
 
+/* CREATE BUTTON */
 .dc-btn {
   background-color: #f2b827;
   border: none;
   color: #000;
   font-weight: 600;
+  padding: 6px 22px;
 }
 
 .dc-btn:hover {
   background-color: #e0aa20;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .dc-card {
+    margin: 0 8px;
+  }
 }

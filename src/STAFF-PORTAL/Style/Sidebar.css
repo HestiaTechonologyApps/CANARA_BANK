@@ -9,8 +9,13 @@
   z-index: 100;
 }
 
-.staff-sidebar.open { width: 260px; }
-.staff-sidebar.collapsed { width: 70px; }
+.staff-sidebar.open {
+  width: 210px;
+}
+
+.staff-sidebar.collapsed {
+  width: 70px;
+}
 
 .sidebar-header {
   padding: 20px;
@@ -30,6 +35,8 @@
   background: #f2b827;
   color: #173a6a;
   border-radius: 8px;
+  margin-right: 8px;
+  margin-left: 8px;
 }
 
 .sidebar-footer {

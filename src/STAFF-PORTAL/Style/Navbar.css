@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  height: 48px;               /* ⬅ reduced again */
+  height: 39px;               /* ⬅ reduced again */
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
@@ -15,7 +15,7 @@
 
 /* Sidebar OPEN */
 .staff-navbar.expanded {
-  left: 260px;
+  left: 210px;
 }
 
 /* Sidebar COLLAPSED */
@@ -83,6 +83,7 @@
 /* Logout icon */
 .logout-icon {
   background: #f2f2f2;
+  color: red;
   border: none;
   width: 32px;                /* smaller */
   height: 32px;

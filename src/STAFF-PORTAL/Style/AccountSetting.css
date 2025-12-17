@@ -1,47 +1,64 @@
 .account-card {
   border-radius: 10px;
   border: 1px solid #dfe3eb;
-  max-width: 720px;
+  /* max-width: 900px; */
   margin: 0 auto;
+  background: #fff;
 }
 
 /* Header */
 .account-header {
   background: linear-gradient(180deg, #173a6a, #1f4e8c);
-  color: #ffffff;
+  color: #fff;
   padding: 10px;
-  text-align: center;
   font-weight: 600;
-  border-radius: 10px 10px 0 0;
+  text-align: center;
 }
 
-/* Labels – dark & readable (NO yellow) */
+/* Labels */
 .account-card .form-label {
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: #1f3d6b;
 }
 
 /* Inputs */
 .account-card .form-control {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  background-color: #f8f9fb;
+  border-radius: 6px;
 }
 
-/* Button */
-.account-action {
-  text-align: center;
-  margin-top: 10px;
+/* Disabled fields */
+.account-card .form-control:disabled {
+  background-color: #f1f3f6;
+  color: #6c757d;
 }
 
-.account-btn {
+/* Eye icon */
+.eye-icon {
+  background: #f8f9fb;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+/* Actions */
+.account-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Update button */
+.btn-update {
   background-color: #f2b827;
   border: none;
   color: #000;
   font-weight: 600;
-  padding: 6px 28px;
+  padding: 6px 24px;
 }
 
-.account-btn:hover {
+.btn-update:hover {
   background-color: #e0aa20;
 }
 

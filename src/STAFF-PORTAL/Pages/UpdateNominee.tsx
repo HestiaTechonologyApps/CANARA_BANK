@@ -4,34 +4,59 @@ import "../Style/UpdateNominee.css";
 import KiduAuditLogs from "../../Components/KiduAuditLogs";
 
 const UpdateNominee: React.FC = () => {
+
+  /* 🔹 Fields configuration (LABELS ONLY) */
+  const fields = [
+    { label: "Id" },
+    { label: "Name" },
+    { label: "Staff No" },
+
+    { label: "Gender" },
+    { label: "Date of Birth" },
+    { label: "Category" },
+
+    { label: "DpCode" },
+    { label: "Designation" },
+    { label: "Date of Joining" },
+
+    { label: "Date of joining to Scheme" },
+    { label: "Nominee" },
+    { label: "Nominee Relation" },
+
+    { label: "Nominee Identity Num" },
+    { label: "Union Member" },
+    { label: "Status" },
+  ];
+
   return (
     <Card className="update-nominee-card">
       {/* Header */}
-      <div className="update-nominee-header">
+      <div className="update-nominee-header fs-6">
         MEMBERSHIP DETAILS
       </div>
 
       <Card.Body>
         <Form>
+
           {/* Row 1 */}
           <Row className="mb-3">
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Id</Form.Label>
+                <Form.Label>{fields[0].label}</Form.Label>
                 <Form.Control size="sm" disabled />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Name</Form.Label>
+                <Form.Label>{fields[1].label}</Form.Label>
                 <Form.Control size="sm" value="SHRI G C POOJARY" disabled />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Staff No</Form.Label>
+                <Form.Label>{fields[2].label}</Form.Label>
                 <Form.Control size="sm" value="4957" disabled />
               </Form.Group>
             </Col>
@@ -41,7 +66,7 @@ const UpdateNominee: React.FC = () => {
           <Row className="mb-3">
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Gender</Form.Label>
+                <Form.Label>{fields[3].label}</Form.Label>
                 <Form.Select size="sm" disabled>
                   <option>Male</option>
                 </Form.Select>
@@ -50,14 +75,14 @@ const UpdateNominee: React.FC = () => {
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Date of Birth</Form.Label>
+                <Form.Label>{fields[4].label}</Form.Label>
                 <Form.Control size="sm" type="date" disabled />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Category</Form.Label>
+                <Form.Label>{fields[5].label}</Form.Label>
                 <Form.Select size="sm" disabled>
                   <option>eqws - test1123</option>
                 </Form.Select>
@@ -69,7 +94,7 @@ const UpdateNominee: React.FC = () => {
           <Row className="mb-3">
             <Col md={4}>
               <Form.Group>
-                <Form.Label>DpCode</Form.Label>
+                <Form.Label>{fields[6].label}</Form.Label>
                 <Form.Select size="sm" disabled>
                   <option>8004 / MUMBAI SEWREE</option>
                 </Form.Select>
@@ -78,7 +103,7 @@ const UpdateNominee: React.FC = () => {
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Designation</Form.Label>
+                <Form.Label>{fields[7].label}</Form.Label>
                 <Form.Select size="sm" disabled>
                   <option>SWO</option>
                 </Form.Select>
@@ -87,7 +112,7 @@ const UpdateNominee: React.FC = () => {
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Date of Joining</Form.Label>
+                <Form.Label>{fields[8].label}</Form.Label>
                 <Form.Control size="sm" type="date" disabled />
               </Form.Group>
             </Col>
@@ -97,21 +122,21 @@ const UpdateNominee: React.FC = () => {
           <Row className="mb-3">
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Date of joining to Scheme</Form.Label>
+                <Form.Label>{fields[9].label}</Form.Label>
                 <Form.Control size="sm" type="date" disabled />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Nominee</Form.Label>
+                <Form.Label>{fields[10].label}</Form.Label>
                 <Form.Control size="sm" placeholder="Enter nominee name" />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Nominee Relation</Form.Label>
+                <Form.Label>{fields[11].label}</Form.Label>
                 <Form.Select size="sm">
                   <option>Select relation</option>
                 </Form.Select>
@@ -123,14 +148,14 @@ const UpdateNominee: React.FC = () => {
           <Row className="mb-4">
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Nominee Identity Num</Form.Label>
+                <Form.Label>{fields[12].label}</Form.Label>
                 <Form.Control size="sm" placeholder="Enter identity number" />
               </Form.Group>
             </Col>
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Union Member</Form.Label>
+                <Form.Label>{fields[13].label}</Form.Label>
                 <Form.Select size="sm">
                   <option>Select</option>
                 </Form.Select>
@@ -139,7 +164,7 @@ const UpdateNominee: React.FC = () => {
 
             <Col md={4}>
               <Form.Group>
-                <Form.Label>Status</Form.Label>
+                <Form.Label>{fields[14].label}</Form.Label>
                 <Form.Select size="sm" disabled>
                   <option>Retired</option>
                 </Form.Select>

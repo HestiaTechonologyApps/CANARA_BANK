@@ -18,19 +18,16 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
         <button onClick={toggleSidebar}>
           {sidebarOpen ? <X /> : <Menu />}
         </button>
-
         <div>
           <p>Welcome back,</p>
-          <h6>{mockUser.name}</h6>
+          <p className="fw-bold mt-1 text-warning">{mockUser.name}</p>
         </div>
       </div>
-
       <div className="right">
         <div className="staff-no">
           <span>Staff No.</span>
           <strong>{mockUser.staffNo}</strong>
         </div>
-
         {/* NEW LOGOUT ICON */}
         <button className="logout-icon">
           <LogOut />

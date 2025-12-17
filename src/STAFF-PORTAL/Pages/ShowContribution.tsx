@@ -5,7 +5,7 @@ import "../Style/ShowContribution.css";
 const ShowContribution: React.FC = () => {
   return (
     <Card className="sc-card">
-      <div className="sc-header">Contribution</div>
+      <div className="sc-header fs-6">CONTRIBUTION</div>
 
       <Card.Body>
         <div className="table-responsive">
