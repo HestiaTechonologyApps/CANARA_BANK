@@ -1,5 +1,5 @@
 .hero-section {
-  min-height: 650px;
+  min-height: 550px;
   overflow: hidden;
 }
 
@@ -28,11 +28,11 @@
 }
 
 .hero-content {
-  z-index: 5;
+  z-index: 1;
 }
 
 .hero-inner {
-  max-width: 700px;
+  max-width: 600px;
   animation: slideUp 0.7s ease forwards;
 }
 
@@ -49,7 +49,7 @@
 
 /* Heading */
 .hero-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -60,7 +60,7 @@
 
 /* Text */
 .hero-description {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.92);
   max-width: 620px;
   margin-top: 15px;
@@ -99,7 +99,7 @@
 
 .hero-btn-outline:hover {
   background: #fff !important;
-  color: #0f2a55 !important;
+  color: #ebb81f !important;
 }
 
 /* Bottom Fade */

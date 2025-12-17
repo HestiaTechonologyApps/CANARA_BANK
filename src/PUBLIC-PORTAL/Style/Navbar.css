@@ -1,17 +1,21 @@
 /* Prevent Nav Link Wrapping */
+.nav-style {
+ height: 68px;
+}
+
 .nav-menu {
   white-space: nowrap;
 }
 
 /* Logo */
 .nav-logo {
-  width: 45px;
-  height: 45px;
+  width: 30px;
+  height: 30px;
 }
 
 /* Titles */
 .nav-title {
-  font-size: 15px;
+  font-size: 12px;
   color: #0f2a55;
 }
 .nav-subtitle {
@@ -21,9 +25,9 @@
 
 /* NAV LINKS */
 .nav-item {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
-  padding: 6px 14px !important;
+  /* padding: 6px 14px !important; */
   color: #1f2d3d !important;
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
@@ -46,8 +50,9 @@
   background-color: #e8b500;
   border: none;
   border-radius: 8px;
-  padding: 6px 18px;
+  /* padding: 6px 18px; */
   font-weight: 600;
+  font-size: 13px;
 }
 
 .login-btn:hover {
@@ -57,4 +62,5 @@
 /* BOTTOM CONTACT STRIP */
 .contact-strip {
   background-color: #0f2a55;
+  font-size: 13px;
 }

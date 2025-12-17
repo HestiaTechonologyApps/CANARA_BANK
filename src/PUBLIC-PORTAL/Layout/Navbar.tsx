@@ -20,7 +20,7 @@ const PublicNavbar: React.FC = () => {
   return (
     <>
       {/* MAIN NAVBAR */}
-      <Navbar expand="lg" className="py-2 bg-white shadow-sm" sticky="top">
+      <Navbar expand="lg" className="nav-style bg-white shadow-sm" sticky="top">
         <Container>
 
           {/* LEFT LOGO + TITLE */}
@@ -98,7 +98,7 @@ const PublicNavbar: React.FC = () => {
 
               {/* LOGIN BUTTON */}
               <Button onClick={() => setShowLogin(true)} className="login-btn ms-lg-4 mt-3 mt-lg-0">
-                <i className="bi bi-box-arrow-in-right me-2"></i>
+                <i className="bi bi-box-arrow-in-right me-1"></i>
                 Members Login
               </Button>
             </Offcanvas.Body>

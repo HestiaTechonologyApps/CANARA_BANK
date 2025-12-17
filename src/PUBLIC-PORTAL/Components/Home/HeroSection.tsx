@@ -19,7 +19,7 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Content */}
-      <Container className="position-relative text-white py-5 hero-content">
+      <Container className="position-relative text-white py-3 hero-content">
         <div className="hero-inner">
           <span className="hero-badge">
             ✨ Celebrating 50 Years of Service

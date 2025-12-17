@@ -9,7 +9,7 @@
 }
 
 .feature-heading {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: #0f2a55;
   margin-top: 5px;
@@ -18,7 +18,7 @@
 .feature-subtext {
   color: #555;
   max-width: 550px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 /* Feature Cards */
@@ -38,8 +38,8 @@
 }
 
 .feature-icon {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   background: #fff7d1;
   border-radius: 12px;
   display: flex;
@@ -55,7 +55,7 @@
 }
 
 .feature-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: #0f2a55;
   margin-bottom: 8px;
@@ -63,6 +63,6 @@
 
 .feature-description {
   color: #555;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.5;
 }
