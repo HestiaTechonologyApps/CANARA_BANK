@@ -1,0 +1,43 @@
+.dc-card {
+  border-radius: 10px;
+  border: 1px solid #dfe3eb;
+}
+
+.dc-header {
+  background: linear-gradient(180deg, #173a6a, #1f4e8c);
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+}
+
+.dc-card .form-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1f3d6b;
+}
+
+.dc-card .form-control,
+.dc-card .form-select {
+  font-size: 0.85rem;
+}
+
+.dc-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #dfe3eb;
+  padding-top: 12px;
+}
+
+.dc-btn {
+  background-color: #f2b827;
+  border: none;
+  color: #000;
+  font-weight: 600;
+}
+
+.dc-btn:hover {
+  background-color: #e0aa20;
+}

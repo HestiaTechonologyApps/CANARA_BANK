@@ -1,0 +1,40 @@
+/* =========================
+   STAFF PORTAL GLOBAL SCALE
+   ========================= */
+
+.staff-root {
+  font-size: 10px; /* ⬅ simulates ~80% zoom */
+}
+
+/* Ensure headings don't blow up */
+.staff-root h1 { font-size: 1.4rem; }
+.staff-root h2 { font-size: 1.2rem; }
+.staff-root h3 { font-size: 1.1rem; }
+
+/* Tables */
+.staff-root table {
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.staff-root .btn {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+}
+
+/* Inputs */
+.staff-root .form-control,
+.staff-root .form-select {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+}
+
+/* Navbar height adjustment */
+.staff-root .staff-navbar {
+  height: 60px;
+}
+
+/* Sidebar text */
+.staff-root .staff-sidebar {
+  font-size: 0.85rem;
+}

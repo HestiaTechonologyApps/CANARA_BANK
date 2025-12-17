@@ -2,31 +2,93 @@
   position: fixed;
   top: 0;
   right: 0;
-  left: 260px;
-  height: 70px;
+  height: 48px;               /* ⬅ reduced again */
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 14px;            /* tighter */
   align-items: center;
   z-index: 90;
+  transition: left 0.3s ease;
 }
 
+/* Sidebar OPEN */
+.staff-navbar.expanded {
+  left: 260px;
+}
+
+/* Sidebar COLLAPSED */
+.staff-navbar.collapsed {
+  left: 70px;
+}
+
+/* LEFT SECTION */
 .staff-navbar .left {
   display: flex;
-  gap: 16px;
+  gap: 10px;                  /* reduced */
   align-items: center;
 }
 
+/* Toggle button */
+.staff-navbar .left button {
+  width: 32px;                /* smaller */
+  height: 32px;
+  border-radius: 6px;
+  background: #f2f2f2;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Welcome text */
+.staff-navbar .left p {
+  margin: 0;
+  font-size: 0.65rem;         /* ⬅ reduced again */
+  color: #6b7280;
+  line-height: 1;
+}
+
+.staff-navbar .left h4 {
+  margin: 0;
+  font-size: 0.8rem;          /* ⬅ reduced again */
+  font-weight: 600;
+  color: #f2b827;
+  line-height: 1.1;
+}
+
+/* RIGHT SECTION */
 .staff-navbar .right {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
 }
 
+/* Staff No block */
+.staff-no span {
+  display: block;
+  font-size: 0.65rem;         /* smaller */
+  color: #6b7280;
+  line-height: 1;
+}
+
+.staff-no strong {
+  font-size: 0.8rem;          /* smaller */
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.1;
+}
+
+/* Logout icon */
 .logout-icon {
-  background: none;
+  background: #f2f2f2;
   border: none;
+  width: 32px;                /* smaller */
+  height: 32px;
+  border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

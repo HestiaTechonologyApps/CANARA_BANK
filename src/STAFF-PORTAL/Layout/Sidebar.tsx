@@ -24,7 +24,7 @@ const StaffSidebar = ({ open }: Props) => {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="profile"><User /> {open && "Profile"}</NavLink>
+        <NavLink to="/"><User /> {open && "Profile"}</NavLink>
         <NavLink to="nominee"><UserCog /> {open && "Update Nominee"}</NavLink>
         <NavLink to="contribution"><CreditCard /> {open && "Direct Contribution"}</NavLink>
         <NavLink to="settings"><Settings /> {open && "Account Settings"}</NavLink>

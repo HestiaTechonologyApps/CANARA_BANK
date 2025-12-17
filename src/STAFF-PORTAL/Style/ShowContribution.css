@@ -1,0 +1,38 @@
+.sc-card {
+  border-radius: 10px;
+  border: 1px solid #dfe3eb;
+}
+
+.sc-header {
+  background: linear-gradient(180deg, #173a6a, #1f4e8c);
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+}
+
+.sc-table th {
+  background-color: #f5f7fa;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.sc-table td {
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.sc-total-row {
+  background-color: #f5f7fa;
+}
+
+.sc-grand-total {
+  color: #f2b827;
+  font-weight: 700;
+}
+
+.sc-print {
+  text-align: right;
+  margin-top: 10px;
+}

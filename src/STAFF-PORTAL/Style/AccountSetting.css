@@ -1,0 +1,53 @@
+.account-card {
+  border-radius: 10px;
+  border: 1px solid #dfe3eb;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Header */
+.account-header {
+  background: linear-gradient(180deg, #173a6a, #1f4e8c);
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Labels – dark & readable (NO yellow) */
+.account-card .form-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1f3d6b;
+}
+
+/* Inputs */
+.account-card .form-control {
+  font-size: 0.85rem;
+}
+
+/* Button */
+.account-action {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.account-btn {
+  background-color: #f2b827;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  padding: 6px 28px;
+}
+
+.account-btn:hover {
+  background-color: #e0aa20;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .account-card {
+    max-width: 100%;
+  }
+}

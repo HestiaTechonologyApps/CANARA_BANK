@@ -1,0 +1,49 @@
+.update-nominee-card {
+  border-radius: 10px;
+  border: 1px solid #dfe3eb;
+}
+
+/* Top blue header */
+.update-nominee-header {
+  background: linear-gradient(180deg, #173a6a, #1f4e8c);
+  color: #fff;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Labels – dark & readable */
+.update-nominee-card .form-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1f3d6b;
+}
+
+/* Inputs */
+.update-nominee-card .form-control,
+.update-nominee-card .form-select {
+  font-size: 0.85rem;
+}
+
+/* Action buttons */
+.update-nominee-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #dfe3eb;
+  padding-top: 12px;
+  margin-bottom: 20px;
+}
+
+.update-btn {
+  background-color: #f2b827;
+  border: none;
+  color: #000;
+  font-weight: 600;
+}
+
+.update-btn:hover {
+  background-color: #e0aa20;
+}

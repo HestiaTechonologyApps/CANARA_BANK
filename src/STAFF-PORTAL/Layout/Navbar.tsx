@@ -13,7 +13,7 @@ const mockUser = {
 
 const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
   return (
-    <header className="staff-navbar">
+    <header  className={`staff-navbar ${sidebarOpen ? "expanded" : "collapsed"}`}>
       <div className="left">
         <button onClick={toggleSidebar}>
           {sidebarOpen ? <X /> : <Menu />}
@@ -21,7 +21,7 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
 
         <div>
           <p>Welcome back,</p>
-          <h4>{mockUser.name}</h4>
+          <h6>{mockUser.name}</h6>
         </div>
       </div>
 

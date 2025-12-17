@@ -2,27 +2,30 @@ import React from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import "../Style/Profile.css";
 
-interface ProfileProps {
-  user: {
-    staffNo: string;
-    name: string;
-    gender: string;
-    designation: string;
-    category: string;
-    dateOfBirth: string;
-    dateOfJoin: string;
-    dpCode: string;
-    dateFrom: string;
-    dateTo?: string;
-    retirementDate?: string;
-    status: string;
-    nominee?: string;
-    nomineeRelationship?: string;
+const Profile: React.FC = () => {
+  // 🔹 UI-only mock data (replace later with API/context)
+  const user = {
+    staffNo: "4957",
+    name: "SHRI G C POOJARY",
+    gender: "Male",
+    designation: "Single Window Operator",
+    category: "test1123",
+    dateOfBirth: "07 February 1945",
+    dateOfJoin: "07 May 1965",
+    dpCode: "8004",
+    dateFrom: "03 May 2003",
+    dateTo: "",
+    retirementDate: "",
+    status: "Retired",
+    nominee: "",
+    nomineeRelationship: "",
   };
-  onShowContribution: () => void;
-}
 
-const Profile: React.FC<ProfileProps> = ({ user, onShowContribution }) => {
+  const handleShowContribution = () => {
+    // UI only for now
+    console.log("Show Contribution clicked");
+  };
+
   return (
     <Card className="profile-card">
       <Card.Body>
@@ -111,13 +114,15 @@ const Profile: React.FC<ProfileProps> = ({ user, onShowContribution }) => {
 
             <Col md={6} className="profile-row">
               <span className="profile-label">Nominee Relationship</span>
-              <span className="profile-value">{user.nomineeRelationship || "—"}</span>
+              <span className="profile-value">
+                {user.nomineeRelationship || "—"}
+              </span>
             </Col>
           </Row>
         </div>
 
         <div className="profile-action">
-          <Button className="profile-btn" onClick={onShowContribution}>
+          <Button className="profile-btn" onClick={handleShowContribution}>
             ₹ Show Contribution
           </Button>
         </div>
