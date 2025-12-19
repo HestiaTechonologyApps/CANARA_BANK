@@ -60,7 +60,7 @@ const ManagingCommittee: React.FC = () => {
     <div className="committee-wrapper">
 
       {/* HEADER SECTION */}
-      <div className="committee-header text-center py-5">
+      <div className="committee-header text-center py-4">
         <h2 className="committee-title">Managing Committee</h2>
         <p className="committee-subtitle">
           Meet the dedicated team leading the Golden Jubilee Family Welfare Scheme

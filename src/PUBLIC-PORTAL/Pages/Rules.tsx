@@ -1,19 +1,21 @@
 import React from "react";
 import { Container, Card } from "react-bootstrap";
 import "../Style/Rules.css";
+import { PublicService } from "../../Services/PublicService";
 
 const Rules: React.FC = () => {
+  const rules = PublicService.rules
   return (
     <div className="rules-wrapper">
 
       {/* HEADER SECTION */}
-      <div className="rules-header text-center py-5">
-        <h2 className="rules-title">
-          <i className="bi bi-journal-bookmark-fill me-2"></i>
-          Rules & Regulations
+      <div className="rules-header text-center py-4">
+        <h2 className="rules-title mt-2">
+          {/* <i className="bi bi-journal-bookmark-fill me-2"></i> */}
+          {rules.header.title}
         </h2>
         <p className="rules-subtitle">
-          Complete guidelines for the Golden Jubilee Family Welfare Scheme
+          {rules.header.subtitle}
         </p>
       </div>
 
@@ -22,38 +24,28 @@ const Rules: React.FC = () => {
 
         {/* PREAMBLE CARD */}
         <Card className="rules-card p-4 mb-4">
-          <h5 className="section-title">Preamble</h5>
+          <h5 className="section-title">{rules.preamble.title}</h5>
 
           <p>
-            WHEREAS the General Body Meeting of Canara Bank Employee’s Union (Regd),
-            (hereinafter referred to as the “Union”), at its 21st Conference held at Chennai
-            from 5th to 8th January 2002 had resolved unanimously to constitute a Scheme,
-            to provide financial assistance to the family of deceased members of Scheme, and
+            {rules.preamble.paragraphs.paragraph1}
           </p>
 
-          <p>WHEREAS the said General Body Meeting had approved the salient features of the said Scheme, and</p>
+          <p>{rules.preamble.paragraphs.paragraph2}</p>
 
           <p>
-            WHEREAS for the proper administration of the scheme, it is necessary to frame Rules and
-            Regulations to govern and regulate the operation of the Scheme and the disbursement of
-            relief to the beneficiaries and matters connected therewith, and
+            {rules.preamble.paragraphs.paragraph3}
           </p>
 
           <p>
-            WHEREAS the General Body Meeting of Canara Bank Employee’s Union, at its 22nd Conference
-            held at Hyderabad from 4th to 7th March 2006 had resolved unanimously to improve the existing
-            financial assistance to the family of deceased members of Scheme, by increasing the subscription
-            with effect from January 1, 2007, and
+            {rules.preamble.paragraphs.paragraph4}
           </p>
 
           <p>
-            WHEREAS the said General Body Meeting had approved the modifications to the
-            salient features of the said Scheme,
+            {rules.preamble.paragraphs.paragraph5}
           </p>
 
           <p>
-            NOW THEREFORE in pursuance of the aforesaid objectives, the following Rules
-            and Regulations are framed:
+            {rules.preamble.paragraphs.paragraph6}
           </p>
         </Card>
 
@@ -63,7 +55,7 @@ const Rules: React.FC = () => {
           <h5 className="section-title">1. Name of the Scheme</h5>
           <p>
             Name of the fund shall be <strong>“Canara Bank Employees’ Union Golden Jubilee Family Welfare Scheme
-            - a unit of Canara Bank Employees Union”</strong>, which in the following Rules and Regulations,
+              - a unit of Canara Bank Employees Union”</strong>, which in the following Rules and Regulations,
             is referred to as the “Scheme”.
           </p>
         </Card>

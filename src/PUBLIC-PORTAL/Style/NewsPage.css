@@ -3,7 +3,7 @@
 ================================*/
 .news-hero {
   background-color: #0a2a57; /* Deep blue like screenshot */
-  padding: 60px 0;
+  /* padding: 60px 0; */
   color: white;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .news-title {
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 700;
   margin-top: 8px;
 }

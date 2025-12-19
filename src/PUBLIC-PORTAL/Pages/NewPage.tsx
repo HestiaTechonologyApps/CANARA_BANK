@@ -59,7 +59,7 @@ const News: React.FC = () => {
   return (
     <div className="news-page">
       {/* Hero Section */}
-      <section className="news-hero">
+      <section className="news-hero py-4">
         <Container>
           <span className="news-tag">Stay Informed</span>
           <h1 className="news-title text-white">News & Updates</h1>

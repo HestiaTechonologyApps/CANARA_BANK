@@ -3,8 +3,10 @@ import { Container, Button } from "react-bootstrap";
 import { HiArrowRight } from "react-icons/hi";
 import heroImage from "../../Assets/Images/Hero-image.jpg";
 import "../../Style/Home/Hero.css";
+import { PublicService } from "../../../Services/PublicService";
 
 const HeroSection: React.FC = () => {
+  const hero = PublicService.home.hero
   return (
     <section id="home" className="hero-section position-relative d-flex align-items-center">
       
@@ -12,7 +14,7 @@ const HeroSection: React.FC = () => {
       <div className="hero-bg-wrapper">
         <img 
           src={heroImage} 
-          alt="Happy retired bank employees celebrating together" 
+          alt={hero.image.alt}
           className="hero-bg"
         />
         <div className="hero-overlay"></div>
@@ -22,28 +24,30 @@ const HeroSection: React.FC = () => {
       <Container className="position-relative text-white py-3 hero-content">
         <div className="hero-inner">
           <span className="hero-badge">
-            ✨ Celebrating 50 Years of Service
+            {/* ✨   Celebrating 50 Years of Service */} {hero.badge}
           </span>
 
           <h1 className="hero-title">
-            Supporting Our <br />
-            <span className="highlight">Bank Family</span> <br />
-            For 50 Years
+            {/* Supporting Our  */} {hero.title.line1}
+            <br />
+          <span className="highlight">{/*Bank Family*/} {hero.title.highlight}</span> <br />
+            {/* For 50 Years */} {hero.title.line3}
           </h1>
 
           <p className="hero-description">
-            A Unit of Canara Bank Employees' Union, dedicated to the welfare of our
-            members and their families through the Golden Jubilee Family Welfare Scheme.
+            {/* A Unit of Canara Bank Employees' Union, dedicated to the welfare of our
+            members and their families through the Golden Jubilee Family Welfare Scheme. */}
+            {hero.description}
           </p>
 
           <div className="d-flex flex-wrap gap-3 mt-4">
             <Button className="hero-btn-gold d-flex align-items-center gap-2">
-              Become a Member
+              {/* Become a Member */} {hero.buttons.primary.label}
               <HiArrowRight size={18} className="arrow-move" />
             </Button>
 
             <Button variant="outline-light" className="hero-btn-outline">
-              Learn More
+              {/* Learn More */} {hero.buttons.secondary.label}
             </Button>
           </div>
         </div>

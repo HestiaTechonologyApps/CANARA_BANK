@@ -7,7 +7,7 @@ const ContactUs: React.FC = () => {
     <div className="contact-page-wrapper">
 
       {/* Header Section */}
-      <div className="contact-header text-center py-5">
+      <div className="contact-header text-center py-4">
         <h2 className="contact-title">Contact Us</h2>
         <p className="contact-subtitle">
           We're here to help. Reach out to us with any questions or concerns.

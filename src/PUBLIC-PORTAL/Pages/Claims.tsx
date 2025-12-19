@@ -60,7 +60,7 @@ const Claims: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="claims-hero">
+      <section className="claims-hero py-4">
         <Container>
           <h2 className="claims-title">Claims Settled</h2>
           <p className="claims-subtitle">

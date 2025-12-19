@@ -31,7 +31,7 @@ const Downloads: React.FC = () => {
     <div className="downloads-wrapper">
 
       {/* HEADER SECTION */}
-      <div className="downloads-header text-center py-5">
+      <div className="downloads-header text-center py-4">
         <h2 className="downloads-title">Downloads</h2>
         <p className="downloads-subtitle">
           Access all forms and documents related to the Golden Jubilee Family Welfare Scheme
