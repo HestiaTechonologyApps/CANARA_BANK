@@ -12,7 +12,6 @@ const MonthEdit: React.FC = () => {
       rules: { 
         type: "number", 
         label: "Month Code", 
-        required: false, 
         disabled: true, 
         colWidth: 3 
       } 
@@ -24,8 +23,7 @@ const MonthEdit: React.FC = () => {
         label: "Month Name", 
         required: true, 
         minLength: 2,
-        maxLength: 50,
-        placeholder: "Enter month name",
+        maxLength: 10,
         colWidth: 6 
       } 
     },
@@ -36,34 +34,25 @@ const MonthEdit: React.FC = () => {
         label: "Abbreviation", 
         required: true,
         minLength: 1,
-        maxLength: 10,
-        placeholder: "Enter abbreviation", 
+        maxLength: 50,
         colWidth: 3 
       } 
     },
   ];
 
-  const handleFetch = async (monthCode: string) => {
-    try {
-      const response = await MonthService.getMonthById(Number(monthCode));
-      return response;
-    } catch (error: any) {
-      console.error("Error fetching month:", error);
-      throw error;
-    }
+  // ✅ Fetch by monthId
+  const handleFetch = async (monthId: string) => {
+    return await MonthService.getMonthById(Number(monthId));
   };
 
-  const handleUpdate = async (monthCode: string, formData: Record<string, any>) => {
-    try {
-      const payload: Partial<Omit<Month, "monthCode" | "auditLogs">> = {
-        monthName: formData.monthName.trim(),
-        abbrivation: formData.abbrivation.trim(),
-      };
-      await MonthService.updateMonth(Number(monthCode), payload);
-    } catch (error: any) {
-      console.error("Error updating month:", error);
-      throw error;
-    }
+  // ✅ Update by monthId
+  const handleUpdate = async (monthId: string, formData: Record<string, any>) => {
+    const payload: Partial<Omit<Month, "monthId" | "auditLogs">> = {
+      monthName: formData.monthName.trim(),
+      abbrivation: formData.abbrivation.trim(),
+    };
+
+    await MonthService.updateMonth(Number(monthId), payload);
   };
 
   return (
@@ -73,13 +62,14 @@ const MonthEdit: React.FC = () => {
       onFetch={handleFetch}
       onUpdate={handleUpdate}
       submitButtonText="Update Month"
-      showResetButton={true}
       successMessage="Month updated successfully!"
-      errorMessage="Failed to update month. Please try again."
-      paramName="monthCode"
+      errorMessage="Failed to update month."
+      paramName="monthCode"                       
       navigateBackPath="/dashboard/settings/month-list"
-      loadingText="Loading Month..."
-      auditLogConfig={{ tableName: "Month", recordIdField: "monthCode" }}
+      auditLogConfig={{ 
+        tableName: "Month", 
+        recordIdField: "monthId"               
+      }}
       themeColor="#18575A"
     />
   );

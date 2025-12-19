@@ -113,6 +113,9 @@ import DailyNewsCreate from '../Pages/DailyNews/Create';
 import DailyNewsEdit from '../Pages/DailyNews/Edit';
 import DailyNewsView from '../Pages/DailyNews/View';
 
+//Direct Pay
+
+
 
 export default function AdminRoutes() {
   return (
@@ -150,7 +153,7 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/branch-list" element={<BranchList />} />
         <Route path="/dashboard/settings/branch-create" element={<BranchCreate />} />
         <Route path="/dashboard/settings/branch-edit/:branchId" element={<BranchEdit />} />
-        <Route path="/dashboard/settings/branch-view/:stateId" element={<BranchView />} />
+        <Route path="/dashboard/settings/branch-view/:branchId" element={<BranchView />} />
 
         {/* Circles */}
         <Route path="/dashboard/settings/circles-list" element={<CircleList />} />
@@ -229,6 +232,9 @@ export default function AdminRoutes() {
           <Route path='/dashboard/cms/dailynews-create' element={<DailyNewsCreate/>}/>
           <Route path='/dashboard/cms/dailynews-edit/:dailyNewsId' element={<DailyNewsEdit/>}/>
           <Route path='/dashboard/cms/dailynews-view/:dailyNewsId' element={<DailyNewsView/>}/>
+
+          {/* Direct Pay */}
+          
       </Route>
 
       {/* Catch-All Route for 404 */}

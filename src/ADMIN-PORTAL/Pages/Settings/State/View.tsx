@@ -1,20 +1,38 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import KiduView from "../../../Components/KiduView";
+import type { ViewField } from "../../../Components/KiduView";
 import StateService from "../../../Services/Settings/State.services";
-import type { State } from "../../../Types/Settings/States.types";
-
+import KiduView from "../../../Components/KiduView";
 
 const StateView: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const fields: ViewField[] = [
+    { key: "stateId", label: "State ID" },
+    { key: "name", label: "State Name" },
+    { key: "abbreviation", label: "Abbreviation" },
+    { key: "isActive", label: "Active" },
+  ];
+
+  const handleFetch = async (id: string) => {
+    return await StateService.getStateById(Number(id));
+  };
+
+  const handleDelete = async (id: string) => {
+    await StateService.deleteState(Number(id));
+  };
 
   return (
-    <KiduView<State>
-      title="View State"
-      id={Number(id)}
-      fetchById={StateService.getStateById}
-      backUrl="/settings/state"
-      auditLogConfig={{ entity: "State", entityIdKey: "stateId" }}
+    <KiduView
+      title="State Details"
+      fields={fields}
+      onFetch={handleFetch}
+      onDelete={handleDelete}
+      paramName="stateId"
+      editRoute="/dashboard/settings/state-edit"
+      listRoute="/dashboard/settings/state-list"
+      auditLogConfig={{ tableName: "State", recordIdField: "stateId" }}
+      showEditButton
+      showDeleteButton
+      deleteConfirmMessage="Are you sure you want to delete this state?"
+      themeColor="#18575A"
     />
   );
 };

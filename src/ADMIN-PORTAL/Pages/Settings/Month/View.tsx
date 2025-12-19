@@ -6,33 +6,41 @@ import KiduView from "../../../Components/KiduView";
 
 const MonthView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "monthCode", label: "Month ID" },
+    { key: "monthId", label: "Month ID" },
+    { key: "monthCode", label: "Month Code" },
     { key: "monthName", label: "Month Name" },
     { key: "abbrivation", label: "Abbreviation" },
   ];
 
-  const handleFetch = async (id: string) => {
-    const response = await MonthService.getMonthById(Number(id));
-    return response; // should be your CustomResponse
+  // ✅ Fetch by PRIMARY KEY
+  const handleFetch = async (monthId: string) => {
+    const response = await MonthService.getMonthById(Number(monthId));
+    return response;
   };
 
-  function handleDelete(_id: string): Promise<void> {
-    throw new Error("Function not implemented.");
-  }
+  // ✅ Delete exactly like Category
+  const handleDelete = async (monthId: string) => {
+    await MonthService.deleteMonth(Number(monthId));
+  };
 
   return (
     <KiduView
-      title="View Month"
+      title="Month Details"
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
-      paramName="monthCode"
+      paramName="monthCode"                         // 🔥 FIX
       editRoute="/dashboard/settings/month-edit"
-      listRoute="/dashboard/settings/month-list"              
-      auditLogConfig={{ tableName: "Month", recordIdField: "monthCode" }}
+      listRoute="/dashboard/settings/month-list"
+      auditLogConfig={{
+        tableName: "Month",
+        recordIdField: "monthId",                 // 🔥 FIX
+      }}
       themeColor="#18575A"
-      showEditButton={true}                                  
-      showDeleteButton={true}                                 
+      loadingText="Loading month details..."
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this month? This action cannot be undone."
     />
   );
 };

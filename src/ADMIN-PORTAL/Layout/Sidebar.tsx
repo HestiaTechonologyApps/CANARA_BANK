@@ -343,7 +343,7 @@ const Sidebar: React.FC = () => {
             </NavLink>
 
             {/* Products Menu */}
-            <NavLink
+            {/* <NavLink
               to="/dashboard/products"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
@@ -363,7 +363,7 @@ const Sidebar: React.FC = () => {
                   )}
                 </>
               )}
-            </NavLink>
+            </NavLink> */}
 
             {/* Customers Menu */}
             <NavLink

@@ -15,42 +15,46 @@ const StateService = {
   },
 
   // Get state by ID
-  async getStateById(id: number): Promise<State> {
+  async getStateById(id: number): Promise<CustomResponse<State>> {
     const response = await HttpService.callApi<CustomResponse<State>>(
       API_ENDPOINTS.STATE.GET_BY_ID(id),
       "GET"
     );
-    return response.value;
+    return response;
   },
 
   // Create state
-  async createState(payload: Partial<State>): Promise<State> {
+  async createState(
+    data: Omit<State, "stateId" | "auditLogs">
+  ): Promise<State> {
     const response = await HttpService.callApi<CustomResponse<State>>(
       API_ENDPOINTS.STATE.CREATE,
       "POST",
-      payload
+      data
     );
     return response.value;
   },
 
   // Update state
-  async updateState(id: number, payload: Partial<State>): Promise<State> {
+  async updateState(
+    id: number,
+    data: Partial<Omit<State, "stateId" | "auditLogs">>
+  ): Promise<State> {
     const response = await HttpService.callApi<CustomResponse<State>>(
       API_ENDPOINTS.STATE.UPDATE(id),
       "PUT",
-      payload
+      data
     );
     return response.value;
   },
 
   // Delete state
-  async deleteState(id: number): Promise<boolean> {
-    const response = await HttpService.callApi<CustomResponse<boolean>>(
+  async deleteState(id: number): Promise<void> {
+    await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.STATE.DELETE(id),
       "DELETE"
     );
-    return response.value;
-  }
+  },
 };
 
 export default StateService;
