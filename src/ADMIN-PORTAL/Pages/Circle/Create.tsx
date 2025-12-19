@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import CircleService from "../../Services/Settings/Circle.services";
+import KiduCreate from "../../Components/KiduCreate";
 
-function toDateOnlyString(d: string | Date): string {
-  const dt = new Date(d);
-  const yyyy = dt.getFullYear();
-  const mm = String(dt.getMonth() + 1).padStart(2, "0");
-  const dd = String(dt.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
 
 const CircleCreate: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,9 +15,9 @@ const CircleCreate: React.FC = () => {
         type: "number",
         label: "Circle Code",
         required: true,
-        placeholder: "Enter circle code (e.g., 101)",
-        colWidth: 4,
-      },
+        placeholder: "Enter circle code",
+        colWidth: 6
+      }
     },
     {
       name: "name",
@@ -33,10 +26,10 @@ const CircleCreate: React.FC = () => {
         label: "Circle Name",
         required: true,
         minLength: 2,
-        maxLength: 150,
-        placeholder: "Enter circle name (e.g., Coimbatore Circle)",
-        colWidth: 4,
-      },
+        maxLength: 100,
+        placeholder: "Enter circle name",
+        colWidth: 6
+      }
     },
     {
       name: "abbreviation",
@@ -44,21 +37,21 @@ const CircleCreate: React.FC = () => {
         type: "text",
         label: "Abbreviation",
         required: true,
-        minLength: 2,
+        minLength: 1,
         maxLength: 10,
-        placeholder: "Enter short code (e.g., CHN)",
-        colWidth: 4,
-      },
+        placeholder: "Enter abbreviation",
+        colWidth: 6
+      }
     },
     {
       name: "stateId",
       rules: {
         type: "number",
-        label: "State ID",
+        label: "State",
         required: true,
-        placeholder: "Enter state ID",
-        colWidth: 4,
-      },
+        placeholder: "Select state",
+        colWidth: 6
+      }
     },
     {
       name: "dateFrom",
@@ -66,8 +59,8 @@ const CircleCreate: React.FC = () => {
         type: "date",
         label: "Date From",
         required: true,
-        colWidth: 4,
-      },
+        colWidth: 6
+      }
     },
     {
       name: "dateTo",
@@ -75,51 +68,36 @@ const CircleCreate: React.FC = () => {
         type: "date",
         label: "Date To",
         required: true,
-        colWidth: 4,
-      },
+        colWidth: 6
+      }
     },
     {
       name: "isActive",
       rules: {
-        type: "toggle",
-        label: "Is Active",
-        required: false,
-      },
-    },
+        type: "checkbox",
+        label: "Active",
+        colWidth: 12
+      }
+    }
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
     setIsLoading(true);
     try {
-      // Normalize values
-      const dateFrom = formData.dateFrom || new Date().toISOString();
-      const dateTo = formData.dateTo || formData.dateFrom || new Date().toISOString();
-
-      const fromTime = new Date(dateFrom).getTime();
-      const toTime = new Date(dateTo).getTime();
-      if (!Number.isFinite(fromTime) || !Number.isFinite(toTime)) {
-        throw new Error("Please provide valid dates for Date From and Date To.");
-      }
-      if (toTime < fromTime) {
-        throw new Error("Date To cannot be earlier than Date From.");
-      }
-
-      const payload: Omit<Circle, "circleId" | "auditLogs"> = {
+      const circleData: Omit<Circle, "circleId" | "auditLogs" | "state"> = {
         circleCode: Number(formData.circleCode),
         name: formData.name.trim(),
         abbreviation: formData.abbreviation.trim(),
-        isActive: Boolean(formData.isActive),
         stateId: Number(formData.stateId),
-        dateFrom: new Date(dateFrom).toISOString(),
-        dateFromString: toDateOnlyString(dateFrom),
-        dateTo: new Date(dateTo).toISOString(),
-        dateToString: toDateOnlyString(dateTo),
+        dateFrom: formData.dateFrom,
+        dateTo: formData.dateTo,
+        isActive: Boolean(formData.isActive)
       };
 
-      await CircleService.createCircle(payload);
-    } catch (err) {
-      console.error("Error creating circle:", err);
-      throw err;
+      await CircleService.createCircle(circleData);
+    } catch (error: any) {
+      console.error("Error creating circle:", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -127,16 +105,16 @@ const CircleCreate: React.FC = () => {
 
   return (
     <KiduCreate
-      title="Create Circle"
+      title="Create New Circle"
       fields={fields}
       onSubmit={handleSubmit}
       submitButtonText="Create Circle"
-      showResetButton
+      showResetButton={true}
       loadingState={isLoading}
       successMessage="Circle created successfully!"
-      errorMessage="Failed to create circle. Please check the details and try again."
+      errorMessage="Failed to create circle. Please try again."
       navigateOnSuccess="/dashboard/settings/circle-list"
-      navigateDelay={1200}
+      navigateDelay={1500}
       themeColor="#18575A"
     />
   );

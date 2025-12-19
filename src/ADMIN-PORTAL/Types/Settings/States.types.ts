@@ -1,10 +1,16 @@
+// src/types/Settings/State.types.ts
+
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface State {
-  stateId: number;
+  circleId: number;
+  circleCode: number;
   name: string;
   abbreviation: string;
   isActive: boolean;
-  circles?: string[];
+  stateId: number;
+  dateFrom: Date | string;
+  dateTo: Date | string;
+  state: string;
   auditLogs?: AuditTrails[];
 }

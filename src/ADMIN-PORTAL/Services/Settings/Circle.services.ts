@@ -1,4 +1,3 @@
-// src/services/CircleService.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -13,15 +12,17 @@ const CircleService = {
     return response.value;
   },
 
-  async getCircleById(id: number): Promise<CustomResponse<Circle>> {
+  async getCircleById(id: number): Promise<Circle> {
     const response = await HttpService.callApi<CustomResponse<Circle>>(
       API_ENDPOINTS.CIRCLE.GET_BY_ID(id),
       "GET"
     );
-    return response; // Return full response like UserService.getUserById
+    return response.value;
   },
 
-  async createCircle(data: Omit<Circle, "circleId" | "auditLogs">): Promise<Circle> {
+  async createCircle(
+    data: Omit<Circle, "circleId" | "auditLogs" | "state">
+  ): Promise<Circle> {
     const response = await HttpService.callApi<CustomResponse<Circle>>(
       API_ENDPOINTS.CIRCLE.CREATE,
       "POST",
@@ -32,7 +33,7 @@ const CircleService = {
 
   async updateCircle(
     id: number,
-    data: Partial<Omit<Circle, "circleId" | "auditLogs">>
+    data: Partial<Omit<Circle, "circleId" | "auditLogs" | "state">>
   ): Promise<Circle> {
     const response = await HttpService.callApi<CustomResponse<Circle>>(
       API_ENDPOINTS.CIRCLE.UPDATE(id),
@@ -47,7 +48,7 @@ const CircleService = {
       API_ENDPOINTS.CIRCLE.DELETE(id),
       "DELETE"
     );
-  },
+  }
 };
 
 export default CircleService;
