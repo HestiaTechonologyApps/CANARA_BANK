@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
   const contribSubMenu = [
     { label: "Member", path: "/dashboard/contributions/member-list" },
     { label: "Monthly Contributions", path: "/dashboard/contributions/monthly" },
-    { label: "Direct Pay", path: "/dashboard/contributions/directpay" }
+    { label: "Direct Pay", path: "/dashboard/contributions/directpayment-list" }
   ];
 
   const claimsSubMenu = [

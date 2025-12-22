@@ -114,6 +114,12 @@ import DailyNewsEdit from '../Pages/DailyNews/Edit';
 import DailyNewsView from '../Pages/DailyNews/View';
 
 //Direct Pay
+import DirectPaymentList from '../Pages/Contributions/Direct Pay/List';
+import DirectPaymentCreate from '../Pages/Contributions/Direct Pay/Create';
+import DirectPaymentEdit from '../Pages/Contributions/Direct Pay/Edit';
+import DirectPaymentView from '../Pages/Contributions/Direct Pay/View';
+
+
 
 
 
@@ -188,8 +194,8 @@ export default function AdminRoutes() {
         {/* Month */}
         <Route path="/dashboard/settings/month-list" element={<MonthList />} />
         <Route path="/dashboard/settings/month-create" element={<MonthCreate />} />
-        <Route path="/dashboard/settings/month-edit/:monthCode" element={<MonthEdit />} />
-        <Route path="/dashboard/settings/month-view/:monthCode" element={<MonthView />} />
+        <Route path="/dashboard/settings/month-edit/:monthId" element={<MonthEdit />} />
+        <Route path="/dashboard/settings/month-view/:monthId" element={<MonthView />} />
 
         {/* Manage Committe */}
         <Route path='/dashboard/cms/manage-committe-list' element={<ManagingCommitteeList />} />
@@ -234,7 +240,10 @@ export default function AdminRoutes() {
           <Route path='/dashboard/cms/dailynews-view/:dailyNewsId' element={<DailyNewsView/>}/>
 
           {/* Direct Pay */}
-          
+          <Route path='/dashboard/contributions/directpayment-list' element={<DirectPaymentList/>}/>
+          <Route path='/dashboard/contributions/directpayment-create' element={<DirectPaymentCreate/>}/>
+          <Route path='/dashboard/contributions/directpayment-edit/:directPaymentId' element={<DirectPaymentEdit/>}/>
+          <Route path='/dashboard/contributions/directpayment-view/:directPaymentId' element={<DirectPaymentView/>}/>
       </Route>
 
       {/* Catch-All Route for 404 */}

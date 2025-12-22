@@ -34,8 +34,13 @@ const CompanyView: React.FC = () => {
       editRoute="/dashboard/settings/company-edit"
       listRoute="/dashboard/settings/company-list"
       paramName="companyId"
-      auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
+      //auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
       themeColor="#18575A"
+      loadingText="Loading category details..."
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this company? This action cannot be undone."
+    
     />
   );
 };

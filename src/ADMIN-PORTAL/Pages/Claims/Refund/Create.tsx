@@ -1,16 +1,22 @@
 // src/ADMIN-PORTAL/Pages/Contributions/RefundContribution/RefundContributionCreate.tsx
-import React from "react";
+import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
 import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
+import type { State } from "../../../Types/Settings/States.types";
+import StatePopup from "../../Settings/State/StatePopup";
 
 
 const RefundContributionCreate: React.FC = () => {
+   //const [isLoading, setIsLoading] = useState(false);
+    const [showStatePopup, setShowStatePopup] = useState(false);
+    const [selectedState, setSelectedState] = useState<State | null>(null);
+  
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
-    { name: "stateId", rules: { type: "number", label: "State ID", required: true, colWidth: 4 } },
-    { name: "designationId", rules: { type: "number", label: "Designation ID", required: true, colWidth: 4 } },
+    { name: "stateId", rules: { type: "popup", label: "State ID", required: true, colWidth: 4 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation ID", required: true, colWidth: 4 } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
     { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
@@ -22,6 +28,10 @@ const RefundContributionCreate: React.FC = () => {
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", required: false, colWidth: 4 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
   ];
+
+ const handleStateSelect = (state: State) => {
+    setSelectedState(state);
+  };
 
   const handleSubmit = async (formData: Record<string, any>) => {
     const payload: Omit<RefundContribution, "refundContributionId" | "auditLogs"> = {
@@ -46,16 +56,33 @@ const RefundContributionCreate: React.FC = () => {
     await RefundContributionService.createRefundContribution(payload);
   };
 
+  const popupHandlers = {
+    stateId: {
+      value: selectedState?.name || "",
+      onOpen: () => setShowStatePopup(true)
+    }
+  };
+  
   return (
-    <KiduCreate
-      title="Create Refund Contribution"
-      fields={fields}
-      onSubmit={handleSubmit}
-      successMessage="Refund Contribution created successfully!"
-      errorMessage="Failed to create Refund Contribution. Please try again."
-      navigateOnSuccess="/dashboard/claims/refundcontribution-list"
-      themeColor="#18575A"
-    />
+    
+    <>
+      <KiduCreate
+        title="Create Refund Contribution"
+        fields={fields}
+        onSubmit={handleSubmit}
+        successMessage="Refund Contribution created successfully!"
+        errorMessage="Failed to create Refund Contribution. Please try again."
+        navigateOnSuccess="/dashboard/claims/refundcontribution-list"
+        themeColor="#18575A"
+        popupHandlers={popupHandlers}
+      />
+        <StatePopup
+        show={showStatePopup}
+        handleClose={() => setShowStatePopup(false)}
+        onSelect={handleStateSelect}
+      />
+    </>
+    
   );
 };
 

@@ -265,7 +265,7 @@ const handleFetch = async (mainPageId: string) => {   try {     const response =
       navigateBackPath="/dashboard/cms/mainpage-list"
       loadingText="Loading Main Page..."
       auditLogConfig={{
-        tableName: "MainPage",
+        tableName: "MainPages",
         recordIdField: "mainPageId",
       }}
       themeColor="#18575A"

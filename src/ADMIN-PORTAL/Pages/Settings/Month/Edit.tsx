@@ -64,7 +64,7 @@ const MonthEdit: React.FC = () => {
       submitButtonText="Update Month"
       successMessage="Month updated successfully!"
       errorMessage="Failed to update month."
-      paramName="monthCode"                       
+      paramName="monthId"                       
       navigateBackPath="/dashboard/settings/month-list"
       auditLogConfig={{ 
         tableName: "Month", 

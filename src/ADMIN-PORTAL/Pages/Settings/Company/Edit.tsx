@@ -95,7 +95,7 @@ const handleUpdate = async (
       navigateBackPath="/dashboard/settings/company-list"
       successMessage="Company updated successfully!"
       errorMessage="Failed to update company"
-      auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
+      //auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
       themeColor="#18575A"
     />
   );

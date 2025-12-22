@@ -29,7 +29,7 @@ const MonthView: React.FC = () => {
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
-      paramName="monthCode"                         // 🔥 FIX
+      paramName="monthId"                         // 🔥 FIX
       editRoute="/dashboard/settings/month-edit"
       listRoute="/dashboard/settings/month-list"
       auditLogConfig={{

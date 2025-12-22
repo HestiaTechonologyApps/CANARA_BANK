@@ -15,6 +15,7 @@ const MonthCreate: React.FC = () => {
     const payload: Omit<Month, "monthCode" | "auditLogs"> = {
       monthName: formData.monthName.trim(),
       abbrivation: formData.abbrivation.trim(),
+      monthId: 0
     };
     await MonthService.createMonth(payload);
   };

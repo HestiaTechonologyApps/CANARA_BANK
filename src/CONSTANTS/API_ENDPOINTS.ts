@@ -179,7 +179,13 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
   },
-
+  DIRECT_PAY:{
+    GET_ALL: `${API_BASE_URL}/DirectPayment`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+    CREATE: `${API_BASE_URL}/DirectPayment`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+  },
   //------------------------PUBLIC MODULE----------------------------------------
   DAYQUOTE_PUBLIC:{
     GET_ALL: `${API_BASE_URL}/DayQuotePublic`, 
