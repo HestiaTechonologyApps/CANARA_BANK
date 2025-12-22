@@ -1,6 +1,7 @@
 import React from "react";
 import type { ViewField } from "../../Components/KiduView";
 import CircleService from "../../Services/Settings/Circle.services";
+import StateService from "../../Services/Settings/State.services";
 import KiduView from "../../Components/KiduView";
 
 const CircleView: React.FC = () => {
@@ -9,7 +10,7 @@ const CircleView: React.FC = () => {
     { key: "circleCode", label: "Circle Code", icon: "bi-diagram-3" },
     { key: "name", label: "Circle Name", icon: "bi-geo-alt" },
     { key: "abbreviation", label: "Abbreviation", icon: "bi-text-short" },
-    { key: "state", label: "State", icon: "bi-flag" },
+    { key: "stateName", label: "State", icon: "bi-flag" },
     { key: "dateFrom", label: "Date From", icon: "bi-calendar-event" },
     { key: "dateTo", label: "Date To", icon: "bi-calendar-x" },
     { key: "isActive", label: "Active", icon: "bi-check-circle" }
@@ -19,10 +20,30 @@ const CircleView: React.FC = () => {
     try {
       const circle = await CircleService.getCircleById(Number(circleId));
       
-      // Return in the format KiduView expects (similar to KiduEdit)
+      // Fetch state name if stateId exists
+      let stateName = "N/A";
+      if (circle?.stateId) {
+        try {
+          const stateResponse = await StateService.getStateById(circle.stateId);
+          if (stateResponse?.value?.name) {
+            stateName = stateResponse.value.name;
+          }
+        } catch (error) {
+          console.error("Error fetching state:", error);
+          // Fallback to the state property if it exists
+          if (circle.state) {
+            stateName = circle.state;
+          }
+        }
+      }
+      
+      // Return in the format KiduView expects with stateName added
       return {
         isSucess: true,
-        value: circle
+        value: {
+          ...circle,
+          stateName
+        }
       };
     } catch (error) {
       console.error("Error fetching circle:", error);

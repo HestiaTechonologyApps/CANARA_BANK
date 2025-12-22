@@ -159,7 +159,7 @@ export default function AdminRoutes() {
         <Route path="/dashboard/settings/circle-list" element={<CircleList />} />
         <Route path="/dashboard/settings/circle-create" element={<CircleCreate />} />
         <Route path="/dashboard/settings/circle-edit/:circleId" element={<CircleEdit />} />
-        <Route path="/dashboard/settings/circle-view/:stateId" element={<CircleView />} />
+        <Route path="/dashboard/settings/circle-view/:circleId" element={<CircleView />} />
 
         {/* Company */}
         <Route path="/dashboard/settings/company-list" element={<CompanyList />} />

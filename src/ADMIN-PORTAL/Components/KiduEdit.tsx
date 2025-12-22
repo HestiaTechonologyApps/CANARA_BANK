@@ -37,6 +37,7 @@ export interface SelectOption {
 export interface PopupHandler {
   value: string;
   onOpen: () => void;
+  actualValue?: any; // The actual value (e.g., ID) for change detection
 }
 
 export interface ImageConfig {
@@ -60,7 +61,7 @@ export interface KiduEditProps {
   subtitle?: string;
   fields: Field[];
   onFetch: (id: string) => Promise<any>;
-  onUpdate: (id: string, formData: Record<string, any>) => Promise<void> | void;
+  onUpdate: (id: string, formData: Record<string, any>) => Promise<void | any>;
   submitButtonText?: string;
   showResetButton?: boolean;
   containerStyle?: React.CSSProperties;
@@ -143,7 +144,22 @@ const KiduEdit: React.FC<KiduEditProps> = ({
 
   // Check if form has changes
   const hasChanges = () => {
-    return JSON.stringify(formData) !== JSON.stringify(initialData) || selectedFile !== null;
+    // Check regular form data changes
+    const formDataChanged = JSON.stringify(formData) !== JSON.stringify(initialData);
+    
+    // Check popup field changes
+    let popupChanged = false;
+    fields.forEach(f => {
+      if (f.rules.type === "popup" && popupHandlers[f.name]) {
+        const currentValue = popupHandlers[f.name].actualValue;
+        const initialValue = initialData[f.name];
+        if (currentValue !== undefined && currentValue !== initialValue) {
+          popupChanged = true;
+        }
+      }
+    });
+    
+    return formDataChanged || selectedFile !== null || popupChanged;
   };
 
   // ==================== FETCH DATA ====================
@@ -415,10 +431,26 @@ const KiduEdit: React.FC<KiduEditProps> = ({
         delete submitData.auditLogs;
       }
       
-      await onUpdate(recordId!, submitData);
+      const updateResult = await onUpdate(recordId!, submitData);
       
-      // Update initial data to match current data
-      setInitialData({ ...formData });
+      // Use the returned data from onUpdate if available, otherwise use submitData
+      let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
+      
+      // Update popup fields with their actualValues
+      fields.forEach(f => {
+        if (f.rules.type === "popup" && popupHandlers[f.name]?.actualValue !== undefined) {
+          updatedData = { ...updatedData, [f.name]: popupHandlers[f.name].actualValue };
+        }
+      });
+      
+      // Include the new image preview URL if uploaded
+      if (imageConfig && selectedFile) {
+        updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
+      }
+      
+      // Update initial data to match current data after successful update
+      setInitialData(updatedData);
+      setFormData(updatedData);
       setSelectedFile(null);
       
       // Show success alert with SweetAlert2

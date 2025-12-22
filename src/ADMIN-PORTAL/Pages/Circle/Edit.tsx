@@ -85,35 +85,37 @@ const CircleEdit: React.FC = () => {
 
   const handleStateSelect = (state: State) => {
     setSelectedState(state);
+    setShowStatePopup(false);
   };
 
   const handleFetch = async (circleId: string) => {
     try {
-      const circle = await CircleService.getCircleById(Number(circleId));
+      const circleResponse = await CircleService.getCircleById(Number(circleId));
       
       // Fetch the state information to populate the selectedState
-      if (circle?.stateId) {
+      if (circleResponse?.stateId) {
         try {
-          const stateResponse = await StateService.getStateById(circle.stateId);
+          const stateResponse = await StateService.getStateById(circleResponse.stateId);
           if (stateResponse?.value) {
             setSelectedState(stateResponse.value);
           }
         } catch (error) {
           console.error("Error fetching state:", error);
-          // If state fetch fails, use the state name from the circle response
-          setSelectedState({
-            stateId: circle.stateId,
-            name: circle.state || "Unknown State",
+          // If state fetch fails, create a fallback state object
+          const fallbackState: State = {
+            stateId: circleResponse.stateId,
+            name: circleResponse.state || "Unknown State",
             abbreviation: "",
             isActive: true
-          } as State);
+          };
+          setSelectedState(fallbackState);
         }
       }
       
       // Return in the format KiduEdit expects
       return {
         isSucess: true,
-        value: circle
+        value: circleResponse
       };
     } catch (error) {
       console.error("Error fetching circle:", error);
@@ -139,16 +141,20 @@ const CircleEdit: React.FC = () => {
       };
 
       await CircleService.updateCircle(Number(circleId), updateData);
-    } catch (error) {
+      
+      // Don't return anything, let KiduEdit handle the state update
+    } catch (error: any) {
       console.error("Error updating circle:", error);
       throw error;
     }
   };
 
+  // Create popup handlers - KiduEdit will handle the actualValue internally
   const popupHandlers = {
     stateId: {
       value: selectedState?.name || "",
-      onOpen: () => setShowStatePopup(true)
+      onOpen: () => setShowStatePopup(true),
+      actualValue: selectedState?.stateId
     }
   };
 
