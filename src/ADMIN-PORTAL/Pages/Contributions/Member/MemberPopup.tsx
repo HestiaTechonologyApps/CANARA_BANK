@@ -1,0 +1,41 @@
+import KiduPopup from "../../../../Components/KiduPopup";
+import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
+import type { Member } from "../../../Types/Contributions/Member.types";
+import MemberCreateModal from "./MemberCreateModal";
+
+interface MemberPopupProps {
+  show: boolean;
+  handleClose: () => void;
+  onSelect: (member: Member) => void;
+}
+
+const MemberPopup: React.FC<MemberPopupProps> = ({
+  show,
+  handleClose,
+  onSelect,
+}) => {
+  const columns = [
+    { key: "memberId" as keyof Member, label: "ID" },
+    { key: "staffNo" as keyof Member, label: "Staff No" },
+    { key: "name" as keyof Member, label: "Name" },
+    { key: "designationId" as keyof Member, label: "Designation ID" },
+    { key: "branchId" as keyof Member, label: "Branch ID" },
+    { key: "isRegCompleted" as keyof Member, label: "Reg. Completed" },
+  ];
+
+  return (
+    <KiduPopup<Member>
+      show={show}
+      handleClose={handleClose}
+      title="Select Member"
+      fetchEndpoint={API_ENDPOINTS.MEMBER.GET_ALL}
+      columns={columns}
+      onSelect={onSelect}
+      AddModalComponent={MemberCreateModal}
+      idKey="memberId"
+      rowsPerPage={10}
+    />
+  );
+};
+
+export default MemberPopup;

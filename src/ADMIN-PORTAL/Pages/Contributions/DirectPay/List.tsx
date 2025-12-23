@@ -1,7 +1,6 @@
-// src/components/DirectPayment/DirectPaymentList.tsx
+// src/Pages/Contributions/DirectPay/List.tsx
 import React from "react";
 import KiduServerTable from "../../../../Components/KiduServerTable";
-import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
 import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 
 const columns = [
@@ -10,33 +9,23 @@ const columns = [
   { key: "amount", label: "Amount", enableSorting: true, type: "text" as const },
   { key: "paymentDate", label: "Payment Date", enableSorting: true, type: "text" as const },
   { key: "paymentMode", label: "Mode", enableSorting: true, type: "text" as const },
-  { key: "referenceNo", label: "Reference", enableSorting: true, type: "text" as const }
+  { key: "referenceNo", label: "Reference No", enableSorting: true, type: "text" as const }
 ];
 
 const DirectPaymentList: React.FC = () => {
-  const fetchData = async (params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: DirectPayment[]; total: number }> => {
-    const payments = await DirectPaymentService.getAllDirectPayments();
+  const fetchData = async (params: any) => {
+    const data = await DirectPaymentService.getAllDirectPayments();
 
-    let filtered = payments;
-    if (params.searchTerm) {
-      const s = params.searchTerm.toLowerCase();
-      filtered = payments.filter(
-        (p) =>
-          p.memberId.toString().includes(s) ||
-          p.referenceNo.toLowerCase().includes(s) ||
-          p.paymentMode.toLowerCase().includes(s)
-      );
-    }
+    const filtered = params.searchTerm
+      ? data.filter(d =>
+          d.memberId.toString().includes(params.searchTerm) ||
+          d.referenceNo.toLowerCase().includes(params.searchTerm.toLowerCase())
+        )
+      : data;
 
     const start = (params.pageNumber - 1) * params.pageSize;
-    const end = start + params.pageSize;
-
     return {
-      data: filtered.slice(start, end),
+      data: filtered.slice(start, start + params.pageSize),
       total: filtered.length
     };
   };

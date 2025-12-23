@@ -1,6 +1,5 @@
-// src/types/Claims/DirectPayment.types.ts
-
 import type { AuditTrails } from "../../../Types/AuditLog.types";
+
 
 export interface DirectPayment {
   directPaymentId: number;

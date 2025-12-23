@@ -1,9 +1,10 @@
-// src/components/DirectPayment/DirectPaymentCreate.tsx
+// src/Pages/Contributions/DirectPay/Create.tsx
 import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
-import KiduCreate from "../../../Components/KiduCreate";
 import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
 import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
+import KiduCreate from "../../../Components/KiduCreate";
+
 
 const DirectPaymentCreate: React.FC = () => {
   const fields: Field[] = [
@@ -12,7 +13,7 @@ const DirectPaymentCreate: React.FC = () => {
     { name: "paymentDate", rules: { type: "date", label: "Payment Date", required: true, colWidth: 4 } },
     { name: "paymentMode", rules: { type: "text", label: "Payment Mode", required: true, colWidth: 4 } },
     { name: "referenceNo", rules: { type: "text", label: "Reference No", required: true, colWidth: 4 } },
-    { name: "remarks", rules: { type: "textarea", label: "Remarks", required: false, colWidth: 12 } }
+    { name: "remarks", rules: { type: "textarea", label: "Remarks", colWidth: 12 } }
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -23,7 +24,7 @@ const DirectPaymentCreate: React.FC = () => {
       paymentDatestring: formData.paymentDate,
       paymentMode: formData.paymentMode.trim(),
       referenceNo: formData.referenceNo.trim(),
-      remarks: formData.remarks?.trim() || "",
+      remarks: formData.remarks || "",
       createdByUserId: 0,
       createdDate: new Date().toISOString(),
       createdDatestring: new Date().toISOString(),
@@ -38,10 +39,7 @@ const DirectPaymentCreate: React.FC = () => {
       title="Create Direct Payment"
       fields={fields}
       onSubmit={handleSubmit}
-      submitButtonText="Create Direct payment"
-      showResetButton={true}
       successMessage="Direct Payment created successfully!"
-      errorMessage="Failed to create direct payment."
       navigateOnSuccess="/dashboard/contributions/directpayment-list"
       themeColor="#18575A"
     />
