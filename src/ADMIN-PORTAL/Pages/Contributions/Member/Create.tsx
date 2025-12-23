@@ -89,7 +89,7 @@ const MemberCreate: React.FC = () => {
       fields={fields}
       onSubmit={handleSubmit}
       submitButtonText="Create Member"
-      showResetButton
+      showResetButton={true}
       loadingState={isLoading}
       successMessage="Member created successfully!"
       errorMessage="Failed to create member. Please check the details and try again."

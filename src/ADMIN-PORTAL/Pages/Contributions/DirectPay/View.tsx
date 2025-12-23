@@ -2,7 +2,7 @@
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import KiduView from "../../../Components/KiduView";
-import DirectPaymentService from "../../../Services/Contributions/Directpay.services";
+import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 
 const DirectPaymentView: React.FC = () => {
   const fields: ViewField[] = [

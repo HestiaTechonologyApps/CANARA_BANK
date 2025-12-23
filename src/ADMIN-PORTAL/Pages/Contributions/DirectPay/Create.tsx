@@ -2,8 +2,8 @@
 import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
-import type { DirectPayment } from "../../../Types/Contributions/Directpay.types";
-import DirectPaymentService from "../../../Services/Contributions/Directpay.services";
+import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
+import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 
 const DirectPaymentCreate: React.FC = () => {
   const fields: Field[] = [
@@ -38,6 +38,8 @@ const DirectPaymentCreate: React.FC = () => {
       title="Create Direct Payment"
       fields={fields}
       onSubmit={handleSubmit}
+      submitButtonText="Create Direct payment"
+      showResetButton={true}
       successMessage="Direct Payment created successfully!"
       errorMessage="Failed to create direct payment."
       navigateOnSuccess="/dashboard/contributions/directpayment-list"

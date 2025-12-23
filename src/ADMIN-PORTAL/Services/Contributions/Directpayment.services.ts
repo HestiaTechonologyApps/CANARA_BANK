@@ -3,7 +3,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { DirectPayment } from "../../Types/Contributions/Directpay.types";
+import type { DirectPayment } from "../../Types/Contributions/Directpayment.types";
 
 
 const DirectPaymentService = {

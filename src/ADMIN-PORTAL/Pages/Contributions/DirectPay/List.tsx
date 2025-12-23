@@ -1,8 +1,8 @@
 // src/components/DirectPayment/DirectPaymentList.tsx
 import React from "react";
 import KiduServerTable from "../../../../Components/KiduServerTable";
-import type { DirectPayment } from "../../../Types/Contributions/Directpay.types";
-import DirectPaymentService from "../../../Services/Contributions/Directpay.services";
+import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
+import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 
 const columns = [
   { key: "directPaymentId", label: "ID", enableSorting: true, type: "text" as const },
@@ -51,9 +51,11 @@ const DirectPaymentList: React.FC = () => {
       addRoute="/dashboard/contributions/directpayment-create"
       editRoute="/dashboard/contributions/directpayment-edit"
       viewRoute="/dashboard/contributions/directpayment-view"
-      showAddButton
-      showSearch
-      showActions
+      showAddButton={true}
+      showExport={true}
+      showSearch={true}
+      showActions={true}
+      showTitle={true}
       fetchData={fetchData}
       rowsPerPage={10}
     />

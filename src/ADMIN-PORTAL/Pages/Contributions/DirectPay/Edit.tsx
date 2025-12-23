@@ -2,8 +2,8 @@
 import React from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
-import DirectPaymentService from "../../../Services/Contributions/Directpay.services";
-import type { DirectPayment } from "../../../Types/Contributions/Directpay.types";
+import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
+import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
 
 const DirectPaymentEdit: React.FC = () => {
   const fields: Field[] = [

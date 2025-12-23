@@ -114,10 +114,10 @@ import DailyNewsEdit from '../Pages/DailyNews/Edit';
 import DailyNewsView from '../Pages/DailyNews/View';
 
 //Direct Pay
-import DirectPaymentList from '../Pages/Contributions/Direct Pay/List';
-import DirectPaymentCreate from '../Pages/Contributions/Direct Pay/Create';
-import DirectPaymentEdit from '../Pages/Contributions/Direct Pay/Edit';
-import DirectPaymentView from '../Pages/Contributions/Direct Pay/View';
+import DirectPaymentList from '../Pages/Contributions/DirectPay/List';
+import DirectPaymentCreate from '../Pages/Contributions/DirectPay/Create';
+import DirectPaymentEdit from '../Pages/Contributions/DirectPay/Edit';
+import DirectPaymentView from '../Pages/Contributions/DirectPay/View';
 
 
 
