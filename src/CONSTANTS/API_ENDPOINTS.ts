@@ -143,43 +143,43 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
   },
-  COMPANY:{
+  COMPANY: {
     GET_ALL: `${API_BASE_URL}/Company/GetAll/admin-getall-company`,
-    GET:`${API_BASE_URL}/Company/GetCompanyLookUp/admin-lookUp-company`,
+    GET: `${API_BASE_URL}/Company/GetCompanyLookUp/admin-lookUp-company`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/Company/GetById/${id}`,
     CREATE: `${API_BASE_URL}/Company/Create`,
     UPDATE: (id: number) => `${API_BASE_URL}/Company/Update/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Company/Delete/${id}`,
   },
-  CIRCLE_STATE:{
+  CIRCLE_STATE: {
     GET_ALL: `${API_BASE_URL}/CircleState`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
     CREATE: `${API_BASE_URL}/CircleState`,
     UPDATE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
   },
-  SUPPORT_TICKET:{
+  SUPPORT_TICKET: {
     GET_ALL: `${API_BASE_URL}/SupportTicket`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     CREATE: `${API_BASE_URL}/SupportTicket`,
     UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
-  YEAR_MASTER:{
+  YEAR_MASTER: {
     GET_ALL: `${API_BASE_URL}/YearMaster`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
     CREATE: `${API_BASE_URL}/YearMaster`,
     UPDATE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
   },
-  DAILY_NEWS:{
+  DAILY_NEWS: {
     GET_ALL: `${API_BASE_URL}/DailyNews`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
     CREATE: `${API_BASE_URL}/DailyNews`,
     UPDATE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
   },
-  DIRECT_PAY:{
+  DIRECT_PAY: {
     GET_ALL: `${API_BASE_URL}/DirectPayment`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
     CREATE: `${API_BASE_URL}/DirectPayment`,
@@ -187,8 +187,9 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
   },
   //------------------------PUBLIC MODULE----------------------------------------
-  DAYQUOTE_PUBLIC:{
-    GET_ALL: `${API_BASE_URL}/DayQuotePublic`, 
+  PUBLIC: {
+    GET_ALL_DAYQUOTE: `${API_BASE_URL}/Public/dayquotes`,
+    GET_ALL_DAILYNEWS: `${API_BASE_URL}/Public/dailynews`,
   }
 };
 

@@ -9,7 +9,7 @@ const DayQuotePublicService = {
   // ✅ NEW: Get all day quotes from public endpoint
   async getAllDayQuotes(): Promise<DayQuote[]> {
     const response = await HttpService.callApi<CustomResponse<DayQuote[]>>(
-      API_ENDPOINTS.DAYQUOTE_PUBLIC.GET_ALL,
+      API_ENDPOINTS.PUBLIC.GET_ALL_DAYQUOTE,
       "GET"
     );
     return response.value;
