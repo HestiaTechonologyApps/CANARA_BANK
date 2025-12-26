@@ -86,9 +86,10 @@ const Sidebar: React.FC = () => {
         {/* Profile section */}
         <div className="profile-section text-center mb-1">
           {hovered ? (
-            <p className="mt-2 text-white fw-bold" style={{ fontSize: "15px" }}>
+            <p className="mt-2 text-warning fw-bold" style={{ fontSize: "15px" }}>
               Admin Portal
             </p>
+            
           ) : (
             <p className="fw-bolder fs-6 text-white">
               <span style={{ fontSize: "10px" }}></span>
@@ -106,13 +107,14 @@ const Sidebar: React.FC = () => {
               objectFit: "cover",
             }}
           /> */}
+          
         </div>
 
         <div
           style={{
             flex: 1,
             width: "100%",
-            maxHeight: "calc(100vh - 190px)",
+            maxHeight: "calc(100vh - 150px)",
             overflowY: hovered ? "auto" : "hidden",
             overflowX: "hidden",
             scrollbarWidth: "thin",
@@ -127,10 +129,10 @@ const Sidebar: React.FC = () => {
               to="/dashboard"
               end
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-warning" : ""}`
+                `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-2 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-warning" : ""}`
               }
               style={{
-                fontSize: "15px",
+                fontSize: "13px",
                 textDecoration: "none",
                 padding: "5px 0",
                 width: hovered ? "85%" : "45px",
@@ -157,7 +159,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "15px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('settings')}
               >
                 <BsGearFill className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -185,7 +187,7 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-flex align-items-center gap-2 p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "13px", textDecoration: "none" }}
+                      style={{ fontSize: "11px", textDecoration: "none" }}
                     >
                       {sub.icon}
                       <span className="fw-bold">{sub.label}</span>
@@ -199,7 +201,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "15px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('contributions')}
               >
                 <BsCashStack className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -240,7 +242,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "15px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('claims')}
               >
                 <FaFileInvoice className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -268,7 +270,7 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "13px", textDecoration: "none" }}
+                      style={{ fontSize: "11px", textDecoration: "none" }}
                     >
                       <span className="fw-bold">{sub.label}</span>
                     </NavLink>
@@ -281,7 +283,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "15px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('cms')}
               >
                 <BsNewspaper className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -309,7 +311,7 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "13px", textDecoration: "none" }}
+                      style={{ fontSize: "11px", textDecoration: "none" }}
                     >
                       <span className="fw-bold">{sub.label}</span>
                     </NavLink>
@@ -324,7 +326,7 @@ const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
               }
-              style={{ fontSize: "15px", textDecoration: "none", padding: "8px 0" }}
+              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
@@ -370,7 +372,7 @@ const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
               }
-              style={{ fontSize: "15px", textDecoration: "none", padding: "8px 0" }}
+              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
@@ -392,7 +394,7 @@ const Sidebar: React.FC = () => {
               onClick={handleLogout}
               className="d-flex align-items-center justify-content-center p-2 text-white mt-5 mx-3 rounded fw-bold"
               style={{
-                fontSize: "15px",
+                fontSize: "13px",
                 textDecoration: "none",
                 backgroundColor: "#3d5272ff",
                 cursor: "pointer",

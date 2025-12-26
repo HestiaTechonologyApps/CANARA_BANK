@@ -79,7 +79,7 @@ const KiduAuditLogs: React.FC<AuditTrailsProps> = ({ tableName, recordId }) => {
             as={Accordion.Button}
             className="custom-audit-header"
             style={{
-              backgroundColor: "#882626ff",
+              backgroundColor: "#173a6a",
               color: "white",
               width: "100%",
               padding: "0.5rem 1rem",

@@ -178,14 +178,14 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
             <Accordion className="mt-4 custom-accordion">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>
-                        <span className="fw-bold fs-6 head-font" style={{ color: "#18575A" }}>
+                        <span className="fw-bold fs-6 head-font" style={{ color: "#173a6a" }}>
                             Attachments {attachments.length > 0 ? `(${attachments.length})` : "(0)"}
                         </span>
                     </Accordion.Header>
 
                     <Accordion.Body>
                         <div className="d-flex justify-content-end mb-3">
-                            <Button size="sm" className="head-font fw-bold" style={{ backgroundColor: "#18575A", border: "none" }} onClick={() => setShowModal(true)}>
+                            <Button size="sm" className="head-font fw-bold" style={{ backgroundColor: "#173a6a", border: "none" }} onClick={() => setShowModal(true)}>
                                 <Upload size={16} className="me-1 head-font" /> Add Attachment
                             </Button>
                         </div>
@@ -241,7 +241,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                 <td>
                                                     <div className="d-flex gap-1 justify-content-center">
                                                         <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
-                                                            <Button variant="outline" size="sm" style={{ border: "1px solid #18575A" }} onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}>
+                                                            <Button variant="outline" size="sm" style={{ border: "1px solid #173a6a" }} onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}>
                                                                 <Download size={16} color="#18575A" />
                                                             </Button>
                                                         </OverlayTrigger>
@@ -264,16 +264,16 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
             </Accordion>
 
             <Modal show={showModal} onHide={handleCloseModal} centered size="lg" className="head-font">
-                <Modal.Header closeButton style={{ backgroundColor: "#18575A", color: "white" }}>
+                <Modal.Header closeButton style={{ backgroundColor: "#173a6a", color: "white" }}>
                     <Modal.Title className="fs-5"><Upload size={20} className="me-2" /> Upload Attachment</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     {uploadError && <Alert variant="danger">{uploadError}</Alert>}
 
-                    <div {...getRootProps()} style={{ border: "2px dashed #18575A", borderRadius: "8px", padding: "40px", textAlign: "center", cursor: "pointer", backgroundColor: isDragActive ? "#e8f4f5" : "#f8f9fa", transition: "all 0.3s ease" }}>
+                    <div {...getRootProps()} style={{ border: "2px dashed #173a6a", borderRadius: "8px", padding: "40px", textAlign: "center", cursor: "pointer", backgroundColor: isDragActive ? "#e8f4f5" : "#f8f9fa", transition: "all 0.3s ease" }}>
                         <input {...getInputProps()} />
-                        <Upload size={20} className="mb-3" style={{ color: "#18575A" }} />
+                        <Upload size={20} className="mb-3" style={{ color: "#173a6a" }} />
                         {isDragActive ? (
                             <p className="mb-0 text-primary fw-medium">Drop the file here...</p>
                         ) : (
@@ -310,7 +310,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>Cancel</Button>
-                    <Button variant="primary" onClick={handleUpload} disabled={!selectedFile || uploading} style={{ backgroundColor: "#18575A", borderColor: "#18575A" }}>
+                    <Button variant="primary" onClick={handleUpload} disabled={!selectedFile || uploading} style={{ backgroundColor: "#173a6a", borderColor: "#173a6a" }}>
                         {uploading ? (
                             <>
                                 <Spinner size="sm" className="me-2" /> Uploading...

@@ -98,7 +98,7 @@ function KiduCreateModal<T>({
       setErrors({});
     } catch (err: any) {
       toast.error(err.message || "Failed to create", {
-        style: { background: "#ffe5e5", color: "#b91c1c" }
+        style: { background: "#ffe5e5", color: "#173a6a" }
       });
     } finally {
       setLoading(false);
@@ -160,7 +160,7 @@ function KiduCreateModal<T>({
         <KiduReset initialValues={initialValues} setFormData={setFormData} setErrors={setErrors} />
 
         <Button
-          style={{ backgroundColor: "#18575A", border: "none" }}
+          style={{ backgroundColor: "#173a6a", border: "none" }}
           onClick={handleSubmit}
           disabled={loading}
         >

@@ -360,7 +360,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
   const fieldName = title ? title.replace("Select ", "") : addButtonLabel;
 
-  if (loading && data.length === 0) return <KiduLoader type="talky..." />;
+  if (loading && data.length === 0) return <KiduLoader type="..." />;
 
   if (error && data.length === 0) {
     return (
@@ -374,7 +374,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   }
 
   return (
-    <Container fluid className="py-3 mt-4">
+    <Container fluid className="py-3 mt-1">
       {/* Title always shows regardless of data */}
       {showTitle !== false && (
         <Row className="mb-2 align-items-center">

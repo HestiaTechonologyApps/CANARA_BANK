@@ -51,16 +51,16 @@ const KiduYearSelector: React.FC<YearDropdownProps> = ({
             style={{
               transition: "all 0.2s ease-in-out",
               backgroundColor:
-                year === selectedYear ? "#882626ff" : "transparent",
+                year === selectedYear ? "#173a6a" : "transparent",
               color: year === selectedYear ? "white" : "black",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#882626ff";
+              e.currentTarget.style.backgroundColor = "#173a6a";
               e.currentTarget.style.color = "white";
             }}
             onMouseLeave={(e) => {
               if (year === selectedYear) {
-                e.currentTarget.style.backgroundColor = "#882626ff";
+                e.currentTarget.style.backgroundColor = "#173a6a";
                 e.currentTarget.style.color = "white";
               } else {
                 e.currentTarget.style.backgroundColor = "transparent";

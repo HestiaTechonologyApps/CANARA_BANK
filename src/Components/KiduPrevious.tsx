@@ -21,12 +21,12 @@ const KiduPrevious: React.FC = () => {
       onClick={() => navigate(-1)}
       onMouseEnter={(e) => {
         e.currentTarget.style.backgroundColor = "#f7f0f0ff"; // hover light blue
-        e.currentTarget.style.color = "#882626ff"; // icon color on hover
-        e.currentTarget.style.boxShadow = "0 4px 10px #571515ff";
+        e.currentTarget.style.color = "#173a6a"; // icon color on hover
+        e.currentTarget.style.boxShadow = "0 4px 10px #173a6a";
         e.currentTarget.style.transform = "scale(1.05)";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "#882626ff";
+        e.currentTarget.style.backgroundColor = "#173a6a";
         e.currentTarget.style.color = "#ffffff";
         e.currentTarget.style.boxShadow = "none";
         e.currentTarget.style.transform = "scale(1)";
