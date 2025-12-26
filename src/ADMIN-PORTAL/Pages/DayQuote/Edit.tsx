@@ -6,59 +6,13 @@ import DayQuoteService from "../../Services/CMS/DayQuote.services";
 
 const DayQuoteEdit: React.FC = () => {
   const fields: Field[] = [
-    {
-      name: "dayQuoteId",
-      rules: {
-        type: "number",
-        label: "ID",
-        required: false,
-        disabled: true,
-        colWidth: 3,
-      },
-    },
-    {
-      name: "day",
-      rules: {
-        type: "number",
-        label: "Day",
-        required: true,
-        minLength: 1,
-        maxLength: 31,
-        colWidth: 3,
-      },
-    },
-    {
-      name: "monthCode",
-      rules: {
-        type: "number",
-        label: "Month",
-        required: true,
-        minLength: 1,
-        maxLength: 12,
-        colWidth: 3,
-      },
-    },
-    {
-      name: "toDayQuote",
-      rules: {
-        type: "text",
-        label: "Quote",
-        required: true,
-        minLength: 1,
-        maxLength: 500,
-        colWidth: 12,
-      },
-    },
-    {
-      name: "unformatedContent",
-      rules: {
-        type: "textarea",
-        label: "Unformatted Content",
-        required: false,
-        colWidth: 12,
-      },
-    },
-  ];
+  { name: "dayQuoteId", rules: { type: "number", label: "ID", required: false, disabled: true, colWidth: 3 } },
+  { name: "day", rules: { type: "number", label: "Day", required: true, minLength: 1, maxLength: 31, colWidth: 3 } },
+  { name: "monthCode", rules: { type: "number", label: "Month", required: true, minLength: 1, maxLength: 12, colWidth: 3 } },
+  { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, minLength: 1, maxLength: 500, colWidth: 12 } },
+  { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", required: false, colWidth: 12 } },
+];
+
 
   // Your service returns DayQuote (not CustomResponse),
   // so wrap it to match KiduEdit’s expected shape if it expects { value }.

@@ -7,54 +7,13 @@ import DayQuoteService from "../../Services/CMS/DayQuote.services";
 const DayQuoteCreate: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const fields: Field[] = [
-    {
-      name: "day",
-      rules: {
-        type: "number",
-        label: "Day",
-        required: true,
-        minLength: 1,
-        maxLength: 31,
-        placeholder: "Enter day",
-        colWidth: 4,
-      },
-    },
-    {
-      name: "monthCode",
-      rules: {
-        type: "number",
-        label: "Month",
-        required: true,
-        minLength: 1,
-        maxLength: 12,
-        placeholder: "Enter month ",
-        colWidth: 4,
-      },
-    },
-    {
-      name: "toDayQuote",
-      rules: {
-        type: "text",
-        label: "Quote",
-        required: true,
-        minLength: 1,
-        maxLength: 500,
-        placeholder: "Enter the quote text",
-        colWidth: 12,
-      },
-    },
-    {
-      name: "unformatedContent",
-      rules: {
-        type: "textarea",
-        label: "Unformatted Content",
-        required: false,
-        placeholder: "Optional raw/HTML content",
-        colWidth: 12,
-      },
-    },
-  ];
+ const fields: Field[] = [
+  { name: "day", rules: { type: "number", label: "Day", required: true, minLength: 1, maxLength: 31, placeholder: "Enter day", colWidth: 4 } },
+  { name: "monthCode", rules: { type: "number", label: "Month", required: true, minLength: 1, maxLength: 12, placeholder: "Enter month", colWidth: 4 } },
+  { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, minLength: 1, maxLength: 500, placeholder: "Enter the quote text", colWidth: 12 } },
+  { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", required: false, placeholder: "Optional raw/HTML content", colWidth: 12 } },
+];
+
 
   const handleSubmit = async (formData: Record<string, any>) => {
     setIsLoading(true);
