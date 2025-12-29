@@ -10,11 +10,11 @@ export interface Member {
   genderId: number;
   imageId: number;
   dob: Date | string; // ISO Date string
-  dobString: Date | string;
+  dobString: string;
   doj: Date | string; // ISO Date string
-  dojString: Date | string;
+  dojString: string;
   dojtoScheme: Date | string; // ISO Date string
-  dojtoSchemeString: Date | string;
+  dojtoSchemeString: string;
   statusId: number;
   isRegCompleted: boolean;
   createdByUserId: number;
@@ -22,7 +22,7 @@ export interface Member {
   createdDateString: Date | string;
   modifiedByUserId: number;
   modifiedDate: Date | string;
-  modifiedDateString: Date | string;
+  modifiedDateString: string;
   nominee: string;
   profileImageSrc: string;
   nomineeRelation: string;

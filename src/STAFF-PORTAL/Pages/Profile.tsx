@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import "../Style/Profile.css";
 import { useNavigate } from "react-router-dom";
+import type { Member } from "../../ADMIN-PORTAL/Types/Contributions/Member.types";
+import MemberService from "../../ADMIN-PORTAL/Services/Contributions/Member.services";
 
 const Profile: React.FC = () => {
 
   const navigate = useNavigate()
   // 🔹 UI-only mock data (replace later with API/context)
-  const user = {
-    staffNo: "4957",
-    name: "SHRI G C POOJARY",
-    gender: "Male",
-    designation: "Single Window Operator",
-    category: "test1123",
-    dateOfBirth: "07 February 1945",
-    dateOfJoin: "07 May 1965",
-    dpCode: "8004",
-    dateFrom: "03 May 2003",
-    dateTo: "",
-    retirementDate: "",
-    status: "Retired",
-    nominee: "",
-    nomineeRelationship: "",
-  };
+  // const user = {
+  //   staffNo: "4957",
+  //   name: "SHRI G C POOJARY",
+  //   gender: "Male",
+  //   designation: "Single Window Operator",
+  //   category: "test1123",
+  //   dateOfBirth: "07 February 1945",
+  //   dateOfJoin: "07 May 1965",
+  //   dpCode: "8004",
+  //   dateFrom: "03 May 2003",
+  //   dateTo: "",
+  //   retirementDate: "",
+  //   status: "Retired",
+  //   nominee: "",
+  //   nomineeRelationship: "",
+  // };
+// 🔹 API user state
+  const [user, setUser] = useState<Member | null>(null);
 
-  // 🔹 Fields configuration (labels + keys only)
+
+
+ // 🔹 Fields configuration (labels + keys only)
   const fields = [
     { label: "Staff No", key: "staffNo" },
     { label: "Name", key: "name" },
@@ -42,10 +48,28 @@ const Profile: React.FC = () => {
     { label: "Nominee Relationship", key: "nomineeRelationship" },
   ];
 
+ // 🔹 Fetch member by ID
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const memberId = Number(localStorage.getItem("memberId"));
+        if (!memberId) return;
+
+        const response = await MemberService.getMemberById(memberId);
+        setUser(response.value);
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   const handleShowContribution = () => {
-    // UI only for now
     console.log("Show Contribution clicked");
   };
+
+  // if (!user) return null;
 
   return (
     <Card className="profile-card mt-2">
@@ -57,87 +81,79 @@ const Profile: React.FC = () => {
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[0].label}</span>
-              <span className="profile-value">{user.staffNo}</span>
+              <span className="profile-value">{user?.staffNo || "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[1].label}</span>
-              <span className="profile-value">{user.name}</span>
+              <span className="profile-value">{user?.name || "—"}</span>
             </Col>
              <Col md={4} className="profile-row">
               <span className="profile-label">{fields[2].label}</span>
-              <span className="profile-value">{user.gender}</span>
+              <span className="profile-value">{user?.genderId || "—"}</span>
             </Col>
           </Row>
-
           <Row>
-           
-
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[3].label}</span>
-              <span className="profile-value">{user.designation}</span>
+              <span className="profile-value">{user?.designationId || "—"}</span>
             </Col>
              <Col md={4} className="profile-row">
               <span className="profile-label">{fields[4].label}</span>
-              <span className="profile-value">{user.category}</span>
+              <span className="profile-value">{user?.categoryId || "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[5].label}</span>
-              <span className="profile-value">{user.dateOfBirth}</span>
+              <span className="profile-value">{user?.dobString || "—"}</span>
             </Col>
           </Row>
 
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[6].label}</span>
-              <span className="profile-value">{user.dateOfJoin}</span>
+              <span className="profile-value">{user?.dojString || "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[7].label}</span>
-              <span className="profile-value">{user.dpCode}</span>
+              <span className="profile-value">{user?.branchId || "—"}</span>
             </Col>
              <Col md={4} className="profile-row">
               <span className="profile-label">{fields[8].label}</span>
-              <span className="profile-value">{user.dateFrom}</span>
+              <span className="profile-value">{user?.dojtoSchemeString || "—"}</span>
             </Col>
           </Row>
 
           <Row>
-           
-
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[9].label}</span>
-              <span className="profile-value">{user.dateTo || "—"}</span>
+              <span className="profile-value">{user?.dojtoSchemeString || "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[10].label}</span>
-              <span className="profile-value">{user.retirementDate || "—"}</span>
+              <span className="profile-value">{user?.modifiedDateString || "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[11].label}</span>
-              <span className="profile-value">{user.status}</span>
+              <span className="profile-value">{user?.statusId || "—"}</span>
             </Col>
           </Row>
-
          
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[12].label}</span>
-              <span className="profile-value">{user.nominee || "—"}</span>
+              <span className="profile-value">{user?.nominee || "—"}</span>
             </Col>
-
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[13].label}</span>
               <span className="profile-value">
-                {user.nomineeRelationship || "—"}
+                {user?.nomineeRelation || "—"}
               </span>
             </Col>
           </Row>
         </div>
-
         <div className="profile-action text-end">
           <Button className="profile-btn" onClick={handleShowContribution} onClickCapture={()=> navigate("/history")}>
             ₹ Show Contribution
