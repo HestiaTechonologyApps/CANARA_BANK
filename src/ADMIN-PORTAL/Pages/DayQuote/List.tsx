@@ -12,20 +12,32 @@ const columns = [
 ];
 
 const DayQuoteList: React.FC = () => {
-  const fetchData = async (params: any) => {
+  const fetchData = async (_params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm: string;
+  }): Promise<{ data: DayQuote[]; total: number }> => {
     const quotes = await DayQuoteService.getAllDayQuotes();
     return { data: quotes, total: quotes.length };
   };
 
   return (
     <KiduServerTable
-      title="Day Quotes"
+      title="Day Quotes Management"
+      subtitle="Manage day quotes articles"
       columns={columns}
       idKey="dayQuoteId"
+      addButtonLabel="Add Quotes"
       addRoute="/dashboard/cms/dayquote-create"
       editRoute="/dashboard/cms/dayquote-edit"
       viewRoute="/dashboard/cms/dayquote-view"
+      showAddButton
+      showExport
+      showSearch
+      showActions
+      showTitle
       fetchData={fetchData}
+      rowsPerPage={10}
     />
   );
 };

@@ -8,6 +8,7 @@ const columns = [
   { key: "managingComitteeName", label: "Name", enableSorting: true, type: "text" as const },
   { key: "position", label: "Position", enableSorting: true, type: "text" as const },
   { key: "order", label: "Order", enableSorting: true, type: "text" as const },
+  {key:"companyId",label: "Company ID",enableSorting:true,type:"text" as const},
 ];
 
 const ManagingCommitteeList: React.FC = () => {

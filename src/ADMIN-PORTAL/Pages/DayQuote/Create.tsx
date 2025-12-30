@@ -49,6 +49,7 @@ const DayQuoteCreate: React.FC = () => {
         successMessage="Day quote created successfully!"
         errorMessage="Failed to create day quote"
         navigateOnSuccess="/dashboard/cms/dayquote-list"
+         navigateDelay={1500}
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />

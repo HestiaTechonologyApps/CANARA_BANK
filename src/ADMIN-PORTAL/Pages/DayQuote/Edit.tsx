@@ -18,38 +18,51 @@ const DayQuoteEdit: React.FC = () => {
     { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", colWidth: 12 } },
   ];
 
-  const handleFetch = async (id: string) => {
-    const response = await DayQuoteService.getDayQuoteById(Number(id));
+  // ✅ EXACTLY LIKE DeathClaimEdit
+ const handleFetch = async (id: string) => {
+  const response = await DayQuoteService.getDayQuoteById(Number(id));
 
+  if (response.value?.monthCode && response.value.monthCode > 0) {
     setSelectedMonth({
       monthCode: response.value.monthCode,
-      monthName: `Month ${response.value.monthCode}`,
     } as Month);
+  } else {
+    setSelectedMonth(null); // 🔥 IMPORTANT
+  }
 
-    return response; // 🔥 CustomResponse returned
-  };
+  return response;
+};
 
+
+  // ✅ UPDATE ONLY WHEN USER CHANGES DATA
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedMonth) throw new Error("Please select a month");
+  if (!selectedMonth) {
+    throw new Error("Please select a month");
+  }
 
-    const payload: Omit<DayQuote, "auditLogs"> = {
-      dayQuoteId: Number(id),
-      day: Number(formData.day),
-      monthCode: selectedMonth.monthCode,
-      toDayQuote: formData.toDayQuote.trim(),
-      unformatedContent: formData.unformatedContent?.trim() || "",
-    };
-
-    await DayQuoteService.updateDayQuote(Number(id), payload);
+  const payload: Omit<DayQuote, "auditLogs"> = {
+    dayQuoteId: Number(id),
+    day: Number(formData.day),
+    monthCode: selectedMonth.monthCode,
+    toDayQuote: formData.toDayQuote.trim(),
+    unformatedContent: formData.unformatedContent?.trim() || "",
   };
 
-  const popupHandlers = {
-    monthCode: {
-      value: selectedMonth?.monthName ?? "",
-      actualValue: selectedMonth?.monthCode,
-      onOpen: () => setShowMonthPopup(true),
-    },
-  };
+  await DayQuoteService.updateDayQuote(Number(id), payload);
+
+  // 🔥 CRITICAL: re-sync popup state so it doesn’t vanish
+  setSelectedMonth({ monthCode: selectedMonth.monthCode } as Month);
+};
+
+
+  // ✅ CRITICAL: actualValue sync
+const popupHandlers = {
+  monthCode: {
+    value: selectedMonth ? selectedMonth.monthCode.toString() : "",
+    actualValue: selectedMonth ? selectedMonth.monthCode : undefined,
+    onOpen: () => setShowMonthPopup(true),
+  },
+};
 
   return (
     <>

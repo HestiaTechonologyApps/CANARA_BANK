@@ -30,7 +30,13 @@ const DayQuoteView: React.FC = () => {
       editRoute="/dashboard/cms/dayquote-edit"
       listRoute="/dashboard/cms/dayquote-list"
       paramName="dayQuoteId"
-    />
+      auditLogConfig={{ tableName: "DayQuote", recordIdField: "dayQuoteId" }}
+      themeColor="#18575A"
+      loadingText="Loading day quote..."
+      showEditButton
+      showDeleteButton
+      deleteConfirmMessage="Are you sure you want to delete this day quote?"
+      />
   );
 };
 

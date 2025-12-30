@@ -18,8 +18,8 @@ const ManagingCommitteeCreate: React.FC = () => {
     { name: "description2", rules: { type: "textarea", label: "Description 2" } },
     { name: "imageLocation", rules: { type: "text", label: "Image URL", required: true } },
     { name: "order", rules: { type: "number", label: "Display Order", required: true, colWidth: 4 } },
-    { name: "companyId", rules: { type: "number", label: "Company ID", required: true, colWidth: 4 } },
-    { name: "companyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 4 } },
+    { name: "companyId", rules: { type: "popup", label: "Company ID", required: true, colWidth: 4 } },
+   // { name: "companyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 4 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

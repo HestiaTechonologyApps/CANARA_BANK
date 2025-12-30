@@ -36,12 +36,8 @@ const DeathClaimEdit: React.FC = () => {
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 3 } },
   ];
 
-  const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
+  //const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  // const handleFetch = async (claimId: string) => {
-  //   const response = await DeathClaimService.getDeathClaimById(Number(claimId));
-  //   return response; // KiduEdit expects your CustomResponse
-  // };
  const handleFetch = async (claimId: string) => {
   const response = await DeathClaimService.getDeathClaimById(Number(claimId));
 
