@@ -1,54 +1,67 @@
 // src/components/CMS/DayQuoteCreate.tsx
-
 import React, { useState } from "react";
 import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
 import type { DayQuote } from "../../Types/CMS/DayQuote.types";
 import DayQuoteService from "../../Services/CMS/DayQuote.services";
+import type { Month } from "../../Types/Settings/Month.types";
+import MonthPopup from "../Settings/Month/MonthPopup";
 
 const DayQuoteCreate: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [showMonthPopup, setShowMonthPopup] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
   const fields: Field[] = [
-    { name: "day", rules: { type: "number", label: "Day", required: true, minLength: 1, maxLength: 31, placeholder: "Enter day (1–31)", colWidth: 4 } },
-    { name: "monthCode", rules: { type: "number", label: "Month", required: true, minLength: 1, maxLength: 12, placeholder: "Enter month (1–12)", colWidth: 4 } },
-    { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, minLength: 1, maxLength: 500, placeholder: "Enter the quote text", colWidth: 12 } },
-    { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", required: false, placeholder: "Optional raw / HTML content", colWidth: 12 } },
+    { name: "day", rules: { type: "number", label: "Day", required: true, colWidth: 4 } },
+    { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
+    { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, colWidth: 12 } },
+    { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", colWidth: 12 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    setIsLoading(true);
-    try {
-      const payload: Omit<DayQuote, "dayQuoteId" | "auditLogs"> = {
-        day: Number(formData.day),
-        monthCode: Number(formData.monthCode),
-        toDayQuote: formData.toDayQuote.trim(),
-        unformatedContent: formData.unformatedContent?.trim() || "",
-      };
+    if (!selectedMonth) throw new Error("Please select a month");
 
-      await DayQuoteService.createDayQuote(payload);
-    } catch (error) {
-      console.error("Error creating day quote:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
+    const payload: Omit<DayQuote, "dayQuoteId" | "auditLogs"> = {
+      day: Number(formData.day),
+      monthCode: selectedMonth.monthCode,
+      toDayQuote: formData.toDayQuote.trim(),
+      unformatedContent: formData.unformatedContent?.trim() || "",
+    };
+
+    await DayQuoteService.createDayQuote(payload);
+  };
+
+  const popupHandlers = {
+    monthCode: {
+      value: selectedMonth?.monthName ?? "",
+      onOpen: () => setShowMonthPopup(true),
+    },
   };
 
   return (
-    <KiduCreate
-      title="Create Day Quote"
-      fields={fields}
-      onSubmit={handleSubmit}
-      submitButtonText="Create Day Quote"
-      showResetButton
-      loadingState={isLoading}
-      successMessage="Day quote created successfully!"
-      errorMessage="Failed to create day quote. Please try again."
-      navigateOnSuccess="/dashboard/cms/dayquote-list"
-      navigateDelay={1200}
-      themeColor="#18575A"
-    />
+    <>
+      <KiduCreate
+        title="Create Day Quote"
+        fields={fields}
+        onSubmit={handleSubmit}
+        submitButtonText="Create Day Quote"
+        showResetButton
+        successMessage="Day quote created successfully!"
+        errorMessage="Failed to create day quote"
+        navigateOnSuccess="/dashboard/cms/dayquote-list"
+        themeColor="#18575A"
+        popupHandlers={popupHandlers}
+      />
+
+      <MonthPopup
+        show={showMonthPopup}
+        handleClose={() => setShowMonthPopup(false)}
+        onSelect={(m) => {
+          setSelectedMonth(m);
+          setShowMonthPopup(false);
+        }}
+      />
+    </>
   );
 };
 

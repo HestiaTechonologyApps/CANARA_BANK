@@ -5,33 +5,12 @@ import DesignationService from "../../../Services/Settings/Designation.services"
 import type { Designation } from "../../../Types/Settings/Designation";
 import KiduEdit from "../../../Components/KiduEdit";
 
-
 const DesignationEdit: React.FC = () => {
+
   const fields: Field[] = [
-    {
-      name: "name",
-      rules: {
-        type: "text",
-        label: "Designation Name",
-        required: true,
-        minLength: 2,
-        maxLength: 100,
-        placeholder: "Enter designation name",
-        colWidth: 12
-      }
-    },
-    {
-      name: "description",
-      rules: {
-        type: "textarea",
-        label: "Description",
-        required: false,
-        maxLength: 500,
-        placeholder: "Enter description",
-        colWidth: 12
-      }
-    }
-  ];
+  { name: "name", rules: { type: "text", label: "Designation Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter designation name", colWidth: 12 } },
+  { name: "description", rules: { type: "textarea", label: "Description", required: false, maxLength: 500, placeholder: "Enter description", colWidth: 12 } }
+];
 
   const handleFetch = async (designationId: string) => {
     try {

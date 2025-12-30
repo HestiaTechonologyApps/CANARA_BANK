@@ -6,17 +6,12 @@ import CircleStateService from "../../../Services/Settings/CircleState.services"
 import type { CircleState } from "../../../Types/Settings/CircleState.types";
 
 const CircleStateCreate: React.FC = () => {
+  
   const [isLoading, setIsLoading] = useState(false);
 
   const fields: Field[] = [
-    {
-      name: "circleId",
-      rules: { type: "number", label: "Circle ID", required: true, colWidth: 4 },
-    },
-    {
-      name: "stateId",
-      rules: { type: "number", label: "State ID", required: true, colWidth: 4 },
-    },
+    { name: "circleId",rules: { type: "number", label: "Circle ID", required: true, colWidth: 4 }, },
+    { name: "stateId", rules: { type: "number", label: "State ID", required: true, colWidth: 4 },},
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

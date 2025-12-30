@@ -8,6 +8,7 @@ import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberPopup from "../Member/MemberPopup";
 
 const DirectPaymentEdit: React.FC = () => {
+
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
@@ -20,47 +21,51 @@ const DirectPaymentEdit: React.FC = () => {
     { name: "remarks", rules: { type: "textarea", label: "Remarks", colWidth: 12 } },
   ];
 
-  // ✅ CRITICAL FIX
   const handleFetch = async (id: string) => {
     const response = await DirectPaymentService.getDirectPaymentById(Number(id));
 
     if (response.value?.memberId) {
       setSelectedMember({
         memberId: response.value.memberId,
-        name: `Member ID: ${response.value.memberId}`, // 🔥 IMPORTANT
+        name: `Member ID: ${response.value.memberId}`,
       } as Member);
     }
 
     return response;
   };
 
- const handleUpdate = async (id: string, formData: Record<string, any>) => {
-  if (!selectedMember) {
-    throw new Error("Please select a member");
-  }
+  const handleUpdate = async (id: string, formData: Record<string, any>) => {
+    if (!selectedMember) {
+      throw new Error("Please select a member");
+    }
 
-  const payload: Omit<DirectPayment, "auditLogs"> = {
-    directPaymentId: Number(id), // 🔥 REQUIRED (SAME AS CIRCLE)
-    memberId: selectedMember.memberId,
-    amount: Number(formData.amount),
-    paymentDate: formData.paymentDate,
-    paymentDatestring: formData.paymentDate,
-    paymentMode: formData.paymentMode.trim(),
-    referenceNo: formData.referenceNo.trim(),
-    remarks: formData.remarks?.trim() || "",
-    createdByUserId: 0,            // backend may require
-    createdDate: new Date().toISOString(),
-    createdDatestring: new Date().toISOString(),
-    isDeleted: false,
+    const payload: Omit<DirectPayment, "auditLogs"> = {
+      directPaymentId: Number(id),
+      memberId: selectedMember.memberId,
+
+      amount: Number(formData.amount),
+      paymentDate: formData.paymentDate,
+      paymentDatestring: formData.paymentDate,
+      paymentMode: formData.paymentMode.trim(),
+      referenceNo: formData.referenceNo.trim(),
+      remarks: formData.remarks?.trim() || "",
+
+      createdByUserId: 0,
+      createdDate: new Date().toISOString(),
+      createdDatestring: new Date().toISOString(),
+      isDeleted: false,
+    };
+
+    await DirectPaymentService.updateDirectPayment(
+      Number(id),
+      payload
+    );
   };
-
-  await DirectPaymentService.updateDirectPayment(Number(id), payload);
-};
-
 
   const popupHandlers = {
     memberId: {
       value: selectedMember?.name ?? "",
+      actualValue: selectedMember?.memberId,
       onOpen: () => setShowMemberPopup(true),
     },
   };
@@ -76,7 +81,10 @@ const DirectPaymentEdit: React.FC = () => {
         navigateBackPath="/dashboard/contributions/directpayment-list"
         successMessage="Direct Payment updated successfully!"
         errorMessage="Failed to update Direct Payment"
-        auditLogConfig={{ tableName: "DirectPayment", recordIdField: "directPaymentId" }}
+        auditLogConfig={{
+          tableName: "DirectPayment",
+          recordIdField: "directPaymentId",
+        }}
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
@@ -85,7 +93,7 @@ const DirectPaymentEdit: React.FC = () => {
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={(member) => {
-          setSelectedMember(member); // real name comes from popup
+          setSelectedMember(member);
           setShowMemberPopup(false);
         }}
       />

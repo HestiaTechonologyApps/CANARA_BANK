@@ -8,9 +8,10 @@ import type { State } from "../../Types/Settings/States.types";
 import StatePopup from "../Settings/State/StatePopup";
 
 const CircleEdit: React.FC = () => {
-    const [showStatePopup, setShowStatePopup] = useState(false);
-    const [selectedState, setSelectedState] = useState<State | null>(null);
-  
+
+  const [showStatePopup, setShowStatePopup] = useState(false);
+  const [selectedState, setSelectedState] = useState<State | null>(null);
+
   const fields: Field[] = [
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 6 } },
     { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 6 } },
@@ -21,41 +22,41 @@ const CircleEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } },
   ];
 
-  
   const handleFetch = async (circleId: string) => {
-  try {
     const response = await CircleService.getCircleById(Number(circleId));
 
-    // ✅ IMPORTANT: initialize popup state
-    if (response.value?.stateId && response.value?.stateName) {
+    const circle = response.value;
+
+    // ✅ EXACTLY LIKE DeathClaimEdit – initialize popup state
+    if (circle) {
       setSelectedState({
-        stateId: response.value.stateId,
-        name: response.value.stateName,
+        stateId: circle.stateId,
+        name: circle.stateName,
         abbreviation: "",
         isActive: true,
       });
     }
 
     return response;
-  } catch (error: any) {
-    console.error("Error fetching circle:", error);
-    throw error;
-  }
-};
+  };
 
+  const handleUpdate = async (
+    circleId: string,
+    formData: Record<string, any>
+  ) => {
 
-  const handleUpdate = async (circleId: string, formData: Record<string, any>) => {
-  if (!selectedState) {
-    throw new Error("Please select a state");
-  }
+    if (!selectedState) {
+      throw new Error("Please select a state");
+    }
 
-  try {
     const circleData: Omit<Circle, "auditLogs"> = {
       circleId: Number(circleId),
+
       circleCode: Number(formData.circleCode),
       name: formData.name.trim(),
       abbreviation: formData.abbreviation.trim(),
 
+      // 🔒 POPUP-CONTROLLED (same as DeathClaim)
       stateId: selectedState.stateId,
       stateName: selectedState.name,
 
@@ -63,25 +64,26 @@ const CircleEdit: React.FC = () => {
       dateFromString: formData.dateFromString ?? "",
       dateTo: formData.dateTo,
       dateToString: formData.dateToString ?? "",
+
       isActive: Boolean(formData.isActive),
     };
 
-    await CircleService.updateCircle(Number(circleId), circleData);
-  } catch (error) {
-    console.error("Error updating circle:", error);
-    throw error;
-  }
-};
+    await CircleService.updateCircle(
+      Number(circleId),
+      circleData
+    );
+  };
 
- const popupHandlers = {
+  const popupHandlers = {
     stateId: {
-      value: selectedState?.name ?? "",
+      value: selectedState?.name?.toString() || "",
+      actualValue: selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
   };
 
   return (
-  <>
+    <>
       <KiduEdit
         title="Edit Circle"
         fields={fields}
@@ -101,7 +103,8 @@ const CircleEdit: React.FC = () => {
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
-       <StatePopup
+
+      <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
         onSelect={(state) => {
@@ -109,7 +112,7 @@ const CircleEdit: React.FC = () => {
           setShowStatePopup(false);
         }}
       />
-  </>
+    </>
   );
 };
 

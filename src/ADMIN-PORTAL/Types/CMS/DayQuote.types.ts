@@ -1,7 +1,7 @@
+// src/Types/CMS/DayQuote.types.ts
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface DayQuote {
-    
   dayQuoteId: number;
   day: number;
   monthCode: number;
@@ -9,4 +9,3 @@ export interface DayQuote {
   unformatedContent: string;
   auditLogs?: AuditTrails[];
 }
-

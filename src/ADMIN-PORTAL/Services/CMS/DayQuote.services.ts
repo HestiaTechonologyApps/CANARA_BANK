@@ -1,10 +1,8 @@
-// src/services/DayQuoteService.ts
-
+// src/Services/CMS/DayQuote.services.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { DayQuote } from "../../Types/CMS/DayQuote.types";
-
 
 const DayQuoteService = {
   async getAllDayQuotes(): Promise<DayQuote[]> {
@@ -15,12 +13,14 @@ const DayQuoteService = {
     return response.value;
   },
 
-  async getDayQuoteById(id: number): Promise<DayQuote> {
-    const response = await HttpService.callApi<CustomResponse<DayQuote>>(
+  // 🔥 MUST RETURN CustomResponse (KiduEdit requires this)
+  async getDayQuoteById(
+    id: number
+  ): Promise<CustomResponse<DayQuote>> {
+    return await HttpService.callApi<CustomResponse<DayQuote>>(
       API_ENDPOINTS.DAY_QUOTE.GET_BY_ID(id),
       "GET"
     );
-    return response.value;
   },
 
   async createDayQuote(

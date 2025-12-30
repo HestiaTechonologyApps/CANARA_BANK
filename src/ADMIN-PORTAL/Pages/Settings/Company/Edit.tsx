@@ -6,7 +6,6 @@ import CompanyService from "../../../Services/Settings/Company.services";
 import type { Company } from "../../../Types/Settings/Company.types";
 
 
-
 const CompanyEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "companyId", rules: { type: "number", label: "Company ID", disabled: true, colWidth: 3 } },

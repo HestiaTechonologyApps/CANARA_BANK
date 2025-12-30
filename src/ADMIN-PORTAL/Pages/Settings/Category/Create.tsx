@@ -1,34 +1,29 @@
 // src/components/Category/CategoryCreate.tsx
-import React, { useState } from "react";
+import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import type { Category } from "../../../Types/Settings/Category.types";
 import CategoryService from "../../../Services/Settings/Category.services";
 import KiduCreate from "../../../Components/KiduCreate";
 
 const CategoryCreate: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
 
   const fields: Field[] = [
-  { name: "name", rules: { type: "text", label: "Category Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter category name", colWidth: 6 } },
-  { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, placeholder: "Enter abbreviation", colWidth: 6 } }
-];
-
+    { name: "name", rules: { type: "text", label: "Category Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter category name", colWidth: 6 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, placeholder: "Enter abbreviation", colWidth: 6 } }
+  ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    setIsLoading(true);
     try {
-      const categoryData: Omit<Category, 'categoryId' | 'auditLogs'> = {
+      const categoryData: Omit<Category, "categoryId" | "auditLogs"> = {
         name: formData.name.trim(),
         abbreviation: formData.abbreviation.trim()
       };
 
       await CategoryService.createCategory(categoryData);
-      
+
     } catch (error: any) {
       console.error("Error creating category:", error);
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -39,7 +34,6 @@ const CategoryCreate: React.FC = () => {
       onSubmit={handleSubmit}
       submitButtonText="Create Category"
       showResetButton={true}
-      loadingState={isLoading}
       successMessage="Category created successfully!"
       errorMessage="Failed to create category. Please try again."
       navigateOnSuccess="/dashboard/settings/category-list"

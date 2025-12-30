@@ -5,40 +5,12 @@ import KiduCreate from "../../../Components/KiduCreate";
 import type { State } from "../../../Types/Settings/States.types";
 
 const StateCreate: React.FC = () => {
-  const fields: Field[] = [
-    {
-      name: "name",
-      rules: {
-        type: "text",
-        label: "State Name",
-        required: true,
-        minLength: 2,
-        maxLength: 50,
-        placeholder: "Enter state name",
-        colWidth: 6,
-      },
-    },
-    {
-      name: "abbreviation",
-      rules: {
-        type: "text",
-        label: "Abbreviation",
-        required: true,
-        minLength: 1,
-        maxLength: 50,
-        placeholder: "Enter abbreviation",
-        colWidth: 3,
-      },
-    },
-    {
-      name: "isActive",
-      rules: {
-        type: "toggle",
-        label: "Active",
-        required: false,
-      },
-    },
-  ];
+
+ const fields: Field[] = [
+  { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, placeholder: "Enter state name", colWidth: 6 } },
+  { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, placeholder: "Enter abbreviation", colWidth: 3 } },
+  { name: "isActive", rules: { type: "toggle", label: "Active", required: false } }
+];
 
   const handleSubmit = async (formData: Record<string, any>) => {
     const payload: Omit<State, "stateId" | "auditLogs"> = {
