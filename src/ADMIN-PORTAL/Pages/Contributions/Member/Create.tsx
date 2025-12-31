@@ -52,17 +52,16 @@ const MemberCreate: React.FC = () => {
     { name: "totalRefund", rules: { type: "text", label: "Total Refund", placeholder: "0", colWidth: 3 } },
   ];
 
-  // ───────────────────── Helpers ─────────────────────
+ 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  // ───────────────────── Submit ─────────────────────
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedBranch) throw new Error("Please select a branch");
     if (!selectedDesignation) throw new Error("Please select a designation");
     if (!selectedCategory) throw new Error("Please select a category");
     if (!selectedStatus) throw new Error("Please select a status");
 
-    const payload: Omit<Member, "memberId" | "auditLogs"> = {
+    const payload = {
       staffNo: Number(formData.staffNo),
       name: formData.name.trim(),
       genderId: Number(formData.genderId),
@@ -87,7 +86,7 @@ const MemberCreate: React.FC = () => {
       profileImageSrc: formData.profileImageSrc?.trim() || "",
       unionMember: formData.unionMember?.trim() || "",
       totalRefund: formData.totalRefund?.toString() ?? "0",
-    };
+} as Omit<Member, "memberId" | "auditLogs">;
 
     await MemberService.createMember(payload);
   };

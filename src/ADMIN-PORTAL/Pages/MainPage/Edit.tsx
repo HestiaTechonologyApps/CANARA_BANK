@@ -41,7 +41,7 @@ const MainPageEdit: React.FC = () => {
     { name: "dayQuote", rules: { type: "text", label: "Day Quote", colWidth: 12 } },
   ];
 
-  // ✅ FETCH — hydrate popup state
+  
   const handleFetch = async (id: string) => {
     const response = await MainPageService.getMainPageById(Number(id));
     const page = response.value;
@@ -58,22 +58,20 @@ const MainPageEdit: React.FC = () => {
     throw new Error("Please select a company");
   }
 
-  const company = selectedCompany; // ✅ type narrowed here
+  const company = selectedCompany; 
 
   const payload: Omit<MainPage, "auditLogs"> = {
     mainPageId: Number(id),
-    companyId: company.companyId,   // ✅ NO ERROR
+    companyId: company.companyId,   
 
     mainText: formData.mainText?.trim(),
     slogan: formData.slogan?.trim(),
-    // rest unchanged
   };
 
   await MainPageService.updateMainPage(Number(id), payload);
 };
 
 
-  // ✅ POPUP HANDLER (THIS IS THE KEY)
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.companyId?.toString() || "",

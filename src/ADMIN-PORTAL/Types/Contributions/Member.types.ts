@@ -8,12 +8,12 @@ export interface Member {
   branchId: number;
   name: string;
   genderId: number;
-  imageId: number;
-  dob: Date | string; // ISO Date string
+  //imageId: number;
+  dob: Date | string; 
   dobString: string;
-  doj: Date | string; // ISO Date string
+  doj: Date | string; 
   dojString: string;
-  dojtoScheme: Date | string; // ISO Date string
+  dojtoScheme: Date | string; 
   dojtoSchemeString: string;
   statusId: number;
   isRegCompleted: boolean;
