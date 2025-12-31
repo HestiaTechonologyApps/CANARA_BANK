@@ -3,7 +3,6 @@ import type { ViewField } from "../../../Components/KiduView";
 import DeathClaimService from "../../../Services/Claims/DeathClaims.services";
 import KiduView from "../../../Components/KiduView";
 
-
 const DeathClaimView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "deathClaimId", label: "Claim ID", icon: "bi-hash" },

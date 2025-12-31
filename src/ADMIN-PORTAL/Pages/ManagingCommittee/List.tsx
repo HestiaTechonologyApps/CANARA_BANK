@@ -2,13 +2,12 @@ import React from "react";
 import ManagingCommitteeService from "../../Services/CMS/ManagingCommittee.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
-
 const columns = [
   { key: "managingComiteeId", label: "ID", enableSorting: true, type: "text" as const },
   { key: "managingComitteeName", label: "Name", enableSorting: true, type: "text" as const },
   { key: "position", label: "Position", enableSorting: true, type: "text" as const },
   { key: "order", label: "Order", enableSorting: true, type: "text" as const },
-  {key:"companyId",label: "Company ID",enableSorting:true,type:"text" as const},
+  { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
 ];
 
 const ManagingCommitteeList: React.FC = () => {
@@ -44,6 +43,7 @@ const ManagingCommitteeList: React.FC = () => {
       showAddButton
       showSearch
       showActions
+      showTitle
     />
   );
 };

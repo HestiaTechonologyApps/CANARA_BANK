@@ -9,6 +9,7 @@ import type { Company } from "../../Types/Settings/Company.types";
 import CompanyPopup from "../Settings/Company/CompanyPopup";
 
 const CustomerEdit: React.FC = () => {
+  
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
@@ -24,24 +25,26 @@ const CustomerEdit: React.FC = () => {
     { name: "isDeleted", rules: { type: "toggle", label: "Deleted" } },
   ];
 
-  // 🔹 FETCH
+  // ✅ FETCH – hydrate popup state from backend
   const handleFetch = async (id: string) => {
     const response = await CustomerService.getCustomerById(Number(id));
     const customer = response.value;
 
-    if (customer) {
-      // ✅ hydrate popup state
+    if (customer?.companyId) {
       setSelectedCompany({ companyId: customer.companyId } as Company);
     }
 
     return response;
   };
 
-  // 🔹 UPDATE
+  // ✅ UPDATE – ALWAYS use popup state
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedCompany) {
       throw new Error("Please select a company");
     }
+
+    // 🔒 TypeScript-safe narrowing
+    const company = selectedCompany;
 
     const payload: Omit<Customer, "auditLogs"> = {
       customerId: Number(id),
@@ -54,17 +57,22 @@ const CustomerEdit: React.FC = () => {
       createdAt: formData.createdAt,
       isActive: Boolean(formData.isActive),
       isDeleted: Boolean(formData.isDeleted),
-      companyId: selectedCompany.companyId, // ✅ popup value
+
+      // ✅ SINGLE SOURCE OF TRUTH
+      companyId: company.companyId,
     };
 
     await CustomerService.updateCustomer(Number(id), payload);
+
+    // ✅ FORCE UI STATE SYNC (prevents immediate revert)
+    setSelectedCompany({ companyId: company.companyId } as Company);
   };
 
-  // ✅ CRITICAL FIX HERE
+  // ✅ POPUP HANDLER – REQUIRED FOR KiduEdit
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.companyId?.toString() || "",
-      actualValue: selectedCompany?.companyId,   // ✅ REQUIRED
+      actualValue: selectedCompany?.companyId,
       onOpen: () => setShowCompanyPopup(true),
     },
   };
@@ -93,8 +101,8 @@ const CustomerEdit: React.FC = () => {
         show={showCompanyPopup}
         handleClose={() => setShowCompanyPopup(false)}
         onSelect={(company) => {
-          setSelectedCompany(company);   // ✅ update state
-          setShowCompanyPopup(false);    // ✅ close popup
+          setSelectedCompany(company);
+          setShowCompanyPopup(false);
         }}
       />
     </>

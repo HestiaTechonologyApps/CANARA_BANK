@@ -304,7 +304,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         text: successMessage,
         confirmButtonColor: themeColor,
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: true,
+        confirmButtonText:"OK"
       });
       
       // Navigate to list page after success

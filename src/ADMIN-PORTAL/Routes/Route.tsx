@@ -200,8 +200,8 @@ export default function AdminRoutes() {
         {/* Manage Committe */}
         <Route path='/dashboard/cms/manage-committe-list' element={<ManagingCommitteeList />} />
         <Route path='/dashboard/cms/manage-committe-create' element={<ManagingCommitteeCreate />} />
-        <Route path='/dashboard/cms/manage-committe-edit/:managingComitteeId' element={<ManagingCommitteeEdit />} />
-        <Route path='/dashboard/cms/manage-committe-view/:managingComitteeId' element={<ManagingCommitteeView />} />
+        <Route path='/dashboard/cms/manage-committe-edit/:managingComiteeId' element={<ManagingCommitteeEdit />} />
+        <Route path='/dashboard/cms/manage-committe-view/:managingComiteeId' element={<ManagingCommitteeView />} />
 
         {/* Main Page */}
         <Route path='/dashboard/cms/mainpage-list' element={<MainPageList />} />

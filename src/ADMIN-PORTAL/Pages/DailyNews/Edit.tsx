@@ -1,5 +1,5 @@
 // src/components/DailyNews/DailyNewsEdit.tsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import type { Field } from "../../Components/KiduEdit";
 import KiduEdit from "../../Components/KiduEdit";
 import DailyNewsService from "../../Services/CMS/DailyNews.services";
@@ -11,6 +11,10 @@ const DailyNewsEdit: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
+  // 🔴 STORE ORIGINAL RECORD (CRITICAL FOR AUDIT LOG)
+  const originalDataRef = useRef<DailyNews | null>(null);
+
+  // ───────────────────── Fields ─────────────────────
   const fields: Field[] = [
     { name: "title", rules: { type: "text", label: "Title", required: true, colWidth: 6 } },
     { name: "newsDate", rules: { type: "date", label: "News Date", required: true, colWidth: 6 } },
@@ -19,41 +23,51 @@ const DailyNewsEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
 
-  // 🔹 FETCH
+  // ───────────────────── FETCH ─────────────────────
   const handleFetch = async (id: string) => {
     const response = await DailyNewsService.getDailyNewsById(Number(id));
     const news = response.value;
 
-    if (news) {
-      setSelectedCompany({ companyId: news.companyId } as Company);
-    }
+    if (!news) throw new Error("Daily news not found");
 
-    return response;
+    // 🔴 SAVE ORIGINAL RECORD (MANDATORY)
+    originalDataRef.current = news;
+
+    // popup binding
+    setSelectedCompany({ companyId: news.companyId } as Company);
+
+    return response; // MUST return CustomResponse
   };
 
-  // 🔹 UPDATE
+  // ───────────────────── UPDATE (CORRECT WAY) ─────────────────────
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedCompany) throw new Error("Please select a company");
+    if (!originalDataRef.current) {
+      throw new Error("Original data missing");
+    }
+    if (!selectedCompany) {
+      throw new Error("Please select a company");
+    }
+
+    const original = originalDataRef.current;
 
     const isoDate = new Date(formData.newsDate).toISOString();
 
-    const payload: Omit<DailyNews, "auditLogs"> = {
-      dailyNewsId: Number(id),
+    // 🔥 MERGE ORIGINAL + CHANGES
+    const payload: DailyNews = {
+      ...original,
+
       title: formData.title.trim(),
       description: formData.description.trim(),
       newsDate: isoDate,
       newsDateString: isoDate,
       companyId: selectedCompany.companyId,
       isActive: Boolean(formData.isActive),
-      isDeleted: false,
-      createdOn: formData.createdOn,
-      createdBy: formData.createdBy,
     };
 
     await DailyNewsService.updateDailyNews(Number(id), payload);
   };
 
-  // ✅ FIXED POPUP HANDLER
+  // ───────────────────── POPUP HANDLER (MANDATORY FORMAT) ─────────────────────
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.companyId?.toString() || "",

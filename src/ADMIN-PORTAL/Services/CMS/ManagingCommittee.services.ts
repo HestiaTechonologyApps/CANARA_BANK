@@ -3,7 +3,6 @@ import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ManagingCommittee } from "../../Types/CMS/ManagingCommittee.types";
 
-
 const ManagingCommitteeService = {
   async getAllManagingCommittees(): Promise<ManagingCommittee[]> {
     const response = await HttpService.callApi<CustomResponse<ManagingCommittee[]>>(
@@ -13,12 +12,13 @@ const ManagingCommitteeService = {
     return response.value;
   },
 
-  async getManagingCommitteeById(id: number): Promise<CustomResponse<ManagingCommittee>> {
-    const response = await HttpService.callApi<CustomResponse<ManagingCommittee>>(
+  async getManagingCommitteeById(
+    id: number
+  ): Promise<CustomResponse<ManagingCommittee>> {
+    return HttpService.callApi<CustomResponse<ManagingCommittee>>(
       API_ENDPOINTS.MANAGING_COMMITTEE.GET_BY_ID(id),
       "GET"
     );
-    return response;
   },
 
   async createManagingCommittee(
@@ -34,7 +34,7 @@ const ManagingCommitteeService = {
 
   async updateManagingCommittee(
     id: number,
-    data: Partial<Omit<ManagingCommittee, "managingComiteeId" | "auditLogs">>
+    data: Omit<ManagingCommittee, "auditLogs">
   ): Promise<ManagingCommittee> {
     const response = await HttpService.callApi<CustomResponse<ManagingCommittee>>(
       API_ENDPOINTS.MANAGING_COMMITTEE.UPDATE(id),

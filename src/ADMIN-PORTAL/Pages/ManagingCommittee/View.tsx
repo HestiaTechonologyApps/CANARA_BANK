@@ -2,7 +2,6 @@ import React from "react";
 import KiduView, { type ViewField } from "../../Components/KiduView";
 import ManagingCommitteeService from "../../Services/CMS/ManagingCommittee.services";
 
-
 const fields: ViewField[] = [
   { key: "managingComiteeId", label: "ID" },
   { key: "managingComitteeName", label: "Name" },
@@ -11,7 +10,7 @@ const fields: ViewField[] = [
   { key: "description2", label: "Description 2" },
   { key: "imageLocation", label: "Image" },
   { key: "order", label: "Order" },
-  { key: "companyName", label: "Company Name" },
+  { key: "companyId", label: "Company ID" },
 ];
 
 const ManagingCommitteeView: React.FC = () => {
@@ -24,7 +23,6 @@ const ManagingCommitteeView: React.FC = () => {
       paramName="managingComiteeId"
       editRoute="/dashboard/cms/manage-committe-edit"
       listRoute="/dashboard/cms/manage-committe-list"
-      auditLogConfig={{ tableName: "ManagingComitee", recordIdField: "managingComiteeId" }}
       themeColor="#18575A"
     />
   );
