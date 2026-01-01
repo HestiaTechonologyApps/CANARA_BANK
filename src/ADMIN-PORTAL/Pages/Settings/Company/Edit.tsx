@@ -8,7 +8,7 @@ import type { Company } from "../../../Types/Settings/Company.types";
 
 const CompanyEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "companyId", rules: { type: "number", label: "Company ID", disabled: true, colWidth: 3 } },
+    //{ name: "companyId", rules: { type: "number", label: "Company ID", disabled: true, colWidth: 3 } },
     { name: "comapanyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 6 } },
     { name: "website", rules: { type: "text", label: "Website", required: true, colWidth: 6 } },
 
@@ -32,26 +32,6 @@ const CompanyEdit: React.FC = () => {
   const handleFetch = async (companyId: string) =>
     CompanyService.getCompanyById(Number(companyId));
 
-//   const handleUpdate = async (companyId: string, formData: Record<string, any>) => {
-//     const payload: Omit<Company, "auditLogs"> = {
-//         companyId: Number(companyId),
-//         ...formData,
-//         isActive: Boolean(formData.isActive),
-//         email: "",
-//         comapanyName: "",
-//         website: "",
-//         contactNumber: "",
-//         taxNumber: "",
-//         addressLine1: "",
-//         city: "",
-//         state: "",
-//         country: "",
-//         zipCode: "",
-//         invoicePrefix: "",
-//         isDeleted: false
-//     };
-//     await CompanyService.updateCompany(Number(companyId), payload);
-//   };
 const handleUpdate = async (
   companyId: string,
   formData: Record<string, any>

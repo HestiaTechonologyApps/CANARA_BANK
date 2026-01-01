@@ -25,7 +25,6 @@ const CustomerEdit: React.FC = () => {
     { name: "isDeleted", rules: { type: "toggle", label: "Deleted" } },
   ];
 
-  // ✅ FETCH – hydrate popup state from backend
   const handleFetch = async (id: string) => {
     const response = await CustomerService.getCustomerById(Number(id));
     const customer = response.value;
@@ -37,13 +36,11 @@ const CustomerEdit: React.FC = () => {
     return response;
   };
 
-  // ✅ UPDATE – ALWAYS use popup state
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedCompany) {
       throw new Error("Please select a company");
     }
 
-    // 🔒 TypeScript-safe narrowing
     const company = selectedCompany;
 
     const payload: Omit<Customer, "auditLogs"> = {
@@ -58,17 +55,14 @@ const CustomerEdit: React.FC = () => {
       isActive: Boolean(formData.isActive),
       isDeleted: Boolean(formData.isDeleted),
 
-      // ✅ SINGLE SOURCE OF TRUTH
       companyId: company.companyId,
     };
 
     await CustomerService.updateCustomer(Number(id), payload);
 
-    // ✅ FORCE UI STATE SYNC (prevents immediate revert)
     setSelectedCompany({ companyId: company.companyId } as Company);
   };
 
-  // ✅ POPUP HANDLER – REQUIRED FOR KiduEdit
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.companyId?.toString() || "",

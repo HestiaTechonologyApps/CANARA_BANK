@@ -15,22 +15,8 @@ const CategoryCreateModal: React.FC<CategoryCreateModalProps> = ({
   onAdded
 }) => {
   const fields: Field[] = [
-    {
-      name: "name",
-      label: "Category Name",
-      type: "text",
-      required: true,
-      minLength: 2,
-      maxLength: 100
-    },
-    {
-      name: "abbreviation",
-      label: "Abbreviation",
-      type: "text",
-      required: true,
-      minLength: 1,
-      maxLength: 10
-    }
+    { name: "name", label: "Category Name", type: "text", required: true, minLength: 2, maxLength: 100 },
+    { name: "abbreviation", label: "Abbreviation", type: "text", required: true, minLength: 1, maxLength: 10 }
   ];
 
   return (

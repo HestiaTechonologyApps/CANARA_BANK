@@ -7,54 +7,14 @@ import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 
 
 const columns = [
-  {
-    key: "refundContributionId",
-    label: "Refund ID",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "staffNo",
-    label: "Staff No",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "refundNO",
-    label: "Refund No",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "branchNameOFTime",
-    label: "Branch Name",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "dpcodeOfTime",
-    label: "DP Code",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "type",
-    label: "Type",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "amount",
-    label: "Amount",
-    enableSorting: true,
-    type: "text" as const,
-  },
-  {
-    key: "yearOF",
-    label: "Year Of",
-    enableSorting: true,
-    type: "text" as const,
-  },
+  { key: "refundContributionId", label: "Refund ID", enableSorting: true, type: "text" as const, },
+  { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" as const, },
+  { key: "refundNO", label: "Refund No", enableSorting: true, type: "text" as const, },
+  { key: "branchNameOFTime", label: "Branch Name", enableSorting: true, type: "text" as const, },
+  { key: "dpcodeOfTime", label: "DP Code", enableSorting: true, type: "text" as const, },
+  { key: "type",label: "Type", enableSorting: true, type: "text" as const, },
+  { key: "amount", label: "Amount", enableSorting: true, type: "text" as const, },
+  { key: "yearOF", label: "Year Of", enableSorting: true, type: "text" as const, },
 ];
 
 const RefundContributionList: React.FC = () => {
@@ -81,8 +41,6 @@ if (params.searchTerm) {
     item.yearOF?.toString().includes(params.searchTerm)
   );
 }
-
-
       const startIndex = (params.pageNumber - 1) * params.pageSize;
       const endIndex = startIndex + params.pageSize;
       const paginatedData = filteredData.slice(startIndex, endIndex);

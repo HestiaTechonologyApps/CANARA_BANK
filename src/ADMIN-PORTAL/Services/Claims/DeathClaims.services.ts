@@ -19,7 +19,7 @@ const DeathClaimService = {
       API_ENDPOINTS.DEATH_CLAIMS.GET_BY_ID(id),
       "GET"
     );
-    // Return full CustomResponse to mirror your BranchService pattern
+    
     return response;
   },
 

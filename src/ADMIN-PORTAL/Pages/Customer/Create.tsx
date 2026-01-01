@@ -11,8 +11,7 @@ const CustomerCreate: React.FC = () => {
 
    const[showCompanyPopup,setShowCompanyPopup]=useState(false);
    const[selectedCompany,setSelectedCompany]=useState<Company|null>(null);
-    
-  // Define form fields aligned with Customer interface
+ 
   const fields: Field[] = [
     { name: "customerName", rules: { type: "text", label: "Customer Name", required: true, minLength: 3, maxLength: 100, placeholder: "Enter customer name", colWidth: 4 } },
     { name: "customerEmail", rules: { type: "email", label: "Email Address", required: true, placeholder: "Enter email address", colWidth: 4 } },
@@ -27,7 +26,6 @@ const CustomerCreate: React.FC = () => {
 
   const handleSubmit = async (formData: Record<string, any>) => {
     try {
-      // Map form values to Customer (excluding customerId, auditLogs)
       const payload: Omit<Customer, "customerId" | "auditLogs"> = {
         customerName: String(formData.customerName).trim(),
         customerPhone: String(formData.customerPhone).trim(),

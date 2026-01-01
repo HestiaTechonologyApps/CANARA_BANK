@@ -3,7 +3,6 @@ import React from "react";
 import MonthService from "../../../Services/Settings/Month.services";
 import KiduServerTable from "../../../../Components/KiduServerTable";
 
-
 const columns = [
   { key: "monthCode", label: "Month ID", enableSorting: true, type: "text" as const },
   { key: "monthName", label: "Month Name", enableSorting: true, type: "text" as const },
@@ -17,8 +16,6 @@ const MonthList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: any[]; total: number }> => {
     const months = await MonthService.getAllMonths();
-
-    // search filter (optional)
     let filtered = months;
     if (params.searchTerm) {
       const q = params.searchTerm.toLowerCase();
@@ -30,7 +27,6 @@ const MonthList: React.FC = () => {
       );
     }
 
-    // pagination
     const start = (params.pageNumber - 1) * params.pageSize;
     const end = start + params.pageSize;
     const paginated = filtered.slice(start, end);

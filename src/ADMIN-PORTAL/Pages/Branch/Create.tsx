@@ -34,9 +34,8 @@ const BranchCreate: React.FC = () => {
       throw new Error("Please select State and Circle");
     }
 
-    // ✅ SAME PATTERN AS CategoryCreate (key fix)
   const payload: Partial<Omit<Branch, "branchId" | "auditLogs">> = {
-  dpCode: Number(formData.dpCode), // backend expects string
+  dpCode: Number(formData.dpCode), 
   name: formData.name.trim(),
   address1: formData.address1.trim(),
   address2: formData.address2?.trim() || "",

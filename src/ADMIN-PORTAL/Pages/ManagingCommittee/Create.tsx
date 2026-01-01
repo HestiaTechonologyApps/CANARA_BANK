@@ -20,7 +20,6 @@ const ManagingCommitteeCreate: React.FC = () => {
   { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 3 } },
 ];
 
-
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedCompany) throw new Error("Please select a company");
 

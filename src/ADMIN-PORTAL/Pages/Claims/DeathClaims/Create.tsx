@@ -47,18 +47,15 @@ const DeathClaimCreate: React.FC = () => {
   if (!selectedDesignation) throw new Error("Please select a designation");
 
   const payload: Omit<DeathClaim, "deathClaimId"> = {
-    // ✅ FIXED: use selected objects
     memberId: selectedMember.memberId,
     stateId: selectedState.stateId,
     designationId: selectedDesignation.designationId,
-
     deathDate: toIso(formData.deathDate),
     nominee: formData.nominee?.trim() || "",
     nomineeRelation: formData.nomineeRelation?.trim() || "",
     nomineeIDentity: formData.nomineeIDentity?.trim() || "",
     ddno: formData.ddno?.trim() || "",
     dddate: toIso(formData.dddate),
-
     amount: Number(formData.amount),
     lastContribution: Number(formData.lastContribution),
     yearOF: Number(formData.yearOF),
@@ -98,7 +95,6 @@ const popupHandlers = {
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
-      {/* Member Popup */}
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}

@@ -12,7 +12,6 @@ const DesignationCreate: React.FC = () => {
   { name: "description", rules: { type: "textarea", label: "Description", required: false, maxLength: 500, placeholder: "Enter description", colWidth: 6 } }
 ];
 
-
   const handleSubmit = async (formData: Record<string, any>) => {
     try {
       const designationData: Omit<Designation, "designationId" | "auditLogs"> = {

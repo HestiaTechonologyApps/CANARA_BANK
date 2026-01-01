@@ -19,7 +19,7 @@ const MemberService = {
       API_ENDPOINTS.MEMBER.GET_BY_ID(id),
       "GET"
     );
-    // Return full CustomResponse to match BranchService.getBranchById
+   
     return response;
   },
 

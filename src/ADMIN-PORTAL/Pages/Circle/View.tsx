@@ -16,14 +16,10 @@ const CircleView: React.FC = () => {
     { key: "dateToString", label: "Date To", icon: "bi-calendar-x" },
     { key: "isActive", label: "Active", icon: "bi-check-circle" },
   ];
-
-  // ✅ SAME AS CategoryView
   const handleFetch = async (circleId: string) => {
     const response = await CircleService.getCircleById(Number(circleId));
     return response;
   };
-
-  // ✅ SAME AS CategoryView
   const handleDelete = async (circleId: string) => {
     await CircleService.deleteCircle(Number(circleId));
   };

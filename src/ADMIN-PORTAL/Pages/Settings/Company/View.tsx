@@ -4,7 +4,6 @@ import type { ViewField } from "../../../Components/KiduView";
 import CompanyService from "../../../Services/Settings/Company.services";
 import KiduView from "../../../Components/KiduView";
 
-
 const fields: ViewField[] = [
   { key: "companyId", label: "Company ID", icon: "bi-hash" },
   { key: "comapanyName", label: "Company Name", icon: "bi-building" },

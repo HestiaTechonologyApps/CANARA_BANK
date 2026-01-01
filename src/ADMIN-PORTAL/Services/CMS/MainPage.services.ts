@@ -5,7 +5,7 @@ import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { MainPage } from "../../Types/CMS/MainPage.types";
 
 const MainPageService = {
-  /** Get all main pages */
+
   async getAllMainPages(): Promise<MainPage[]> {
     const response = await HttpService.callApi<CustomResponse<MainPage[]>>(
       API_ENDPOINTS.MAIN_PAGE.GET_ALL,
@@ -14,16 +14,15 @@ const MainPageService = {
     return response.value;
   },
 
-  /** Get main page by ID — return full CustomResponse (parity with CustomerService) */
   async getMainPageById(id: number): Promise<CustomResponse<MainPage>> {
     const response = await HttpService.callApi<CustomResponse<MainPage>>(
       API_ENDPOINTS.MAIN_PAGE.GET_BY_ID(id),
       "GET"
     );
-    return response; // return full response, not just value
+    return response; 
   },
 
-  /** Create a main page */
+ 
   async createMainPage(
     data: Omit<MainPage, "mainPageId" | "auditLogs">
   ): Promise<MainPage> {
@@ -35,7 +34,7 @@ const MainPageService = {
     return response.value;
   },
 
-  /** Update a main page */
+ 
   async updateMainPage(
     id: number,
     data: Partial<Omit<MainPage, "mainPageId" | "auditLogs">>
@@ -48,7 +47,6 @@ const MainPageService = {
     return response.value;
   },
 
-  /** Delete a main page */
   async deleteMainPage(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.MAIN_PAGE.DELETE(id),

@@ -7,14 +7,8 @@ import type { CircleState } from "../../../Types/Settings/CircleState.types";
 
 const CircleStateEdit: React.FC = () => {
   const fields: Field[] = [
-    {
-      name: "circleId",
-      rules: { type: "number", label: "Circle ID", required: true, colWidth: 6 },
-    },
-    {
-      name: "stateId",
-      rules: { type: "number", label: "State ID", required: true, colWidth: 6 },
-    },
+    { name: "circleId", rules: { type: "number", label: "Circle ID", required: true, colWidth: 6 }, },
+    { name: "stateId", rules: { type: "number", label: "State ID", required: true, colWidth: 6 }, },
   ];
 
   const handleFetch = async (id: string) =>

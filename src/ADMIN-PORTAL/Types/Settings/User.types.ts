@@ -10,9 +10,9 @@ export interface User {
   passwordHash?: string; 
   isActive: boolean;
   islocked: boolean;
-  createAt: Date | string;  // Backend uses 'createAt' (no 'd')
-  lastlogin: Date | string | null;  // Backend uses lowercase 'lastlogin'
-  role: string;  // Missing from your type
+  createAt: Date | string;  
+  lastlogin: Date | string | null; 
+  role: string;  
   companyId: number;
   auditLogs?: AuditTrails[];
 }

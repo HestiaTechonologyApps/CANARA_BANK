@@ -35,7 +35,6 @@ const MainPageView: React.FC = () => {
     { key: "dayQuote", label: "Day Quote", icon: "bi-stars" },
   ];
 
-  // Returns CustomResponse<MainPage>
   const handleFetch = async (mainPageId: string) => {
     const response = await MainPageService.getMainPageById(Number(mainPageId));
     return response;
@@ -55,8 +54,8 @@ const MainPageView: React.FC = () => {
       listRoute="/dashboard/cms/mainpage-list"
       paramName="mainPageId"
       imageConfig={{
-        fieldName: "logoImage1",            // show primary logo as the header image
-        defaultImage: "",                   // optional: add a fallback image path if you have one
+        fieldName: "logoImage1",           
+        defaultImage: "",                   
         showNameField: "companyName",
         showIdField: "mainPageId",
         isCircle: false,

@@ -16,7 +16,6 @@ const columns = [
   // { key: "dobString", label: "DOB", enableSorting: false, type: "text" as const },
   // { key: "dojString", label: "DOJ", enableSorting: false, type: "text" as const },
   // { key: "dojtoSchemeString", label: "DOJ to Scheme", enableSorting: false, type: "text" as const },
-
   // { key: "statusId", label: "Status ID", enableSorting: true, type: "text" as const },
   { key: "isRegCompleted", label: "Reg. Completed", enableSorting: true, type: "checkbox" as const },
   { key: "unionMember", label: "Union Member", enableSorting: true, type: "text" as const },

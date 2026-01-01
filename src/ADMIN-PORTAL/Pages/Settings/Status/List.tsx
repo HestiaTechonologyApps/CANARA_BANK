@@ -18,10 +18,7 @@ const StatusList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: Status[]; total: number }> => {
     try {
-      // Fetch all statuses from the service
       const statuses = await StatusService.getAllStatuses();
-
-      // Filter by search term if provided
       let filteredStatuses = statuses;
       if (params.searchTerm) {
         const searchLower = params.searchTerm.toLowerCase();
@@ -34,8 +31,6 @@ const StatusList: React.FC = () => {
             status.groupId?.toString().includes(searchLower)
         );
       }
-
-      // Calculate pagination
       const startIndex = (params.pageNumber - 1) * params.pageSize;
       const endIndex = startIndex + params.pageSize;
       const paginatedStatuses = filteredStatuses.slice(startIndex, endIndex);

@@ -244,6 +244,9 @@ export default function AdminRoutes() {
           <Route path='/dashboard/contributions/directpayment-create' element={<DirectPaymentCreate/>}/>
           <Route path='/dashboard/contributions/directpayment-edit/:directPaymentId' element={<DirectPaymentEdit/>}/>
           <Route path='/dashboard/contributions/directpayment-view/:directPaymentId' element={<DirectPaymentView/>}/>
+
+          {/* Monthly Contribution */}
+          {/* <Route path='/dashboard/contributions/monthlyContribution-list' element={<mon/>}/> */}
       </Route>
 
       {/* Catch-All Route for 404 */}

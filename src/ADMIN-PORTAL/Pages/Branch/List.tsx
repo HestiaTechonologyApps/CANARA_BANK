@@ -25,15 +25,12 @@ const BranchList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: Branch[]; total: number }> => {
     try {
-      // Fetch all branches
       const branches = await BranchService.getAllBranches();
-
-      // Filter by search term if provided
       let filtered = branches;
       if (params.searchTerm) {
         const q = params.searchTerm.toLowerCase();
         filtered = branches.filter((b) => {
-          const statusStr = String(b.status); // boolean -> "true"/"false"
+          const statusStr = String(b.status); 
           return (
             b.name?.toLowerCase().includes(q) ||
             String(b.dpCode)?.toLowerCase().includes(q) ||
@@ -48,7 +45,6 @@ const BranchList: React.FC = () => {
         });
       }
 
-      // Pagination
       const start = (params.pageNumber - 1) * params.pageSize;
       const end = start + params.pageSize;
       const paginated = filtered.slice(start, end);

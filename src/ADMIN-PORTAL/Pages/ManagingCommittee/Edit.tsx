@@ -68,7 +68,6 @@ const ManagingCommitteeEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         themeColor="#18575A"
       />
-
       <CompanyPopup
         show={showCompanyPopup}
         handleClose={() => setShowCompanyPopup(false)}

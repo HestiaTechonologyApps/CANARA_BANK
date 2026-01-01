@@ -7,12 +7,7 @@ import KiduServerTable from "../../../../Components/KiduServerTable";
 const columns = [
   { key: "circleId", label: "Circle ID", enableSorting: true, type: "text" as const },
   { key: "stateId", label: "State ID", enableSorting: true, type: "text" as const },
-  {
-    key: "createdDate",
-    label: "Created Date",
-    enableSorting: true,
-    type: "text" as const,
-  },
+  { key: "createdDate", label: "Created Date", enableSorting: true, type: "text" as const, },
 ];
 
 const CircleStateList: React.FC = () => {

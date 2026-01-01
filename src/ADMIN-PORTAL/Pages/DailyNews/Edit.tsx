@@ -11,10 +11,8 @@ const DailyNewsEdit: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
-  // 🔴 STORE ORIGINAL RECORD (CRITICAL FOR AUDIT LOG)
   const originalDataRef = useRef<DailyNews | null>(null);
 
-  // ───────────────────── Fields ─────────────────────
   const fields: Field[] = [
     { name: "title", rules: { type: "text", label: "Title", required: true, colWidth: 6 } },
     { name: "newsDate", rules: { type: "date", label: "News Date", required: true, colWidth: 6 } },
@@ -23,23 +21,19 @@ const DailyNewsEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
 
-  // ───────────────────── FETCH ─────────────────────
   const handleFetch = async (id: string) => {
     const response = await DailyNewsService.getDailyNewsById(Number(id));
     const news = response.value;
 
     if (!news) throw new Error("Daily news not found");
 
-    // 🔴 SAVE ORIGINAL RECORD (MANDATORY)
     originalDataRef.current = news;
 
-    // popup binding
     setSelectedCompany({ companyId: news.companyId } as Company);
 
-    return response; // MUST return CustomResponse
+    return response; 
   };
 
-  // ───────────────────── UPDATE (CORRECT WAY) ─────────────────────
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!originalDataRef.current) {
       throw new Error("Original data missing");
@@ -52,7 +46,6 @@ const DailyNewsEdit: React.FC = () => {
 
     const isoDate = new Date(formData.newsDate).toISOString();
 
-    // 🔥 MERGE ORIGINAL + CHANGES
     const payload: DailyNews = {
       ...original,
 
@@ -67,7 +60,6 @@ const DailyNewsEdit: React.FC = () => {
     await DailyNewsService.updateDailyNews(Number(id), payload);
   };
 
-  // ───────────────────── POPUP HANDLER (MANDATORY FORMAT) ─────────────────────
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.companyId?.toString() || "",

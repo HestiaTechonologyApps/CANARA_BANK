@@ -4,7 +4,6 @@ import type { Designation } from "../../../Types/Settings/Designation";
 import DesignationService from "../../../Services/Settings/Designation.services";
 import KiduServerTable from "../../../../Components/KiduServerTable";
 
-
 const columns = [
   { key: "designationId", label: "Designation ID", enableSorting: true, type: "text" as const },
   { key: "name", label: "Designation Name", enableSorting: true, type: "text" as const },

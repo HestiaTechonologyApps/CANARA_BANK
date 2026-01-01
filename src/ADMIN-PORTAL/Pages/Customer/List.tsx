@@ -11,7 +11,7 @@ const columns = [
   { key: "customerPhone", label: "Phone", enableSorting: true, type: "text" as const },
   { key: "customerAddress", label: "Address", enableSorting: false, type: "text" as const },
   { key: "dob", label: "Date of Birth", enableSorting: true, type: "date" as const },
-  { key: "nationality", label: "nationality", enableSorting: true, type: "text" as const }, // note: matches your interface key
+  { key: "nationality", label: "nationality", enableSorting: true, type: "text" as const }, 
   { key: "createdAt", label: "Created At", enableSorting: true, type: "date" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
   { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
@@ -24,13 +24,8 @@ const CustomerList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: Customer[]; total: number }> => {
     try {
-      // Fetch all customers
       const customers = await CustomerService.getAllCustomers();
-
-      // (Optional) hide soft-deleted customers
       const visible = customers.filter((c) => !c.isDeleted);
-
-      // Search filter
       const { searchTerm, pageNumber, pageSize } = params;
       let filtered = visible;
 
@@ -55,8 +50,6 @@ const CustomerList: React.FC = () => {
           );
         });
       }
-
-      // Pagination (client-side)
       const start = (pageNumber - 1) * pageSize;
       const end = start + pageSize;
       const page = filtered.slice(start, end);

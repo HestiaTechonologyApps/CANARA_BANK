@@ -4,7 +4,6 @@ import type { ViewField } from "../../../Components/KiduView";
 import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 import KiduView from "../../../Components/KiduView";
 
-
 const DirectPaymentView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "directPaymentId", label: "Payment ID", icon: "bi-hash" },

@@ -3,7 +3,7 @@ import type { AuditTrails } from "../../../Types/AuditLog.types";
 export interface Company {
   companyId: number;
 
-  comapanyName: string; // API spelling (keep as-is)
+  comapanyName: string; 
   website: string;
 
   contactNumber: string;
@@ -21,7 +21,7 @@ export interface Company {
 
   invoicePrefix: string;
 
-  companyLogo?: string; // base64 string or image URL
+  companyLogo?: string; 
 
   isActive: boolean;
   isDeleted: boolean;

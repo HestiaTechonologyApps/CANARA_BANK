@@ -21,7 +21,7 @@ const DeathClaimEdit: React.FC = () => {
     const[selectedDesignation,setSelectedDesignation]=useState<Designation|null>(null);
   
   const fields: Field[] = [
-    { name: "deathClaimId", rules: { type: "number", label: "Claim ID", required: false, disabled: true, colWidth: 3 } },
+   // { name: "deathClaimId", rules: { type: "number", label: "Claim ID", required: false, disabled: true, colWidth: 3 } },
     { name: "memberId", rules: { type: "popup", label: "Member ID", required: true, colWidth: 3 } },
     { name: "stateId", rules: { type: "popup", label: "State ID", required: true, colWidth: 3 } },
     { name: "designationId", rules: { type: "popup", label: "Designation ID", required: true, colWidth: 3 } },
@@ -36,12 +36,10 @@ const DeathClaimEdit: React.FC = () => {
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 3 } },
   ];
 
-  //const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
-
  const handleFetch = async (claimId: string) => {
   const response = await DeathClaimService.getDeathClaimById(Number(claimId));
 
-  const claim = response.value; // ✅ unwrap actual DeathClaim
+  const claim = response.value; 
 
   if (claim) {
     setSelectedMember({ memberId: claim.memberId } as Member);
@@ -67,21 +65,15 @@ const handleUpdate = async (claimId: string, formData: Record<string, any>) => {
   try {
     const deathClaimData: Omit<DeathClaim, "auditLogs"> = {
       deathClaimId: Number(claimId),
-
-      // 🔹 popup-driven IDs
       memberId: selectedMember.memberId,
       stateId: selectedState.stateId,
       designationId: selectedDesignation.designationId,
-
-      // 🔹 normal editable fields (FROM formData ONLY)
       deathDate: formData.deathDate,
       nominee: formData.nominee.trim(),
       nomineeRelation: formData.nomineeRelation.trim(),
       nomineeIDentity: formData.nomineeIDentity?.trim() || "",
-
       ddno: formData.ddno.trim(),
       dddate: formData.dddate,
-
       amount: Number(formData.amount),
       lastContribution: Number(formData.lastContribution),
       yearOF: Number(formData.yearOF),
@@ -134,7 +126,6 @@ const handleUpdate = async (claimId: string, formData: Record<string, any>) => {
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
-       {/* Member Popup */}
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}

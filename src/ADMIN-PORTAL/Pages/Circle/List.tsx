@@ -24,7 +24,6 @@ const CircleList: React.FC = () => {
         StateService.getAllStates()
       ]);
 
-      // Map state names to circles
       const circlesWithStateName = circles.map(circle => ({
         ...circle,
         stateName: states.find(s => s.stateId === circle.stateId)?.name || "N/A"

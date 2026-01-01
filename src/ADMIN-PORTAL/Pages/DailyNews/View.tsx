@@ -18,7 +18,6 @@ const handleFetch = async (id: string) => {
   return DailyNewsService.getDailyNewsById(Number(id));
 };
 
-
   const handleDelete = async (id: string) => {
     await DailyNewsService.deleteDailyNews(Number(id));
   };

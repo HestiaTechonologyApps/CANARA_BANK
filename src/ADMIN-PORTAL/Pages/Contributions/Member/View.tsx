@@ -35,7 +35,7 @@ const MemberView: React.FC = () => {
 
   const handleFetch = async (memberId: string) => {
     const response = await MemberService.getMemberById(Number(memberId));
-    return response; // KiduView expects CustomResponse
+    return response; 
   };
 
   const handleDelete = async (memberId: string) => {
