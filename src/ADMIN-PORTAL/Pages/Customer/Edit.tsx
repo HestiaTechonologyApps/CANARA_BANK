@@ -1,24 +1,24 @@
 // src/components/Customer/CustomerEdit.tsx
-import React, { useState } from "react";
+import React from "react";
 import KiduEdit from "../../Components/KiduEdit";
 import type { Field } from "../../Components/KiduEdit";
 import defaultCustomerImage from "../../Assets/Images/profile.jpg";
 import CustomerService from "../../Services/Customers/Customers.services";
 import type { Customer } from "../../Types/Customers/Customers.types";
-import type { Company } from "../../Types/Settings/Company.types";
-import CompanyPopup from "../Settings/Company/CompanyPopup";
+// import type { Company } from "../../Types/Settings/Company.types";
+// import CompanyPopup from "../Settings/Company/CompanyPopup";
 
 const CustomerEdit: React.FC = () => {
   
-  const [showCompanyPopup, setShowCompanyPopup] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  // const [showCompanyPopup, setShowCompanyPopup] = useState(false);
+  // const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   const fields: Field[] = [
     { name: "customerId", rules: { type: "number", label: "Customer ID", disabled: true, colWidth: 3 } },
     { name: "customerName", rules: { type: "text", label: "Customer Name", required: true, colWidth: 6 } },
     { name: "customerEmail", rules: { type: "email", label: "Email", required: true, colWidth: 6 } },
     { name: "customerPhone", rules: { type: "number", label: "Phone", required: true, colWidth: 4 } },
-    { name: "companyId", rules: { type: "popup", label: "Company ID", required: true, colWidth: 4 } },
+   // { name: "companyId", rules: { type: "popup", label: "Company ID", required: true, colWidth: 4 } },
     { name: "createdAt", rules: { type: "date", label: "Created At", disabled: true, colWidth: 4 } },
     { name: "customerAddress", rules: { type: "textarea", label: "Address", colWidth: 12 } },
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
@@ -27,21 +27,21 @@ const CustomerEdit: React.FC = () => {
 
   const handleFetch = async (id: string) => {
     const response = await CustomerService.getCustomerById(Number(id));
-    const customer = response.value;
+    //const customer = response.value;
 
-    if (customer?.companyId) {
-      setSelectedCompany({ companyId: customer.companyId } as Company);
-    }
+    // if (customer?.companyId) {
+    //   setSelectedCompany({ companyId: customer.companyId } as Company);
+    // }
 
     return response;
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedCompany) {
-      throw new Error("Please select a company");
-    }
+    // if (!selectedCompany) {
+    //   throw new Error("Please select a company");
+    // }
 
-    const company = selectedCompany;
+   // const company = selectedCompany;
 
     const payload: Omit<Customer, "auditLogs"> = {
       customerId: Number(id),
@@ -55,21 +55,21 @@ const CustomerEdit: React.FC = () => {
       isActive: Boolean(formData.isActive),
       isDeleted: Boolean(formData.isDeleted),
 
-      companyId: company.companyId,
+      companyId: formData.companyId,
     };
 
     await CustomerService.updateCustomer(Number(id), payload);
 
-    setSelectedCompany({ companyId: company.companyId } as Company);
+   // setSelectedCompany({ companyId: company.companyId } as Company);
   };
 
-  const popupHandlers = {
-    companyId: {
-      value: selectedCompany?.companyId?.toString() || "",
-      actualValue: selectedCompany?.companyId,
-      onOpen: () => setShowCompanyPopup(true),
-    },
-  };
+  // const popupHandlers = {
+  //   companyId: {
+  //     value: selectedCompany?.companyId?.toString() || "",
+  //     actualValue: selectedCompany?.companyId,
+  //     onOpen: () => setShowCompanyPopup(true),
+  //   },
+  // };
 
   return (
     <>
@@ -88,17 +88,17 @@ const CustomerEdit: React.FC = () => {
         }}
         auditLogConfig={{ tableName: "Customer", recordIdField: "customerId" }}
         themeColor="#18575A"
-        popupHandlers={popupHandlers}
+       // popupHandlers={popupHandlers}
       />
 
-      <CompanyPopup
+      {/* <CompanyPopup
         show={showCompanyPopup}
         handleClose={() => setShowCompanyPopup(false)}
         onSelect={(company) => {
           setSelectedCompany(company);
           setShowCompanyPopup(false);
         }}
-      />
+      /> */}
     </>
   );
 };

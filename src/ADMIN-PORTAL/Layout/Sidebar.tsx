@@ -48,7 +48,8 @@ const Sidebar: React.FC = () => {
   const contribSubMenu = [
     { label: "Member", path: "/dashboard/contributions/member-list" },
     { label: "Monthly Contributions", path: "/dashboard/contributions/monthly" },
-    { label: "Direct Pay", path: "/dashboard/contributions/directpayment-list" }
+    { label: "Direct Pay", path: "/dashboard/contributions/directpayment-list" },
+    { label: "Account Direcy", path: "/dashboard/contributions/accountDirectEntry-list"}
   ];
 
   const claimsSubMenu = [
@@ -60,7 +61,9 @@ const Sidebar: React.FC = () => {
     { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Quotes", path: "/dashboard/cms/dayquote-list" },
     { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
-    { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" }
+    { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
+    { label: "Public Page", path:"/dashboard/cms/publicpage-list"},
+    { label: "Documents", path:"/dashboard/cms/documents-list"}
   ];
 
   const navigate = useNavigate();

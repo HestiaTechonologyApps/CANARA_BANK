@@ -119,6 +119,12 @@ import DirectPaymentCreate from '../Pages/Contributions/DirectPay/Create';
 import DirectPaymentEdit from '../Pages/Contributions/DirectPay/Edit';
 import DirectPaymentView from '../Pages/Contributions/DirectPay/View';
 
+//Account Direcy Entry
+import AccountDirectEntryList from '../Pages/Contributions/AccountDirectEntry/List';
+import AccountDirectEntryCreate from '../Pages/Contributions/AccountDirectEntry/Create';
+import AccountDirectEntryEdit from '../Pages/Contributions/AccountDirectEntry/Edit';
+import AccountDirectEntryView from '../Pages/Contributions/AccountDirectEntry/View';
+
 
 
 
@@ -247,6 +253,13 @@ export default function AdminRoutes() {
 
           {/* Monthly Contribution */}
           {/* <Route path='/dashboard/contributions/monthlyContribution-list' element={<mon/>}/> */}
+     
+          {/* Account Direcy Entry */}
+          <Route path='/dashboard/contributions/accountDirectEntry-list' element={<AccountDirectEntryList/>}/>
+          <Route path='/dashboard/contributions/accountDirectEntry-create' element={<AccountDirectEntryCreate/>}/>
+          <Route path='/dashboard/contributions/accountDirectEntry-edit/:accountsDirectEntryID' element={<AccountDirectEntryEdit/>}/>
+          <Route path='/dashboard/contributions/accountDirectEntry-view/:accountsDirectEntryID' element={<AccountDirectEntryView/>}/>
+
       </Route>
 
       {/* Catch-All Route for 404 */}

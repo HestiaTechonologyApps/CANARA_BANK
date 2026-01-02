@@ -7,6 +7,7 @@ import DayQuoteService from "../../Services/CMS/DayQuote.services";
 import type { Month } from "../../Types/Settings/Month.types";
 import MonthPopup from "../Settings/Month/MonthPopup";
 
+
 const DayQuoteEdit: React.FC = () => {
   const [showMonthPopup, setShowMonthPopup] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
@@ -24,13 +25,11 @@ const DayQuoteEdit: React.FC = () => {
     const quote = response.value;
 
     if (quote) {
-      // IMPORTANT: hydrate popup like MemberEdit
+      
       setSelectedMonth({ monthCode: quote.monthCode
       } as Month);
     }
-    // else {
-    //  setSelectedMonth(null);
-    //}
+   
 
     return response;
   };
@@ -51,23 +50,13 @@ const DayQuoteEdit: React.FC = () => {
   await DayQuoteService.updateDayQuote(Number(id), payload);
 };
 
-
-  // ================= POPUP HANDLERS =================
-  // const popupHandlers = {
-  //   monthCode: {
-  //     value: selectedMonth?.monthCode?.toString()|| "",   
-  //     actualValue: selectedMonth?.monthCode,   
-  //     onOpen: () => setShowMonthPopup(true),
-  //   },
-  // };
-  const popupHandlers = {
+const popupHandlers = {
   monthCode: {
-    value: selectedMonth?.monthName || selectedMonth?.monthCode?.toString() || "",
-    actualValue: selectedMonth?.monthCode,
+    value: selectedMonth?.monthCode?.toString() || "",
+    actualValue: selectedMonth?.monthCode, 
     onOpen: () => setShowMonthPopup(true),
   },
 };
-
 
   return (
     <>
@@ -82,12 +71,14 @@ const DayQuoteEdit: React.FC = () => {
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
-
       <MonthPopup
-        show={showMonthPopup}
-        handleClose={() => setShowMonthPopup(false)}
-        onSelect={setSelectedMonth}
-      />
+  show={showMonthPopup}
+  handleClose={() => setShowMonthPopup(false)}
+  onSelect={(m) => {
+    setSelectedMonth(m);
+    setShowMonthPopup(false);
+  }}
+/>
     </>
   );
 };

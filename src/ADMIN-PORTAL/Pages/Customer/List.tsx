@@ -14,7 +14,7 @@ const columns = [
   { key: "nationality", label: "nationality", enableSorting: true, type: "text" as const }, 
   { key: "createdAt", label: "Created At", enableSorting: true, type: "date" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
-  { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
+  //{ key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
 ];
 
 const CustomerList: React.FC = () => {
