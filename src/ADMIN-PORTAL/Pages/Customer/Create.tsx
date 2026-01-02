@@ -19,13 +19,13 @@ const CustomerCreate: React.FC = () => {
     { name: "dob", rules: { type: "date", label: "Date of Birth", required: false, placeholder: "Select date of birth", colWidth: 4 } },
     { name: "nationalilty", rules: { type: "text", label: "Nationality", required: false, placeholder: "Enter nationality", colWidth: 4 } },
     //{ name: "companyId", rules: { type: "popup", label: "Company ID", required: true, placeholder: "Enter company ID", colWidth: 4 } },
-    { name: "customerAddress", rules: { type: "textarea", label: "Address", required: false, placeholder: "Enter customer address", colWidth: 12 } },
+    { name: "customerAddress", rules: { type: "textarea", label: "Address", required: false, placeholder: "Enter customer address", colWidth: 6 } },
     { name: "isActive", rules: { type: "toggle", label: "Is Active", required: false } },
     { name: "isDeleted", rules: { type: "toggle", label: "Is Deleted", required: false } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    try {
+   // try {
       const payload: Omit<Customer, "customerId" | "auditLogs"> = {
         customerName: String(formData.customerName).trim(),
         customerPhone: String(formData.customerPhone).trim(),
@@ -40,11 +40,12 @@ const CustomerCreate: React.FC = () => {
       };
 
       await CustomerService.createCustomer(payload);
-    } catch (error) {
-      console.error("Error creating customer:", error);
-      throw error;
     }
-  };
+    // catch (error) {
+    //  console.error("Error creating customer:", error);
+    //  throw error;
+   // }
+ // };
 
   //  const popupHandlers={
   //   companyId:{
