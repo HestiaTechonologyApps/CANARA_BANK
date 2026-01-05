@@ -99,7 +99,7 @@ const AccountDirectEntryCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         submitButtonText="Create Account Direcy Entry"
         showResetButton
-        navigateOnSuccess="/dashboard/contributions/accountDirecTEntry-list"
+        navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
         successMessage="Entry created successfully"
         errorMessage="Failed to create entry. Please try again."
         themeColor="#18575A"

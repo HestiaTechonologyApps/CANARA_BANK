@@ -7,30 +7,10 @@ import KiduServerTable from "../../../Components/KiduServerTable";
 
 const PublicPageList: React.FC = () => {
   const columns: any[] = [
-    { 
-      key: "publicPageId", 
-      label: "ID", 
-      enableSorting: true, 
-      type: "text"
-    },
-    { 
-      key: "navBrandTitle", 
-      label: "Brand Title", 
-      enableSorting: true, 
-      type: "text"
-    },
-    { 
-      key: "navBrandSubTitle", 
-      label: "Subtitle", 
-      enableSorting: true, 
-      type: "text"
-    },
-    { 
-      key: "isActive", 
-      label: "Active", 
-      enableSorting: true, 
-      type: "boolean"
-    },
+    { key: "publicPageId", label: "ID", enableSorting: true, type: "text"},
+    { key: "navBrandTitle", label: "Brand Title", enableSorting: true, type: "text"},
+    { key: "navBrandSubTitle", label: "Subtitle", enableSorting: true, type: "text"},
+    { key: "isActive", label: "Active", enableSorting: true, type: "boolean"},
   ];
 
   const fetchData = async (params: {

@@ -2,7 +2,7 @@
 import React from "react";
 import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
-import type { Customer } from "../../Types/Customers/Customers.types";
+//import type { Customer } from "../../Types/Customers/Customers.types";
 import CustomerService from "../../Services/Customers/Customers.services";
 // import type { Company } from "../../Types/Settings/Company.types";
 // import CompanyPopup from "../Settings/Company/CompanyPopup";
@@ -24,23 +24,30 @@ const CustomerCreate: React.FC = () => {
     { name: "isDeleted", rules: { type: "toggle", label: "Is Deleted", required: false } },
   ];
 
-  const handleSubmit = async (formData: Record<string, any>) => {
-   // try {
-      const payload: Omit<Customer, "customerId" | "auditLogs"> = {
-        customerName: String(formData.customerName).trim(),
-        customerPhone: String(formData.customerPhone).trim(),
-        customerEmail: String(formData.customerEmail).trim(),
-        customerAddress: String(formData.customerAddress || "").trim(),
-        dob: formData.dob ? new Date(formData.dob).toISOString() : "",
-        nationalilty: String(formData.nationalilty || "").trim(),
-        createdAt: new Date().toISOString(),
-        isActive: Boolean(formData.isActive),
-        companyId: Number(formData.companyId),
-        isDeleted: Boolean(formData.isDeleted),
-      };
+ const handleSubmit = async (formData: Record<string, any>) => {
 
-      await CustomerService.createCustomer(payload);
-    }
+  const customer: any = {
+    customerName: formData.customerName.trim(),
+    customerEmail: formData.customerEmail.trim(),
+    customerPhone: String(formData.customerPhone),
+    customerAddress: formData.customerAddress?.trim() || "",
+    nationality: formData.nationality || "",
+    isActive: Boolean(formData.isActive),
+    isDeleted: false,
+    companyId: 1,
+  };
+
+  // ✅ ONLY attach dob if user selected it
+  if (formData.dob) {
+    customer.dob = new Date(formData.dob).toISOString();
+  }
+
+  // ✅ EXACT payload backend expects
+  await CustomerService.createCustomer({
+    customer,
+  });
+};
+
     // catch (error) {
     //  console.error("Error creating customer:", error);
     //  throw error;

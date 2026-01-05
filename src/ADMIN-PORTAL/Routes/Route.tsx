@@ -124,6 +124,15 @@ import DirectPaymentCreate from '../Pages/Contributions/DirectPay/Create';
 import DirectPaymentEdit from '../Pages/Contributions/DirectPay/Edit';
 import DirectPaymentView from '../Pages/Contributions/DirectPay/View';
 
+//Account Direct Entry
+import AccountDirectEntryList from '../Pages/Contributions/AccountDirectEntry/List';
+import AccountDirectEntryCreate from '../Pages/Contributions/AccountDirectEntry/Create';
+import AccountDirectEntryEdit from '../Pages/Contributions/AccountDirectEntry/Edit';
+import AccountDirectEntryView from '../Pages/Contributions/AccountDirectEntry/View';
+import PublicPageList from '../Pages/PublicPage/List';
+import PublicPageCreate from '../Pages/PublicPage/Create';
+import PublicPageView from '../Pages/PublicPage/View';
+
 export const adminRoutes = (
   <Route
     path="/dashboard"
@@ -248,6 +257,21 @@ export const adminRoutes = (
     <Route path="contributions/directpayment-create" element={<DirectPaymentCreate/>}/>
     <Route path="contributions/directpayment-edit/:directPaymentId" element={<DirectPaymentEdit/>}/>
     <Route path="contributions/directpayment-view/:directPaymentId" element={<DirectPaymentView/>}/>
+
+    {/* Account Direct Entry */}
+    <Route path='contributions/accountDirectEntry-list' element={<AccountDirectEntryList/>}/>
+    <Route path='contributions/accountDirectEntry-create' element={<AccountDirectEntryCreate/>}/>
+    <Route path='contributions/accountDirectEntry-edit/:accountsDirectEntryID' element={<AccountDirectEntryEdit/>}/>
+    <Route path='contributions/accountDirectEntry-view/:accountsDirectEntryID' element={<AccountDirectEntryView/>}/>
+
+    {/* Documents */}
+    <Route path='cms/documents-list' element={<DocumentList/>}/>
+    <Route path='cms/documents-create' element={<DocumentCreate/>}/>
+
+    {/* Public Page */}
+    <Route path='cms/publicPage-list' element={<PublicPageList/>}/>
+    <Route path='cms/publicPage-create' element={<PublicPageCreate/>}/>
+    <Route path='cms/publicPage-view/:publicPageId' element={<PublicPageView/>}/>
   </Route>
 );
 

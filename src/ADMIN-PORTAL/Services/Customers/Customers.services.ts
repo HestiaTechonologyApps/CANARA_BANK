@@ -23,16 +23,23 @@ const CustomerService = {
   return response; 
 },
 
-  async createCustomer(
-    data: Omit<Customer, "customerId" | "auditLogs">
-  ): Promise<Customer> {
-    const response = await HttpService.callApi<CustomResponse<Customer>>(
-      API_ENDPOINTS.CUSTOMER.CREATE,
-      "POST",
-      data
-    );
-    return response.value;
-  },
+  // async createCustomer(
+  //   data: Omit<Customer, "customerId" | "auditLogs">
+  // ): Promise<Customer> {
+  //   const response = await HttpService.callApi<CustomResponse<Customer>>(
+  //     API_ENDPOINTS.CUSTOMER.CREATE,
+  //     "POST",
+  //     data
+  //   );
+  //   return response.value;
+  // },
+async createCustomer(data: { customer: any }) {
+  return HttpService.callApi(
+    API_ENDPOINTS.CUSTOMER.CREATE,
+    "POST",
+    data
+  );
+},
 
   async updateCustomer(
     id: number,
