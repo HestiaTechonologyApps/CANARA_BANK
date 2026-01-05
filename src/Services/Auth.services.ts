@@ -33,6 +33,12 @@ class AuthService {
           localStorage.setItem('user', userString);
           console.log('User stored:', localStorage.getItem('user') !== null);
           console.log('Stored user data:', localStorage.getItem('user'));
+          
+          // Store user role separately for easy access
+          if (response.value.user.role) {
+            localStorage.setItem('user_role', response.value.user.role);
+            console.log('User role stored:', response.value.user.role);
+          }
         }
 
         // Store token expiry
@@ -45,6 +51,7 @@ class AuthService {
         console.log('Storage verification:');
         console.log('- jwt_token exists:', !!localStorage.getItem('jwt_token'));
         console.log('- user exists:', !!localStorage.getItem('user'));
+        console.log('- user_role exists:', !!localStorage.getItem('user_role'));
         console.log('- token_expires_at exists:', !!localStorage.getItem('token_expires_at'));
       } else {
         console.error('Login failed - response not successful or no value');
@@ -64,6 +71,7 @@ class AuthService {
 
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('user_role');
     localStorage.removeItem('token_expires_at');
 
     console.log('After logout - jwt_token:', localStorage.getItem('jwt_token') !== null);
@@ -86,6 +94,17 @@ class AuthService {
       return user;
     } catch (error) {
       console.error('Error parsing user from localStorage:', error);
+      return null;
+    }
+  }
+
+  static getUserRole(): string | null {
+    try {
+      const role = localStorage.getItem('user_role');
+      console.log('Getting user role:', role);
+      return role;
+    } catch (error) {
+      console.error('Error getting user role from localStorage:', error);
       return null;
     }
   }
@@ -121,6 +140,81 @@ class AuthService {
 
     console.log('User is authenticated');
     return true;
+  }
+
+  /**
+   * Get the appropriate dashboard route based on user role
+   * @returns The dashboard route path
+   */
+  static getDashboardRoute(): string {
+    const role = this.getUserRole();
+    console.log('Determining dashboard route for role:', role);
+
+    if (!role) {
+      console.warn('No role found, defaulting to admin dashboard');
+      return '/dashboard';
+    }
+
+    // Normalize role string (trim and convert to lowercase for comparison)
+    const normalizedRole = role.trim().toLowerCase();
+
+    switch (normalizedRole) {
+      case 'staff':
+        console.log('Routing to Staff Portal');
+        return '/staff-portal';
+      
+      case 'admin user':
+      case 'adminuser':
+        console.log('Routing to Admin Dashboard');
+        return '/dashboard';
+      
+      case 'super admin':
+      case 'superadmin':
+        console.log('Routing to Admin Dashboard (Super Admin)');
+        return '/dashboard';
+      
+      default:
+        console.warn(`Unknown role: ${role}, defaulting to admin dashboard`);
+        return '/dashboard';
+    }
+  }
+
+  /**
+   * Check if user has admin privileges (Admin User or Super Admin)
+   * @returns boolean indicating if user is admin
+   */
+  static isAdmin(): boolean {
+    const role = this.getUserRole();
+    if (!role) return false;
+    
+    const normalizedRole = role.trim().toLowerCase();
+    return normalizedRole === 'admin user' || 
+           normalizedRole === 'adminuser' || 
+           normalizedRole === 'super admin' || 
+           normalizedRole === 'superadmin';
+  }
+
+  /**
+   * Check if user is staff
+   * @returns boolean indicating if user is staff
+   */
+  static isStaff(): boolean {
+    const role = this.getUserRole();
+    if (!role) return false;
+    
+    return role.trim().toLowerCase() === 'staff';
+  }
+
+  /**
+   * Check if user is super admin
+   * @returns boolean indicating if user is super admin
+   */
+  static isSuperAdmin(): boolean {
+    const role = this.getUserRole();
+    if (!role) return false;
+    
+    const normalizedRole = role.trim().toLowerCase();
+    return normalizedRole === 'super admin' || normalizedRole === 'superadmin';
   }
 
   // change-password

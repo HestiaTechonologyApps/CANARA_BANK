@@ -1,4 +1,5 @@
 // src/Types/Settings/User.types.ts
+
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface User {
@@ -10,9 +11,17 @@ export interface User {
   passwordHash?: string; 
   isActive: boolean;
   islocked: boolean;
-  createAt: Date | string;  // Backend uses 'createAt' (no 'd')
-  lastlogin: Date | string | null;  // Backend uses lowercase 'lastlogin'
-  role: string;  // Missing from your type
+  createAt: Date | string;
+  lastlogin: Date | string | null;
+  role: string; // Added role property
   companyId: number;
   auditLogs?: AuditTrails[];
+}
+
+// Optional: Create a type for role values to ensure type safety
+export type UserRole = 'Staff' | 'Admin User' | 'Super Admin';
+
+// Optional: Create a more type-safe User interface
+export interface TypedUser extends Omit<User, 'role'> {
+  role: UserRole;
 }

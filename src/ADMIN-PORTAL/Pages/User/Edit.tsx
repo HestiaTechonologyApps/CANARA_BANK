@@ -19,12 +19,18 @@ const UserEdit: React.FC = () => {
     { name: "userName", rules: { type: "text", label: "User Name", required: true, minLength: 3, maxLength: 50, placeholder: "Enter user name", colWidth: 6 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, placeholder: "Enter email address", colWidth: 6 } },
     { name: "phoneNumber", rules: { type: "text", label: "Phone Number", required: true, minLength: 10, maxLength: 10, placeholder: "Enter 10-digit phone number", colWidth: 4 } },
-    { name: "role", rules: { type: "text", label: "Role", required: true, placeholder: "Enter user role", colWidth: 4 } },
+    { name: "role", rules: { type: "select", label: "Role", required: true, placeholder: "Select user role", colWidth: 4 } },
     { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 4 } },
     { name: "createAt", rules: { type: "date", label: "Created At", required: false, colWidth: 4, disabled: true } },
     { name: "address", rules: { type: "textarea", label: "Address", required: false, placeholder: "Enter address", colWidth: 12 } },
     { name: "isActive", rules: { type: "toggle", label: "Is Active", required: false } },
     { name: "islocked", rules: { type: "toggle", label: "Is Locked", required: false } },
+  ];
+
+  const roleOptions = [
+    { value: "Staff", label: "Staff" },
+    { value: "Admin User", label: "Admin User" },
+    { value: "Super Admin", label: "Super Admin" }
   ];
 
   // Fetch user data by ID
@@ -119,6 +125,7 @@ const UserEdit: React.FC = () => {
         }}
         themeColor="#18575A"
         popupHandlers={popupHandlers}
+        options={{ role: roleOptions }}
       />
       
       <CompanyPopup

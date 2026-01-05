@@ -1,17 +1,19 @@
+// PUBLIC-PORTAL/Components/PublicNavbar.tsx
 import React, { useState } from "react";
 import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
 import "../Style/Navbar.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import LoginModal from "../Auth/Login";
+import LoginModal from "../Auth/LoginModal"; // Use the modal version
 import SignupModal from "../Auth/SignUp";
 import ResetPasswordModal from "../Auth/ResetPassword";
-import logo from "../Assets/Images/AIBEA_logo.jpg"
+import logo from "../Assets/Images/AIBEA_logo.jpg";
 import { PublicService } from "../../Services/PublicService";
 
 const PublicNavbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const navbar = PublicService.navbar
+  const navbar = PublicService.navbar;
+  
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
@@ -19,18 +21,23 @@ const PublicNavbar: React.FC = () => {
   const isActive = (path: string) =>
     location.pathname === path ? "active-nav" : "";
 
+  const handleLoginClick = () => {
+    // Option 1: Show modal
+    setShowLogin(true);
+    
+    // Option 2: Navigate to login page
+    // navigate('/login');
+  };
+
   return (
     <>
-      {/* MAIN NAVBAR */}
       <Navbar expand="lg" className="nav-style bg-white shadow-sm" sticky="top">
         <Container>
-
-          {/* LEFT LOGO + TITLE */}
           <Navbar.Brand className="d-flex align-items-center gap-2">
             <img src={logo} className="nav-logo" alt={navbar?.brand.logoAlt || "50 Years Logo"} />
             <div className="d-flex flex-column lh-sm">
               <span className="fw-semibold nav-title">
-                {navbar?.brand.title || " Canara Bank Employees’ Union"}
+                {navbar?.brand.title || " Canara Bank Employees' Union"}
               </span>
               <span className="nav-subtitle">
                 {navbar?.brand.subtitle || " Golden Jubilee Family Welfare Scheme"}
@@ -38,7 +45,6 @@ const PublicNavbar: React.FC = () => {
             </div>
           </Navbar.Brand>
 
-          {/* MOBILE TOGGLE */}
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
 
           <Navbar.Offcanvas
@@ -51,7 +57,6 @@ const PublicNavbar: React.FC = () => {
             </Offcanvas.Header>
 
             <Offcanvas.Body>
-              {/* NAV LINKS */}
               <Nav className="mx-auto align-items-center nav-menu">
                 {navbar.menu.map((item, index) => (
                   <Nav.Link
@@ -64,22 +69,19 @@ const PublicNavbar: React.FC = () => {
                 ))}
               </Nav>
 
-              {/* LOGIN BUTTON */}
-              <Button onClick={() => setShowLogin(true)} className="login-btn ms-lg-4 mt-3 mt-lg-0">
+              <Button onClick={handleLoginClick} className="login-btn ms-lg-4 mt-3 mt-lg-0">
                 <i className={navbar.auth.loginButton.iconclass}></i>
                 {navbar?.auth.loginButton.label}
               </Button>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-
         </Container>
       </Navbar>
 
-      {/* CONTACT STRIP */}
       <div className="contact-strip text-white py-1 px-3">
         <Container className="d-flex justify-content-center align-items-center gap-4 small">
           <span>
-            <i className={navbar?.contactStrip.phone.value}></i> {navbar?.contactStrip.phone.value}
+            <i className={navbar?.contactStrip.phone.iconclass}></i> {navbar?.contactStrip.phone.value}
           </span>
           <span>
             <i className={navbar?.contactStrip.email.iconclass}></i> {navbar?.contactStrip.email.value}
@@ -87,6 +89,7 @@ const PublicNavbar: React.FC = () => {
         </Container>
       </div>
 
+      {/* Modal versions for navbar button */}
       <LoginModal
         show={showLogin}
         onClose={() => setShowLogin(false)}

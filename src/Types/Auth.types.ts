@@ -23,6 +23,7 @@ export interface User {
       createAtSyring: string;
       companyId?: number;
       companyName?: string
+      role: string; // ← ADD THIS LINE
       auditLogs?: AuditTrails[];
 }
 

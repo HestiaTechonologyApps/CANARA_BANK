@@ -1,9 +1,10 @@
-// Routes/AdminRoutes.tsx
-import { Routes, Route } from 'react-router-dom';
+// ADMIN-PORTAL/Routes/Route.tsx
+// IMPORTANT: No <Routes> wrapper - just export Route definitions
+
+import { Route } from 'react-router-dom';
 import DashBoard from '../Pages/Dashboard/DashBoard';
 import HomePage from '../Layout/HomePage';
-import PageNotFound from '../Pages/Dashboard/PageNotFound';
-import Login from '../../Auth/Login';
+import ProtectedRoute from '../../PUBLIC-PORTAL/Auth/ProtectedRoute';
 
 //User
 import UserList from '../Pages/User/List';
@@ -29,7 +30,7 @@ import MainPageCreate from '../Pages/MainPage/Create';
 import MainPageEdit from '../Pages/MainPage/Edit';
 import MainPageView from '../Pages/MainPage/View';
 
-// //State
+//State
 import StateList from '../Pages/Settings/State/List';
 import StateCreate from '../Pages/Settings/State/Create';
 import StateEdit from '../Pages/Settings/State/Edit';
@@ -119,135 +120,131 @@ import DirectPaymentCreate from '../Pages/Contributions/DirectPay/Create';
 import DirectPaymentEdit from '../Pages/Contributions/DirectPay/Edit';
 import DirectPaymentView from '../Pages/Contributions/DirectPay/View';
 
+export const adminRoutes = (
+  <Route
+    path="/dashboard"
+    element={
+      <ProtectedRoute allowedRoles={['Admin User', 'Super Admin']}>
+        <DashBoard />
+      </ProtectedRoute>
+    }
+  >
+    <Route index element={<HomePage />} />
+    
+    {/* User */}
+    <Route path="settings/user-list" element={<UserList />} />
+    <Route path="settings/user-create" element={<UserCreate />} />
+    <Route path="settings/user-edit/:userId" element={<UserEdit />} />
+    <Route path="settings/user-view/:userId" element={<UserView />} />
 
+    {/* Customer */}
+    <Route path="customer-list" element={<CustomerList />} />
+    <Route path="customer-create" element={<CustomerCreate />} />
+    <Route path="customer-edit/:customerId" element={<CustomerEdit />} />
+    <Route path="customer-view/:customerId" element={<CustomerView />} />
 
+    {/* State */}
+    <Route path="settings/state-list" element={<StateList />} />
+    <Route path="settings/state-create" element={<StateCreate />} />
+    <Route path="settings/state-edit/:stateId" element={<StateEdit />} />
+    <Route path="settings/state-view/:stateId" element={<StateView />} />
 
+    {/* Category */}
+    <Route path="settings/category-list" element={<CategoryList />} />
+    <Route path="settings/category-create" element={<CategoryCreate />} />
+    <Route path="settings/category-edit/:categoryId" element={<CategoryEdit />} />
+    <Route path="settings/category-view/:categoryId" element={<CategoryView />} />
 
-export default function AdminRoutes() {
-  return (
-    <Routes>
-      <Route path="/" element={<Login />} />
+    {/* Branch */}
+    <Route path="settings/branch-list" element={<BranchList />} />
+    <Route path="settings/branch-create" element={<BranchCreate />} />
+    <Route path="settings/branch-edit/:branchId" element={<BranchEdit />} />
+    <Route path="settings/branch-view/:branchId" element={<BranchView />} />
 
-      <Route path="/dashboard" element={<DashBoard />}>
-        <Route index element={<HomePage />} />
+    {/* Circles */}
+    <Route path="settings/circle-list" element={<CircleList />} />
+    <Route path="settings/circle-create" element={<CircleCreate />} />
+    <Route path="settings/circle-edit/:circleId" element={<CircleEdit />} />
+    <Route path="settings/circle-view/:circleId" element={<CircleView />} />
 
-        {/* User */}
-        <Route path='/dashboard/settings/user-list' element={<UserList />} />
-        <Route path='/dashboard/settings/user-create' element={<UserCreate />} />
-        <Route path='/dashboard/settings/user-edit/:userId' element={<UserEdit />} />
-        <Route path='/dashboard/settings/user-view/:userId' element={<UserView />} />
+    {/* Company */}
+    <Route path="settings/company-list" element={<CompanyList />} />
+    <Route path="settings/company-create" element={<CompanyCreate />} />
+    <Route path="settings/company-edit/:companyId" element={<CompanyEdit />} />
+    <Route path="settings/company-view/:companyId" element={<CompanyView />} />
 
-        {/* Customer */}
-        <Route path='/dashboard/customer-list' element={<CustomerList />} />
-        <Route path='/dashboard/customer-create' element={<CustomerCreate />} />
-        <Route path='/dashboard/customer-edit/:customerId' element={<CustomerEdit />} />
-        <Route path='/dashboard/customer-view/:customerId' element={<CustomerView />} />
+    {/* Designation */}
+    <Route path="settings/designation-list" element={<DesignationList />} />
+    <Route path="settings/designation-create" element={<DesignationCreate />} />
+    <Route path="settings/designation-edit/:designationId" element={<DesignationEdit />} />
+    <Route path="settings/designation-view/:designationId" element={<DesignationView />} />
 
-        {/* State */}
-        <Route path="/dashboard/settings/state-list" element={<StateList />} />
-        <Route path="/dashboard/settings/state-create" element={<StateCreate />} />
-        <Route path="/dashboard/settings/state-edit/:stateId" element={<StateEdit />} />
-        <Route path="/dashboard/settings/state-view/:stateId" element={<StateView />} />
+    {/* Status */}
+    <Route path="settings/status-list" element={<StatusList />} />
+    <Route path="settings/status-create" element={<StatusCreate />} />
+    <Route path="settings/status-edit/:statusId" element={<StatusEdit />} />
+    <Route path="settings/status-view/:statusId" element={<StatusView />} />
 
-        {/* Category */}
-        <Route path="/dashboard/settings/category-list" element={<CategoryList />} />
-        <Route path="/dashboard/settings/category-create" element={<CategoryCreate />} />
-        <Route path="/dashboard/settings/category-edit/:categoryId" element={<CategoryEdit />} />
-        <Route path="/dashboard/settings/category-view/:categoryId" element={<CategoryView />} />
+    {/* UserType */}
+    <Route path="settings/usertype-list" element={<UserTypeList />} />
+    <Route path="settings/usertype-create" element={<UserTypeCreate />} />
+    <Route path="settings/usertype-edit/:userTypeId" element={<UserTypeEdit />} />
+    <Route path="settings/usertype-view/:userTypeId" element={<UserTypeView />} />
 
-        {/* Branch */}
-        <Route path="/dashboard/settings/branch-list" element={<BranchList />} />
-        <Route path="/dashboard/settings/branch-create" element={<BranchCreate />} />
-        <Route path="/dashboard/settings/branch-edit/:branchId" element={<BranchEdit />} />
-        <Route path="/dashboard/settings/branch-view/:branchId" element={<BranchView />} />
+    {/* Month */}
+    <Route path="settings/month-list" element={<MonthList />} />
+    <Route path="settings/month-create" element={<MonthCreate />} />
+    <Route path="settings/month-edit/:monthId" element={<MonthEdit />} />
+    <Route path="settings/month-view/:monthId" element={<MonthView />} />
 
-        {/* Circles */}
-        <Route path="/dashboard/settings/circle-list" element={<CircleList />} />
-        <Route path="/dashboard/settings/circle-create" element={<CircleCreate />} />
-        <Route path="/dashboard/settings/circle-edit/:circleId" element={<CircleEdit />} />
-        <Route path="/dashboard/settings/circle-view/:circleId" element={<CircleView />} />
+    {/* Manage Committe */}
+    <Route path="cms/manage-committe-list" element={<ManagingCommitteeList />} />
+    <Route path="cms/manage-committe-create" element={<ManagingCommitteeCreate />} />
+    <Route path="cms/manage-committe-edit/:managingComiteeId" element={<ManagingCommitteeEdit />} />
+    <Route path="cms/manage-committe-view/:managingComiteeId" element={<ManagingCommitteeView />} />
 
-        {/* Company */}
-        <Route path="/dashboard/settings/company-list" element={<CompanyList />} />
-        <Route path="/dashboard/settings/company-create" element={<CompanyCreate />} />
-        <Route path="/dashboard/settings/company-edit/:companyId" element={<CompanyEdit />} />
-        <Route path="/dashboard/settings/company-view/:companyId" element={<CompanyView />} />
+    {/* Main Page */}
+    <Route path="cms/mainpage-list" element={<MainPageList />} />
+    <Route path="cms/mainpage-create" element={<MainPageCreate />} />
+    <Route path="cms/mainpage-edit/:mainPageId" element={<MainPageEdit />} />
+    <Route path="cms/mainpage-view/:mainPageId" element={<MainPageView />} />
 
-        {/* Designation */}
-        <Route path="/dashboard/settings/designation-list" element={<DesignationList />} />
-        <Route path="/dashboard/settings/designation-create" element={<DesignationCreate />} />
-        <Route path="/dashboard/settings/designation-edit/:designationId" element={<DesignationEdit />} />
-        <Route path="/dashboard/settings/designation-view/:designationId" element={<DesignationView />} />
+    {/* Member */}
+    <Route path="contributions/member-list" element={<MemberList />} />
+    <Route path="contributions/member-create" element={<MemberCreate />} />
+    <Route path="contributions/member-edit/:memberId" element={<MemberEdit />} />
+    <Route path="contributions/member-view/:memberId" element={<MemberView />} />
 
-        {/* Status */}
-        <Route path="/dashboard/settings/status-list" element={<StatusList />} />
-        <Route path="/dashboard/settings/status-create" element={<StatusCreate />} />
-        <Route path="/dashboard/settings/status-edit/:statusId" element={<StatusEdit />} />
-        <Route path="/dashboard/settings/status-view/:statusId" element={<StatusView />} />
+    {/* Refund */}
+    <Route path="claims/refundcontribution-list" element={<RefundContributionList/>}/>
+    <Route path="claims/refundcontribution-create" element={<RefundContributionCreate/>}/>
+    <Route path="claims/refundcontribution-edit/:refundContributionId" element={<RefundContributionEdit/>}/>
+    <Route path="claims/refundcontribution-view/:refundContributionId" element={<RefundContributionView/>}/>
 
-        {/* UserType */}
-        <Route path="/dashboard/settings/usertype-list" element={<UserTypeList />} />
-        <Route path="/dashboard/settings/usertype-create" element={<UserTypeCreate />} />
-        <Route path="/dashboard/settings/usertype-edit/:userTypeId" element={<UserTypeEdit />} />
-        <Route path="/dashboard/settings/usertype-view/:userTypeId" element={<UserTypeView />} />
+    {/* Death Claims */}
+    <Route path="claims/deathclaims-list" element={<DeathClaimList/>}/>
+    <Route path="claims/deathclaims-create" element={<DeathClaimCreate/>}/>
+    <Route path="claims/deathclaims-edit/:deathClaimId" element={<DeathClaimEdit/>}/>
+    <Route path="claims/deathclaims-view/:deathClaimId" element={<DeathClaimView/>}/>
 
-        {/* Month */}
-        <Route path="/dashboard/settings/month-list" element={<MonthList />} />
-        <Route path="/dashboard/settings/month-create" element={<MonthCreate />} />
-        <Route path="/dashboard/settings/month-edit/:monthId" element={<MonthEdit />} />
-        <Route path="/dashboard/settings/month-view/:monthId" element={<MonthView />} />
+    {/* Day Quote */}
+    <Route path="cms/dayquote-list" element={<DayQuoteList/>}/>
+    <Route path="cms/dayquote-create" element={<DayQuoteCreate/>}/>
+    <Route path="cms/dayquote-edit/:dayQuoteId" element={<DayQuoteEdit/>}/>
+    <Route path="cms/dayquote-view/:dayQuoteId" element={<DayQuoteView/>}/>
 
-        {/* Manage Committe */}
-        <Route path='/dashboard/cms/manage-committe-list' element={<ManagingCommitteeList />} />
-        <Route path='/dashboard/cms/manage-committe-create' element={<ManagingCommitteeCreate />} />
-        <Route path='/dashboard/cms/manage-committe-edit/:managingComiteeId' element={<ManagingCommitteeEdit />} />
-        <Route path='/dashboard/cms/manage-committe-view/:managingComiteeId' element={<ManagingCommitteeView />} />
+    {/* Daily News */}
+    <Route path="cms/dailynews-list" element={<DailyNewsList/>}/>
+    <Route path="cms/dailynews-create" element={<DailyNewsCreate/>}/>
+    <Route path="cms/dailynews-edit/:dailyNewsId" element={<DailyNewsEdit/>}/>
+    <Route path="cms/dailynews-view/:dailyNewsId" element={<DailyNewsView/>}/>
 
-        {/* Main Page */}
-        <Route path='/dashboard/cms/mainpage-list' element={<MainPageList />} />
-        <Route path='/dashboard/cms/mainpage-create' element={<MainPageCreate />} />
-        <Route path='/dashboard/cms/mainpage-edit/:mainPageId' element={<MainPageEdit />} />
-        <Route path='/dashboard/cms/mainpage-view/:mainPageId' element={<MainPageView />} />
+    {/* Direct Pay */}
+    <Route path="contributions/directpayment-list" element={<DirectPaymentList/>}/>
+    <Route path="contributions/directpayment-create" element={<DirectPaymentCreate/>}/>
+    <Route path="contributions/directpayment-edit/:directPaymentId" element={<DirectPaymentEdit/>}/>
+    <Route path="contributions/directpayment-view/:directPaymentId" element={<DirectPaymentView/>}/>
+  </Route>
+);
 
-        {/* Member */}
-        <Route path='/dashboard/contributions/member-list' element={<MemberList />} />
-        <Route path='/dashboard/contributions/member-create' element={<MemberCreate />} />
-        <Route path='/dashboard/contributions/member-edit/:memberId' element={<MemberEdit />} />
-        <Route path='/dashboard/contributions/member-view/:memberId' element={<MemberView />} />
-
-         {/* Refund */}
-         <Route path='/dashboard/claims/refundcontribution-list' element={<RefundContributionList/>}/>
-         <Route path='/dashboard/claims/refundcontribution-create' element={<RefundContributionCreate/>}/>
-         <Route path='/dashboard/claims/refundcontribution-edit/:refundContributionId' element={<RefundContributionEdit/>}/>
-         <Route path='/dashboard/claims/refundcontribution-view/:refundContributionId' element={<RefundContributionView/>}/>
-
-        {/* Death Claims */}
-         <Route path='/dashboard/claims/deathclaims-list' element={<DeathClaimList/>}/>
-         <Route path='/dashboard/claims/deathclaims-create' element={<DeathClaimCreate/>}/>
-         <Route path='/dashboard/claims/deathclaims-edit/:deathClaimId' element={<DeathClaimEdit/>}/>
-         <Route path='/dashboard/claims/deathclaims-view/:deathClaimId' element={<DeathClaimView/>}/>
-
-         {/* Day Quote */}
-         <Route path='/dashboard/cms/dayquote-list' element={<DayQuoteList/>}/>
-         <Route path='/dashboard/cms/dayquote-create' element={<DayQuoteCreate/>}/>
-         <Route path='/dashboard/cms/dayquote-edit/:dayQuoteId' element={<DayQuoteEdit/>}/>
-         <Route path='/dashboard/cms/dayquote-view/:dayQuoteId' element={<DayQuoteView/>}/>
-
-         {/* Daily News */}
-          <Route path='/dashboard/cms/dailynews-list' element={<DailyNewsList/>}/>
-          <Route path='/dashboard/cms/dailynews-create' element={<DailyNewsCreate/>}/>
-          <Route path='/dashboard/cms/dailynews-edit/:dailyNewsId' element={<DailyNewsEdit/>}/>
-          <Route path='/dashboard/cms/dailynews-view/:dailyNewsId' element={<DailyNewsView/>}/>
-
-          {/* Direct Pay */}
-          <Route path='/dashboard/contributions/directpayment-list' element={<DirectPaymentList/>}/>
-          <Route path='/dashboard/contributions/directpayment-create' element={<DirectPaymentCreate/>}/>
-          <Route path='/dashboard/contributions/directpayment-edit/:directPaymentId' element={<DirectPaymentEdit/>}/>
-          <Route path='/dashboard/contributions/directpayment-view/:directPaymentId' element={<DirectPaymentView/>}/>
-      </Route>
-
-      {/* Catch-All Route for 404 */}
-      <Route path='*' element={<PageNotFound />} />
-    </Routes>
-  );
-}
+export default adminRoutes;
