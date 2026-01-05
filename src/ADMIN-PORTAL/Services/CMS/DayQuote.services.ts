@@ -13,7 +13,6 @@ const DayQuoteService = {
     return response.value;
   },
 
-  // 🔥 MUST RETURN CustomResponse (KiduEdit requires this)
   async getDayQuoteById(
     id: number
   ): Promise<CustomResponse<DayQuote>> {

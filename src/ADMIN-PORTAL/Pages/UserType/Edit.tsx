@@ -5,39 +5,17 @@ import UserTypeService from "../../Services/Settings/UserType.services";
 import type { UserType } from "../../Types/Settings/UserType.types";
 
 const UserTypeEdit: React.FC = () => {
+
   const fields: Field[] = [
-   
-    {
-      name: "abbreviation",
-      rules: {
-        type: "text",
-        label: "Abbreviation",
-        required: true,
-        minLength: 2,
-        maxLength: 10,
-        colWidth: 6,
-      },
-    },
-    {
-      name: "description",
-      rules: {
-        type: "text",
-        label: "Description",
-        required: true,
-        minLength: 2,
-        maxLength: 150,
-        colWidth: 6,
-      },
-    },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 2, maxLength: 50, colWidth: 6, },},
+    { name: "description", rules: { type: "text", label: "Description", required: true, minLength: 2, maxLength: 150, colWidth: 6, },},
   ];
 
-  // Fetch a single UserType (service returns CustomResponse<UserType>)
   const handleFetch = async (id: string) => {
     const response = await UserTypeService.getUserTypeById(Number(id));
     return response;
   };
 
-  // Update a UserType
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     const payload: Omit<UserType, "auditLogs"> = {
       userTypeId: Number(id),

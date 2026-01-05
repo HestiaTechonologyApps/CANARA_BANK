@@ -22,10 +22,9 @@ const BranchView: React.FC = () => {
     { key: "isRegCompleted", label: "Registration Completed", icon: "bi-clipboard-check", isBoolean: true },
   ];
 
-  // Fetch branch by ID (service returns CustomResponse<Branch>)
   const handleFetch = async (branchId: string) => {
     const response = await BranchService.getBranchById(Number(branchId));
-    return response; // KiduView expects the same shape as your UserView (CustomResponse)
+    return response;
   };
 
   const handleDelete = async (branchId: string) => {
@@ -41,7 +40,6 @@ const BranchView: React.FC = () => {
       editRoute="/dashboard/settings/branch-edit"
       listRoute="/dashboard/settings/branch-list"
       paramName="branchId"
-      // No image for Branch; omit imageConfig
       auditLogConfig={{
         tableName: "Branch",
         recordIdField: "branchId",

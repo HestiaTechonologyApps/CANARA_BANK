@@ -14,7 +14,6 @@ const UserEdit: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
-  // Define form fields matching the backend structure
   const fields: Field[] = [
     { name: "userName", rules: { type: "text", label: "User Name", required: true, minLength: 3, maxLength: 50, placeholder: "Enter user name", colWidth: 6 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, placeholder: "Enter email address", colWidth: 6 } },
@@ -33,16 +32,12 @@ const UserEdit: React.FC = () => {
     { value: "Super Admin", label: "Super Admin" }
   ];
 
-  // Fetch user data by ID
   const handleFetch = async (userId: string) => {
     try {
       const response = await UserService.getUserById(Number(userId));
-      
-      // Set the selected company from the fetched user data
-      // You'll need to fetch company details if needed
+ 
       if (response.value.companyId) {
-        // If you have a CompanyService, fetch the company details here
-        // For now, we'll just set a placeholder
+
         setSelectedCompany({
           companyId: response.value.companyId,
           comapanyName: `Company ${response.value.companyId}` // Placeholder
@@ -56,14 +51,12 @@ const UserEdit: React.FC = () => {
     }
   };
 
-  // Handle form update
   const handleUpdate = async (userId: string, formData: Record<string, any>) => {
     try {
       if (!selectedCompany) {
         throw new Error("Please select a company");
       }
 
-      // Prepare update data - only include fields that can be updated
       const updateData: Partial<Omit<User, 'userId' | 'auditLogs'>> = {
         userName: formData.userName.trim(),
         userEmail: formData.userEmail.trim(),
@@ -75,7 +68,6 @@ const UserEdit: React.FC = () => {
         companyId: selectedCompany.companyId,
       };
 
-      // Only include passwordHash if it's being changed
       if (formData.passwordHash && formData.passwordHash.trim() !== "") {
         updateData.passwordHash = formData.passwordHash;
       }

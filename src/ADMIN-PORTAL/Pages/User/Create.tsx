@@ -8,6 +8,7 @@ import type { Company } from "../../Types/Settings/Company.types";
 import CompanyPopup from "../Settings/Company/CompanyPopup";
 
 const UserCreate: React.FC = () => {
+
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 

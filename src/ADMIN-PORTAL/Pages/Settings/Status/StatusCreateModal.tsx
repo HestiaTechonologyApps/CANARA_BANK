@@ -15,35 +15,10 @@ const StatusCreateModal: React.FC<StatusCreateModalProps> = ({
   onAdded,
 }) => {
   const fields: Field[] = [
-    {
-      name: "name",
-      label: "Status Name",
-      type: "text",
-      required: true,
-      minLength: 2,
-      maxLength: 100,
-    },
-    {
-      name: "abbreviation",
-      label: "Abbreviation",
-      type: "text",
-      required: true,
-      minLength: 1,
-      maxLength: 10,
-    },
-    {
-      name: "groupId",
-      label: "Group ID",
-      type: "number",
-      required: true,
-    },
-    {
-      name: "description",
-      label: "Description",
-      type: "textarea",
-      required: false,
-      maxLength: 500,
-    },
+    { name: "name", label: "Status Name", type: "text", required: true, minLength: 2, maxLength: 100, },
+    { name: "abbreviation", label: "Abbreviation", type: "text", required: true, minLength: 1, maxLength: 10,},
+    { name: "groupId", label: "Group ID", type: "number", required: true, },
+    { name: "description", label: "Description", type: "textarea", required: false, maxLength: 500, },
   ];
 
   return (

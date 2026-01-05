@@ -14,8 +14,8 @@ const DayQuoteCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "day", rules: { type: "number", label: "Day", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
-    { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, colWidth: 12 } },
-    { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", colWidth: 12 } },
+    { name: "toDayQuote", rules: { type: "text", label: "Quote", required: true, colWidth: 6 } },
+    { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", colWidth: 6 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -53,7 +53,6 @@ const DayQuoteCreate: React.FC = () => {
         themeColor="#18575A"
         popupHandlers={popupHandlers}
       />
-
       <MonthPopup
         show={showMonthPopup}
         handleClose={() => setShowMonthPopup(false)}

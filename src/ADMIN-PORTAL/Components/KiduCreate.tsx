@@ -12,7 +12,7 @@ import KiduSubmit from "./KiduSubmit";
 
 // ==================== TYPES ====================
 export interface FieldRule {
-  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak" | "dropdown";
+  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak" | "dropdown" | "file";
   label: string;
   required?: boolean;
   minLength?: number;
@@ -91,10 +91,10 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   // Initialize form data and errors using fields
   const initialValues: Record<string, any> = {};
   const initialErrors: Record<string, string> = {};
-  
+
   fields.forEach(f => {
     if (f.rules.type === "rowbreak") return; // Skip rowbreak fields
-    
+
     if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
       initialValues[f.name] = f.name === "isActive" ? true : false;
     } else if (f.rules.type === "radio" && options[f.name]?.length) {
@@ -116,7 +116,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
-  
+
   // Image upload states
   const [previewUrl, setPreviewUrl] = useState<string>(imageConfig?.defaultImage || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -133,24 +133,24 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   // ==================== HANDLERS ====================
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!imageConfig) return;
-    
+
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      
+
       if (!file.type.startsWith('image/')) {
         toast.error("Please select an image file");
         return;
       }
-      
+
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
       }
-      
+
       if (previewUrl && previewUrl.startsWith('blob:')) {
         URL.revokeObjectURL(previewUrl);
       }
-      
+
       const objectUrl = URL.createObjectURL(file);
       setSelectedFile(file);
       setPreviewUrl(objectUrl);
@@ -172,7 +172,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, type, checked } = e.target;
-    
+
     let updatedValue;
     if (type === "checkbox" || type === "switch") {
       updatedValue = checked;
@@ -181,13 +181,13 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     } else {
       updatedValue = value;
     }
-    
+
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-    
+
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
-    
+
     if (touchedFields[name]) {
       validateField(name, updatedValue);
     }
@@ -201,7 +201,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const validateField = (name: string, value: any): boolean => {
     const rule = fields.find(f => f.name === name)?.rules;
     if (!rule) return true;
-    
+
     // Special handling for popup fields
     if (rule.type === "popup") {
       if (rule.required) {
@@ -214,12 +214,12 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
       setErrors(prev => ({ ...prev, [name]: "" }));
       return true;
     }
-    
+
     if ((rule.type === "toggle" || rule.type === "checkbox") && rule.required && !value) {
       setErrors(prev => ({ ...prev, [name]: `${rule.label} is required` }));
       return false;
     }
-    
+
     const result = KiduValidation.validate(value, rule as any);
     const errorMessage = result.isValid ? "" : (result.message || "");
     setErrors(prev => ({ ...prev, [name]: errorMessage }));
@@ -229,13 +229,13 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const validateForm = (): boolean => {
     let isValid = true;
     const newErrors: Record<string, string> = {};
-    
+
     fields.forEach(f => {
       if (f.rules.type === "rowbreak") return; // Skip rowbreak
-      
+
       const rule = f.rules;
       const value = formData[f.name];
-      
+
       // Special handling for popup fields
       if (rule.type === "popup") {
         if (rule.required) {
@@ -247,18 +247,18 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         }
         return; // Skip other validations for popup fields
       }
-      
+
       if (rule.required) {
         if ((rule.type === "toggle" || rule.type === "checkbox") && !value) {
           newErrors[f.name] = `${rule.label} is required`;
           isValid = false;
-        } else if ((value === "" || value === null || value === undefined) && 
-                   rule.type !== "toggle" && rule.type !== "checkbox") {
+        } else if ((value === "" || value === null || value === undefined) &&
+          rule.type !== "toggle" && rule.type !== "checkbox") {
           newErrors[f.name] = `${rule.label} is required`;
           isValid = false;
         }
       }
-      
+
       if (value !== "" && value !== null && value !== undefined && value !== false) {
         const result = KiduValidation.validate(value, rule as any);
         if (!result.isValid) {
@@ -267,14 +267,14 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         }
       }
     });
-    
+
     setErrors(newErrors);
     return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       toast.error("Please fill all required fields");
       return;
@@ -288,15 +288,15 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     setIsSubmitting(true);
     try {
       const submitData = { ...formData };
-      
+
       // Convert image to base64 if exists
       if (imageConfig && selectedFile) {
         const base64Logo = await fileToBase64(selectedFile);
         submitData[imageConfig.fieldName] = base64Logo;
       }
-      
+
       await onSubmit(submitData);
-      
+
       // Show success alert with SweetAlert2
       await Swal.fire({
         icon: "success",
@@ -305,9 +305,9 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         confirmButtonColor: themeColor,
         timer: 2000,
         showConfirmButton: true,
-        confirmButtonText:"OK"
+        confirmButtonText: "OK"
       });
-      
+
       // Navigate to list page after success
       if (navigateOnSuccess) {
         navigate(navigateOnSuccess);
@@ -323,186 +323,201 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   };
 
   // ==================== RENDER FORM CONTROLS ====================
- const renderFormControl = (field: Field) => {
-  const { name, rules } = field;
-  const { type, placeholder } = rules;
-  const fieldPlaceholder = placeholder || `Enter ${rules.label.toLowerCase()}`;
+  const renderFormControl = (field: Field) => {
+    const { name, rules } = field;
+    const { type, placeholder } = rules;
+    const fieldPlaceholder = placeholder || `Enter ${rules.label.toLowerCase()}`;
 
-  switch (type) {
+    switch (type) {
 
-    /* ---------- POPUP ---------- */
-    case "popup": {
-      const popup = popupHandlers[name];
-      return (
-        <InputGroup>
-          <Form.Control
-            type="text"
-            value={popup?.value || ""}
-            placeholder={`Select ${rules.label}`}
-            readOnly
-            isInvalid={!!errors[name]}
-          />
-          <Button variant="outline-secondary" onClick={popup?.onOpen}>
-            <BsSearch />
-          </Button>
-        </InputGroup>
-      );
-    }
+      /* ---------- POPUP ---------- */
+      case "popup": {
+        const popup = popupHandlers[name];
+        return (
+          <InputGroup>
+            <Form.Control
+              type="text"
+              value={popup?.value || ""}
+              placeholder={`Select ${rules.label}`}
+              readOnly
+              isInvalid={!!errors[name]}
+            />
+            <Button variant="outline-secondary" onClick={popup?.onOpen}>
+              <BsSearch />
+            </Button>
+          </InputGroup>
+        );
+      }
 
-    /* ---------- PASSWORD ---------- */
-    case "password":
-      return (
-        <InputGroup>
-          <Form.Control
-            type={showPasswords[name] ? "text" : "password"}
+      /* ---------- PASSWORD ---------- */
+      case "password":
+        return (
+          <InputGroup>
+            <Form.Control
+              type={showPasswords[name] ? "text" : "password"}
+              name={name}
+              autoComplete="new-password"
+              placeholder={fieldPlaceholder}
+              value={formData[name]}
+              onChange={handleChange}
+              onBlur={() => handleBlur(name)}
+              isInvalid={!!errors[name]}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => togglePasswordVisibility(name)}
+            >
+              {showPasswords[name] ? <FaEyeSlash /> : <FaEye />}
+            </Button>
+          </InputGroup>
+        );
+
+      /* ---------- SELECT ---------- */
+      case "select":
+      case "dropdown": {
+        const fieldOptions = options[name] || [];
+        return (
+          <Form.Select
             name={name}
-            autoComplete="new-password"
+            value={formData[name]}
+            onChange={handleChange}
+            onBlur={() => handleBlur(name)}
+            isInvalid={!!errors[name]}
+          >
+            <option value="">Select {rules.label}</option>
+            {fieldOptions.map((opt: any, idx: number) => {
+              const optValue = typeof opt === "object" ? opt.value : opt;
+              const optLabel = typeof opt === "object" ? opt.label : opt;
+              return (
+                <option key={idx} value={optValue}>
+                  {optLabel}
+                </option>
+              );
+            })}
+          </Form.Select>
+        );
+      }
+
+      /* ---------- TEXTAREA ---------- */
+      case "textarea":
+        return (
+          <Form.Control
+            as="textarea"
+            rows={3}
+            name={name}
             placeholder={fieldPlaceholder}
             value={formData[name]}
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
           />
-          <Button
-            variant="outline-secondary"
-            onClick={() => togglePasswordVisibility(name)}
-          >
-            {showPasswords[name] ? <FaEyeSlash /> : <FaEye />}
-          </Button>
-        </InputGroup>
-      );
+        );
 
-    /* ---------- SELECT ---------- */
-    case "select":
-    case "dropdown": {
-      const fieldOptions = options[name] || [];
-      return (
-        <Form.Select
-          name={name}
-          value={formData[name]}
-          onChange={handleChange}
-          onBlur={() => handleBlur(name)}
-          isInvalid={!!errors[name]}
-        >
-          <option value="">Select {rules.label}</option>
-          {fieldOptions.map((opt: any, idx: number) => {
-            const optValue = typeof opt === "object" ? opt.value : opt;
-            const optLabel = typeof opt === "object" ? opt.label : opt;
-            return (
-              <option key={idx} value={optValue}>
-                {optLabel}
-              </option>
-            );
-          })}
-        </Form.Select>
-      );
+      /* ---------- RADIO ---------- */
+      case "radio": {
+        const fieldOptions = options[name] || [];
+        return (
+          <div className="d-flex flex-wrap gap-3">
+            {fieldOptions.map((opt: any, idx: number) => {
+              const optValue = typeof opt === "object" ? opt.value : opt;
+              const optLabel = typeof opt === "object" ? opt.label : opt;
+              return (
+                <Form.Check
+                  key={idx}
+                  type="radio"
+                  id={`${name}-${idx}`}
+                  name={name}
+                  label={optLabel}
+                  value={optValue}
+                  checked={formData[name] === optValue}
+                  onChange={handleChange}
+                />
+              );
+            })}
+          </div>
+        );
+      }
+
+      /* ---------- CHECKBOX ---------- */
+      case "checkbox":
+        return (
+          <Form.Check
+            type="checkbox"
+            id={name}
+            name={name}
+            label={rules.label}
+            checked={!!formData[name]}
+            onChange={handleChange}
+          />
+        );
+
+      /* ---------- DATE ---------- */
+      case "date":
+        return (
+          <Form.Control
+            type="date"
+            name={name}
+            value={formData[name]}
+            onChange={handleChange}
+            onBlur={() => handleBlur(name)}
+            isInvalid={!!errors[name]}
+          />
+        );
+
+      /* ---------- FILE ---------- */
+      case "file":
+        return (
+          <Form.Control
+            type="file"
+            name={name}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const file = e.target.files?.[0] || null;
+              setFormData(prev => ({ ...prev, [name]: file }));
+            }}
+            isInvalid={!!errors[name]}
+          />
+        );
+
+
+      /* ---------- DEFAULT ---------- */
+      default:
+        return (
+          <Form.Control
+            type={type === "number" ? "tel" : type}
+            name={name}
+            autoComplete={type === "email" ? "email" : "off"}
+            placeholder={fieldPlaceholder}
+            value={formData[name]}
+            onChange={handleChange}
+            onBlur={() => handleBlur(name)}
+            isInvalid={!!errors[name]}
+            maxLength={rules.maxLength}
+          />
+        );
     }
-
-    /* ---------- TEXTAREA ---------- */
-    case "textarea":
-      return (
-        <Form.Control
-          as="textarea"
-          rows={3}
-          name={name}
-          placeholder={fieldPlaceholder}
-          value={formData[name]}
-          onChange={handleChange}
-          onBlur={() => handleBlur(name)}
-          isInvalid={!!errors[name]}
-        />
-      );
-
-    /* ---------- RADIO ---------- */
-    case "radio": {
-      const fieldOptions = options[name] || [];
-      return (
-        <div className="d-flex flex-wrap gap-3">
-          {fieldOptions.map((opt: any, idx: number) => {
-            const optValue = typeof opt === "object" ? opt.value : opt;
-            const optLabel = typeof opt === "object" ? opt.label : opt;
-            return (
-              <Form.Check
-                key={idx}
-                type="radio"
-                id={`${name}-${idx}`}
-                name={name}
-                label={optLabel}
-                value={optValue}
-                checked={formData[name] === optValue}
-                onChange={handleChange}
-              />
-            );
-          })}
-        </div>
-      );
-    }
-
-    /* ---------- CHECKBOX ---------- */
-    case "checkbox":
-      return (
-        <Form.Check
-          type="checkbox"
-          id={name}
-          name={name}
-          label={rules.label}
-          checked={!!formData[name]}
-          onChange={handleChange}
-        />
-      );
-
-    /* ---------- DATE ---------- */
-    case "date":
-      return (
-        <Form.Control
-          type="date"
-          name={name}
-          value={formData[name]}
-          onChange={handleChange}
-          onBlur={() => handleBlur(name)}
-          isInvalid={!!errors[name]}
-        />
-      );
-
-    /* ---------- DEFAULT ---------- */
-    default:
-      return (
-        <Form.Control
-          type={type === "number" ? "tel" : type}
-          name={name}
-          autoComplete={type === "email" ? "email" : "off"}
-          placeholder={fieldPlaceholder}
-          value={formData[name]}
-          onChange={handleChange}
-          onBlur={() => handleBlur(name)}
-          isInvalid={!!errors[name]}
-          maxLength={rules.maxLength}
-        />
-      );
-  }
-};
+  };
 
 
   // ==================== RENDER FIELD ====================
   const renderField = (field: Field, index: number) => {
     const { name, rules } = field;
-    
+
     // Handle row break
     if (rules.type === "rowbreak") {
       return <div key={`rowbreak-${index}`} className="w-100"></div>;
     }
-    
+
     const colWidth = rules.colWidth || 4;
-    
+
     return (
       <Col md={colWidth} className="mb-3" key={name}>
         <Form.Label className="fw-bold">
           {rules.label}
           {rules.required && <span style={{ color: "red", marginLeft: "2px" }}>*</span>}
         </Form.Label>
-        
+
         {renderFormControl(field)}
-        
+
         {errors[name] && (
           <div className="text-danger small mt-1">{errors[name]}</div>
         )}
@@ -513,15 +528,15 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   // ==================== RENDER ====================
   return (
     <>
-      <div 
-        className="container px-4 mt-5" 
+      <div
+        className="container px-4 mt-5"
         style={{ fontFamily: "Urbanist" }}
       >
-        <div 
-          className="shadow-sm rounded p-4" 
-          style={{ 
+        <div
+          className="shadow-sm rounded p-4"
+          style={{
             backgroundColor: "white",
-            ...containerStyle 
+            ...containerStyle
           }}
         >
           {/* HEADER */}
@@ -540,21 +555,21 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
               {imageConfig && (
                 <Col xs={12} md={4} className="d-flex flex-column align-items-center mb-4">
                   <div style={{ position: "relative", width: "180px", height: "180px" }}>
-                    <Image 
-                      src={previewUrl || imageConfig.defaultImage} 
-                      alt={imageConfig.label || "Upload"} 
+                    <Image
+                      src={previewUrl || imageConfig.defaultImage}
+                      alt={imageConfig.label || "Upload"}
                       roundedCircle
                       width={180}
                       height={180}
-                      style={{ 
-                        objectFit: "cover", 
+                      style={{
+                        objectFit: "cover",
                         border: "1px solid #ccc"
                       }}
-                      onError={(e: any) => { e.target.src = imageConfig.defaultImage; }} 
+                      onError={(e: any) => { e.target.src = imageConfig.defaultImage; }}
                     />
-                    <label 
+                    <label
                       htmlFor={imageConfig.fieldName}
-                      style={{ 
+                      style={{
                         position: "absolute",
                         bottom: "5px",
                         right: "5px",
@@ -567,12 +582,12 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                     >
                       <FaPen style={{ color: "#fff", fontSize: "14px" }} />
                     </label>
-                    <input 
-                      type="file" 
-                      id={imageConfig.fieldName} 
-                      accept="image/*" 
-                      onChange={handleFileChange} 
-                      style={{ display: "none" }} 
+                    <input
+                      type="file"
+                      id={imageConfig.fieldName}
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
                     />
                   </div>
                 </Col>
@@ -592,15 +607,15 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                 <Col xs={12}>
                   <div className="d-flex flex-wrap gap-3">
                     {toggleFields.map(field => (
-                      <Form.Check 
+                      <Form.Check
                         key={field.name}
-                        type="switch" 
-                        id={field.name} 
-                        name={field.name} 
+                        type="switch"
+                        id={field.name}
+                        name={field.name}
                         label={field.rules.label}
-                        checked={formData[field.name] || false} 
-                        onChange={handleChange} 
-                        className="fw-semibold" 
+                        checked={formData[field.name] || false}
+                        onChange={handleChange}
+                        className="fw-semibold"
                       />
                     ))}
                   </div>
@@ -614,10 +629,10 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             {/* Action Buttons */}
             <div className="d-flex justify-content-end gap-2 mt-4">
               {showResetButton && (
-                <KiduReset 
-                  initialValues={initialValues} 
-                  setFormData={setFormData} 
-                  setErrors={setErrors} 
+                <KiduReset
+                  initialValues={initialValues}
+                  setFormData={setFormData}
+                  setErrors={setErrors}
                 />
               )}
               <KiduSubmit

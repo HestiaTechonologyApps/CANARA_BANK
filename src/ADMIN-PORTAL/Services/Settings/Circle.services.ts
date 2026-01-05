@@ -14,7 +14,6 @@ const CircleService = {
     return response.value;
   },
 
-  // ✅ FIX: return CustomResponse<Circle> (same as Category)
   async getCircleById(id: number): Promise<CustomResponse<Circle>> {
     const response = await HttpService.callApi<CustomResponse<Circle>>(
       API_ENDPOINTS.CIRCLE.GET_BY_ID(id),
@@ -23,7 +22,6 @@ const CircleService = {
     return response;
   },
 
-  // ✅ FIX: correct Omit keys
   async createCircle(
     data: Omit<Circle, "circleId" | "auditLogs">
   ): Promise<Circle> {
@@ -35,7 +33,6 @@ const CircleService = {
     return response.value;
   },
 
-  // ✅ FIX: update signature matches CategoryService
   async updateCircle(
     id: number,
     data: Partial<Omit<Circle, "circleId" | "auditLogs">>

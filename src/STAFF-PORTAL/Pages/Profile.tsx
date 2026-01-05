@@ -7,10 +7,8 @@ import MemberService from "../../ADMIN-PORTAL/Services/Contributions/Member.serv
 
 const Profile: React.FC = () => {
   const navigate = useNavigate()
- // 🔹 API user state
   const [user, setUser] = useState<Member | null>(null);
-
- // 🔹 Fields configuration (labels + keys only)
+  // 🔹 Fields configuration (labels + keys only)
   const fields = [
     { label: "Staff No", key: "staffNo" },
     { label: "Name", key: "name" },
@@ -28,13 +26,12 @@ const Profile: React.FC = () => {
     { label: "Nominee Relationship", key: "nomineeRelationship" },
   ];
 
- // 🔹 Fetch member by ID
+  // 🔹 Fetch member by ID
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const memberId = Number(localStorage.getItem("memberId"));
         if (!memberId) return;
-
         const response = await MemberService.getMemberById(memberId);
         setUser(response.value);
       } catch (error) {
@@ -49,14 +46,9 @@ const Profile: React.FC = () => {
     console.log("Show Contribution clicked");
   };
 
-  // if (!user) return null;
-
   return (
     <Card className="profile-card mt-2">
       <Card.Body>
-        {/* <div className="profile-header">
-          WELCOME <span>{user.name}</span>
-        </div> */}
         <div className="profile-details">
           <Row>
             <Col md={4} className="profile-row">
@@ -68,7 +60,7 @@ const Profile: React.FC = () => {
               <span className="profile-label">{fields[1].label}</span>
               <span className="profile-value">{user?.name || "—"}</span>
             </Col>
-             <Col md={4} className="profile-row">
+            <Col md={4} className="profile-row">
               <span className="profile-label">{fields[2].label}</span>
               <span className="profile-value">{user?.genderId || "—"}</span>
             </Col>
@@ -78,7 +70,7 @@ const Profile: React.FC = () => {
               <span className="profile-label">{fields[3].label}</span>
               <span className="profile-value">{user?.designationId || "—"}</span>
             </Col>
-             <Col md={4} className="profile-row">
+            <Col md={4} className="profile-row">
               <span className="profile-label">{fields[4].label}</span>
               <span className="profile-value">{user?.categoryId || "—"}</span>
             </Col>
@@ -99,7 +91,7 @@ const Profile: React.FC = () => {
               <span className="profile-label">{fields[7].label}</span>
               <span className="profile-value">{user?.branchId || "—"}</span>
             </Col>
-             <Col md={4} className="profile-row">
+            <Col md={4} className="profile-row">
               <span className="profile-label">{fields[8].label}</span>
               <span className="profile-value">{user?.dojtoSchemeString || "—"}</span>
             </Col>
@@ -120,7 +112,7 @@ const Profile: React.FC = () => {
               <span className="profile-value">{user?.statusId || "—"}</span>
             </Col>
           </Row>
-         
+
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[12].label}</span>
@@ -135,7 +127,7 @@ const Profile: React.FC = () => {
           </Row>
         </div>
         <div className="profile-action text-end">
-          <Button className="profile-btn" onClick={handleShowContribution} onClickCapture={()=> navigate("/history")}>
+          <Button className="profile-btn" onClick={handleShowContribution} onClickCapture={() => navigate("/history")}>
             ₹ Show Contribution
           </Button>
         </div>

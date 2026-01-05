@@ -13,13 +13,12 @@ import CategoryPopup from "../../Settings/Category/CategoryPopup";
 import StatusPopup from "../../Settings/Status/StatusPopup";
 
 const MemberEdit: React.FC = () => {
-  // ───────────── Popup state ─────────────
+
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showStatusPopup, setShowStatusPopup] = useState(false);
 
-  // ───────────── Selected IDs only (LIKE DAILY NEWS) ─────────────
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -51,7 +50,6 @@ const MemberEdit: React.FC = () => {
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  // ───────────── FETCH (LIKE DAILY NEWS) ─────────────
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
@@ -66,7 +64,6 @@ const MemberEdit: React.FC = () => {
     return response;
   };
 
-  // ───────────── UPDATE (FULL PAYLOAD) ─────────────
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus) {
       throw new Error("Please select all required values");
@@ -77,19 +74,16 @@ const MemberEdit: React.FC = () => {
       staffNo: Number(formData.staffNo),
       name: formData.name.trim(),
       genderId: Number(formData.genderId),
-
       designationId: selectedDesignation.designationId,
       categoryId: selectedCategory.categoryId,
       branchId: selectedBranch.branchId,
       statusId: selectedStatus.statusId,
-
       dob: toIsoMidnight(formData.dob),
       dobString: toIsoMidnight(formData.dob),
       doj: toIsoMidnight(formData.doj),
       dojString: toIsoMidnight(formData.doj),
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
-
       isRegCompleted: Boolean(formData.isRegCompleted),
       profileImageSrc: formData.profileImageSrc || "",
       nominee: formData.nominee || "",
@@ -97,8 +91,6 @@ const MemberEdit: React.FC = () => {
       nomineeIDentity: formData.nomineeIDentity || "",
       unionMember: formData.unionMember || "",
       totalRefund: formData.totalRefund || "0",
-
-      // required by backend
       createdByUserId: formData.createdByUserId,
       createdDate: formData.createdDate,
       createdDateString: formData.createdDateString,
@@ -110,7 +102,6 @@ const MemberEdit: React.FC = () => {
     await MemberService.updateMember(Number(id), payload);
   };
 
-  // ───────────── POPUP HANDLERS (LIKE DAILY NEWS) ─────────────
   const popupHandlers = {
     branchId: {
       value: selectedBranch?.branchId?.toString() || "",
@@ -148,10 +139,26 @@ const MemberEdit: React.FC = () => {
         themeColor="#18575A"
       />
 
-      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} />
-      <DesignationPopup show={showDesignationPopup} handleClose={() => setShowDesignationPopup(false)} onSelect={setSelectedDesignation} />
-      <CategoryPopup show={showCategoryPopup} handleClose={() => setShowCategoryPopup(false)} onSelect={setSelectedCategory} />
-      <StatusPopup show={showStatusPopup} handleClose={() => setShowStatusPopup(false)} onSelect={setSelectedStatus} />
+      <BranchPopup 
+      show={showBranchPopup} 
+      handleClose={() => setShowBranchPopup(false)} 
+      onSelect={setSelectedBranch} 
+      />
+      <DesignationPopup 
+      show={showDesignationPopup} 
+      handleClose={() => setShowDesignationPopup(false)} 
+      onSelect={setSelectedDesignation} 
+      />
+      <CategoryPopup 
+      show={showCategoryPopup} 
+      handleClose={() => setShowCategoryPopup(false)} 
+      onSelect={setSelectedCategory} 
+      />
+      <StatusPopup 
+      show={showStatusPopup} 
+      handleClose={() => setShowStatusPopup(false)} 
+      onSelect={setSelectedStatus} 
+      />
     </>
   );
 };

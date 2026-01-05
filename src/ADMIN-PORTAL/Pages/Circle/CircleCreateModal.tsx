@@ -15,46 +15,12 @@ const CircleCreateModal: React.FC<CircleCreateModalProps> = ({
   onAdded
 }) => {
   const fields: Field[] = [
-    {
-      name: "circleCode",
-      label: "Circle Code",
-      type: "number",
-      required: true
-    },
-    {
-      name: "name",
-      label: "Circle Name",
-      type: "text",
-      required: true,
-      minLength: 2,
-      maxLength: 100
-    },
-    {
-      name: "abbreviation",
-      label: "Abbreviation",
-      type: "text",
-      required: true,
-      minLength: 2,
-      maxLength: 10
-    },
-    {
-      name: "stateId",
-      label: "State ID",
-      type: "number",
-      required: true
-    },
-    {
-      name: "dateFrom",
-      label: "Date From",
-      type: "date",
-      required: true
-    },
-    {
-      name: "dateTo",
-      label: "Date To",
-      type: "date",
-      required: true
-    }
+    { name: "circleCode", label: "Circle Code", type: "number", required: true },
+    { name: "name", label: "Circle Name", type: "text", required: true, minLength: 2, maxLength: 100 },
+    { name: "abbreviation", label: "Abbreviation", type: "text", required: true, minLength: 2, maxLength: 10 },
+    { name: "stateId", label: "State ID", type: "number", required: true },
+    { name: "dateFrom", label: "Date From", type: "date", required: true },
+    { name: "dateTo", label: "Date To", type: "date", required: true }
   ];
 
   return (

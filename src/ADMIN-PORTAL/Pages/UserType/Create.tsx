@@ -9,30 +9,8 @@ const UserTypeCreate: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fields: Field[] = [
-    {
-      name: "abbreviation",
-      rules: {
-        type: "text",
-        label: "Abbreviation",
-        required: true,
-        minLength: 2,
-        maxLength: 10,
-        placeholder: "e.g., STF",
-        colWidth: 6,
-      },
-    },
-    {
-      name: "description",
-      rules: {
-        type: "text",
-        label: "Description",
-        required: true,
-        minLength: 2,
-        maxLength: 150,
-        placeholder: "e.g., Staff User",
-        colWidth: 6,
-      },
-    },
+    { name: "abbreviation",rules: { type: "text", label: "Abbreviation", required: true, minLength: 2, maxLength: 50,placeholder: "e.g., STF", colWidth: 6,},},
+    { name: "description",rules: { type: "text", label: "Description", required: true, minLength: 2, maxLength: 150, placeholder: "e.g., Staff User",colWidth: 6,},},
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

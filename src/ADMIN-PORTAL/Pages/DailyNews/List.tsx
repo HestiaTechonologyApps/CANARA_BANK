@@ -12,7 +12,6 @@ const columns = [
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
 ];
 
-
 const DailyNewsList: React.FC = () => {
   const fetchData = async (_params: {
     pageNumber: number;
@@ -22,8 +21,6 @@ const DailyNewsList: React.FC = () => {
     const news = await DailyNewsService.getAllDailyNews();
 
    return { data:news, total:news.length}
-    
-
   };
 
   return (

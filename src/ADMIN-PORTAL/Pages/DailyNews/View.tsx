@@ -18,7 +18,6 @@ const handleFetch = async (id: string) => {
   return DailyNewsService.getDailyNewsById(Number(id));
 };
 
-
   const handleDelete = async (id: string) => {
     await DailyNewsService.deleteDailyNews(Number(id));
   };
@@ -32,7 +31,7 @@ const handleFetch = async (id: string) => {
       editRoute="/dashboard/cms/dailynews-edit"
       listRoute="/dashboard/cms/dailynews-list"
       paramName="dailyNewsId"
-      auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
+     // auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
       themeColor="#18575A"
       loadingText="Loading daily news details..."
       showEditButton={true}

@@ -12,13 +12,11 @@ const MonthView: React.FC = () => {
     { key: "abbrivation", label: "Abbreviation" },
   ];
 
-  // ✅ Fetch by PRIMARY KEY
   const handleFetch = async (monthId: string) => {
     const response = await MonthService.getMonthById(Number(monthId));
     return response;
   };
 
-  // ✅ Delete exactly like Category
   const handleDelete = async (monthId: string) => {
     await MonthService.deleteMonth(Number(monthId));
   };
@@ -29,12 +27,12 @@ const MonthView: React.FC = () => {
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
-      paramName="monthId"                         // 🔥 FIX
+      paramName="monthId"                        
       editRoute="/dashboard/settings/month-edit"
       listRoute="/dashboard/settings/month-list"
       auditLogConfig={{
         tableName: "Month",
-        recordIdField: "monthId",                 // 🔥 FIX
+        recordIdField: "monthId",                
       }}
       themeColor="#18575A"
       loadingText="Loading month details..."

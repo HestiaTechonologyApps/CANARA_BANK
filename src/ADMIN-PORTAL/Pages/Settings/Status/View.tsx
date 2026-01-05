@@ -5,27 +5,19 @@ import StatusService from "../../../Services/Settings/Status.services";
 
 
 const StatusView: React.FC = () => {
-  // Define view fields (no image for Status)
   const fields: ViewField[] = [
     { key: "statusId", label: "Status ID", icon: "bi-hash" },
     { key: "name", label: "Status Name", icon: "bi-tag" },
-    { 
-      key: "abbreviation", 
-      label: "Abbreviation", 
-      icon: "bi-bookmark",
-      formatter: (value) => value?.toUpperCase() || "N/A"
-    },
+    {  key: "abbreviation",  label: "Abbreviation",  icon: "bi-bookmark", formatter: (value) => value?.toUpperCase() || "N/A" },
     { key: "description", label: "Description", icon: "bi-file-text" },
     { key: "groupId", label: "Group ID", icon: "bi-folder" },
   ];
 
-  // Fetch status data
   const handleFetch = async (statusId: string) => {
     const response = await StatusService.getStatusById(Number(statusId));
     return response;
   };
 
-  // Delete status
   const handleDelete = async (statusId: string) => {
     await StatusService.deleteStatus(Number(statusId));
   };

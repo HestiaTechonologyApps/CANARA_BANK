@@ -114,6 +114,10 @@ import DailyNewsCreate from '../Pages/DailyNews/Create';
 import DailyNewsEdit from '../Pages/DailyNews/Edit';
 import DailyNewsView from '../Pages/DailyNews/View';
 
+//Document
+import DocumentList from '../Pages/Documents/List';
+import DocumentCreate from '../Pages/Documents/Create';
+
 //Direct Pay
 import DirectPaymentList from '../Pages/Contributions/DirectPay/List';
 import DirectPaymentCreate from '../Pages/Contributions/DirectPay/Create';

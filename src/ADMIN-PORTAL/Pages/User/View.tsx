@@ -6,7 +6,7 @@ import UserService from "../../Services/Settings/User.services";
 import defaultUserImage from "../../Assets/Images/profile.jpg";
 
 const UserView: React.FC = () => {
-  // Define view fields
+
   const fields: ViewField[] = [
     { key: "userId", label: "User ID", icon: "bi-hash" },
     { key: "userName", label: "User Name", icon: "bi-person" },
@@ -20,13 +20,11 @@ const UserView: React.FC = () => {
     { key: "islocked", label: "Is Locked", icon: "bi-lock",isBoolean: true},
   ];
 
-  // Fetch user data
   const handleFetch = async (userId: string) => {
     const response = await UserService.getUserById(Number(userId));
     return response;
   };
 
-  // Delete user
   const handleDelete = async (userId: string) => {
     await UserService.deleteUser(Number(userId));
   };

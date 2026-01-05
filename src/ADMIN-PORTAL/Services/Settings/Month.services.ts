@@ -5,7 +5,7 @@ import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { Month } from "../../Types/Settings/Month.types";
 
 const MonthService = {
-  // Get all months
+ 
   async getAllMonths(): Promise<Month[]> {
     const response = await HttpService.callApi<CustomResponse<Month[]>>(
       API_ENDPOINTS.MONTH.GET_ALL,
@@ -14,7 +14,6 @@ const MonthService = {
     return response.value;
   },
 
-  // Get month by id (monthCode)
   async getMonthById(id: number): Promise<CustomResponse<Month>> {
     const response = await HttpService.callApi<CustomResponse<Month>>(
       API_ENDPOINTS.MONTH.GET_BY_ID(id),
@@ -23,7 +22,6 @@ const MonthService = {
     return response;
   },
 
-  // Create month
   async createMonth(
     data: Omit<Month, "monthCode" | "auditLogs">
   ): Promise<Month> {
@@ -35,7 +33,6 @@ const MonthService = {
     return response.value;
   },
 
-  // Update month
   async updateMonth(
     id: number,
     data: Partial<Omit<Month, "monthCode" | "auditLogs">>
@@ -48,7 +45,6 @@ const MonthService = {
     return response.value;
   },
 
-  // Delete month
   async deleteMonth(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.MONTH.DELETE(id),

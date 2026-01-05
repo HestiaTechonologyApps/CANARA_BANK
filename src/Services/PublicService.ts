@@ -470,22 +470,22 @@ export const PublicService = {
             {
                 title: "APPLICATION FOR MEMBERSHIP",
                 description: "APPLICATION FOR MEMBERSHIP.",
-                fileKey: "membership_application",
+                fileUrl: "/downloads/Application_for_membership.pdf",
             },
             {
                 title: "AUTHORITY LETTER",
                 description: "LETTER AUTHORISING DEDUCTION OF SUBSCRIPTION.",
-                fileKey: "authority_letter",
+                fileUrl: "/downloads/Authority_letter.pdf",
             },
             {
                 title: "RECEIPT",
                 description: "FORM TO ACKNOWLEDGE RECEIPT OF PAYMENT.",
-                fileKey: "receipt_form",
+                fileUrl: "/downloads/Receipt.pdf",
             },
             {
                 title: "CLAIM FORM",
                 description: "FORM FOR SUBMITTING THE CLAIM.",
-                fileKey: "claim_form",
+                fileUrl: "/downloads/Claim_form.pdf",
             },
         ],
 

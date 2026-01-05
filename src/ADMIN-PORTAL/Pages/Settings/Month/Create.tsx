@@ -27,7 +27,6 @@ const MonthCreate: React.FC = () => {
       onSubmit={handleSubmit}
       successMessage="Month created successfully!"
       errorMessage="Failed to create month. Please try again."
-      // ✅ use navigateOnSuccess (supported) instead of navigateBackPath
       navigateOnSuccess="/dashboard/settings/month-list"
       themeColor="#18575A"
     />

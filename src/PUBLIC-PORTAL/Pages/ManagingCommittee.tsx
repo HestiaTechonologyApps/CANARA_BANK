@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/ManagingCommittee.css";
 import { PublicService } from "../../Services/PublicService";
+import type { ManagingCommittee } from "../../ADMIN-PORTAL/Types/CMS/ManagingCommittee.types";
+import PublicManagingCommitteeService from "../Services/ManagingCommiteePublic.services";
 
 // interface Member {
 //   name: string;
@@ -14,51 +16,31 @@ import { PublicService } from "../../Services/PublicService";
 const ManagingCommittee: React.FC = () => {
 
    const managingCommittee = PublicService.managingCommittee
-  // const members: Member[] = [
-  //   {
-  //     name: "K SRIKRISHNA",
-  //     role: "President",
-  //     location: "Thiruvananthapuram",
-  //     phone: "+91 98765 43210",
-  //     email: "president@cbfws.org",
-  //   },
-  //   {
-  //     name: "B Ramprakash",
-  //     role: "General Secretary",
-  //     location: "Kochi",
-  //     phone: "+91 98765 43211",
-  //     email: "secretary@cbfws.org",
-  //   },
-  //   {
-  //     name: "Com. R S Indubhas",
-  //     role: "Treasurer",
-  //     location: "Kozhikode",
-  //     phone: "+91 98765 43212",
-  //     email: "treasurer@cbfws.org",
-  //   },
-  //   {
-  //     name: "Com. Shamsher Singh",
-  //     role: "Member",
-  //     location: "Thrissur",
-  //     phone: "+91 98765 43213",
-  //     email: "jscommittee@cbfws.org",
-  //   },
-  //   {
-  //     name: "Com. K. Vijayan",
-  //     role: "Vice President",
-  //     location: "Kollam",
-  //     phone: "+91 98765 43214",
-  //     email: "vpresident@cbfws.org",
-  //   },
-  //   {
-  //     name: "Com. K. V. Ranga Rao",
-  //     role: "Member",
-  //     location: "Kannur",
-  //     phone: "+91 98765 43215",
-  //     email: "committee@cbfws.org",
-  //   },
-  // ];
 
+   const [members, setMembers] = useState<ManagingCommittee[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchManagingCommittee = async () => {
+      try {
+        const data = await PublicManagingCommitteeService.getManagingCommittee();
+
+        // sort by order ASC
+        const sortedData = [...data].sort(
+          (a, b) => a.order - b.order
+        );
+
+        setMembers(sortedData);
+      } catch (error) {
+        console.error("Failed to load managing committee", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchManagingCommittee();
+  }, []);
+ 
   return (
     <div className="committee-wrapper">
 
@@ -73,7 +55,11 @@ const ManagingCommittee: React.FC = () => {
       <Container className="py-5">
         <Row className="g-4 justify-content-center">
 
-          {managingCommittee.members.map((member, index) => (
+          {
+           loading ? (
+            <p className="text-center">Loading...</p>
+          ) : (
+          members.map((member, index) => (
             <Col key={index} lg={4} md={6} sm={12}>
               <Card className="committee-card p-4 text-center">
 
@@ -83,16 +69,16 @@ const ManagingCommittee: React.FC = () => {
                 </div>
 
                 {/* Member Name */}
-                <h5 className="member-name">{member.name}</h5>
+                <h5 className="member-name">{member.managingComitteeName}</h5>
 
                 {/* Member Role */}
-                <p className="member-role">{member.role}</p>
+                <p className="member-role">{member.position}</p>
 
                 {/* Location */}
-                <p className="member-location">{member.location}</p>
+                <p className="member-location">{member.description2}</p>
 
                 {/* CONTACT INFO */}
-                <div className="contact-info mt-3">
+                {/* <div className="contact-info mt-3">
                   <p className="small mb-1">
                     <i className="bi bi-telephone-fill me-2"></i>
                     {member.phone}
@@ -101,10 +87,10 @@ const ManagingCommittee: React.FC = () => {
                     <i className="bi bi-envelope-fill me-2"></i>
                     {member.email}
                   </p>
-                </div>
+                </div> */}
               </Card>
             </Col>
-          ))}
+          )))}
 
         </Row>
       </Container>

@@ -17,7 +17,7 @@ const StatusService = {
       API_ENDPOINTS.STATUS.GET_BY_ID(id),
       'GET'
     );
-    return response; // Return full response, not just value
+    return response; 
   },
 
   async createStatus(data: Omit<Status, 'statusId'>): Promise<Status> {
@@ -35,7 +35,6 @@ const StatusService = {
     'PUT',
     data
   );
-  // No return needed - just fire and forget
 },
 
   async deleteStatus(id: number): Promise<void> {

@@ -18,11 +18,10 @@ const BranchService = {
       API_ENDPOINTS.BRANCH.GET_BY_ID(id),
       "GET"
     );
-    // Return full CustomResponse to keep parity with your UserService.getUserById
+    
     return response;
   },
 
- // src/services/Settings/Branch.services.ts
 
 async createBranch(
   data: Partial<Omit<Branch, "branchId" | "auditLogs">>

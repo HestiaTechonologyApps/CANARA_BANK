@@ -26,8 +26,6 @@ const CircleEdit: React.FC = () => {
     const response = await CircleService.getCircleById(Number(circleId));
 
     const circle = response.value;
-
-    // ✅ EXACTLY LIKE DeathClaimEdit – initialize popup state
     if (circle) {
       setSelectedState({
         stateId: circle.stateId,
@@ -55,16 +53,12 @@ const CircleEdit: React.FC = () => {
       circleCode: Number(formData.circleCode),
       name: formData.name.trim(),
       abbreviation: formData.abbreviation.trim(),
-
-      // 🔒 POPUP-CONTROLLED (same as DeathClaim)
       stateId: selectedState.stateId,
       stateName: selectedState.name,
-
       dateFrom: formData.dateFrom,
       dateFromString: formData.dateFromString ?? "",
       dateTo: formData.dateTo,
       dateToString: formData.dateToString ?? "",
-
       isActive: Boolean(formData.isActive),
     };
 

@@ -9,11 +9,9 @@ import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
 
 const BranchEdit: React.FC = () => {
-
-const [showStatePopup, setShowStatePopup] = useState(false);
+  const [showStatePopup, setShowStatePopup] = useState(false);
   const [showCirclePopup, setShowCirclePopup] = useState(false);
 
-  // Store selected state and circle data
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
@@ -31,29 +29,25 @@ const [showStatePopup, setShowStatePopup] = useState(false);
   { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed", required: false } },
 ];
 
- // Handle state selection
   const handleStateSelect = (state: State) => {
     setSelectedState(state);
     setSelectedCircle(null);
   };
 
-  // Handle circle selection
   const handleCircleSelect = (circle: Circle) => {
     setSelectedCircle(circle);
   };
 
-  // Fetch a branch by ID (service returns CustomResponse<Branch>)
   const handleFetch = async (branchId: string) => {
     try {
       const response = await BranchService.getBranchById(Number(branchId));
-      return response; // KiduEdit expects your CustomResponse like in UserEdit
+      return response;
     } catch (error) {
       console.error("Error fetching branch:", error);
       throw error;
     }
   };
 
-  // Update the branch
   const handleUpdate = async (branchId: string, formData: Record<string, any>) => {
     try {
       const payload: Omit<Branch, "auditLogs"> = {
@@ -77,7 +71,6 @@ const [showStatePopup, setShowStatePopup] = useState(false);
     }
   };
 
-    // Popup handlers for KiduCreate
   const popupHandlers = {
     stateId: {
       value: selectedState?.name || "",
@@ -116,14 +109,11 @@ const [showStatePopup, setShowStatePopup] = useState(false);
         themeColor="#18575A"
          popupHandlers={popupHandlers}
       />
-        {/* State Popup */}
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
         onSelect={handleStateSelect}
       />
-
-      {/* Circle Popup */}
       <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}

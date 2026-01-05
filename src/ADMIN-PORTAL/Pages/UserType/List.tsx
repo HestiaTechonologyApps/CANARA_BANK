@@ -18,7 +18,6 @@ const UserTypeList: React.FC = () => {
     try {
       const userTypes = await UserTypeService.getAllUserTypes();
 
-      // 🔍 Search filter
       let filtered = userTypes;
       if (params.searchTerm) {
         const q = params.searchTerm.toLowerCase();
@@ -30,7 +29,6 @@ const UserTypeList: React.FC = () => {
         );
       }
 
-      // 📄 Pagination
       const start = (params.pageNumber - 1) * params.pageSize;
       const end = start + params.pageSize;
       const paginated = filtered.slice(start, end);

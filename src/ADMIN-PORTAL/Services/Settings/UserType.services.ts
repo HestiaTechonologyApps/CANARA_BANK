@@ -14,7 +14,6 @@ const UserTypeService = {
     return response.value;
   },
 
-  // Return full CustomResponse for KiduEdit/KiduView parity
   async getUserTypeById(id: number): Promise<CustomResponse<UserType>> {
     const response = await HttpService.callApi<CustomResponse<UserType>>(
       API_ENDPOINTS.USER_TYPE.GET_BY_ID(id),

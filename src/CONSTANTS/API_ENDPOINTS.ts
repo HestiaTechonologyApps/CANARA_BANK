@@ -186,24 +186,31 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
   },
-  //------------------------PUBLIC MODULE----------------------------------------
-  PUBLIC: {
-    GET_ALL_DAYQUOTE: `${API_BASE_URL}/Public/dayquotes`,
-    GET_ALL_DAILYNEWS: `${API_BASE_URL}/Public/dailynews`,
-  },
 
-  PUBLIC_PAGE: {
-    GET_ALL: `${API_BASE_URL}/PublicPage/public/home`,
-  },
-
-  //-------------------------STAFF MODULE------------------------------
-  ACCOUNT_DIRECT_ENTRY: {
+   ACCOUNT_DIRECT_ENTRY: {
     GET_ALL: `${API_BASE_URL}/AccountDirecyEntry`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     CREATE: `${API_BASE_URL}/AccountDirecyEntry`,
     UPDATE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
-  }
+  },
+  //------------------------PUBLIC MODULE----------------------------------------
+  PUBLIC: {
+    GET_ALL_DAYQUOTE: `${API_BASE_URL}/Public/dayquotes`,
+    GET_ALL_DAILYNEWS: `${API_BASE_URL}/Public/dailynews`,
+    GET_ALL_MANAGINGCOMMITEE: `${API_BASE_URL}/Public/managingCommitee`,
+    GET_ALL_PUBLICPAGE: `${API_BASE_URL}/Public/publicpage`,
+    GET_ALL_ATTACHMENTS: `${API_BASE_URL}/Public/attachment`,
+  },
+
+  PUBLIC_PAGE: {
+    GET_ALL: `${API_BASE_URL}/PublicPage/public/home`,
+    CREATE:`${API_BASE_URL}/PubicPage`,
+    DELETE:(id:number)=>`${API_BASE_URL}/PublicPage/${id}`
+  },
+
+  //-------------------------STAFF MODULE------------------------------
+ 
 };
 
 // ✅ Helper function to get full image URL

@@ -13,19 +13,17 @@ import CategoryPopup from "../../Settings/Category/CategoryPopup";
 import StatusPopup from "../../Settings/Status/StatusPopup";
 
 const MemberCreate: React.FC = () => {
-  // ───────────────────── Popup States ─────────────────────
+
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
   const [showStatusPopup, setShowStatusPopup] = useState(false);
 
-  // ───────────────────── Selected Values ─────────────────────
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  // ───────────────────── Fields ─────────────────────
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 } },
     { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 6 } },
@@ -52,7 +50,6 @@ const MemberCreate: React.FC = () => {
     { name: "totalRefund", rules: { type: "text", label: "Total Refund", placeholder: "0", colWidth: 3 } },
   ];
 
- 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -65,21 +62,17 @@ const MemberCreate: React.FC = () => {
       staffNo: Number(formData.staffNo),
       name: formData.name.trim(),
       genderId: Number(formData.genderId),
-
       designationId: selectedDesignation.designationId,
       categoryId: selectedCategory.categoryId,
       branchId: selectedBranch.branchId,
-
       dob: toIsoMidnight(formData.dob),
       dobString: toIsoMidnight(formData.dob),
       doj: toIsoMidnight(formData.doj),
       dojString: toIsoMidnight(formData.doj),
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
-
       statusId: selectedStatus.statusId,
       isRegCompleted: Boolean(formData.isRegCompleted),
-
       nominee: formData.nominee?.trim() || "",
       nomineeRelation: formData.nomineeRelation?.trim() || "",
       nomineeIDentity: formData.nomineeIDentity?.trim() || "",
@@ -91,7 +84,6 @@ const MemberCreate: React.FC = () => {
     await MemberService.createMember(payload);
   };
 
-  // ───────────────────── Popup Handlers (CRITICAL) ─────────────────────
   const popupHandlers = {
     branchId: {
       value: selectedBranch ? `${selectedBranch.dpCode} - ${selectedBranch.name}` : "",
@@ -131,10 +123,26 @@ const MemberCreate: React.FC = () => {
         popupHandlers={popupHandlers}
       />
 
-      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} />
-      <DesignationPopup show={showDesignationPopup} handleClose={() => setShowDesignationPopup(false)} onSelect={setSelectedDesignation} />
-      <CategoryPopup show={showCategoryPopup} handleClose={() => setShowCategoryPopup(false)} onSelect={setSelectedCategory} />
-      <StatusPopup show={showStatusPopup} handleClose={() => setShowStatusPopup(false)} onSelect={setSelectedStatus} />
+      <BranchPopup 
+      show={showBranchPopup} 
+      handleClose={() => setShowBranchPopup(false)} 
+      onSelect={setSelectedBranch} 
+      />
+      <DesignationPopup 
+      show={showDesignationPopup} 
+      handleClose={() => setShowDesignationPopup(false)} 
+      onSelect={setSelectedDesignation} 
+      />
+      <CategoryPopup 
+      show={showCategoryPopup} 
+      handleClose={() => setShowCategoryPopup(false)} 
+      onSelect={setSelectedCategory} 
+      />
+      <StatusPopup 
+      show={showStatusPopup} 
+      handleClose={() => setShowStatusPopup(false)} 
+      onSelect={setSelectedStatus} 
+      />
     </>
   );
 };

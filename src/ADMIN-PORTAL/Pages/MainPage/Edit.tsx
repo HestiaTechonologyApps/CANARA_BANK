@@ -12,11 +12,11 @@ const MainPageEdit: React.FC = () => {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   const fields: Field[] = [
-    { name: "mainPageId", rules: { type: "number", label: "Main Page ID", disabled: true, colWidth: 3 } },
+    //{ name: "mainPageId", rules: { type: "number", label: "Main Page ID", disabled: true, colWidth: 3 } },
     { name: "companyId", rules: { type: "popup", label: "Company ID", required: true, colWidth: 3 } },
 
-    { name: "mainText", rules: { type: "textarea", label: "Main Text", required: true, colWidth: 12 } },
-    { name: "slogan", rules: { type: "text", label: "Slogan", required: true, colWidth: 12 } },
+    { name: "mainText", rules: { type: "textarea", label: "Main Text", required: true, colWidth: 6 } },
+    { name: "slogan", rules: { type: "text", label: "Slogan", required: true, colWidth: 4 } },
 
     { name: "corouselImage1", rules: { type: "text", label: "Carousel Image 1", colWidth: 4 } },
     { name: "corouselImage2", rules: { type: "text", label: "Carousel Image 2", colWidth: 4 } },
@@ -37,8 +37,8 @@ const MainPageEdit: React.FC = () => {
     { name: "website", rules: { type: "text", label: "Website", required: true, colWidth: 4 } },
     { name: "email", rules: { type: "email", label: "Email", required: true, colWidth: 4 } },
 
-    { name: "rulesRegulation", rules: { type: "textarea", label: "Rules & Regulations", colWidth: 12 } },
-    { name: "dayQuote", rules: { type: "text", label: "Day Quote", colWidth: 12 } },
+    { name: "rulesRegulation", rules: { type: "textarea", label: "Rules & Regulations", colWidth: 6 } },
+    { name: "dayQuote", rules: { type: "text", label: "Day Quote", colWidth: 4 } },
   ];
 
   

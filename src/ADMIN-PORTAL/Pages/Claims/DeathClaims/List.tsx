@@ -1,5 +1,4 @@
 // src/ADMIN-PORTAL/Pages/Claims/DeathClaims/DeathClaimList.tsx
-
 import React from "react";
 import type { DeathClaim } from "../../../Types/Claims/DeathClaims.type";
 import DeathClaimService from "../../../Services/Claims/DeathClaims.services";

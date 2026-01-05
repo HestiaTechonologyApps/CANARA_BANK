@@ -1,62 +1,19 @@
 import React from "react";
-import type { Field } from "../../../Components/KiduCreate";
+import type { Field } from "../../../Components/KiduEdit";
 import type { Status } from "../../../Types/Settings/Status.types";
 import KiduEdit from "../../../Components/KiduEdit";
 import StatusService from "../../../Services/Settings/Status.services";
 
 
 const StatusEdit: React.FC = () => {
-  // Define form fields matching StatusCreate
+
   const fields: Field[] = [
-    {
-      name: "name",
-      rules: {
-        type: "text",
-        label: "Status Name",
-        required: true,
-        minLength: 2,
-        maxLength: 100,
-        placeholder: "Enter status name",
-        colWidth: 6
-      }
-    },
-    {
-      name: "abbreviation",
-      rules: {
-        type: "text",
-        label: "Abbreviation",
-        required: true,
-        minLength: 1,
-        maxLength: 10,
-        placeholder: "Enter abbreviation",
-        colWidth: 6
-      }
-    },
-    {
-      name: "groupId",
-      rules: {
-        type: "number",
-        label: "Group ID",
-        required: true,
-        placeholder: "Enter group ID",
-        colWidth: 4
-      }
-    },
-    {
-      name: "description",
-      rules: {
-        type: "textarea",
-        label: "Description",
-        required: false,
-        maxLength: 500,
-        placeholder: "Enter status description",
-        colWidth: 12
-      }
-    },
-   
+    { name: "name", rules: { type: "text", label: "Status Name", required: true, minLength: 2,maxLength: 100, placeholder: "Enter status name", colWidth: 6 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, placeholder: "Enter abbreviation", colWidth: 6 } },
+    { name: "groupId", rules: { type: "number", label: "Group ID", required: true, placeholder: "Enter group ID", colWidth: 4} },
+    { name: "description", rules: { type: "textarea", label: "Description", required: false, maxLength: 500, placeholder: "Enter status description", colWidth: 12 } }, 
   ];
 
-  // Fetch status data by ID
   const handleFetch = async (statusId: string) => {
     try {
       const response = await StatusService.getStatusById(Number(statusId));
@@ -67,10 +24,9 @@ const StatusEdit: React.FC = () => {
     }
   };
 
-  // Handle form update
  const handleUpdate = async (statusId: string, formData: Record<string, any>) => {
   const payload: Omit<Status, 'auditLogs'> = {
-    statusId: Number(statusId),  // ✅ Add this
+    statusId: Number(statusId), 
     name: formData.name.trim(),
     abbreviation: formData.abbreviation.trim().toUpperCase(),
     description: formData.description?.trim() || "",
@@ -78,7 +34,6 @@ const StatusEdit: React.FC = () => {
   };
 
   await StatusService.updateStatus(Number(statusId), payload);
-  // ✅ Remove manual refetch - KiduEdit handles it
 };
   return (
     <KiduEdit

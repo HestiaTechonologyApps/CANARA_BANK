@@ -18,10 +18,8 @@ const UserList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: User[]; total: number }> => {
     try {
-      // Fetch all users from the service
       const users = await UserService.getAllUsers();
 
-      // Filter by search term if provided
       let filteredUsers = users;
       if (params.searchTerm) {
         const searchLower = params.searchTerm.toLowerCase();
@@ -36,10 +34,8 @@ const UserList: React.FC = () => {
         );
       }
 
-      // Sort by userId in descending order (latest first)
       filteredUsers.sort((a, b) => b.userId - a.userId);
 
-      // Calculate pagination
       const startIndex = (params.pageNumber - 1) * params.pageSize;
       const endIndex = startIndex + params.pageSize;
       const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
