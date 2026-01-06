@@ -33,6 +33,7 @@ const BranchPopup: React.FC<BranchPopupProps> = ({
       AddModalComponent={BranchCreateModal}
       idKey="branchId"
       rowsPerPage={10}
+      searchKeys={["dpCode", "name", "district", "status"]} // 🔥 Added searchKeys
     />
   );
 };

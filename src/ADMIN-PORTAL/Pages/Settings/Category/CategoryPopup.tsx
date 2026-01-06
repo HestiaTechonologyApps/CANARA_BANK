@@ -31,6 +31,7 @@ const CategoryPopup: React.FC<CategoryPopupProps> = ({
       AddModalComponent={CategoryCreateModal}
       idKey="categoryId"
       rowsPerPage={10}
+      searchKeys={["name", "abbreviation"]} // 🔥 Added searchKeys
     />
   );
 };

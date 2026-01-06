@@ -36,6 +36,7 @@ const CompanyPopup: React.FC<CompanyPopupProps> = ({
       AddModalComponent={CompanyCreateModal}
       idKey="companyId"
       rowsPerPage={10}
+      searchKeys={["comapanyName", "email", "contactNumber", "city", "state"]} // 🔥 Added searchKeys
     />
   );
 };

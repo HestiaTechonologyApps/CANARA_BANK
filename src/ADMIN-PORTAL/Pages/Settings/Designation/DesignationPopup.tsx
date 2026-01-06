@@ -4,7 +4,6 @@ import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
 import type { Designation } from "../../../Types/Settings/Designation";
 import DesignationCreateModal from "./DesignationCreateModal";
 
-
 interface DesignationPopupProps {
   show: boolean;
   handleClose: () => void;
@@ -33,6 +32,7 @@ const DesignationPopup: React.FC<DesignationPopupProps> = ({
       AddModalComponent={DesignationCreateModal}
       idKey="designationId"
       rowsPerPage={10}
+      searchKeys={["name", "description"]} // 🔥 ADD THIS LINE
     />
   );
 };

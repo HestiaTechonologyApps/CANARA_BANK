@@ -1,3 +1,4 @@
+// KiduServerTable.tsx - Fixed for server-side search
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Button, Row, Col, Container, Pagination } from "react-bootstrap";
 import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
@@ -6,11 +7,8 @@ import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   flexRender,
   type SortingState,
-  type ColumnFiltersState,
   type ColumnDef,
 } from "@tanstack/react-table";
 import KiduExcelButton from "./KiduExcelButton";
@@ -82,10 +80,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // React Table states
+  // React Table states - only sorting, no filtering (server handles that)
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
 
   const totalPages = Math.ceil(total / rowsPerPage);
 
@@ -116,10 +112,12 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     [fetchData, rowsPerPage]
   );
 
+  // Load data when page changes
   useEffect(() => {
     loadData(currentPage, searchTerm);
-  }, [loadData, currentPage, searchTerm]);
+  }, [loadData, currentPage]);
 
+  // Handle search with debounce and reset to page 1
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setCurrentPage(1);
@@ -135,7 +133,6 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
       accessorKey: col.key,
       header: col.label,
       enableSorting: col.enableSorting !== false,
-      enableColumnFilter: col.enableFiltering !== false,
       cell: ({ getValue }) => {
         const rawValue = getValue();
         
@@ -266,7 +263,6 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           </div>
         ),
         enableSorting: false,
-        enableColumnFilter: false,
         cell: ({ row }) => (
           <div
             className="d-flex justify-content-center gap-2"
@@ -327,23 +323,19 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     return cols;
   }, [columns, showActions, showExport, total, data, title, editRoute, viewRoute, navigate, idKey]);
 
-  // Create React Table instance
+  // Create React Table instance - NO FILTERING (server handles it)
   const table = useReactTable({
     data,
     columns: tableColumns,
     state: {
       sorting,
-      columnFilters,
-      globalFilter,
     },
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: false,
+    manualPagination: true, // CRITICAL: Tell TanStack we handle pagination
+    manualFiltering: true,  // CRITICAL: Tell TanStack we handle filtering
+    pageCount: totalPages,
   });
 
   const handlePageChange = (page: number) => {

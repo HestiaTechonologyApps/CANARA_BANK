@@ -34,6 +34,7 @@ const CirclePopup: React.FC<CirclePopupProps> = ({
       AddModalComponent={CircleCreateModal}
       idKey="circleId"
       rowsPerPage={10}
+      searchKeys={["circleCode", "name", "abbreviation"]} // 🔥 Added searchKeys
     />
   );
 };
