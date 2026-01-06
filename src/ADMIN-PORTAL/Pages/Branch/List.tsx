@@ -2,80 +2,73 @@
 import React from "react";
 import type { Branch } from "../../Types/Settings/Branch.types";
 import BranchService from "../../Services/Settings/Branch.services";
+import StateService from "../../Services/Settings/State.services";
+import CircleService from "../../Services/Settings/Circle.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "branchId", label: "Branch ID", enableSorting: true, type: "text" as const },
+  { key: "branchId", label: "ID", enableSorting: true, type: "text" as const },
   { key: "dpCode", label: "DP Code", enableSorting: true, type: "text" as const },
   { key: "name", label: "Branch Name", enableSorting: true, type: "text" as const },
-  // { key: "address1", label: "Address 1", enableSorting: false, type: "text" as const },
-  // { key: "address2", label: "Address 2", enableSorting: false, type: "text" as const },
-  // { key: "address3", label: "Address 3", enableSorting: false, type: "text" as const },
   { key: "district", label: "District", enableSorting: true, type: "text" as const },
-  { key: "status", label: "Active", enableSorting: true, type: "checkbox" as const },
-  { key: "circleId", label: "Circle ID", enableSorting: true, type: "text" as const },
-  { key: "stateId", label: "State ID", enableSorting: true, type: "text" as const },
-  { key: "isRegCompleted", label: "Reg. Completed", enableSorting: true, type: "checkbox" as const },
+  { key: "stateName", label: "State", enableSorting: true, type: "text" as const },
+  { key: "circleName", label: "Circle", enableSorting: true, type: "text" as const },
+  { key: "status", label: "Active", enableSorting: true, type: "text" as const },
 ];
 
 const BranchList: React.FC = () => {
-  const fetchData = async (params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: Branch[]; total: number }> => {
-    try {
-      const branches = await BranchService.getAllBranches();
-      let filtered = branches;
-      if (params.searchTerm) {
-        const q = params.searchTerm.toLowerCase();
-        filtered = branches.filter((b) => {
-          const statusStr = String(b.status); 
-          return (
-            b.name?.toLowerCase().includes(q) ||
-            String(b.dpCode)?.toLowerCase().includes(q) ||
-            b.address1?.toLowerCase().includes(q) ||
-            b.address2?.toLowerCase().includes(q) ||
-            b.address3?.toLowerCase().includes(q) ||
-            b.district?.toLowerCase().includes(q) ||
-            String(b.circleId)?.toLowerCase().includes(q) ||
-            String(b.stateId)?.toLowerCase().includes(q) ||
-            statusStr.includes(q)
-          );
-        });
-      }
+  const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
+    // 1️⃣ Fetch all data
+    const [branches, states, circles] = await Promise.all([
+      BranchService.getAllBranches(),
+      StateService.getAllStates(),
+      CircleService.getAllCircles(),
+    ]);
 
-      const start = (params.pageNumber - 1) * params.pageSize;
-      const end = start + params.pageSize;
-      const paginated = filtered.slice(start, end);
+    // 2️⃣ Create lookup maps
+    const stateMap = new Map(states.map((s) => [s.stateId, s.name]));
+    const circleMap = new Map(circles.map((c) => [c.circleId, c.name]));
 
-      return {
-        data: paginated,
-        total: filtered.length,
-      };
-    } catch (error: any) {
-      console.error("Error fetching branches:", error);
-      throw new Error(error.message || "Failed to fetch branches");
+    // 3️⃣ Enrich branches with names
+    const enriched: Branch[] = branches.map((b) => ({
+      ...b,
+      stateName: stateMap.get(b.stateId) || "-",
+      circleName: circleMap.get(b.circleId) || "-",
+    }));
+
+    // 4️⃣ Search
+    let filtered = enriched;
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      filtered = enriched.filter((b) =>
+        b.name?.toLowerCase().includes(q) ||
+        b.district?.toLowerCase().includes(q) ||
+        b.stateName?.toLowerCase().includes(q) ||
+        b.circleName?.toLowerCase().includes(q)
+      );
     }
+
+    // 5️⃣ Pagination
+    const start = (pageNumber - 1) * pageSize;
+
+    return {
+      data: filtered.slice(start, start + pageSize),
+      total: filtered.length,
+    };
   };
 
   return (
     <KiduServerTable
       title="Branch Management"
-      subtitle="Manage branches with search, filter, and pagination"
       columns={columns}
       idKey="branchId"
-      addButtonLabel="Add Branch"
       addRoute="/dashboard/settings/branch-create"
       editRoute="/dashboard/settings/branch-edit"
       viewRoute="/dashboard/settings/branch-view"
-      showAddButton={true}
-      showExport={true}
-      showSearch={true}
-      showActions={true}
-      showTitle={true}
       fetchData={fetchData}
-      rowsPerPage={10}
+      showAddButton
+      showSearch
+      showActions
     />
   );
 };

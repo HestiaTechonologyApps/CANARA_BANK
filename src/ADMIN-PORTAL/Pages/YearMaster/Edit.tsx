@@ -9,24 +9,10 @@ import KiduEdit from "../../Components/KiduEdit";
 
 const YearMasterEdit: React.FC = () => {
   const fields: Field[] = [
-    {
-      name: "yearOf",
-      rules: {
-        type: "number",
-        label: "Year Of",
+    { name: "yearOf", rules: { type: "number", label: "Year Of",
         // disabled: true,
-        colWidth: 4,
-      },
-    },
-    {
-      name: "yearName",
-      rules: {
-        type: "number",
-        label: "Year Name",
-        required: true,
-        colWidth: 4,
-      },
-    },
+        colWidth: 4, },},
+    { name: "yearName", rules: { type: "number", label: "Year Name", required: true, colWidth: 4, }, },
   ];
 
   const handleFetch = async (id: string) =>

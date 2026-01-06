@@ -10,35 +10,9 @@ const SupportTicketCreate: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const fields: Field[] = [
-    {
-      name: "description",
-      rules: {
-        type: "textarea",
-        label: "Issue Description",
-        required: true,
-        colWidth: 12,
-      },
-    },
-    {
-      name: "priority",
-      rules: {
-        type: "text",
-        label: "Priority",
-        placeholder: "Low / Medium / High",
-        required: true,
-        colWidth: 4,
-      },
-    },
-    {
-      name: "duration",
-      rules: {
-        type: "text",
-        label: "Expected Duration",
-        placeholder: "e.g. 2 hours",
-        required: true,
-        colWidth: 4,
-      },
-    },
+    { name: "description", rules: { type: "textarea", label: "Issue Description", required: true, colWidth: 12, }, },
+    { name: "priority", rules: { type: "text", label: "Priority", placeholder: "Low / Medium / High", required: true, colWidth: 4, }, },
+    { name: "duration", rules: { type: "text", label: "Expected Duration", placeholder: "e.g. 2 hours", required: true, colWidth: 4, },},
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

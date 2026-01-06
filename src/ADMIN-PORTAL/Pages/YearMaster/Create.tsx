@@ -11,25 +11,8 @@ const YearMasterCreate: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const fields: Field[] = [
-    {
-      name: "yearOf",
-      rules: {
-        type: "number",
-        label: "Year Of",
-        required: true,
-        colWidth: 4,
-      },
-    },
-    {
-      name: "yearName",
-      rules: {
-        type: "number",
-        label: "Year Name",
-        placeholder: "e.g. 2024",
-        required: true,
-        colWidth: 4,
-      },
-    },
+    { name: "yearOf", rules: { type: "number", label: "Year Of", required: true, colWidth: 4, }, },
+    { name: "yearName", rules: { type: "number", label: "Year Name", placeholder: "e.g. 2024", required: true, colWidth: 4, },},
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

@@ -40,7 +40,7 @@ const UserEdit: React.FC = () => {
 
         setSelectedCompany({
           companyId: response.value.companyId,
-          comapanyName: `Company ${response.value.companyId}` // Placeholder
+          comapanyName: `Company ${response.value.companyId}` 
         } as Company);
       }
       

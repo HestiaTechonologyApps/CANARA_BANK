@@ -1,9 +1,7 @@
 // src/components/YearMaster/YearMasterList.tsx
-
 import React from "react";
 import YearMasterService from "../../Services/Settings/YearMaster.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
-
 
 const columns = [
   { key: "yearOf", label: "Year Of", type: "text" as const },
