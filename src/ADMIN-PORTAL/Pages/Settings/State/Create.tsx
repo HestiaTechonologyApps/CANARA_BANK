@@ -33,7 +33,7 @@ const StateCreate: React.FC = () => {
       errorMessage="Failed to create state. Please try again."
       navigateOnSuccess="/dashboard/settings/state-list"
       navigateDelay={1200}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

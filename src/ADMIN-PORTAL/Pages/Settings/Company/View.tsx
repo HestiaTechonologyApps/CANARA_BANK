@@ -34,7 +34,7 @@ const CompanyView: React.FC = () => {
       listRoute="/dashboard/settings/company-list"
       paramName="companyId"
       //auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading category details..."
       showEditButton={true}
       showDeleteButton={true}

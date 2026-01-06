@@ -88,7 +88,7 @@ const RefundContributionCreate: React.FC = () => {
         successMessage="Refund Contribution created successfully!"
         errorMessage="Failed to create Refund Contribution. Please try again."
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"
-        themeColor="#18575A"
+        themeColor="#1B3763"
          popupHandlers={popupHandlers}
       />
         <StatePopup

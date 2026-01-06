@@ -123,7 +123,7 @@ const handleUpdate = async (claimId: string, formData: Record<string, any>) => {
         navigateBackPath="/dashboard/claims/deathclaims-list"
         loadingText="Loading Death Claim..."
         auditLogConfig={{ tableName: "DeathClaim", recordIdField: "deathClaimId" }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
       <MemberPopup

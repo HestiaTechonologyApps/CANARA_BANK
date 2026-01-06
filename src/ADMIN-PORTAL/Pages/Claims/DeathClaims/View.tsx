@@ -42,7 +42,7 @@ const DeathClaimView: React.FC = () => {
         tableName: "DeathClaim",
         recordIdField: "deathClaimId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading death claim details..."
       showEditButton={true}
       showDeleteButton={true}

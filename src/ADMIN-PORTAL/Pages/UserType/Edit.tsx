@@ -46,7 +46,7 @@ const UserTypeEdit: React.FC = () => {
         tableName: "UserType",
         recordIdField: "userTypeId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

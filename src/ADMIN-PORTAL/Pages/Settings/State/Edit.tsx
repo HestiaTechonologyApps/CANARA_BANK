@@ -50,7 +50,7 @@ const StateEdit: React.FC = () => {
       navigateBackPath="/dashboard/settings/state-list"
       loadingText="Loading State..."
       auditLogConfig={{ tableName: "State", recordIdField: "stateId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

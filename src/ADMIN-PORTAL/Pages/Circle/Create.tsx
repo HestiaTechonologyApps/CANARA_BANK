@@ -60,7 +60,7 @@ const CircleCreate: React.FC = () => {
         errorMessage="Failed to create circle."
         navigateOnSuccess="/dashboard/settings/circle-list"
         popupHandlers={popupHandlers}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
       <StatePopup

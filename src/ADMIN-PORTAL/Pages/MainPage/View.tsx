@@ -64,7 +64,7 @@ const MainPageView: React.FC = () => {
         tableName: "MainPage",
         recordIdField: "mainPageId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading main page details..."
       showEditButton={true}
       showDeleteButton={true}

@@ -82,7 +82,7 @@ await BranchService.createBranch(payload);
         errorMessage="Failed to create branch."
         navigateOnSuccess="/dashboard/settings/branch-list"
         navigateDelay={1200}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
 

@@ -23,7 +23,7 @@ const ManagingCommitteeView: React.FC = () => {
       paramName="managingComiteeId"
       editRoute="/dashboard/cms/manage-committe-edit"
       listRoute="/dashboard/cms/manage-committe-list"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

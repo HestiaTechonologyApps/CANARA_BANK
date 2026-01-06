@@ -92,7 +92,7 @@ const popupHandlers = {
         errorMessage="Failed to create death claim. Please try again."
         navigateOnSuccess="/dashboard/claims/deathclaims-list"
         navigateDelay={1200}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
       <MemberPopup

@@ -85,7 +85,7 @@ const DirectPaymentEdit: React.FC = () => {
           tableName: "DirectPayment",
           recordIdField: "directPaymentId",
         }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
 

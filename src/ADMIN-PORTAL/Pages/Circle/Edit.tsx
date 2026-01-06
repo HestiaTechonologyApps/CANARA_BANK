@@ -94,7 +94,7 @@ const CircleEdit: React.FC = () => {
           tableName: "Circle",
           recordIdField: "circleId",
         }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
 

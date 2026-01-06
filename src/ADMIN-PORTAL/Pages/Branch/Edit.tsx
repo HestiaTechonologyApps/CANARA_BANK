@@ -106,7 +106,7 @@ const BranchEdit: React.FC = () => {
           tableName: "Branch",
           recordIdField: "branchId",
         }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
          popupHandlers={popupHandlers}
       />
       <StatePopup

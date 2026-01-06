@@ -58,7 +58,7 @@ const DailyNewsEdit: React.FC = () => {
         paramName="dailyNewsId"
         navigateBackPath="/dashboard/cms/dailynews-list"
        // auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
   );

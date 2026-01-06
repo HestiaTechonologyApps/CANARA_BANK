@@ -110,7 +110,7 @@ const payload = {
         navigateBackPath="/dashboard/cms/mainpage-list"
         auditLogConfig={{ tableName: "MainPage", recordIdField: "mainPageId" }}
         popupHandlers={popupHandlers}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
       <CompanyPopup

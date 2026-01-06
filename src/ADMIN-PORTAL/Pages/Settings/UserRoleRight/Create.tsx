@@ -31,7 +31,7 @@ const UserRoleRightCreate: React.FC = () => {
   successMessage="User Role Right created successfully!"
   errorMessage="Failed to create User Role Right. Please try again."
   navigateOnSuccess="/dashboard/settings/userroleright-list"
-  themeColor="#18575A"
+  themeColor="#1B3763"
 />
 
   );

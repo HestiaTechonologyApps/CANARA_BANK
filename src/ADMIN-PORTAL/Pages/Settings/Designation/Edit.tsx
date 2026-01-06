@@ -55,7 +55,7 @@ const DesignationEdit: React.FC = () => {
         tableName: "Designation",
         recordIdField: "designationId"
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

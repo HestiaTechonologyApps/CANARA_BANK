@@ -35,7 +35,7 @@ const StatusView: React.FC = () => {
         tableName: "Status",
         recordIdField: "statusId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading status details..."
       showEditButton={true}
       showDeleteButton={true}

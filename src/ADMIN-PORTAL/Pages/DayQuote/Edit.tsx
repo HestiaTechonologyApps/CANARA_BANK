@@ -68,7 +68,7 @@ const popupHandlers = {
         paramName="dayQuoteId"
         navigateBackPath="/dashboard/cms/dayquote-list"
         auditLogConfig={{ tableName: "DayQuote", recordIdField: "dayQuoteId" }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
       <MonthPopup

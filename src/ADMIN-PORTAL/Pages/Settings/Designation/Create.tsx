@@ -38,7 +38,7 @@ const DesignationCreate: React.FC = () => {
       errorMessage="Failed to create designation. Please try again."
       navigateOnSuccess="/dashboard/settings/designation-list"
       navigateDelay={1500}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

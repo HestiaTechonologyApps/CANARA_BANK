@@ -12,7 +12,7 @@ import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 import KiduPrevious from "../../../Components/KiduPrevious";
 import KiduReset from "../../../Components/KiduReset";
 
-const themeColor = "#882626ff";
+const themeColor = "#1B3763";
 
 const PublicPageCreate: React.FC = () => {
   const navigate = useNavigate();

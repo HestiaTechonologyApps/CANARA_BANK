@@ -1,20 +1,15 @@
-// src/pages/Customers/CustomerList.tsx
+// src/components/Customer/CustomerList.tsx
 import React from "react";
-import KiduServerTable from "../../../Components/KiduServerTable";
 import type { Customer } from "../../Types/Customers/Customers.types";
+import KiduServerTable from "../../../Components/KiduServerTable";
 import CustomerService from "../../Services/Customers/Customers.services";
 
 const columns = [
   { key: "customerId", label: "Customer ID", enableSorting: true, type: "text" as const },
   { key: "customerName", label: "Name", enableSorting: true, type: "text" as const },
-  { key: "customerEmail", label: "Email", enableSorting: true, type: "text" as const },
   { key: "customerPhone", label: "Phone", enableSorting: true, type: "text" as const },
-  { key: "customerAddress", label: "Address", enableSorting: false, type: "text" as const },
-  { key: "dob", label: "Date of Birth", enableSorting: true, type: "date" as const },
-  { key: "nationality", label: "nationality", enableSorting: true, type: "text" as const }, 
-  { key: "createdAt", label: "Created At", enableSorting: true, type: "date" as const },
+  { key: "customerEmail", label: "Email", enableSorting: true, type: "text" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
-  //{ key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
 ];
 
 const CustomerList: React.FC = () => {
@@ -23,59 +18,40 @@ const CustomerList: React.FC = () => {
     pageSize: number;
     searchTerm: string;
   }): Promise<{ data: Customer[]; total: number }> => {
-    try {
-      const customers = await CustomerService.getAllCustomers();
-      const visible = customers.filter((c) => !c.isDeleted);
-      const { searchTerm, pageNumber, pageSize } = params;
-      let filtered = visible;
+    const customers = await CustomerService.getAllCustomers();
+    let filtered = customers;
 
-      if (searchTerm) {
-        const q = searchTerm.toLowerCase();
-        filtered = visible.filter((c) => {
-          const name = c.customerName?.toLowerCase() || "";
-          const email = c.customerEmail?.toLowerCase() || "";
-          const phone = c.customerPhone?.toLowerCase?.() || String(c.customerPhone || "");
-          const address = c.customerAddress?.toLowerCase() || "";
-          const nation = (c.nationality as string)?.toLowerCase?.() || "";
-          const id = String(c.customerId || "");
-          const company = String(c.companyId || "");
-          return (
-            name.includes(q) ||
-            email.includes(q) ||
-            phone.includes(q) ||
-            address.includes(q) ||
-            nation.includes(q) ||
-            id.includes(q) ||
-            company.includes(q)
-          );
-        });
-      }
-      const start = (pageNumber - 1) * pageSize;
-      const end = start + pageSize;
-      const page = filtered.slice(start, end);
-
-      return { data: page, total: filtered.length };
-    } catch (err: any) {
-      console.error("Error fetching customers:", err);
-      throw new Error(err?.message || "Failed to fetch customers");
+    if (params.searchTerm) {
+      const q = params.searchTerm.toLowerCase();
+      filtered = customers.filter((c) =>
+        c.customerName?.toLowerCase().includes(q) ||
+        c.customerPhone?.includes(q) ||
+        c.customerEmail?.toLowerCase().includes(q)
+      );
     }
+
+    const start = (params.pageNumber - 1) * params.pageSize;
+    const end = start + params.pageSize;
+
+    return {
+      data: filtered.slice(start, end),
+      total: filtered.length,
+    };
   };
 
   return (
     <KiduServerTable
       title="Customer Management"
-      subtitle="Manage customers with search, filter, and pagination"
+      subtitle="Manage customers"
       columns={columns}
       idKey="customerId"
       addButtonLabel="Add Customer"
       addRoute="/dashboard/customer-create"
       editRoute="/dashboard/customer-edit"
       viewRoute="/dashboard/customer-view"
-      showAddButton={true}
-      showExport={true}
-      showSearch={true}
-      showActions={true}
-      showTitle={true}
+      showAddButton
+      showSearch
+      showActions
       fetchData={fetchData}
       rowsPerPage={10}
     />

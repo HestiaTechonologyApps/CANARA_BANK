@@ -69,7 +69,7 @@ const CompanyCreate: React.FC = () => {
       navigateOnSuccess="/dashboard/settings/company-list"
       successMessage="Company created successfully!"
       errorMessage="Failed to create company"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

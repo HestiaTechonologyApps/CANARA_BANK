@@ -102,7 +102,7 @@ const AccountDirectEntryCreate: React.FC = () => {
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
         successMessage="Entry created successfully"
         errorMessage="Failed to create entry. Please try again."
-        themeColor="#18575A"
+        themeColor="#1B3763"
         navigateDelay={1200}
       />
 

@@ -55,7 +55,7 @@ const MonthEdit: React.FC = () => {
         tableName: "Month",
         recordIdField: "monthId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

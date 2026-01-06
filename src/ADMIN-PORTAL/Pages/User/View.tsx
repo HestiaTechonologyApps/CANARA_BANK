@@ -49,7 +49,7 @@ const UserView: React.FC = () => {
         tableName: "User",
         recordIdField: "userId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading user details..."
       showEditButton={true}
       showDeleteButton={true}

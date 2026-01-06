@@ -31,7 +31,7 @@ const DayQuoteView: React.FC = () => {
       listRoute="/dashboard/cms/dayquote-list"
       paramName="dayQuoteId"
       auditLogConfig={{ tableName: "DayQuote", recordIdField: "dayQuoteId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading day quote..."
       showEditButton
       showDeleteButton

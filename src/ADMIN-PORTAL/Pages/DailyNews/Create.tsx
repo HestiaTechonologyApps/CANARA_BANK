@@ -43,7 +43,7 @@ const DailyNewsCreate: React.FC = () => {
         successMessage="Daily news created successfully!"
         errorMessage="Failed to create daily news"
         navigateOnSuccess="/dashboard/cms/dailynews-list"
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
   );

@@ -37,7 +37,7 @@ const CircleView: React.FC = () => {
         tableName: "Circle",
         recordIdField: "circleId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading circle details..."
       showEditButton={true}
       showDeleteButton={true}

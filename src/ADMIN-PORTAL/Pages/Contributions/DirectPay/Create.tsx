@@ -60,7 +60,7 @@ const DirectPaymentCreate: React.FC = () => {
         onSubmit={handleSubmit}
         successMessage="Direct Payment created successfully!"
         navigateOnSuccess="/dashboard/contributions/directpayment-list"
-        themeColor="#18575A"
+        themeColor="#1B3763"
          popupHandlers={popupHandlers}
       />
       <MemberPopup

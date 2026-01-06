@@ -54,7 +54,7 @@ const CategoryEdit: React.FC = () => {
         tableName: "Category",
         recordIdField: "categoryId"
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

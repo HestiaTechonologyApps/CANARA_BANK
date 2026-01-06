@@ -136,7 +136,7 @@ const MemberEdit: React.FC = () => {
         navigateBackPath="/dashboard/member/member-list"
         auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
         popupHandlers={popupHandlers}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
       <BranchPopup 

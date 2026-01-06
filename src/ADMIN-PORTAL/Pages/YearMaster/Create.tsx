@@ -56,7 +56,7 @@ const YearMasterCreate: React.FC = () => {
       successMessage="Year created successfully!"
       errorMessage="Failed to create year"
       navigateOnSuccess="/dashboard/settings/year-master-list"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

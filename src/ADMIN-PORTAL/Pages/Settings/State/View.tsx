@@ -32,7 +32,7 @@ const StateView: React.FC = () => {
       showEditButton
       showDeleteButton
       deleteConfirmMessage="Are you sure you want to delete this state?"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

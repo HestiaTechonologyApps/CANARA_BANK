@@ -37,7 +37,7 @@ const PublicPageView: React.FC = () => {
       onDelete={handleDelete}
       listRoute="/dashboard/cms/public-page-list"
       paramName="publicPageId"
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading public page..."
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this public page?"

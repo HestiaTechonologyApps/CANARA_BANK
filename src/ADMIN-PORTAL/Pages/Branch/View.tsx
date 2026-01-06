@@ -44,7 +44,7 @@ const BranchView: React.FC = () => {
         tableName: "Branch",
         recordIdField: "branchId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading branch details..."
       showEditButton={true}
       showDeleteButton={true}

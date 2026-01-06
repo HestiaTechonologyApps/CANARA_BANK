@@ -52,7 +52,7 @@ const MemberView: React.FC = () => {
       listRoute="/dashboard/contributions/member-list"
       paramName="memberId"
       auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading member details..."
       showEditButton={true}
       showDeleteButton={true}

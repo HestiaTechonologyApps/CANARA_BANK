@@ -54,7 +54,7 @@ const YearMasterEdit: React.FC = () => {
         tableName: "YearMaster",
         recordIdField: "yearOf",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

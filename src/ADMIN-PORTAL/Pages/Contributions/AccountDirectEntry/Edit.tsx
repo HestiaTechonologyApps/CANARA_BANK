@@ -115,7 +115,7 @@ const AccountDirectEntryEdit: React.FC = () => {
           tableName: "AccountDirectEntry",
           recordIdField: "accountsDirectEntryID",
         }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
       {/* ───────────── Popups ───────────── */}

@@ -28,7 +28,7 @@ const MonthCreate: React.FC = () => {
       successMessage="Month created successfully!"
       errorMessage="Failed to create month. Please try again."
       navigateOnSuccess="/dashboard/settings/month-list"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

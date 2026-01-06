@@ -33,7 +33,7 @@ const CategoryView: React.FC = () => {
         tableName: "Category",
         recordIdField: "categoryId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading category details..."
       showEditButton={true}
       showDeleteButton={true}

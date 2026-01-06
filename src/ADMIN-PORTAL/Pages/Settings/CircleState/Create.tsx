@@ -42,7 +42,7 @@ const CircleStateCreate: React.FC = () => {
       successMessage="Circle-State mapping created successfully!"
       errorMessage="Failed to create mapping"
       navigateOnSuccess="/dashboard/settings/circle-state-list"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

@@ -115,7 +115,7 @@ const UserEdit: React.FC = () => {
           tableName: "User",
           recordIdField: "userId"
         }}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
         options={{ role: roleOptions }}
       />

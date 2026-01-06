@@ -31,7 +31,7 @@ const AccountDirectEntryView: React.FC = () => {
       editRoute="/dashboard/contributions/accountDirectEntry-edit"
       listRoute="/dashboard/contributions/accountDirectEntry-list"
       auditLogConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading entry details..."
       showDeleteButton={true}
       showEditButton={true}

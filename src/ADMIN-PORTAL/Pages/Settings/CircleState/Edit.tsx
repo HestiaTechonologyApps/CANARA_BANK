@@ -39,7 +39,7 @@ const CircleStateEdit: React.FC = () => {
         tableName: "CircleState",
         recordIdField: "id",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

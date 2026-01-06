@@ -75,7 +75,7 @@ const handleUpdate = async (
       successMessage="Company updated successfully!"
       errorMessage="Failed to update company"
       //auditLogConfig={{ tableName: "Company", recordIdField: "companyId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

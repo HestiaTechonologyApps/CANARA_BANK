@@ -52,7 +52,7 @@ const StatusEdit: React.FC = () => {
         tableName: "Status",
         recordIdField: "statusId"
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

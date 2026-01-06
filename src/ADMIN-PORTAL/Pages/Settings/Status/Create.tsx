@@ -47,7 +47,7 @@ const StatusCreate: React.FC = () => {
       successMessage="Status created successfully!"
       errorMessage="Failed to create status. Please try again."
       navigateOnSuccess="/dashboard/settings/status-list"
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

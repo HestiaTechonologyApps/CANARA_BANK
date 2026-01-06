@@ -66,7 +66,7 @@ const ManagingCommitteeEdit: React.FC = () => {
         navigateBackPath="/dashboard/cms/manage-committe-list"
         //auditLogConfig={{ tableName: "Managing committees", recordIdField: "managingComiteeId" }}
        // popupHandlers={popupHandlers}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
       {/* <CompanyPopup
         show={showCompanyPopup}

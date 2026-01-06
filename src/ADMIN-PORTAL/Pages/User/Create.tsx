@@ -70,7 +70,7 @@ const UserCreate: React.FC = () => {
         successMessage="User created successfully!"
         errorMessage="Failed to create user. Please try again."
         navigateOnSuccess="/dashboard/settings/user-list"
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
         options={{ role: roleOptions }}
       />

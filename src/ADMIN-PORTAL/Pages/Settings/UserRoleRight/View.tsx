@@ -30,7 +30,7 @@ const UserRoleRightView: React.FC = () => {
       paramName="userRoleRightId"
       listRoute="/dashboard/settings/userroleright-list"
       auditLogConfig={{ tableName: "UserRoleRight", recordIdField: "userRoleRightId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this role right?"

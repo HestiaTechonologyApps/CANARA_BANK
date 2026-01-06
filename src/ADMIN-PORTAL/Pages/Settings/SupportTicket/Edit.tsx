@@ -94,7 +94,7 @@ const SupportTicketEdit: React.FC = () => {
         tableName: "SupportTicket",
         recordIdField: "supportTicketId",
       }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

@@ -42,7 +42,7 @@ const RefundContributionView: React.FC = () => {
       editRoute="/dashboard/claims/refundcontribution-edit"
       listRoute="/dashboard/claims/refundcontribution-list"
       auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };

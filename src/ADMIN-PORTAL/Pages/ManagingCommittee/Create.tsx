@@ -52,7 +52,7 @@ const ManagingCommitteeCreate: React.FC = () => {
         onSubmit={handleSubmit}
         navigateOnSuccess="/dashboard/cms/manage-committe-list"
         //popupHandlers={popupHandlers}
-        themeColor="#18575A"
+        themeColor="#1B3763"
       />
 
       {/* <CompanyPopup

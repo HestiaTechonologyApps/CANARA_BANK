@@ -98,7 +98,7 @@ const popupHandlers = {
         errorMessage="Failed to create main page. Please check the details and try again."
         navigateOnSuccess="/dashboard/cms/mainpage-list"
         navigateDelay={1200}
-        themeColor="#18575A"
+        themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />
       <CompanyPopup

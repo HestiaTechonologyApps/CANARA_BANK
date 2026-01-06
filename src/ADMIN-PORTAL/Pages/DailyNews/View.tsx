@@ -32,7 +32,7 @@ const handleFetch = async (id: string) => {
       listRoute="/dashboard/cms/dailynews-list"
       paramName="dailyNewsId"
      // auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
       loadingText="Loading daily news details..."
       showEditButton={true}
       showDeleteButton={true}

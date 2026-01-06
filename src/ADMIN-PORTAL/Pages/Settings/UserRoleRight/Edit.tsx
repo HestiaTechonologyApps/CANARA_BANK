@@ -43,7 +43,7 @@ const UserRoleRightEdit: React.FC = () => {
       navigateBackPath="/dashboard/settings/userroleright-list"
       loadingText="Loading Role Right..."
       auditLogConfig={{ tableName: "UserRoleRight", recordIdField: "userRoleRightId" }}
-      themeColor="#18575A"
+      themeColor="#1B3763"
     />
   );
 };
