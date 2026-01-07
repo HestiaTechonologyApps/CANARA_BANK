@@ -12,7 +12,8 @@ const StateView: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-    return await StateService.getStateById(Number(id));
+    const response =  await StateService.getStateById(Number(id));
+    return response;
   };
 
   const handleDelete = async (id: string) => {
@@ -28,10 +29,14 @@ const StateView: React.FC = () => {
       paramName="stateId"
       editRoute="/dashboard/settings/state-edit"
       listRoute="/dashboard/settings/state-list"
-      auditLogConfig={{ tableName: "State", recordIdField: "stateId" }}
-      showEditButton
-      showDeleteButton
-      deleteConfirmMessage="Are you sure you want to delete this state?"
+      auditLogConfig={{ 
+        tableName: "State",
+        recordIdField: "stateId" 
+      }}
+      showEditButton={true}
+      showDeleteButton={true}
+      loadingText="Loading month details..."
+      deleteConfirmMessage="Are you sure you want to delete this state? This action cannot be undone."
       themeColor="#1B3763"
     />
   );

@@ -13,7 +13,7 @@ const columns = [
   { key: "district", label: "District", enableSorting: true, type: "text" as const },
   { key: "stateName", label: "State", enableSorting: true, type: "text" as const },
   { key: "circleName", label: "Circle", enableSorting: true, type: "text" as const },
-  { key: "status", label: "Active", enableSorting: true, type: "text" as const },
+  { key: "status", label: "Active", enableSorting: true, type: "checkbox" as const },
 ];
 
 const BranchList: React.FC = () => {
