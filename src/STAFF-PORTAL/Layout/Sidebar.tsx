@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { User, UserCog, CreditCard, Settings, BarChart, Home, LogOut} from "lucide-react";
 import "../Style/Sidebar.css";
+import AuthService from "../../Services/Auth.services";
 
 interface Props {
   open: boolean;
@@ -9,6 +10,11 @@ const ICON_SIZE = 16;
 
 const StaffSidebar = ({ open }: Props) => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    AuthService.logout(); // ✅ same logout logic as AdminNavbar
+    navigate("/");
+  };
  
   return (
     <aside className={`staff-sidebar ${open ? "open" : "collapsed"}`}>
@@ -17,7 +23,7 @@ const StaffSidebar = ({ open }: Props) => {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/"><User  size={ICON_SIZE}/> {open && "Profile"}</NavLink>
+        <NavLink to="/staff-portal" end><User  size={ICON_SIZE}/> {open && "Profile"}</NavLink>
         <NavLink to="nominee"><UserCog  size={ICON_SIZE}/> {open && "Update Nominee"}</NavLink>
         <NavLink to="contribution"><CreditCard  size={ICON_SIZE}/> {open && "Direct Contribution"}</NavLink>
         <NavLink to="settings"><Settings  size={ICON_SIZE}/> {open && "Account Settings"}</NavLink>
@@ -28,7 +34,7 @@ const StaffSidebar = ({ open }: Props) => {
         <button onClick={() => navigate("/")}>
           <Home size={ICON_SIZE}/> {open && "Back to Home"}
         </button>
-        <button className="text-danger">
+        <button className="text-danger" onClick={handleLogout}>
           <LogOut size={ICON_SIZE}/> {open && "Logout"}
         </button>
       </div>

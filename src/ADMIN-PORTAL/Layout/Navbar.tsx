@@ -9,7 +9,7 @@ import { useYear } from "./YearContext";
 import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
 import KiduYearSelector from "../../Components/KiduYearSelector";
 import AuthService from "../../Services/Auth.services";
-import Profile from "../Assets/Images/profile.jpg"; 
+import ProfileUpdate from "./Profile";
 
 const NavbarComponent: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -126,7 +126,6 @@ const NavbarComponent: React.FC = () => {
             {/* Profile Section */}
             <div
               className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
-              onClick={toggleSettings}
             >
               <Image
                 src={profilePic}
@@ -139,7 +138,10 @@ const NavbarComponent: React.FC = () => {
                   {username}
                 </p>
               </div>
-              <BsChevronDown className="ms-2" />
+              <BsChevronDown onClick={(e) => {
+                e.stopPropagation();
+                toggleSettings();
+              }} className="ms-2" />
             </div>
 
             {/* Logout Button */}
@@ -172,12 +174,12 @@ const NavbarComponent: React.FC = () => {
         placement="end"
       >
         <Offcanvas.Header closeButton>
-          <h5 className="fw-semibold text-center" style={{ color: "#18575A" }}>
+          <h5 className="fw-semibold text-center" style={{ color: "#1B3763" }}>
             Account Settings
           </h5>
         </Offcanvas.Header>
         <Offcanvas.Body className="p-0">
-          <Profile />
+          <ProfileUpdate />
         </Offcanvas.Body>
       </Offcanvas>
     </>

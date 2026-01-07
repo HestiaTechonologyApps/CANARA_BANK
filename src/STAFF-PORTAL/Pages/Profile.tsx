@@ -127,7 +127,7 @@ const Profile: React.FC = () => {
           </Row>
         </div>
         <div className="profile-action text-end">
-          <Button className="profile-btn" onClick={handleShowContribution} onClickCapture={() => navigate("/history")}>
+          <Button className="profile-btn" onClick={handleShowContribution} onClickCapture={() => navigate("staff-portal/history")}>
             ₹ Show Contribution
           </Button>
         </div>
