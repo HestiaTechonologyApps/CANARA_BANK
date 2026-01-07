@@ -21,7 +21,7 @@ const UserEdit: React.FC = () => {
     { name: "role", rules: { type: "select", label: "Role", required: true, placeholder: "Select user role", colWidth: 4 } },
     { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 4 } },
     { name: "createAt", rules: { type: "date", label: "Created At", required: false, colWidth: 4, disabled: true } },
-    { name: "address", rules: { type: "textarea", label: "Address", required: false, placeholder: "Enter address", colWidth: 12 } },
+    { name: "address", rules: { type: "textarea", label: "Address", required: false, placeholder: "Enter address", colWidth: 6 } },
     { name: "isActive", rules: { type: "toggle", label: "Is Active", required: false } },
     { name: "islocked", rules: { type: "toggle", label: "Is Locked", required: false } },
   ];
