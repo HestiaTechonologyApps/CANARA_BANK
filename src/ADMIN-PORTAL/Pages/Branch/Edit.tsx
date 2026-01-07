@@ -19,7 +19,7 @@ const BranchEdit: React.FC = () => {
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
   const fields: Field[] = [
-    { name: "branchId", rules: { type: "number", label: "Branch ID", disabled: true, colWidth: 3 } },
+    //{ name: "branchId", rules: { type: "number", label: "Branch ID", disabled: true, colWidth: 3 } },
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 3 } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 6 } },
 

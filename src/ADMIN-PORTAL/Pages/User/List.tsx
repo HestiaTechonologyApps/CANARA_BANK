@@ -1,12 +1,20 @@
 import React from "react";
 import type { User } from "../../Types/Settings/User.types";
+import type { Company } from "../../Types/Settings/Company.types";
+
 import UserService from "../../Services/Settings/User.services";
+import CompanyService from "../../Services/Settings/Company.services";
+
 import KiduServerTable from "../../../Components/KiduServerTable";
 
+/* ===================== TABLE COLUMNS ===================== */
 const columns = [
   { key: "userId", label: "User ID", enableSorting: true, type: "text" as const },
   { key: "userName", label: "User Name", enableSorting: true, type: "text" as const },
   { key: "userEmail", label: "Email", enableSorting: true, type: "text" as const },
+
+  { key: "companyName", label: "Company", enableSorting: true, type: "text" as const },
+
   { key: "phoneNumber", label: "Phone", enableSorting: true, type: "text" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
 ];
@@ -16,33 +24,53 @@ const UserList: React.FC = () => {
     pageNumber: number;
     pageSize: number;
     searchTerm: string;
-  }): Promise<{ data: User[]; total: number }> => {
+  }): Promise<{ data: any[]; total: number }> => {
     try {
-      const users = await UserService.getAllUsers();
+      /* ===================== FETCH DATA ===================== */
+      const [users, companies] = await Promise.all([
+        UserService.getAllUsers(),
+        CompanyService.getAllCompanies(),
+      ]);
 
-      let filteredUsers = users;
+      /* ===================== CREATE LOOKUP MAP ===================== */
+      const companyMap = Object.fromEntries(
+        companies.map((c: Company) => [c.companyId, c.comapanyName])
+      );
+
+      /* ===================== ENRICH USERS ===================== */
+      let enrichedUsers = users.map((u: User) => ({
+        ...u,
+        companyName: companyMap[u.companyId] ?? "-",
+      }));
+
+      /* ===================== SEARCH ===================== */
       if (params.searchTerm) {
-        const searchLower = params.searchTerm.toLowerCase();
-        filteredUsers = users.filter(
-          (user) =>
-            user.userName?.toLowerCase().includes(searchLower) ||
-            user.userEmail?.toLowerCase().includes(searchLower) ||
-            user.phoneNumber?.toLowerCase().includes(searchLower) ||
-            user.address?.toLowerCase().includes(searchLower) ||
-            user.role?.toLowerCase().includes(searchLower) ||
-            user.userId.toString().includes(searchLower)
+        const q = params.searchTerm.toLowerCase();
+        enrichedUsers = enrichedUsers.filter((u) =>
+          [
+            u.userName,
+            u.userEmail,
+            u.companyName,
+            u.phoneNumber,
+            u.address,
+            u.role,
+            u.userId,
+          ]
+            .map(String)
+            .some((v) => v.toLowerCase().includes(q))
         );
       }
 
-      filteredUsers.sort((a, b) => b.userId - a.userId);
+      /* ===================== SORT (latest first) ===================== */
+      enrichedUsers.sort((a, b) => b.userId - a.userId);
 
-      const startIndex = (params.pageNumber - 1) * params.pageSize;
-      const endIndex = startIndex + params.pageSize;
-      const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+      /* ===================== PAGINATION ===================== */
+      const start = (params.pageNumber - 1) * params.pageSize;
+      const end = start + params.pageSize;
 
       return {
-        data: paginatedUsers,
-        total: filteredUsers.length,
+        data: enrichedUsers.slice(start, end),
+        total: enrichedUsers.length,
       };
     } catch (error: any) {
       console.error("Error fetching users:", error);
@@ -53,18 +81,18 @@ const UserList: React.FC = () => {
   return (
     <KiduServerTable
       title="User Management"
-      subtitle="Manage system users with search, filter, and pagination"
+      subtitle="Manage system users with search and pagination"
       columns={columns}
       idKey="userId"
       addButtonLabel="Add User"
       addRoute="/dashboard/settings/user-create"
       editRoute="/dashboard/settings/user-edit"
       viewRoute="/dashboard/settings/user-view"
-      showAddButton={true}
-      showExport={true}
-      showSearch={true}
-      showActions={true}
-      showTitle={true}
+      showAddButton
+      showExport
+      showSearch
+      showActions
+      showTitle
       fetchData={fetchData}
       rowsPerPage={10}
     />
