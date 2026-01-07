@@ -11,6 +11,10 @@ import BranchPopup from "../../Branch/BranchPopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import CategoryPopup from "../../Settings/Category/CategoryPopup";
 import StatusPopup from "../../Settings/Status/StatusPopup";
+import CategoryService from "../../../Services/Settings/Category.services";
+import StatusService from "../../../Services/Settings/Status.services";
+import DesignationService from "../../../Services/Settings/Designation.services";
+import BranchService from "../../../Services/Settings/Branch.services";
 
 const MemberEdit: React.FC = () => {
 
@@ -51,19 +55,25 @@ const MemberEdit: React.FC = () => {
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
   const handleFetch = async (id: string) => {
-    const response = await MemberService.getMemberById(Number(id));
-    const member = response.value;
+  const response = await MemberService.getMemberById(Number(id));
+  const member = response.value;
 
-    if (member) {
-      setSelectedBranch({ branchId: member.branchId } as Branch);
-      setSelectedDesignation({ designationId: member.designationId } as Designation);
-      setSelectedCategory({ categoryId: member.categoryId } as Category);
-      setSelectedStatus({ statusId: member.statusId } as Status);
-    }
+  if (member) {
+    const branch = await BranchService.getBranchById(member.branchId);
+    setSelectedBranch(branch.value);
 
-    return response;
-  };
+    const designation = await DesignationService.getDesignationById(member.designationId);
+    setSelectedDesignation(designation.value);
 
+    const category = await CategoryService.getCategoryById(member.categoryId);
+    setSelectedCategory(category.value);
+
+    const status = await StatusService.getStatusById(member.statusId);
+    setSelectedStatus(status.value);
+  }
+
+  return response;
+};
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus) {
       throw new Error("Please select all required values");
@@ -102,24 +112,24 @@ const MemberEdit: React.FC = () => {
     await MemberService.updateMember(Number(id), payload);
   };
 
-  const popupHandlers = {
+ const popupHandlers = {
     branchId: {
-      value: selectedBranch?.branchId?.toString() || "",
+      value: selectedBranch ? `${selectedBranch.dpCode} - ${selectedBranch.name}` : "",
       actualValue: selectedBranch?.branchId,
       onOpen: () => setShowBranchPopup(true),
     },
     designationId: {
-      value: selectedDesignation?.designationId?.toString() || "",
+      value: selectedDesignation?.name || "",
       actualValue: selectedDesignation?.designationId,
       onOpen: () => setShowDesignationPopup(true),
     },
     categoryId: {
-      value: selectedCategory?.categoryId?.toString() || "",
+      value: selectedCategory?.name || "",
       actualValue: selectedCategory?.categoryId,
       onOpen: () => setShowCategoryPopup(true),
     },
     statusId: {
-      value: selectedStatus?.statusId?.toString() || "",
+      value: selectedStatus?.name || "",
       actualValue: selectedStatus?.statusId,
       onOpen: () => setShowStatusPopup(true),
     },
@@ -133,7 +143,7 @@ const MemberEdit: React.FC = () => {
         onFetch={handleFetch}
         onUpdate={handleUpdate}
         paramName="memberId"
-        navigateBackPath="/dashboard/member/member-list"
+        navigateBackPath="/dashboard/contributions/member-list"
         auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"

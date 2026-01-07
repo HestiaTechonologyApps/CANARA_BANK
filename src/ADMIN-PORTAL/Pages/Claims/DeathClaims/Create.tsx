@@ -22,9 +22,9 @@ const DeathClaimCreate: React.FC = () => {
   const[selectedDesignation,setSelectedDesignation]=useState<Designation|null>(null);
 
   const fields: Field[] = [
-    { name: "memberId", rules: { type: "popup", label: "Member ID", required: true, colWidth: 3 } },
-    { name: "stateId", rules: { type: "popup", label: "State ID", required: true, colWidth: 3 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation ID", required: true, colWidth: 3 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 3 } },
+    { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 3 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
 
     { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4 } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4 } },
@@ -67,15 +67,18 @@ const DeathClaimCreate: React.FC = () => {
 
 const popupHandlers = {
     memberId: {
-      value: selectedMember?.memberId?.toString() || "",
+      value: selectedMember?.name || "",
+      actualValue:selectedMember?.memberId,
       onOpen: () => setShowMemberPopup(true),
     },
     stateId: {
-      value: selectedState?.stateId?.toString() || "",
+      value: selectedState?.name || "",
+      actualValue:selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
     designationId: {
-      value: selectedDesignation?.designationId?.toString() || "",
+      value: selectedDesignation?.name || "",
+      actualValue:selectedDesignation?.designationId,
       onOpen: () => setShowDesignationPopup(true),
     },
 }

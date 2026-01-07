@@ -9,6 +9,9 @@ import type { Designation } from "../../../Types/Settings/Designation";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import StatePopup from "../../Settings/State/StatePopup";
 import MemberPopup from "../../Contributions/Member/MemberPopup";
+import MemberService from "../../../Services/Contributions/Member.services";
+import StateService from "../../../Services/Settings/State.services";
+import DesignationService from "../../../Services/Settings/Designation.services";
 
 const DeathClaimEdit: React.FC = () => {
 
@@ -38,13 +41,17 @@ const DeathClaimEdit: React.FC = () => {
 
  const handleFetch = async (claimId: string) => {
   const response = await DeathClaimService.getDeathClaimById(Number(claimId));
-
   const claim = response.value; 
 
   if (claim) {
-    setSelectedMember({ memberId: claim.memberId } as Member);
-    setSelectedState({ stateId: claim.stateId } as State);
-    setSelectedDesignation({ designationId: claim.designationId } as Designation);
+   const member = await MemberService.getMemberById(claim.memberId);
+   setSelectedMember(member.value);
+
+   const state = await StateService.getStateById(claim.stateId);
+   setSelectedState(state.value);
+
+   const designation = await DesignationService.getDesignationById(claim.designationId);
+   setSelectedDesignation(designation.value)
   }
 
   return response;
@@ -89,21 +96,20 @@ const handleUpdate = async (claimId: string, formData: Record<string, any>) => {
   }
 };
 
-
-  const popupHandlers = {
+const popupHandlers = {
     memberId: {
-      value: selectedMember?.memberId?.toString() || "",
-      actualValue: selectedMember ?. memberId,
+      value: selectedMember?.name || "",
+      actualValue:selectedMember?.memberId,
       onOpen: () => setShowMemberPopup(true),
     },
     stateId: {
-      value: selectedState?.stateId?.toString() || "",
-      actualValue: selectedState?.stateId,
+      value: selectedState?.name || "",
+      actualValue:selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
     designationId: {
-      value: selectedDesignation?.designationId?.toString() || "",
-      actualValue: selectedDesignation?.designationId,
+      value: selectedDesignation?.name || "",
+      actualValue:selectedDesignation?.designationId,
       onOpen: () => setShowDesignationPopup(true),
     },
 }
