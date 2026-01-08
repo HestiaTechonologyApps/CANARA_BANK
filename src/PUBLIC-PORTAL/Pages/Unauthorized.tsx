@@ -15,7 +15,7 @@ const Unauthorized: React.FC = () => {
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate('/login');
+    navigate('/', { state: { showLogin: true } }); // Go to home and show login modal
   };
 
   return (
@@ -58,7 +58,7 @@ const Unauthorized: React.FC = () => {
                   }}
                 >
                   <Home size={18} className="me-2" />
-                  Go to Dashboard
+                  Go to My Dashboard
                 </Button>
 
                 <Button

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
 import "../Style/Navbar.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import LoginModal from "../Auth/LoginModal"; // Use the modal version
+import LoginModal from "../Auth/LoginModal";
 import SignupModal from "../Auth/SignUp";
 import ResetPasswordModal from "../Auth/ResetPassword";
 import logo from "../Assets/Images/AIBEA_logo.jpg";
@@ -14,19 +14,15 @@ const PublicNavbar: React.FC = () => {
   const location = useLocation();
   const navbar = PublicService.navbar;
   
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
-  const [showForgot, setShowForgot] = useState(false);
+  const [showLogin, setShowLogin] = useState<boolean>(false);
+  const [showSignup, setShowSignup] = useState<boolean>(false);
+  const [showForgot, setShowForgot] = useState<boolean>(false);
 
-  const isActive = (path: string) =>
+  const isActive = (path: string): string =>
     location.pathname === path ? "active-nav" : "";
 
-  const handleLoginClick = () => {
-    // Option 1: Show modal
+  const handleLoginClick = (): void => {
     setShowLogin(true);
-    
-    // Option 2: Navigate to login page
-    // navigate('/login');
   };
 
   return (
@@ -34,13 +30,17 @@ const PublicNavbar: React.FC = () => {
       <Navbar expand="lg" className="nav-style bg-white shadow-sm" sticky="top">
         <Container>
           <Navbar.Brand className="d-flex align-items-center gap-2">
-            <img src={logo} className="nav-logo" alt={navbar?.brand.logoAlt || "50 Years Logo"} />
+            <img 
+              src={logo} 
+              className="nav-logo" 
+              alt={navbar?.brand?.logoAlt || "50 Years Logo"} 
+            />
             <div className="d-flex flex-column lh-sm">
               <span className="fw-semibold nav-title">
-                {navbar?.brand.title || " Canara Bank Employees' Union"}
+                {navbar?.brand?.title || "Canara Bank Employees' Union"}
               </span>
               <span className="nav-subtitle">
-                {navbar?.brand.subtitle || " Golden Jubilee Family Welfare Scheme"}
+                {navbar?.brand?.subtitle || "Golden Jubilee Family Welfare Scheme"}
               </span>
             </div>
           </Navbar.Brand>
@@ -53,12 +53,14 @@ const PublicNavbar: React.FC = () => {
             className="p-3"
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title>{navbar?.brand.menuhead}</Offcanvas.Title>
+              <Offcanvas.Title>
+                {navbar?.brand?.menuhead || "Menu"}
+              </Offcanvas.Title>
             </Offcanvas.Header>
 
             <Offcanvas.Body>
               <Nav className="mx-auto align-items-center nav-menu">
-                {navbar.menu.map((item, index) => (
+                {navbar?.menu?.map((item, index) => (
                   <Nav.Link
                     key={index}
                     className={`nav-item ${isActive(item.route)}`}
@@ -69,9 +71,13 @@ const PublicNavbar: React.FC = () => {
                 ))}
               </Nav>
 
-              <Button onClick={handleLoginClick} className="login-btn ms-lg-4 mt-3 mt-lg-0">
-                <i className={navbar.auth.loginButton.iconclass}></i>
-                {navbar?.auth.loginButton.label}
+              <Button 
+                onClick={handleLoginClick} 
+                className="login-btn ms-lg-4 mt-3 mt-lg-0"
+              >
+                <i className={navbar?.auth?.loginButton?.iconclass || "bi bi-box-arrow-in-right"}></i>
+                {" "}
+                {navbar?.auth?.loginButton?.label || "Login"}
               </Button>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -81,32 +87,48 @@ const PublicNavbar: React.FC = () => {
       <div className="contact-strip text-white py-1 px-3">
         <Container className="d-flex justify-content-center align-items-center gap-4 small">
           <span>
-            <i className={navbar?.contactStrip.phone.iconclass}></i> {navbar?.contactStrip.phone.value}
+            <i className={navbar?.contactStrip?.phone?.iconclass || "bi bi-telephone"}></i>
+            {" "}
+            {navbar?.contactStrip?.phone?.value || "044-42035575"}
           </span>
           <span>
-            <i className={navbar?.contactStrip.email.iconclass}></i> {navbar?.contactStrip.email.value}
+            <i className={navbar?.contactStrip?.email?.iconclass || "bi bi-envelope"}></i>
+            {" "}
+            {navbar?.contactStrip?.email?.value || "info@cbeu.com"}
           </span>
         </Container>
       </div>
 
-      {/* Modal versions for navbar button */}
+      {/* Authentication Modals */}
       <LoginModal
         show={showLogin}
         onClose={() => setShowLogin(false)}
-        onSignup={() => { setShowLogin(false); setShowSignup(true); }}
-        onForgot={() => { setShowLogin(false); setShowForgot(true); }}
+        onSignup={() => { 
+          setShowLogin(false); 
+          setShowSignup(true); 
+        }}
+        onForgot={() => { 
+          setShowLogin(false); 
+          setShowForgot(true); 
+        }}
       />
 
       <SignupModal
         show={showSignup}
         onClose={() => setShowSignup(false)}
-        onLogin={() => { setShowSignup(false); setShowLogin(true); }}
+        onLogin={() => { 
+          setShowSignup(false); 
+          setShowLogin(true); 
+        }}
       />
 
       <ResetPasswordModal
         show={showForgot}
         onClose={() => setShowForgot(false)}
-        onLogin={() => { setShowForgot(false); setShowLogin(true); }}
+        onLogin={() => { 
+          setShowForgot(false); 
+          setShowLogin(true); 
+        }}
       />
     </>
   );

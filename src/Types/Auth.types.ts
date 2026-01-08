@@ -1,30 +1,31 @@
+// src/types/Auth.types.ts
 import type { AuditTrails } from "./AuditLog.types";
 
-// src/types/Auth.types.ts
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
 export interface User {
-   userId: number;
-      userName: string;
-      userEmail: string;
-      phoneNumber: string;
-      address: string;
-      passwordHash: string;
-      oldPassword?: string;
-      newPassword?: string;
-      isActive: boolean;
-      islocked: boolean;
-      createAt: string;
-      lastlogin: string;
-      lastloginString: string;
-      createAtSyring: string;
-      companyId?: number;
-      companyName?: string
-      role: string; // ← ADD THIS LINE
-      auditLogs?: AuditTrails[];
+  userId: number;
+  userName: string;
+  userEmail: string;
+  staffNo: number; // Added to match backend response
+  phoneNumber: string;
+  address: string;
+  passwordHash: string;
+  oldPassword?: string;
+  newPassword?: string;
+  isActive: boolean;
+  islocked: boolean;
+  createAt: string;
+  lastlogin: string;
+  lastloginString: string;
+  createAtSyring: string;
+  companyId?: number;
+  companyName?: string;
+  role: string; // User role from backend
+  auditLogs?: AuditTrails[];
 }
 
 export interface LoginResponse {
@@ -35,4 +36,15 @@ export interface LoginResponse {
 
 export interface ForgotPasswordRequest {
   email: string;
+}
+
+// Type guard to check if user has valid role
+export function isValidUserRole(role: string | null | undefined): role is string {
+  if (!role) return false;
+  const normalizedRole = role.trim().toLowerCase();
+  return normalizedRole === 'staff' || 
+         normalizedRole === 'admin user' || 
+         normalizedRole === 'adminuser' ||
+         normalizedRole === 'super admin' || 
+         normalizedRole === 'superadmin';
 }

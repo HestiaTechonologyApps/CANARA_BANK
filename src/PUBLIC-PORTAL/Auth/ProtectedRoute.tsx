@@ -41,9 +41,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // If authentication is required and user is not authenticated
   if (requireAuth && !isAuthenticated) {
-    console.log('User not authenticated, redirecting to login');
-    // Redirect to login page in public portal, saving the location they were trying to access
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    console.log('User not authenticated, redirecting to home');
+    // Redirect to home page (public portal) where user can click login button to open modal
+    return <Navigate to="/" state={{ from: location, showLogin: true }} replace />;
+  }
+
+  // If no authentication required, allow access
+  if (!requireAuth) {
+    return <>{children}</>;
   }
 
   // If no specific roles are required, just check authentication
@@ -54,9 +59,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // Get user's role
   const userRole = AuthService.getUserRole();
   
+  // If no role found but authentication is required, redirect to home
   if (!userRole) {
-    console.log('No user role found, redirecting to login');
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    console.log('No user role found, redirecting to home');
+    AuthService.logout(); // Clear any invalid session data
+    return <Navigate to="/" state={{ from: location, showLogin: true }} replace />;
   }
 
   // Normalize user role for comparison
@@ -74,17 +81,26 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (!hasAccess) {
     console.log(`User role ${userRole} not authorized for this route`);
     
-    // If user is trying to access wrong portal, redirect to their appropriate dashboard
+    // Get user's appropriate dashboard
     const dashboardRoute = AuthService.getDashboardRoute();
     
-    // Only redirect if they're not already on their correct route
-    if (location.pathname !== dashboardRoute && !location.pathname.startsWith(dashboardRoute)) {
-      console.log(`Redirecting to appropriate dashboard: ${dashboardRoute}`);
-      return <Navigate to={dashboardRoute} replace />;
+    // If dashboard route is login (invalid role), logout and redirect
+    if (dashboardRoute === '/login') {
+      console.log('Invalid user role, logging out');
+      AuthService.logout();
+      return <Navigate to="/login" replace />;
     }
     
-    // If already on correct portal but wrong page, show unauthorized message
-    return <Navigate to="/unauthorized" replace />;
+    // Redirect to appropriate dashboard with message
+    console.log(`Redirecting to appropriate dashboard: ${dashboardRoute}`);
+    return <Navigate 
+      to={dashboardRoute} 
+      state={{ 
+        message: 'You do not have permission to access that page',
+        from: location 
+      }} 
+      replace 
+    />;
   }
 
   // User has access, render the protected component

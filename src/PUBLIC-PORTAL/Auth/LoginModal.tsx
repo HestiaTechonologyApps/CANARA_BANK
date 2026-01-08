@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../Services/Auth.services";
 
-interface LoginModalProps {
+// Define the interface for LoginModal props
+export interface LoginModalProps {
   show: boolean;
   onClose: () => void;
   onSignup: () => void;
@@ -70,19 +71,37 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
         const response = await AuthService.login({ email, password });
         
         if (response.isSucess && response.value) {
+          // Verify user role is valid
           const userRole = localStorage.getItem('user_role');
-          toast.success(userRole ? `Welcome ${userRole}!` : "Login successful!");
+          
+          if (!userRole) {
+            toast.error("Invalid user credentials. Please contact administrator.");
+            AuthService.logout();
+            setIsLoading(false);
+            return;
+          }
+
+          toast.success(`Welcome ${response.value.user.userName}!`);
           
           const dashboardRoute = AuthService.getDashboardRoute();
+          
+          // If dashboard route is login, it means invalid role
+          if (dashboardRoute === '/login') {
+            toast.error("Invalid user role. Please contact administrator.");
+            AuthService.logout();
+            setIsLoading(false);
+            return;
+          }
           
           setTimeout(() => {
             onClose(); // Close modal
             navigate(dashboardRoute, { replace: true });
           }, 1000);
         } else {
-          toast.error(response.error || "Login failed.");
+          toast.error(response.error || response.customMessage || "Login failed.");
         }
       } catch (error: any) {
+        console.error('Login error:', error);
         toast.error(error?.response?.data?.customMessage || "An error occurred during login.");
       } finally {
         setIsLoading(false);
@@ -90,10 +109,21 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
     }
   };
 
+  // Reset form when modal closes
+  const handleClose = () => {
+    setEmail("");
+    setPassword("");
+    setErrors({ email: "", password: "" });
+    setSubmitted(false);
+    setShowPassword(false);
+    setRememberMe(false);
+    onClose();
+  };
+
   return (
     <Modal 
       show={show} 
-      onHide={onClose}
+      onHide={handleClose}
       centered 
       className="auth-modal"
     >

@@ -2,8 +2,8 @@
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { CustomResponse } from "../Types/ApiTypes";
 import type { ForgotPasswordRequest, LoginRequest, LoginResponse } from "../Types/Auth.types";
+import { isValidUserRole } from "../Types/Auth.types";
 import HttpService from "./HttpService";
-
 
 class AuthService {
   static async login(credentials: LoginRequest): Promise<CustomResponse<LoginResponse>> {
@@ -21,6 +21,17 @@ class AuthService {
       if (response.isSucess && response.value) {
         console.log('Login successful, storing data...');
 
+        // Validate user role before storing
+        if (!response.value.user || !isValidUserRole(response.value.user.role)) {
+          console.error('Invalid or missing user role');
+          return {
+            ...response,
+            isSucess: false,
+            error: 'Invalid user role. Please contact administrator.',
+            customMessage: 'User role not recognized'
+          };
+        }
+
         // Store token
         if (response.value.token) {
           localStorage.setItem('jwt_token', response.value.token);
@@ -35,10 +46,8 @@ class AuthService {
           console.log('Stored user data:', localStorage.getItem('user'));
           
           // Store user role separately for easy access
-          if (response.value.user.role) {
-            localStorage.setItem('user_role', response.value.user.role);
-            console.log('User role stored:', response.value.user.role);
-          }
+          localStorage.setItem('user_role', response.value.user.role);
+          console.log('User role stored:', response.value.user.role);
         }
 
         // Store token expiry
@@ -91,6 +100,14 @@ class AuthService {
 
       const user = JSON.parse(userStr);
       console.log('Parsed user:', user);
+      
+      // Validate that parsed user has a valid role
+      if (!isValidUserRole(user?.role)) {
+        console.error('Stored user has invalid role, clearing storage');
+        this.logout();
+        return null;
+      }
+      
       return user;
     } catch (error) {
       console.error('Error parsing user from localStorage:', error);
@@ -102,6 +119,14 @@ class AuthService {
     try {
       const role = localStorage.getItem('user_role');
       console.log('Getting user role:', role);
+      
+      // Validate role
+      if (!isValidUserRole(role)) {
+        console.error('Invalid user role found, clearing storage');
+        this.logout();
+        return null;
+      }
+      
       return role;
     } catch (error) {
       console.error('Error getting user role from localStorage:', error);
@@ -121,6 +146,14 @@ class AuthService {
 
     if (!token) {
       console.log('Not authenticated - no token');
+      return false;
+    }
+
+    // Check if user role is valid
+    const role = localStorage.getItem('user_role');
+    if (!isValidUserRole(role)) {
+      console.log('Not authenticated - invalid or missing role');
+      this.logout();
       return false;
     }
 
@@ -151,8 +184,8 @@ class AuthService {
     console.log('Determining dashboard route for role:', role);
 
     if (!role) {
-      console.warn('No role found, defaulting to admin dashboard');
-      return '/dashboard';
+      console.warn('No role found, cannot determine dashboard');
+      return '/'; // Return home page instead of /login
     }
 
     // Normalize role string (trim and convert to lowercase for comparison)
@@ -174,8 +207,8 @@ class AuthService {
         return '/dashboard';
       
       default:
-        console.warn(`Unknown role: ${role}, defaulting to admin dashboard`);
-        return '/dashboard';
+        console.warn(`Unknown role: ${role}, redirecting to home`);
+        return '/'; // Return home page instead of /login
     }
   }
 
@@ -239,7 +272,7 @@ class AuthService {
       API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
       "POST",
       data,
-      true //  public endpoint (no token required)
+      true // public endpoint (no token required)
     );
   }
 }

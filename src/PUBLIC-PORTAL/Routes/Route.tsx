@@ -12,14 +12,10 @@ import Home from '../Pages/Home';
 import News from '../Pages/NewPage';
 import Claims from '../Pages/Claims';
 import PrivacyPolicy from '../Pages/PrivacyPolicy';
-import LoginPage from '../Auth/Login';
 import ManagingCommitteePublic from '../Pages/ManagingCommittee';
 
 export const publicRoutes = (
   <>
-    {/* Login route - standalone page */}
-    <Route path="/login" element={<LoginPage />} />
-
     {/* Public routes with layout */}
     <Route path="/" element={<PublicLayout />}>
       <Route index element={<Home />} />
