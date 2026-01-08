@@ -4,7 +4,6 @@ import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Designation } from "../../../Types/Settings/Designation";
 import type { Category } from "../../../Types/Settings/Category.types";
 import type { Status } from "../../../Types/Settings/Status.types";
-
 import MemberService from "../../../Services/Contributions/Member.services";
 import BranchService from "../../../Services/Settings/Branch.services";
 import DesignationService from "../../../Services/Settings/Designation.services";
@@ -18,7 +17,6 @@ const columns = [
   { key: "memberId", label: "Member ID", enableSorting: true, type: "text" as const },
   { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" as const },
   { key: "name", label: "Name", enableSorting: true, type: "text" as const },
-
   { key: "designationName", label: "Designation", enableSorting: true, type: "text" as const },
   { key: "categoryName", label: "Category", enableSorting: true, type: "text" as const },
   { key: "branchName", label: "Branch", enableSorting: true, type: "text" as const },
