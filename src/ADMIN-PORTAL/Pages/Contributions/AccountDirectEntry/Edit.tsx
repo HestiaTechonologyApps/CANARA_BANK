@@ -40,7 +40,7 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
 
-    { name: "status", rules: { type: "text", label: "Status", colWidth: 4 } },
+    { name: "status", rules: { type: "text", label: "Status", colWidth: 4,disabled:true,} },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 

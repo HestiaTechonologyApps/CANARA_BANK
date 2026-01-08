@@ -45,7 +45,7 @@ const AccountDirectEntryList: React.FC = () => {
 
   return (
     <KiduServerTable
-      title="Account Direct Entries"
+      title="Account Direct Entry"
       subtitle="Manage entry with search and pagination"
       columns={columns}
       idKey="accountsDirectEntryID"
