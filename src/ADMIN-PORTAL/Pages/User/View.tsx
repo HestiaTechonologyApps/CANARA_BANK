@@ -6,18 +6,19 @@ import UserService from "../../Services/Settings/User.services";
 import defaultUserImage from "../../Assets/Images/profile.jpg";
 
 const UserView: React.FC = () => {
-
   const fields: ViewField[] = [
     { key: "userId", label: "User ID", icon: "bi-hash" },
+    { key: "staffNo", label: "Staff No", icon: "bi-badge-ad" },
     { key: "userName", label: "User Name", icon: "bi-person" },
     { key: "userEmail", label: "Email", icon: "bi-envelope" },
     { key: "phoneNumber", label: "Phone Number", icon: "bi-telephone" },
     { key: "address", label: "Address", icon: "bi-geo-alt" },
     { key: "companyId", label: "Company ID", icon: "bi-building" },
+    { key: "role", label: "Role", icon: "bi-person-badge" },
     { key: "createAt", label: "Created At", icon: "bi-calendar-plus", isDate: true },
     { key: "lastlogin", label: "Last Login", icon: "bi-clock-history", isDate: true },
     { key: "isActive", label: "Is Active", icon: "bi-check-circle", isBoolean: true },
-    { key: "islocked", label: "Is Locked", icon: "bi-lock",isBoolean: true},
+    { key: "islocked", label: "Is Locked", icon: "bi-lock", isBoolean: true },
   ];
 
   const handleFetch = async (userId: string) => {

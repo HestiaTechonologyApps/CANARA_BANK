@@ -58,9 +58,6 @@ const UserList: React.FC = () => {
         );
       }
 
-      /* ===================== SORT (latest first) ===================== */
-      enrichedUsers.sort((a, b) => b.userId - a.userId);
-
       /* ===================== PAGINATION ===================== */
       const start = (params.pageNumber - 1) * params.pageSize;
       const end = start + params.pageSize;
