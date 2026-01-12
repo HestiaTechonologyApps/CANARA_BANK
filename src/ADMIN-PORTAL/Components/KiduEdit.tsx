@@ -64,6 +64,7 @@ export interface KiduEditProps {
   onUpdate: (id: string, formData: Record<string, any>) => Promise<void | any>;
   submitButtonText?: string;
   showResetButton?: boolean;
+   showBackButton?: boolean;
   containerStyle?: React.CSSProperties;
   children?: React.ReactNode;
   options?: Record<string, SelectOption[] | string[]>;
@@ -86,6 +87,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   onUpdate,
   submitButtonText = "Update",
   showResetButton = true,
+  showBackButton = true,
   containerStyle = {},
   children,
   options = {},
@@ -681,13 +683,13 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     <>
       <div 
         className="container-fluid d-flex justify-content-center align-items-center mt-1" 
-        style={{ fontFamily: "Urbanist" }}
+        // style={{ fontFamily: "Urbanist" }}
       >
         <Card 
           className="shadow-lg px-3 py-3 w-100" 
           style={{ 
             maxWidth: "1400px", 
-            borderRadius: "15px", 
+            borderRadius: "5px", 
             border: "none",
             ...containerStyle 
           }}
@@ -695,7 +697,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           {/* HEADER */}
           <div className="d-flex justify-content-between align-items-center ">
             <div className="d-flex align-items-center">
-              <KiduPrevious />
+             {showBackButton &&  <KiduPrevious />}
               <h5 className="fw-bold m-0 ms-2" style={{ color: themeColor }}>
                 {title}
               </h5>

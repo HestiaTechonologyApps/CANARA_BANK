@@ -30,7 +30,7 @@ const StaffEdit: React.FC = () => {
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 } },
-    { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 6 } },
+    { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 3 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 3 } },
 
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
@@ -38,16 +38,16 @@ const StaffEdit: React.FC = () => {
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 3 } },
     { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
 
-    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4 } },
-    { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4 } },
-    { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
+    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 3 } },
+    { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 3 } },
+    { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 3 } },
 
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
 
     { name: "profileImageSrc", rules: { type: "text", label: "Profile Image", colWidth: 3 } },
-    { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4 } },
-    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
-    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity Number", colWidth: 4 } },
+    { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 3 } },
+    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 3 } },
+    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity Number", colWidth: 3 } },
     { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 3 } },
     { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 3 } },
   ];
@@ -173,7 +173,8 @@ const StaffEdit: React.FC = () => {
         navigateBackPath="/staff-portal"
         auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
         popupHandlers={popupHandlers}
-        themeColor="#1B3763"
+        themeColor="#1f4e8c"
+        showBackButton={false}
         options={{
           genderId: genderOptions,
           unionMember: unionMemberOptions,
