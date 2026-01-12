@@ -29,8 +29,9 @@ const StaffEdit: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
   const fields: Field[] = [
-    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 } },
+    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 , disabled:true } },
     { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 3 } },
+     { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 3 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 3 } },
 
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
@@ -38,7 +39,7 @@ const StaffEdit: React.FC = () => {
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 3 } },
     { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
 
-    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 3 } },
+   
     { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 3 } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 3 } },
 

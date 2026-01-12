@@ -1,43 +1,62 @@
 // src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryList.tsx
 
 import React from "react";
-import AccountDirectEntryService from "../../Services/AccountDirectEntry.services";
-import MonthService from "../../../ADMIN-PORTAL/Services/Settings/Month.services";
-import type { Month } from "../../../ADMIN-PORTAL/Types/Settings/Month.types";
 import KiduServerTable from "../../../Components/KiduServerTable";
+import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributions/AccountDirectEntry.services";
 
 const columns = [
   { key: "accountsDirectEntryID", label: "ID", enableSorting: true, type: "text" as const },
   { key: "name", label: "Member", enableSorting: true, type: "text" as const },
   { key: "branchName", label: "Branch", enableSorting: true, type: "text" as const },
-  { key: "monthName", label: "Month", enableSorting: true, type: "text" as const }, 
+  { key: "monthName", label: "Month", enableSorting: true, type: "text" as const },
   { key: "yearOf", label: "Year", enableSorting: true, type: "text" as const },
   { key: "amt", label: "Amount", enableSorting: true, type: "text" as const },
   { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" as const },
 ];
 
 const StaffAccountDirectEntryList: React.FC = () => {
-  const fetchData = async () => {
-    // 1️⃣ Fetch entries
-    const entries = await AccountDirectEntryService.getAllAccountDirectEntries();
 
-    // 2️⃣ Fetch months
-    const months = await MonthService.getAllMonths();
+  const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
+    // 🔹 Get logged-in memberId from localStorage
+    const storedUser = localStorage.getItem("user");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    const staffId = parsedUser?.memberId;
 
-    // 3️⃣ Build lookup map
-    const monthMap = Object.fromEntries(
-      months.map((m: Month) => [m.monthCode, m.monthName])
-    );
+    if (!staffId) {
+      return { data: [], total: 0 };
+    }
 
-    // 4️⃣ Enrich data
-    const enrichedData = entries.map((e: any) => ({
+    // 🔹 Fetch entries by staffId
+    const response =
+      await AccountDirectEntryService.getAccountDirectEntryByStaffId(staffId);
+
+    const entries = response.value ?? [];
+
+    // 🔹 Normalize / fallback fields
+    let enrichedData = entries.map((e: any) => ({
       ...e,
-      monthName: monthMap[e.monthCode] ?? e.monthCode,
-      branchName: e.branchName ?? e.name, // adjust if you later add branch lookup
+      monthName: e.monthName ?? e.monthCode,
+      branchName: e.branchName ?? "-",
     }));
 
+    // 🔹 SEARCH (same pattern as BranchList)
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      enrichedData = enrichedData.filter((e: any) =>
+        e.name?.toLowerCase().includes(q) ||
+        e.branchName?.toLowerCase().includes(q) ||
+        e.monthName?.toLowerCase().includes(q) ||
+        String(e.yearOf).includes(q) ||
+        String(e.amt).includes(q)
+      );
+    }
+
+    // 🔹 PAGINATION
+    const start = (pageNumber - 1) * pageSize;
+    const pagedData = enrichedData.slice(start, start + pageSize);
+
     return {
-      data: enrichedData,
+      data: pagedData,
       total: enrichedData.length,
     };
   };

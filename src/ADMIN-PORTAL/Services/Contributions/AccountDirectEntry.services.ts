@@ -60,6 +60,19 @@ const AccountDirectEntryService = {
       "DELETE"
     );
   },
+
+  //  NEW METHOD — GET BY STAFF / MEMBER ID
+  async getAccountDirectEntryByStaffId(
+    staffId: number
+  ): Promise<CustomResponse<AccountsDirectEntry[]>> {
+    const response = await HttpService.callApi<
+      CustomResponse<AccountsDirectEntry[]>
+    >(
+      API_ENDPOINTS.ACCOUNT_DIRECT_ENTRY.GET_BY_STAFFID(staffId),
+      "GET"
+    );
+    return response;
+  },
 };
 
 export default AccountDirectEntryService;

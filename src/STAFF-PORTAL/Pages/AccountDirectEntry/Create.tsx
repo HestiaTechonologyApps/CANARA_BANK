@@ -15,10 +15,10 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false)
-
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null)
+  
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },

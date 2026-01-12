@@ -35,9 +35,17 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
+    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
+    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
 
-    { name: "status", rules: { type: "text", label: "Status", colWidth: 4,disabled:true,} },
+    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
+
+    { name: "status", rules: { type: "text", label: "Status", colWidth: 4, disabled: true, } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
+    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -67,29 +75,29 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       throw new Error("DD / IBA Date is required");
     }
 
-   const payload: Omit<AccountDirectEntry, "auditLogs"> = {
-  accountsDirectEntryID: Number(id),
-  memberId: selectedMember.memberId,
-  name: selectedMember.name,
-  branchId: selectedBranch.branchId,
-  monthCode: selectedMonth.monthCode,
-  yearOf: Number(formData.yearOf),
-  ddIba: formData.ddIba || "",
-  ddIbaDate: toIso(formData.ddIbaDate),
-  amt: Number(formData.amt),
-  enrl: formData.enrl || "",
-  fine: formData.fine || "",
-  f9: formData.f9 || "",
-  f10: formData.f10 || "",
-  f11: formData.f11 || "",
-  status: formData.status || "",
-  isApproved: formData.isApproved === true,
+    const payload: Omit<AccountDirectEntry, "auditLogs"> = {
+      accountsDirectEntryID: Number(id),
+      memberId: selectedMember.memberId,
+      name: selectedMember.name,
+      branchId: selectedBranch.branchId,
+      monthCode: selectedMonth.monthCode,
+      yearOf: Number(formData.yearOf),
+      ddIba: formData.ddIba || "",
+      ddIbaDate: toIso(formData.ddIbaDate),
+      amt: Number(formData.amt),
+      enrl: formData.enrl || "",
+      fine: formData.fine || "",
+      f9: formData.f9 || "",
+      f10: formData.f10 || "",
+      f11: formData.f11 || "",
+      status: formData.status || "",
+      isApproved: formData.isApproved === true,
 
-  ...(formData.isApproved && {
-    approvedByUserId: 1,
-    approvedDateString: toIso(formData.approvedDate),
-  }),
-};
+      ...(formData.isApproved && {
+        approvedByUserId: 1,
+        approvedDateString: toIso(formData.approvedDate),
+      }),
+    };
 
 
     await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
@@ -124,7 +132,7 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         paramName="accountsDirectEntryID"
         popupHandlers={popupHandlers}
         auditLogConfig={{
-          tableName: "AccountDirectEntry",
+          tableName: "AccountsDirectEntries",
           recordIdField: "accountsDirectEntryID",
         }}
         themeColor="#1B3763"

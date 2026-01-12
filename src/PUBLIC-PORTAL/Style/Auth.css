@@ -11,6 +11,13 @@
   color: white;
 }
 
+.auth-div {
+  background: linear-gradient(135deg, #0f2b63bb, #143b82);
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+}
+
 .auth-icon {
   width: 70px;
   height: 70px;

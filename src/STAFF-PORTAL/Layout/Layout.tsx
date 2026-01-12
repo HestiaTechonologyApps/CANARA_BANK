@@ -9,7 +9,7 @@ const StaffLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="staff-root">
+    <div className="staff-root"  style={{ fontFamily: "Merriweather', serif", fontSize:"12px" }}>
         <div className="staff-layout">
           <StaffSidebar open={sidebarOpen} />
     

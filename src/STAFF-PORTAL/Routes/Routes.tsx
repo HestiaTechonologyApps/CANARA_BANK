@@ -12,6 +12,7 @@ import StaffAccountDirectEntryList from '../Pages/AccountDirectEntry/List';
 import StaffAccountDirectEntryCreate from '../Pages/AccountDirectEntry/Create';
 import StaffAccountDirectEntryEdit from '../Pages/AccountDirectEntry/Edit';
 import StaffEdit from '../Pages/StaffEdit';
+import StaffAccountDirectEntryView from '../Pages/AccountDirectEntry/View';
 
 export const staffRoutes = (
   <Route
@@ -27,7 +28,7 @@ export const staffRoutes = (
     <Route path="staff-edit/:memberId" element={<StaffEdit />} />
     <Route path="contribution-list" element={<StaffAccountDirectEntryList />} />
     <Route path="contributions/staffaccountDirectEntry-create" element={<StaffAccountDirectEntryCreate />} />
-    {/* <Route path="staffaccountDirectEntry-view" element={<StaffAccountDirectEntryView />} /> */}
+    <Route path="contributions/staffaccountDirectEntry-view/:accountsDirectEntryID" element={<StaffAccountDirectEntryView />} />
     <Route path="contributions/staffaccountDirectEntry-edit/:accountsDirectEntryID" element={<StaffAccountDirectEntryEdit />} />
     <Route path="settings" element={<AccountSettings />} />
     <Route path="history" element={<ShowContribution />} />

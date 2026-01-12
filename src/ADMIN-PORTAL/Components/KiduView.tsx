@@ -197,19 +197,19 @@ const KiduView: React.FC<KiduViewProps> = ({
 
   return (
     <div
-      className="container d-flex justify-content-center align-items-center mt-5"
+      className="container-fluid d-flex justify-content-center align-items-center "
       style={{ fontFamily: "Urbanist" }}
     >
       <Card
-        className="shadow-lg p-4 w-100"
+        className="shadow-lg px-3 py-3 w-100"
         style={{
-          maxWidth: "1300px",
-          borderRadius: "15px",
+          maxWidth: "1450px",
+          borderRadius: "5px",
           border: "none",
         }}
       >
         {/* HEADER */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center">
             <KiduPrevious />
             <h5 className="fw-bold m-0 ms-2" style={{ color: themeColor }}>
@@ -278,7 +278,7 @@ const KiduView: React.FC<KiduViewProps> = ({
               <h5 className="fw-bold mb-1">{displayName}</h5>
             )}
             {displayId && (
-              <p className="small mb-0 fw-bold" style={{ color: themeColor }}>
+              <p className="small mb-0 fw-bold text-danger fs-5">
                 ID: {displayId}
               </p>
             )}

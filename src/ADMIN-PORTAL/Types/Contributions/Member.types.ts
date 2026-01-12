@@ -4,8 +4,11 @@ export interface Member {
   memberId: number;
   staffNo: number;
   designationId: number;
+  designationName?:string;
   categoryId: number;
+  branchName?:string;
   branchId: number;
+  categoryname?:string;
   name: string;
   genderId: number;
   dob: Date | string; 

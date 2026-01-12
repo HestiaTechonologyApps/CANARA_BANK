@@ -11,7 +11,7 @@ const PublicAttachmentService = {
     const response = await HttpService.callApi<
       CustomResponse<Attachment[]>
     >(
-      API_ENDPOINTS.PUBLIC. GET_ALL_ATTACHMENTS,
+      API_ENDPOINTS.PUBLIC.GET_ALL_ATTACHMENTS,
       "GET"
     );
 
@@ -25,7 +25,7 @@ const PublicAttachmentService = {
     attachmentId: number
   ): Promise<Blob> {
     const response = await fetch(
-      API_ENDPOINTS.ATTACHMENT.DOWNLOAD(attachmentId),
+      API_ENDPOINTS.PUBLIC.GET_ATTACHMENTS_BY_ID(attachmentId),
       { method: "GET" }
     );
 

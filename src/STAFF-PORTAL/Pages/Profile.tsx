@@ -17,11 +17,11 @@ const Profile: React.FC = () => {
     { label: "Staff No", key: "staffNo" },
     { label: "Name", key: "name" },
     { label: "Gender", key: "gender" },
-    { label: "Designation", key: "designation" },
+    { label: "Designation", key: "designationName" },
     { label: "Category", key: "category" },
     { label: "Date of Birth", key: "dateOfBirth" },
     { label: "Date of Join", key: "dojtoSchemeString" },
-    { label: "DP Code", key: "dpCode" },
+    { label: "DP Code", key: "branchName" },
     { label: "Date From", key: "dateFrom" },
     { label: "Date To", key: "dateTo" },
     { label: "Retirement Date", key: "retirementDate" },
@@ -128,11 +128,11 @@ const Profile: React.FC = () => {
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[3].label}</span>
-              <span className="profile-value">{user?.designationId || "—"}</span>
+              <span className="profile-value">{user?.designationName || "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[4].label}</span>
-              <span className="profile-value">{user?.categoryId || "—"}</span>
+              <span className="profile-value">{user?.categoryname || "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
@@ -149,7 +149,7 @@ const Profile: React.FC = () => {
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[7].label}</span>
-              <span className="profile-value">{user?.branchId || "—"}</span>
+              <span className="profile-value">{user?.branchName || "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[8].label}</span>
