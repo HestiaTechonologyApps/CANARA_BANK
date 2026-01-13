@@ -43,7 +43,7 @@ const MemberCreate: React.FC = () => {
     { name: "profileImageSrc", rules: { type: "text", label: "Profile Image", placeholder: "profile_image.png", colWidth: 3 } },
 
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4 } },
-    { name: "nomineeRelation", rules: { type: "text", label: "Nominee Relation", colWidth: 4 } },
+    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
 
     { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 3 } },
@@ -120,6 +120,19 @@ const MemberCreate: React.FC = () => {
     { value: "No", label: "No" }
   ];
 
+  //nominee Relation options
+  const nomineeRelationOptions = [
+    {value:"Spouse", label: "Spouse"},
+    {value:"Father", label: "Father"},
+    {value:"Mother", label: "Mother"},
+    {value:"Son", label: "Son"},
+    {value:"Daughter", label: "Daughter"},
+    {value:"Sibling", label: "Sibling"},
+    {value:"Nephew", label: "Nephew"},
+    {value:"Niece", label: "Niece"},
+    {value:"Grandparent", label: "Grandparent"},
+  ]
+
   return (
     <>
       <KiduCreate
@@ -136,7 +149,8 @@ const MemberCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{
           genderId: genderOptions,
-          unionMember: unionMemberOptions
+          unionMember: unionMemberOptions,
+          nomineeRelation: nomineeRelationOptions,
         }}
       />
 
