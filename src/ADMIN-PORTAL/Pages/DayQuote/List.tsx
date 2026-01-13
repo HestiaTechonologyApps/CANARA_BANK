@@ -3,22 +3,67 @@ import React from "react";
 import type { DayQuote } from "../../Types/CMS/DayQuote.types";
 import DayQuoteService from "../../Services/CMS/DayQuote.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
+import MonthService from "../../Services/Settings/Month.services";
+import type { Month } from "../../Types/Settings/Month.types";
 
 const columns = [
   { key: "dayQuoteId", label: "ID", type: "text" as const },
   { key: "day", label: "Day", type: "text" as const },
-  { key: "monthCode", label: "Month", type: "text" as const },
+  { key: "monthName", label: "Month", type: "text" as const },
   { key: "toDayQuote", label: "Quote", type: "text" as const },
 ];
 
 const DayQuoteList: React.FC = () => {
-  const fetchData = async (_params: {
+  const fetchData = async (params: {
     pageNumber: number;
     pageSize: number;
     searchTerm: string;
-  }): Promise<{ data: DayQuote[]; total: number }> => {
-    const quotes = await DayQuoteService.getAllDayQuotes();
-    return { data: quotes, total: quotes.length };
+  }): Promise<{ data: any[]; total: number }> => {
+    try {
+      /* ===================== FETCH DATA ===================== */
+      const [dayQuotes, months] = await Promise.all([
+        DayQuoteService.getAllDayQuotes(),
+        MonthService.getAllMonths(),
+      ]);
+
+      /* ===================== FIX: MAP BY monthCode ===================== */
+      const monthMap = Object.fromEntries(
+        months.map((m: Month) => [m.monthCode, m.monthName])
+      );
+
+      /* ===================== ENRICH ===================== */
+      let enrichedDayQuotes = dayQuotes.map((d: DayQuote) => ({
+        ...d,
+        monthName: monthMap[d.monthCode] ?? "-",
+      }));
+
+      /* ===================== SEARCH ===================== */
+      if (params.searchTerm) {
+        const q = params.searchTerm.toLowerCase();
+        enrichedDayQuotes = enrichedDayQuotes.filter((d) =>
+          [
+            d.dayQuoteId,
+            d.day,
+            d.monthName,
+            d.toDayQuote,
+          ]
+            .map(String)
+            .some((v) => v.toLowerCase().includes(q))
+        );
+      }
+
+      /* ===================== PAGINATION ===================== */
+      const start = (params.pageNumber - 1) * params.pageSize;
+      const end = start + params.pageSize;
+
+      return {
+        data: enrichedDayQuotes.slice(start, end),
+        total: enrichedDayQuotes.length,
+      };
+    } catch (error: any) {
+      console.error("Error fetching Day Quotes:", error);
+      throw new Error(error.message || "Failed to fetch Day Quotes");
+    }
   };
 
   return (

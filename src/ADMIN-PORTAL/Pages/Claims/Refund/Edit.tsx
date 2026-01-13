@@ -79,7 +79,7 @@ const RefundContributionEdit: React.FC = () => {
 
   return {
     ...response,
-    value: refund, // ✅ return patched object
+    value: refund, 
   };
 };
 
@@ -89,13 +89,10 @@ const RefundContributionEdit: React.FC = () => {
     }
    const payload: Omit<RefundContribution, "auditLogs"> = {
   refundContributionId: Number(id),
-
-  // ✅ ALWAYS FROM SELECTED OBJECTS
   stateId: selectedState.stateId,
   memberId: selectedMember.memberId,
   staffNo: selectedMember.staffNo,
   designationId: selectedDesignation.designationId,
-
   refundNO: formData.refundNO?.trim(),
   branchNameOFTime: formData.branchNameOFTime?.trim(),
   dpcodeOfTime: formData.dpcodeOfTime?.trim(),
@@ -107,7 +104,6 @@ const RefundContributionEdit: React.FC = () => {
   amount: Number(formData.amount),
   lastContribution: Number(formData.lastContribution || 0),
   yearOF: Number(formData.yearOF),
-
   deathDate: "",
   deathDateString: "",
 };

@@ -4,7 +4,6 @@ import KiduView from "../../../Components/KiduView";
 import type { ViewField } from "../../../Components/KiduView";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
 
-
 const RefundContributionView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "refundContributionId", label: "Refund Contribution ID" },

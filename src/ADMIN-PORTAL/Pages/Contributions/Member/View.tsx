@@ -3,7 +3,6 @@ import type { ViewField } from "../../../Components/KiduView";
 import MemberService from "../../../Services/Contributions/Member.services";
 import KiduView from "../../../Components/KiduView";
 
-
 const MemberView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "memberId", label: "Member ID", icon: "bi-hash" },
