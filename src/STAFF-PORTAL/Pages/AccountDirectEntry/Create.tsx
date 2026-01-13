@@ -1,5 +1,5 @@
 // src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryCreate.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
 import type { Month } from "../../../ADMIN-PORTAL/Types/Settings/Month.types";
@@ -18,6 +18,19 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null)
+
+   // ✅ AUTO-POPULATE MEMBER FROM LOCAL STORAGE
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+
+      setSelectedMember({
+        memberId: user.memberId,
+        name: user.userName,
+      } as Member);
+    }
+  }, []);
   
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -76,7 +89,8 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(true),
+      // onOpen: () => setShowMemberPopup(true),
+      onOpen: () => {},
     },
     branchId: {
       value: selectedBranch?.name || "",
@@ -118,18 +132,21 @@ const statusOptions =[
       show={showMemberPopup} 
       handleClose={() => setShowMemberPopup(false)} 
       onSelect={setSelectedMember} 
+       showAddButton={false}
       />
       
       <BranchPopup 
       show={showBranchPopup} 
       handleClose={() => setShowBranchPopup(false)} 
       onSelect={setSelectedBranch} 
+       showAddButton={false}
       />
       
       <MonthPopup 
       show={showMonthPopup} 
       handleClose={()=> setShowMonthPopup(false)} 
-      onSelect={setSelectedMonth} 
+      onSelect={setSelectedMonth}
+       showAddButton={false} 
       />
 
        </>

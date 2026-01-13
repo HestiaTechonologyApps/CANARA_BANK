@@ -8,12 +8,14 @@ interface MonthPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (month: Month) => void;
+  showAddButton:boolean;
 }
 
 const MonthPopup: React.FC<MonthPopupProps> = ({
   show,
   handleClose,
-  onSelect
+  onSelect,
+  showAddButton
 }) => {
   const columns = [
     { key: "monthCode" as keyof Month, label: "Month Code" },
@@ -32,6 +34,7 @@ const MonthPopup: React.FC<MonthPopupProps> = ({
       AddModalComponent={MonthCreateModal}
       idKey="monthCode"
       rowsPerPage={10}
+      showAddButton={showAddButton}
     />
   );
 };

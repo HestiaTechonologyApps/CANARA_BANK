@@ -7,12 +7,14 @@ interface StatusPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (status: Status) => void;
+  showAddButton:boolean;
 }
 
 const StatusPopup: React.FC<StatusPopupProps> = ({
   show,
   handleClose,
   onSelect,
+  showAddButton
 }) => {
   const columns = [
     { key: "statusId" as keyof Status, label: "ID" },
@@ -34,6 +36,7 @@ const StatusPopup: React.FC<StatusPopupProps> = ({
       idKey="statusId"
       rowsPerPage={10}
       searchKeys={["name", "abbreviation", "description"]} // 🔥 Added searchKeys
+      showAddButton={showAddButton}
     />
   );
 };

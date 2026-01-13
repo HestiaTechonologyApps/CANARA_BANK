@@ -36,6 +36,10 @@
   color: #f4c045;
 }
 
+.auth-icon-red {
+  color: #f44545;
+}
+
 .auth-title {
   font-size: 22px;
   font-weight: 700;
@@ -72,6 +76,15 @@
   font-weight: 600;
   border-radius: 8px;
   height: 45px;
+}
+
+.auth-logoutbtn {
+  background: #f44545 !important;
+  color: #000 !important;
+  font-weight: 600;
+  border-radius: 8px;
+  height: 45px;
+   border: none;
 }
 
 .auth-footer {

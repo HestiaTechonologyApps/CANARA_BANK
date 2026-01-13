@@ -7,12 +7,14 @@ interface CategoryPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (category: Category) => void;
+  showAddButton:boolean;
 }
 
 const CategoryPopup: React.FC<CategoryPopupProps> = ({
   show,
   handleClose,
-  onSelect
+  onSelect,
+  showAddButton
 }) => {
   const columns = [
     { key: "categoryId" as keyof Category, label: "ID" },
@@ -32,6 +34,7 @@ const CategoryPopup: React.FC<CategoryPopupProps> = ({
       idKey="categoryId"
       rowsPerPage={10}
       searchKeys={["name", "abbreviation"]} // 🔥 Added searchKeys
+      showAddButton={showAddButton}
     />
   );
 };

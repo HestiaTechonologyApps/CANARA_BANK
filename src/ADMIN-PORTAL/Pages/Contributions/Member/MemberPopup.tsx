@@ -7,12 +7,14 @@ interface MemberPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (member: Member) => void;
+  showAddButton: boolean
 }
 
 const MemberPopup: React.FC<MemberPopupProps> = ({
   show,
   handleClose,
   onSelect,
+  showAddButton
 }) => {
   const columns = [
     { key: "memberId" as keyof Member, label: "ID" },
@@ -34,6 +36,7 @@ const MemberPopup: React.FC<MemberPopupProps> = ({
       AddModalComponent={MemberCreateModal}
       idKey="memberId"
       rowsPerPage={10}
+      showAddButton={showAddButton}
     />
   );
 };

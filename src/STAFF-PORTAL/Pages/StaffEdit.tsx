@@ -5,10 +5,6 @@ import type { Category } from "../../ADMIN-PORTAL/Types/Settings/Category.types"
 import type { Status } from "../../ADMIN-PORTAL/Types/Settings/Status.types";
 import type { Field } from "../../ADMIN-PORTAL/Components/KiduEdit";
 import MemberService from "../../ADMIN-PORTAL/Services/Contributions/Member.services";
-import BranchService from "../../ADMIN-PORTAL/Services/Settings/Branch.services";
-import DesignationService from "../../ADMIN-PORTAL/Services/Settings/Designation.services";
-import CategoryService from "../../ADMIN-PORTAL/Services/Settings/Category.services";
-import StatusService from "../../ADMIN-PORTAL/Services/Settings/Status.services";
 import type { Member } from "../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import KiduEdit from "../../ADMIN-PORTAL/Components/KiduEdit";
 import BranchPopup from "../../ADMIN-PORTAL/Pages/Branch/BranchPopup";
@@ -85,18 +81,22 @@ const StaffEdit: React.FC = () => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
 
-    if (member) {
-      const branch = await BranchService.getBranchById(member.branchId);
-      setSelectedBranch(branch.value);
+     if (member) {
+      setSelectedBranch({ branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch);
+      setSelectedDesignation({ designationId: member.designationId, name: member.designationName } as unknown as Designation);
+      setSelectedCategory({ categoryId: member.categoryId, name: member.categoryname } as unknown as Category);
+      setSelectedStatus({ statusId: member.statusId, name: member.status } as unknown as Status);
 
-      const designation = await DesignationService.getDesignationById(member.designationId);
-      setSelectedDesignation(designation.value);
+      // Ensure genderId is properly returned as part of the response
+    // The KiduEdit component should handle this, but make sure the value exists
+    return {
+      ...response,
+      value: {
+        ...member,
+        genderId: member.genderId // Explicitly ensure genderId is included
+      }
+    };
 
-      const category = await CategoryService.getCategoryById(member.categoryId);
-      setSelectedCategory(category.value);
-
-      const status = await StatusService.getStatusById(member.statusId);
-      setSelectedStatus(status.value);
     }
 
     return response;
@@ -187,21 +187,25 @@ const StaffEdit: React.FC = () => {
         show={showBranchPopup} 
         handleClose={() => setShowBranchPopup(false)} 
         onSelect={setSelectedBranch} 
+        showAddButton={false}
       />
       <DesignationPopup 
         show={showDesignationPopup} 
         handleClose={() => setShowDesignationPopup(false)} 
         onSelect={setSelectedDesignation} 
+        showAddButton={false}
       />
       <CategoryPopup 
         show={showCategoryPopup} 
         handleClose={() => setShowCategoryPopup(false)} 
         onSelect={setSelectedCategory} 
+        showAddButton={false}
       />
       <StatusPopup 
         show={showStatusPopup} 
         handleClose={() => setShowStatusPopup(false)} 
         onSelect={setSelectedStatus} 
+        showAddButton={false}
       />
     </>
   );

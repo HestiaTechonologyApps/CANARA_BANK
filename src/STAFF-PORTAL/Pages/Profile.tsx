@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
 
         // Use AuthService to get memberId
         const memberId = AuthService.getMemberId();
-        
+
         if (!memberId) {
           setError("Member ID not found. Please log in again.");
           setLoading(false);
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
 
         // Fetch member details
         const response = await MemberService.getMemberById(memberId);
-        
+
         if (response.isSucess && response.value) {
           setUser(response.value);
           console.log("Profile loaded:", response.value);
@@ -95,8 +95,8 @@ const Profile: React.FC = () => {
           <div className="alert alert-danger" role="alert">
             {error}
           </div>
-          <Button 
-            variant="primary" 
+          <Button
+            variant="primary"
             onClick={() => window.location.reload()}
           >
             Retry
@@ -122,7 +122,7 @@ const Profile: React.FC = () => {
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[2].label}</span>
-              <span className="profile-value">{user?.genderId || "—"}</span>
+              <span className="profile-value">{user?.gender || "—"}</span>
             </Col>
           </Row>
           <Row>
@@ -137,39 +137,41 @@ const Profile: React.FC = () => {
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[5].label}</span>
-              <span className="profile-value">{user?.dobString || "—"}</span>
+              <span className="profile-value">{user?.dobString ? user.dobString.split(" ").slice(0,3).join(" ") : "—"}</span>
             </Col>
           </Row>
 
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[6].label}</span>
-              <span className="profile-value">{user?.dojString || "—"}</span>
+              <span className="profile-value">
+                {user?.dojString ? user.dojString.split(" ").slice(0, 3).join(" ") : "—"}
+              </span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[7].label}</span>
-              <span className="profile-value">{user?.branchName || "—"}</span>
+              <span className="profile-value">{user?.dpCode || "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[8].label}</span>
-              <span className="profile-value">{user?.dojtoSchemeString || "—"}</span>
+              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0,3).join(" ") : "—"}</span>
             </Col>
           </Row>
 
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[9].label}</span>
-              <span className="profile-value">{user?.dojtoSchemeString || "—"}</span>
+              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0,3).join(" ") : "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[10].label}</span>
-              <span className="profile-value">{user?.modifiedDateString || "—"}</span>
+              <span className="profile-value">{user?.modifiedDateString  ? user.modifiedDateString.split(" ").slice(0,3).join(" ") : "—"}</span>
             </Col>
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[11].label}</span>
-              <span className="profile-value">{user?.statusId || "—"}</span>
+              <span className="profile-value">{user?.status || "—"}</span>
             </Col>
           </Row>
 
@@ -187,8 +189,8 @@ const Profile: React.FC = () => {
           </Row>
         </div>
         <div className="profile-action text-end">
-          <Button 
-            className="profile-btn" 
+          <Button
+            className="profile-btn"
             onClick={handleShowContribution}
           >
             ₹ Show Contribution

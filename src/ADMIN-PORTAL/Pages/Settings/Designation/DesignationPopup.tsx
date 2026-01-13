@@ -8,12 +8,14 @@ interface DesignationPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (designation: Designation) => void;
+  showAddButton:boolean;
 }
 
 const DesignationPopup: React.FC<DesignationPopupProps> = ({
   show,
   handleClose,
-  onSelect
+  onSelect,
+  showAddButton
 }) => {
   const columns = [
     { key: "designationId" as keyof Designation, label: "ID" },
@@ -33,6 +35,7 @@ const DesignationPopup: React.FC<DesignationPopupProps> = ({
       idKey="designationId"
       rowsPerPage={10}
       searchKeys={["name", "description"]} // 🔥 ADD THIS LINE
+      showAddButton={showAddButton}
     />
   );
 };

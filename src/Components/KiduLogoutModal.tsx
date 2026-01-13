@@ -26,7 +26,7 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
         {/* HEADER (same style as login) */}
         <div className="auth-div">
           <div className="auth-icon">
-            <LogOut size={30} className="auth-icon-gold" />
+            <LogOut size={30} className="auth-icon-red" />
           </div>
           <div className="auth-title">Confirm Logout</div>
           <div className="auth-sub">
@@ -50,7 +50,7 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
             </Button>
 
             <Button
-              className="auth-btn"
+              className="auth-logoutbtn"
               onClick={onConfirm}
               style={{ minWidth: "120px" }}
             >
