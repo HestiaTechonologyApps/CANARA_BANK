@@ -207,7 +207,9 @@ export const API_ENDPOINTS = {
 
   PUBLIC_PAGE: {
     GET_ALL: `${API_BASE_URL}/PublicPage/public/home`,
-    CREATE: `${API_BASE_URL}/PubicPage`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
+    CREATE: `${API_BASE_URL}/PublicPage`,
+    UPDATE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
   },
 

@@ -1,60 +1,50 @@
 // src/components/CMS/PublicPage/PublicPageList.tsx
-
 import React from "react";
-import type { PublicPage } from "../../Types/CMS/PublicPage.types";
+//import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 import PublicPageService from "../../Services/CMS/PublicPage.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
+const columns = [
+  { key: "publicPageId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "navBrandTitle", label: "Brand", enableSorting: true, type: "text" as const },
+  { key: "homeHeroTitle", label: "Hero Title", enableSorting: true, type: "text" as const },
+  { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },
+];
+
 const PublicPageList: React.FC = () => {
-  const columns: any[] = [
-    { key: "publicPageId", label: "ID", enableSorting: true, type: "text"},
-    { key: "navBrandTitle", label: "Brand Title", enableSorting: true, type: "text"},
-    { key: "navBrandSubTitle", label: "Subtitle", enableSorting: true, type: "text"},
-    { key: "isActive", label: "Active", enableSorting: true, type: "boolean"},
-  ];
+  const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
+    const data = await PublicPageService.getAllPublicPages();
 
-  const fetchData = async (params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: PublicPage[]; total: number }> => {
-    const pages = await PublicPageService.getAllPublicPages();
-
-    let filtered = pages;
-    if (params.searchTerm) {
-      const searchLower = params.searchTerm.toLowerCase();
-      filtered = pages.filter(
+    let filtered = data;
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      filtered = data.filter(
         (p) =>
-          p.navBrandTitle?.toLowerCase().includes(searchLower) ||
-          p.navBrandSubTitle?.toLowerCase().includes(searchLower) ||
-          p.publicPageId?.toString().includes(params.searchTerm)
+          p.navBrandTitle?.toLowerCase().includes(q) ||
+          p.homeHeroTitle?.toLowerCase().includes(q)
       );
     }
 
-    const start = (params.pageNumber - 1) * params.pageSize;
-    const end = start + params.pageSize;
+    const start = (pageNumber - 1) * pageSize;
 
     return {
-      data: filtered.slice(start, end),
+      data: filtered.slice(start, start + pageSize),
       total: filtered.length,
     };
   };
 
   return (
     <KiduServerTable
-      title="Public Page CMS"
-      subtitle="Manage public website content"
+      title="Public Page Management"
       columns={columns}
       idKey="publicPageId"
-      addButtonLabel="Add Public Page"
-      addRoute="/dashboard/cms/publicPage-create"
-      viewRoute="/dashboard/cms/publicPage-view"
-      showAddButton={true}
-      showSearch={true}
-      showActions={true}
-      showTitle={true}
       fetchData={fetchData}
-      rowsPerPage={10}
+      addRoute="/dashboard/cms/publicPage-create"
+      editRoute="/dashboard/cms/publicPage-edit"
+      viewRoute="/dashboard/cms/publicPage-view"
+      showAddButton
+      showSearch
+      showActions
     />
   );
 };

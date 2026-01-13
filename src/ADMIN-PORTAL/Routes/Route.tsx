@@ -133,12 +133,14 @@ import AccountDirectEntryView from '../Pages/Contributions/AccountDirectEntry/Vi
 import PublicPageList from '../Pages/PublicPage/List';
 import PublicPageCreate from '../Pages/PublicPage/Create';
 import PublicPageView from '../Pages/PublicPage/View';
+import PublicPageEdit from '../Pages/PublicPage/Edit';
 
 //Support Ticket
 import SupportTicketList from '../Pages/SupportTickets/List';
 import SupportTicketCreate from '../Pages/SupportTickets/Create';
 import SupportTicketEdit from '../Pages/SupportTickets/Edit';
 import SupportTicketView from '../Pages/SupportTickets/View';
+
 
 // Export route configuration as JSX elements - ALL PROTECTED
 export const adminRoutes = (
@@ -281,7 +283,8 @@ export const adminRoutes = (
       {/* Public Page */}
       <Route path="cms/publicPage-list" element={<PublicPageList />} />
       <Route path="cms/publicPage-create" element={<PublicPageCreate />} />
-      <Route path="cms/publicPage-view" element={<PublicPageView />} />
+      <Route path="cms/publicPage-view/:publicPageId" element={<PublicPageView />} />
+      <Route path="cms/publicPage-edit/:publicPageId" element={<PublicPageEdit />} />
 
       {/* Support Ticket */}
       <Route path="supportTickets-list" element={<SupportTicketList />} />

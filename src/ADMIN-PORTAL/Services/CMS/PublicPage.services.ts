@@ -1,13 +1,13 @@
-// src/services/CMS/PublicPage.services.ts
+// src/Services/CMS/PublicPage.services.ts
 
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
-const PublicPageService = {
 
-  // ===================== GET ALL PUBLIC PAGES (HOME) =====================
+const PublicPageService = {
+  /* ===================== GET ALL ===================== */
   async getAllPublicPages(): Promise<PublicPage[]> {
     const response = await HttpService.callApi<CustomResponse<PublicPage[]>>(
       API_ENDPOINTS.PUBLIC_PAGE.GET_ALL,
@@ -16,7 +16,18 @@ const PublicPageService = {
     return response.value;
   },
 
-  // ===================== CREATE / UPDATE PUBLIC PAGE =====================
+  /* ===================== GET BY ID ===================== */
+  async getPublicPageById(
+    id: number
+  ): Promise<CustomResponse<PublicPage>> {
+    const response = await HttpService.callApi<CustomResponse<PublicPage>>(
+      API_ENDPOINTS.PUBLIC_PAGE.GET_BY_ID(id),
+      "GET"
+    );
+    return response;
+  },
+
+  /* ===================== CREATE ===================== */
   async createPublicPage(
     data: Omit<PublicPage, "publicPageId" | "auditLogs">
   ): Promise<PublicPage> {
@@ -28,7 +39,20 @@ const PublicPageService = {
     return response.value;
   },
 
-  // ===================== DELETE PUBLIC PAGE =====================
+  /* ===================== UPDATE ===================== */
+  async updatePublicPage(
+    id: number,
+    data: Omit<PublicPage, "publicPageId" | "auditLogs">
+  ): Promise<PublicPage> {
+    const response = await HttpService.callApi<CustomResponse<PublicPage>>(
+      API_ENDPOINTS.PUBLIC_PAGE.UPDATE(id),
+      "PUT",
+      data
+    );
+    return response.value;
+  },
+
+  /* ===================== DELETE ===================== */
   async deletePublicPage(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.PUBLIC_PAGE.DELETE(id),

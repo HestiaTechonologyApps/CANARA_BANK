@@ -1,5 +1,6 @@
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
+
 export interface PublicPage {
   publicPageId: number;
 
@@ -18,14 +19,14 @@ export interface PublicPage {
   navClaimsLabel: string;
   navContactLabel: string;
   navLoginLabel: string;
-  navLoginIcon: string;
 
+  navLoginIcon: string;
   navPhoneIcon: string;
   navPhoneValue: string;
   navEmailIcon: string;
   navEmailValue: string;
 
-  /* ===================== HOME PAGE ===================== */
+  /* ===================== HOME ===================== */
   homeHeroBadge: string;
   homeHeroTitle: string;
   homeHeroLine1: string;
@@ -51,19 +52,20 @@ export interface PublicPage {
   homeAboutTitle: string;
   homeAboutParagraph: string;
 
-  /* ===================== NEWS PAGE ===================== */
+  /* ===================== NEWS ===================== */
   newsHeroTitle: string;
   newsHeroSubTitle: string;
   newsBreadcrumbHomeLabel: string;
   newsBreadcrumbCurrentLabel: string;
   newsLoadingText: string;
   newsEmptyText: string;
+
   newsItemsJson: string;
   newsSidebarQuoteTitle: string;
   newsSidebarQuoteText: string;
   newsQuickLinksJson: string;
 
-  /* ===================== ABOUT PAGE ===================== */
+  /* ===================== ABOUT ===================== */
   aboutHeaderTitle: string;
   aboutHeaderSubTitle: string;
 
@@ -83,7 +85,7 @@ export interface PublicPage {
   aboutHistoryPara4: string;
   aboutHistoryPara5: string;
 
-  /* ===================== RULES PAGE ===================== */
+  /* ===================== RULES ===================== */
   rulesHeaderTitle: string;
   rulesHeaderSubTitle: string;
 
@@ -185,7 +187,9 @@ export interface PublicPage {
   privacyLine5: string;
   privacyLine6: string;
 
-  /* ===================== COMMON ===================== */
+  /* ===================== STATUS ===================== */
   isActive: boolean;
+
+  /* ===================== AUDIT ===================== */
   auditLogs?: AuditTrails[];
 }

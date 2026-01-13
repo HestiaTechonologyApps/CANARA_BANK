@@ -1,30 +1,44 @@
-// src/components/CMS/PublicPage/PublicPageCreate.tsx
+// src/components/CMS/PublicPage/PublicPageEdit.tsx
 
-import React, { useState } from "react";
-import { Form, Row, Col, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Form, Row, Col, Card, Spinner } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import KiduSubmit from "../../Components/KiduSubmit";
 
-import PublicPageService from "../../Services/CMS/PublicPage.services";
-import type { PublicPage } from "../../Types/CMS/PublicPage.types";
+import KiduSubmit from "../../Components/KiduSubmit";
 import KiduPrevious from "../../../Components/KiduPrevious";
 import KiduReset from "../../../Components/KiduReset";
 
+import PublicPageService from "../../Services/CMS/PublicPage.services";
+import type { PublicPage } from "../../Types/CMS/PublicPage.types";
+
 const themeColor = "#1B3763";
 
-const PublicPageCreate: React.FC = () => {
+const PublicPageEdit: React.FC = () => {
   const navigate = useNavigate();
+  const { publicPageId } = useParams<{ publicPageId: string }>();
 
-  /* ===================== INITIAL VALUES ===================== */
-  const initialValues: Partial<PublicPage> = {
-    isActive: true,
-    navMenuHead: false,
-  };
-
-  const [formData, setFormData] = useState<Partial<PublicPage>>(initialValues);
+  const [formData, setFormData] = useState<Partial<PublicPage>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  /* ===================== FETCH ===================== */
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await PublicPageService.getPublicPageById(
+          Number(publicPageId)
+        );
+        setFormData(res.value);
+      } catch (err: any) {
+        toast.error("Failed to load public page");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [publicPageId]);
 
   /* ===================== HANDLERS ===================== */
   const handleChange = (
@@ -48,19 +62,22 @@ const PublicPageCreate: React.FC = () => {
         navMenuHead: Boolean(formData.navMenuHead),
       };
 
-      await PublicPageService.createPublicPage(payload);
+      await PublicPageService.updatePublicPage(
+        Number(publicPageId),
+        payload
+      );
 
       await Swal.fire({
         icon: "success",
-        title: "Success",
-        text: "Public page created successfully!",
+        title: "Updated",
+        text: "Public page updated successfully!",
         confirmButtonColor: themeColor,
         timer: 2000,
       });
 
       navigate("/dashboard/cms/publicPage-list");
     } catch (err: any) {
-      toast.error(err.message || "Failed to create public page");
+      toast.error(err.message || "Failed to update public page");
       setIsSubmitting(false);
     }
   };
@@ -101,6 +118,14 @@ const PublicPageCreate: React.FC = () => {
     />
   );
 
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center mt-5">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
   /* ===================== RENDER ===================== */
   return (
     <>
@@ -111,7 +136,7 @@ const PublicPageCreate: React.FC = () => {
           <div className="d-flex align-items-center mb-3">
             <KiduPrevious />
             <h4 className="fw-bold mb-0 ms-2" style={{ color: themeColor }}>
-              Create Public Page
+              Edit Public Page
             </h4>
           </div>
 
@@ -128,9 +153,7 @@ const PublicPageCreate: React.FC = () => {
                   {input("navBrandSubTitle", "Brand Subtitle")}
                   {input("navLogoUrl", "Logo URL")}
                   {input("navLogoAlt", "Logo Alt")}
-                  <Col md={12} className="mb-3">
-                    {checkbox("navMenuHead", "Menu Head")}
-                  </Col>
+                  <Col md={12}>{checkbox("navMenuHead", "Menu Head")}</Col>
                   {input("navHomeLabel", "Home Label")}
                   {input("navAboutLabel", "About Label")}
                   {input("navRulesLabel", "Rules Label")}
@@ -344,7 +367,7 @@ const PublicPageCreate: React.FC = () => {
                   {textarea("privacyPara2", "Paragraph 2")}
                   {textarea("privacyParagraph3", "Paragraph 3")}
                   {input("privacyHeading2", "Heading 2")}
-                  {textarea("privacyPara3", "Paragraph 3 (Alt)")}
+                  {textarea("privacyPara3", "Paragraph 4")}
                   {input("privacyHeading3", "Heading 3")}
                   {input("privacyLine1", "Line 1")}
                   {input("privacyLine2", "Line 2")}
@@ -359,21 +382,19 @@ const PublicPageCreate: React.FC = () => {
             {/* ===================== STATUS ===================== */}
             <Card className="mb-4">
               <Card.Header className="fw-semibold">Status</Card.Header>
-              <Card.Body>
-                {checkbox("isActive", "Is Active")}
-              </Card.Body>
+              <Card.Body>{checkbox("isActive", "Is Active")}</Card.Body>
             </Card>
 
             {/* ===================== ACTIONS ===================== */}
             <div className="d-flex justify-content-end gap-2 mt-4">
               <KiduReset
-                initialValues={initialValues}
+                initialValues={formData}
                 setFormData={setFormData}
                 setErrors={() => {}}
               />
               <KiduSubmit
                 isSubmitting={isSubmitting}
-                submitButtonText="Create"
+                submitButtonText="Update"
                 themeColor={themeColor}
               />
             </div>
@@ -387,4 +408,4 @@ const PublicPageCreate: React.FC = () => {
   );
 };
 
-export default PublicPageCreate;
+export default PublicPageEdit;
