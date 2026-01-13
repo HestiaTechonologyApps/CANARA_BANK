@@ -5,7 +5,6 @@ import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
-
 const PublicPageService = {
   /* ===================== GET ALL ===================== */
   async getAllPublicPages(): Promise<PublicPage[]> {
@@ -16,15 +15,13 @@ const PublicPageService = {
     return response.value;
   },
 
-  /* ===================== GET BY ID ===================== */
-  async getPublicPageById(
-    id: number
-  ): Promise<CustomResponse<PublicPage>> {
+  /* ===================== GET BY ID (✅ FIXED) ===================== */
+  async getPublicPageById(id: number): Promise<PublicPage> {
     const response = await HttpService.callApi<CustomResponse<PublicPage>>(
       API_ENDPOINTS.PUBLIC_PAGE.GET_BY_ID(id),
       "GET"
     );
-    return response;
+    return response.value; // ✅ FIX
   },
 
   /* ===================== CREATE ===================== */
