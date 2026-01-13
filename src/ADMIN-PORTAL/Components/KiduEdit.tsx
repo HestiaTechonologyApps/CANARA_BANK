@@ -37,7 +37,7 @@ export interface SelectOption {
 export interface PopupHandler {
   value: string;
   onOpen: () => void;
-  actualValue?: any; // The actual value (e.g., ID) for change detection
+  actualValue?: any;
 }
 
 export interface ImageConfig {
@@ -105,16 +105,14 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const params = useParams();
   const recordId = params[paramName];
 
-  // Separate toggle fields from regular fields
   const regularFields = fields.filter(f => f.rules.type !== "toggle");
   const toggleFields = fields.filter(f => f.rules.type === "toggle");
 
-  // Initialize form data and errors
   const initialValues: Record<string, any> = {};
   const initialErrors: Record<string, string> = {};
   
   fields.forEach(f => {
-    if (f.rules.type === "rowbreak") return; // Skip rowbreak
+    if (f.rules.type === "rowbreak") return;
     
     if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
       initialValues[f.name] = false;
@@ -127,7 +125,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     initialErrors[f.name] = "";
   });
 
-  // Add image field if configured
   if (imageConfig) {
     initialValues[imageConfig.fieldName] = "";
   }
@@ -140,16 +137,12 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const [loading, setLoading] = useState(true);
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   
-  // Image upload states
   const [previewUrl, setPreviewUrl] = useState<string>(imageConfig?.defaultImage || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  // Check if form has changes
   const hasChanges = () => {
-    // Check regular form data changes
     const formDataChanged = JSON.stringify(formData) !== JSON.stringify(initialData);
     
-    // Check popup field changes
     let popupChanged = false;
     fields.forEach(f => {
       if (f.rules.type === "popup" && popupHandlers[f.name]) {
@@ -178,20 +171,17 @@ const KiduEdit: React.FC<KiduEditProps> = ({
 
         const response = await onFetch(recordId);
         
-        // Check for isSucess (with typo as per API)
         if (!response || !response.isSucess) {
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
 
         const data = response.value;
         
-        // Format data according to fields
         const formattedData: Record<string, any> = {};
         fields.forEach(f => {
-          if (f.rules.type === "rowbreak") return; // Skip rowbreak
+          if (f.rules.type === "rowbreak") return;
           
           if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-            // Handle boolean conversion for toggle/checkbox
             const rawValue = data[f.name];
             if (typeof rawValue === 'boolean') {
               formattedData[f.name] = rawValue;
@@ -203,7 +193,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               formattedData[f.name] = false;
             }
           } else if (f.rules.type === "date") {
-            // Format date fields to YYYY-MM-DD for input type="date"
             const dateValue = data[f.name];
             if (dateValue) {
               const date = new Date(dateValue);
@@ -212,24 +201,26 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               formattedData[f.name] = "";
             }
           } else {
-            formattedData[f.name] = data[f.name] || "";
+            // FIXED: Handle numeric values properly (don't convert 0 to empty string)
+            if (f.rules.type === "select" || f.rules.type === "number") {
+              formattedData[f.name] = data[f.name] !== undefined && data[f.name] !== null ? data[f.name] : "";
+            } else {
+              formattedData[f.name] = data[f.name] || "";
+            }
           }
         });
 
-        // Add any additional fields from data that aren't in fields definition
         Object.keys(data).forEach(key => {
           if (!(key in formattedData)) {
             formattedData[key] = data[key];
           }
         });
 
-        // Handle image if configured
         if (imageConfig && data[imageConfig.fieldName]) {
           formattedData[imageConfig.fieldName] = data[imageConfig.fieldName];
           setPreviewUrl(data[imageConfig.fieldName] || imageConfig.defaultImage);
         }
 
-        // Store audit logs if available
         if (auditLogConfig && data.auditLogs) {
           formattedData.auditLogs = data.auditLogs;
         }
@@ -249,7 +240,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     fetchData();
   }, [recordId]);
 
-  // Cleanup blob URLs
   useEffect(() => {
     return () => {
       if (previewUrl && previewUrl.startsWith('blob:')) {
@@ -330,7 +320,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     const rule = fields.find(f => f.name === name)?.rules;
     if (!rule) return true;
     
-    // Special handling for popup fields
     if (rule.type === "popup") {
       if (rule.required) {
         const popupValue = popupHandlers[name]?.value;
@@ -359,12 +348,11 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     const newErrors: Record<string, string> = {};
     
     fields.forEach(f => {
-      if (f.rules.type === "rowbreak") return; // Skip rowbreak
+      if (f.rules.type === "rowbreak") return;
       
       const rule = f.rules;
       const value = formData[f.name];
       
-      // Special handling for popup fields
       if (rule.type === "popup") {
         if (rule.required) {
           const popupValue = popupHandlers[f.name]?.value;
@@ -373,7 +361,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
             isValid = false;
           }
         }
-        return; // Skip other validations for popup fields
+        return;
       }
       
       if (rule.required) {
@@ -422,40 +410,33 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     try {
       const submitData = { ...formData };
       
-      // Convert image to base64 if new file selected
       if (imageConfig && selectedFile) {
         const base64Image = await fileToBase64(selectedFile);
         submitData[imageConfig.fieldName] = base64Image;
       }
       
-      // Remove audit logs from submit data
       if (auditLogConfig) {
         delete submitData.auditLogs;
       }
       
       const updateResult = await onUpdate(recordId!, submitData);
       
-      // Use the returned data from onUpdate if available, otherwise use submitData
       let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
       
-      // Update popup fields with their actualValues
       fields.forEach(f => {
         if (f.rules.type === "popup" && popupHandlers[f.name]?.actualValue !== undefined) {
           updatedData = { ...updatedData, [f.name]: popupHandlers[f.name].actualValue };
         }
       });
       
-      // Include the new image preview URL if uploaded
       if (imageConfig && selectedFile) {
         updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
       }
       
-      // Update initial data to match current data after successful update
       setInitialData(updatedData);
       setFormData(updatedData);
       setSelectedFile(null);
       
-      // Show success alert with SweetAlert2
       await Swal.fire({
         icon: "success",
         title: "Success!",
@@ -471,7 +452,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     }
   };
 
-  // Format date for display
   const formatDate = (isoString: string | null) => {
     if (!isoString) return "N/A";
     const date = new Date(isoString);
@@ -651,7 +631,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const renderField = (field: Field, index: number) => {
     const { name, rules } = field;
     
-    // Handle row break
     if (rules.type === "rowbreak") {
       return <div key={`rowbreak-${index}`} className="w-100"></div>;
     }
@@ -683,7 +662,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     <>
       <div 
         className="container-fluid d-flex justify-content-center align-items-center mt-1" 
-        // style={{ fontFamily: "Urbanist" }}
       >
         <Card 
           className="shadow-lg px-3 py-3 w-100" 
@@ -694,7 +672,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
             ...containerStyle 
           }}
         >
-          {/* HEADER */}
           <div className="d-flex justify-content-between align-items-center ">
             <div className="d-flex align-items-center">
              {showBackButton &&  <KiduPrevious />}
@@ -707,7 +684,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           <Card.Body style={{ padding: "1.5rem" }}>
             <Form onSubmit={handleSubmit}>
               <Row className="mb-3">
-                {/* Image Upload Section (if configured) */}
                 {imageConfig && (
                   <Col xs={12} md={3} className="d-flex flex-column align-items-start mb-4">
                     <div style={{ position: "relative", width: "160px", height: "160px" }}>
@@ -723,7 +699,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                         }}
                         onError={(e: any) => { e.target.src = imageConfig.defaultImage; }} 
                       />
-                      {/* Only show upload button if editable (default true) */}
                       {(imageConfig.editable !== false) && (
                         <>
                           <label 
@@ -769,7 +744,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                   </Col>
                 )}
 
-                {/* Form Fields Section */}
                 <Col xs={12} md={imageConfig ? 9 : 12}>
                   <Row className="g-2">
                     {regularFields.map((field, index) => renderField(field, index))}
@@ -777,7 +751,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                 </Col>
               </Row>
 
-              {/* Toggle Switches Section */}
               {toggleFields.length > 0 && (
                 <Row className="mb-3 mx-1">
                   <Col xs={12}>
@@ -799,10 +772,8 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                 </Row>
               )}
 
-              {/* Custom children content */}
               {children}
 
-              {/* Action Buttons */}
               <div className="d-flex justify-content-end gap-2 mt-4 me-2">
                 {showResetButton && (
                   <KiduReset 
@@ -821,7 +792,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               </div>
             </Form>
 
-            {/* Audit Logs */}
             {auditLogConfig && formData[auditLogConfig.recordIdField] && (
               <KiduAuditLogs 
                 tableName={auditLogConfig.tableName} 

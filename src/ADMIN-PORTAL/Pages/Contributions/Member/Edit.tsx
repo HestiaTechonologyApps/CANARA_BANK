@@ -48,11 +48,11 @@ const MemberEdit: React.FC = () => {
     { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 3 } },
   ];
 
-  // Gender options - explicitly using numbers
+  // Gender options - using numbers to match API response
   const genderOptions = [
-    { value: "0", label: "Male" },
-    { value: "1", label: "Female" },
-    { value: "2", label: "Others" }
+    { value: 0, label: "Male" },
+    { value: 1, label: "Female" },
+    { value: 2, label: "Others" }
   ];
 
   // Union Member options
@@ -66,6 +66,10 @@ const MemberEdit: React.FC = () => {
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
+
+    // Debug log
+    console.log("Fetched member data:", member);
+    console.log("GenderId from API:", member?.genderId, "Type:", typeof member?.genderId);
 
     if (member) {
       // Set selected values from the member response data
