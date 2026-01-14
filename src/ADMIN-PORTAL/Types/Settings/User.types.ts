@@ -6,7 +6,7 @@ export interface User {
   userName: string;
   userEmail: string;
   staffNo: number;
-  memberId?: number; // This should be a number based on your backend
+  memberId?: number; 
   phoneNumber: string;
   address: string;
   passwordHash?: string;

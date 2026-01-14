@@ -1,3 +1,4 @@
+// src/components/User/UserList.tsx
 import React from "react";
 import type { User } from "../../Types/Settings/User.types";
 import type { Company } from "../../Types/Settings/Company.types";
@@ -30,26 +31,29 @@ const UserList: React.FC = () => {
     ]);
 
     /* 2️⃣ Create lookup maps */
+
+    // CompanyId -> Company Name
     const companyMap = new Map<number, string>(
       companies.map((c: Company) => [c.companyId, c.comapanyName])
     );
 
+    // StaffNo -> Member Name
     const memberMap = new Map<number, string>(
       members.map((m: Member) => [m.staffNo, m.name])
     );
 
-    /* 3️⃣ Enrich users */
-    const enriched: any[] = users.map((u: User) => ({
+    /* 3️⃣ Enrich users with DISPLAY fields */
+    const enrichedUsers = users.map((u: User) => ({
       ...u,
-      companyName: companyMap.get(u.companyId) || "-",
-      staffName: memberMap.get(u.staffNo) || "-",
+      companyName: companyMap.get(u.companyId) ?? "-",
+      staffName: memberMap.get(u.staffNo) ?? "-",
     }));
 
     /* 4️⃣ Search */
-    let filtered = enriched;
+    let filtered = enrichedUsers;
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
-      filtered = enriched.filter((u) =>
+      filtered = enrichedUsers.filter((u) =>
         [
           u.userId,
           u.userName,
@@ -58,6 +62,7 @@ const UserList: React.FC = () => {
           u.userEmail,
           u.phoneNumber,
         ]
+          .filter(Boolean)
           .map(String)
           .some((v) => v.toLowerCase().includes(q))
       );

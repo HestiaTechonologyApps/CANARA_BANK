@@ -3,6 +3,7 @@ import React from "react";
 import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
 import PublicPageService from "../../Services/CMS/PublicPage.services";
+import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
 const PublicPageView: React.FC = () => {
   const fields: ViewField[] = [
@@ -15,19 +16,37 @@ const PublicPageView: React.FC = () => {
     { key: "isActive", label: "Active", isBoolean: true },
   ];
 
+  // 🔑 THIS IS THE CRITICAL FIX
+  const handleFetch = async (id: string) => {
+    const page: PublicPage =
+      await PublicPageService.getPublicPageById(Number(id));
+
+    return {
+      value: page, // ✅ KiduView requires this
+    };
+  };
+
+  const handleDelete = async (id: string) => {
+    await PublicPageService.deletePublicPage(Number(id));
+  };
+
   return (
     <KiduView
       title="Public Page Details"
       fields={fields}
-      onFetch={(id) => PublicPageService.getPublicPageById(Number(id))}
-      onDelete={(id) => PublicPageService.deletePublicPage(Number(id))}
+      onFetch={handleFetch}
+      onDelete={handleDelete}
       editRoute="/dashboard/cms/publicPage-edit"
       listRoute="/dashboard/cms/publicPage-list"
       paramName="publicPageId"
-      auditLogConfig={{ tableName: "PublicPage", recordIdField: "publicPageId" }}
+      auditLogConfig={{
+        tableName: "PublicPage",
+        recordIdField: "publicPageId",
+      }}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton
+      deleteConfirmMessage="Are you sure you want to delete this Page?"
     />
   );
 };
