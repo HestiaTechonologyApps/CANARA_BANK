@@ -38,41 +38,40 @@ const RefundContributionCreate: React.FC = () => {
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
   ];
-
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
+ const handleSubmit = async (formData: Record<string, any>) => {
+  if (!selectedState) throw new Error("Please select State");
+  if (!selectedMember) throw new Error("Please select Member");
+  if (!selectedDesignation) throw new Error("Please select Designation");
 
-  const handleSubmit = async (formData: Record<string, any>) => {
-    if (!selectedState) throw new Error("Please select State");
-    if (!selectedMember) throw new Error("Please select Member");
-    if (!selectedDesignation) throw new Error("Please select Designation");
+  const payload = {
+    staffNo: selectedMember.staffNo,
+    stateId: selectedState.stateId,
+    memberId: selectedMember.memberId,
+    designationId: selectedDesignation.designationId,
 
-    const payload: Omit<RefundContribution, "refundContributionId" | "auditLogs"> = {
-      staffNo: selectedMember.staffNo,
-      stateId: selectedState.stateId,
-      memberId: selectedMember.memberId,
-      designationId: selectedDesignation.designationId,
+    deathDate: "",
+    deathDateString: "",
 
-      deathDate: "",
-      deathDateString: "",
+    refundNO: Number(formData.refundNO),
+    branchNameOFTime: formData.branchNameOFTime.trim(),
+    dpcodeOfTime: formData.dpcodeOFTime.trim(),
 
-      refundNO: formData.refundNO.trim(),
-      branchNameOFTime: formData.branchNameOFTime.trim(),
-      dpcodeOfTime: formData.dpcodeOfTime.trim(),
+    type: formData.type,
+    remark: formData.remark?.trim() || "",
 
-      type: formData.type,
-      remark: formData.remark?.trim() || "",
+    ddno: formData.ddno.trim(),
+    dddate: toIso(formData.dddate),
+    dddateString: toIso(formData.dddate),
 
-      ddno: formData.ddno.trim(),
-      dddate: toIso(formData.dddate),
-      dddateString: toIso(formData.dddate),
+    amount: Number(formData.amount),
+    lastContribution: Number(formData.lastContribution || 0),
+    yearOF: Number(formData.yearOF),
+  } as Omit<RefundContribution, "refundContributionId" | "auditLogs">;
 
-      amount: Number(formData.amount),
-      lastContribution: Number(formData.lastContribution || 0),
-      yearOF: Number(formData.yearOF),
-    };
+  await RefundContributionService.createRefundContribution(payload);
+};
 
-    await RefundContributionService.createRefundContribution(payload);
-  };
 
   const popupHandlers = {
     stateId: {

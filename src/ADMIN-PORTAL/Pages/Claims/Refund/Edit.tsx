@@ -83,33 +83,44 @@ const RefundContributionEdit: React.FC = () => {
   };
 };
 
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if(!selectedState || !selectedMember || !selectedDesignation){
-      throw new Error("Please select all required values");
-    }
-   const payload: Omit<RefundContribution, "auditLogs"> = {
-  refundContributionId: Number(id),
-  stateId: selectedState.stateId,
-  memberId: selectedMember.memberId,
-  staffNo: selectedMember.staffNo,
-  designationId: selectedDesignation.designationId,
-  refundNO: formData.refundNO?.trim(),
-  branchNameOFTime: formData.branchNameOFTime?.trim(),
-  dpcodeOfTime: formData.dpcodeOfTime?.trim(),
-  type: formData.type,
-  remark: formData.remark?.trim(),
-  ddno: formData.ddno?.trim(),
-  dddate: formData.dddate,
-  dddateString: formData.dddate,
-  amount: Number(formData.amount),
-  lastContribution: Number(formData.lastContribution || 0),
-  yearOF: Number(formData.yearOF),
-  deathDate: "",
-  deathDateString: "",
+const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
+
+const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  if (!selectedState || !selectedMember || !selectedDesignation) {
+    throw new Error("Please select all required values");
+  }
+
+  const payload = {
+    refundContributionId: Number(id),
+
+    staffNo: selectedMember.staffNo,
+    stateId: selectedState.stateId,
+    memberId: selectedMember.memberId,
+    designationId: selectedDesignation.designationId,
+
+    deathDate: "",
+    deathDateString: "",
+
+    refundNO: Number(formData.refundNO),
+    branchNameOFTime: formData.branchNameOFTime.trim(),
+    dpcodeOfTime: formData.dpcodeOfTime.trim(), // ✅ FIXED
+
+    type: formData.type,
+    remark: formData.remark?.trim() || "",
+
+    ddno: formData.ddno.trim(),
+    dddate: toIso(formData.dddate),
+    dddateString: toIso(formData.dddate),
+
+    amount: Number(formData.amount),
+    lastContribution: Number(formData.lastContribution || 0),
+    yearOF: Number(formData.yearOF),
+  } as Omit<RefundContribution, "auditLogs">;
+
+  await RefundContributionService.updateRefundContribution(Number(id), payload);
 };
 
-    await RefundContributionService.updateRefundContribution(Number(id), payload);
-  };
+
 
  const popupHandlers = {
     stateId: {
