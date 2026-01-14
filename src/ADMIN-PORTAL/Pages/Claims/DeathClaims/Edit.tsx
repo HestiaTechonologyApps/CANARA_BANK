@@ -1,130 +1,137 @@
 import React, { useState } from "react";
-import type { Field } from "../../../Components/KiduEdit"; // ✅ from KiduEdit (not KiduCreate)
-import type { DeathClaim } from "../../../Types/Claims/DeathClaims.type";
-import DeathClaimService from "../../../Services/Claims/DeathClaims.services";
+import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
-import type { Member } from "../../../Types/Contributions/Member.types";
-import type { State } from "../../../Types/Settings/States.types";
-import type { Designation } from "../../../Types/Settings/Designation";
-import DesignationPopup from "../../Settings/Designation/DesignationPopup";
-import StatePopup from "../../Settings/State/StatePopup";
-import MemberPopup from "../../Contributions/Member/MemberPopup";
+import DeathClaimService from "../../../Services/Claims/DeathClaims.services";
 import MemberService from "../../../Services/Contributions/Member.services";
 import StateService from "../../../Services/Settings/State.services";
 import DesignationService from "../../../Services/Settings/Designation.services";
 
-const DeathClaimEdit: React.FC = () => {
+import type { DeathClaim } from "../../../Types/Claims/DeathClaims.type";
+import type { Member } from "../../../Types/Contributions/Member.types";
+import type { State } from "../../../Types/Settings/States.types";
+import type { Designation } from "../../../Types/Settings/Designation";
 
-    const[showMemberPopup,setShowMemberPopup]=useState(false);
-    const[showStatePopup,setShowStatePopup]=useState(false);
-    const[showDesignationPopup,setShowDesignationPopup]=useState(false);
-  
-    const[selectedMember,setSelectedMember]=useState<Member|null>(null);
-    const[selectedState,setSelectedState]=useState<State|null>(null);
-    const[selectedDesignation,setSelectedDesignation]=useState<Designation|null>(null);
-  
+import MemberPopup from "../../Contributions/Member/MemberPopup";
+import StatePopup from "../../Settings/State/StatePopup";
+import DesignationPopup from "../../Settings/Designation/DesignationPopup";
+
+const DeathClaimEdit: React.FC = () => {
+  const [showMemberPopup, setShowMemberPopup] = useState(false);
+  const [showStatePopup, setShowStatePopup] = useState(false);
+  const [showDesignationPopup, setShowDesignationPopup] = useState(false);
+
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [selectedState, setSelectedState] = useState<State | null>(null);
+  const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
+
   const fields: Field[] = [
-   // { name: "deathClaimId", rules: { type: "number", label: "Claim ID", required: false, disabled: true, colWidth: 3 } },
-    { name: "memberId", rules: { type: "popup", label: "Member ID", required: true, colWidth: 3 } },
-    { name: "stateId", rules: { type: "popup", label: "State ID", required: true, colWidth: 3 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation ID", required: true, colWidth: 3 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
+    { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+
     { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4 } },
-    { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4 } },
-    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", required: true, colWidth: 4 } },
-    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", required: false, colWidth: 6 } },
-    { name: "ddno", rules: { type: "text", label: "DD Number", required: true, colWidth: 3 } },
-    { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 3 } },
-    { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
-    { name: "lastContribution", rules: { type: "number", label: "Last Contribution", required: true, colWidth: 3 } },
-    { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 3 } },
+    { name: "nominee", rules: { type: "text", label: "Nominee", colWidth: 4 } },
+    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
+    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 6 } },
+
+    { name: "ddno", rules: { type: "text", label: "DD Number", colWidth: 4 } },
+    { name: "dddate", rules: { type: "date", label: "DD Date", colWidth: 4 } },
+
+    { name: "amount", rules: { type: "number", label: "Amount", colWidth: 4 } },
+    { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
+    { name: "yearOF", rules: { type: "number", label: "Year Of", colWidth: 4 } },
   ];
 
- const handleFetch = async (claimId: string) => {
-  const response = await DeathClaimService.getDeathClaimById(Number(claimId));
-  const claim = response.value; 
+  const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
+  const toDateOnly = (v?: string) => (v ? v.split("T")[0] : "");
 
-  if (claim) {
-   const member = await MemberService.getMemberById(claim.memberId);
-   setSelectedMember(member.value);
+  // ✅ FETCH (NO MUTATION)
+  const handleFetch = async (id: string) => {
+    const response = await DeathClaimService.getDeathClaimById(Number(id));
+    const claim = response.value;
 
-   const state = await StateService.getStateById(claim.stateId);
-   setSelectedState(state.value);
+    if (!claim) return response;
 
-   const designation = await DesignationService.getDesignationById(claim.designationId);
-   setSelectedDesignation(designation.value)
-  }
+    if (claim.memberId) {
+      const members = await MemberService.getAllMembers();
+      setSelectedMember(members.find(m => m.memberId === claim.memberId) || null);
+    }
 
-  return response;
-};
+    if (claim.stateId) {
+      const stateRes = await StateService.getStateById(claim.stateId);
+      setSelectedState(stateRes.value);
+    }
 
+    if (claim.designationId) {
+      const desigRes = await DesignationService.getDesignationById(claim.designationId);
+      setSelectedDesignation(desigRes.value);
+    }
 
-const handleUpdate = async (claimId: string, formData: Record<string, any>) => {
-  if (!selectedMember) {
-    throw new Error("Please select a member");
-  }
-  if (!selectedState) {
-    throw new Error("Please select a state");
-  }
-  if (!selectedDesignation) {
-    throw new Error("Please select a designation");
-  }
+    return {
+      ...response,
+      value: {
+        ...claim,
+        deathDate: toDateOnly(claim.deathDate as string),
+        dddate: toDateOnly(claim.dddate as string),
+      },
+    };
+  };
 
-  try {
-    const deathClaimData: Omit<DeathClaim, "auditLogs"> = {
-      deathClaimId: Number(claimId),
+  // ✅ UPDATE (PRIMARY KEY INCLUDED)
+  const handleUpdate = async (id: string, formData: Record<string, any>) => {
+    if (!selectedMember || !selectedState || !selectedDesignation) {
+      throw new Error("Please select all required values");
+    }
+
+    const payload: Omit<DeathClaim, "auditLogs"> = {
+      deathClaimId: Number(id),
       memberId: selectedMember.memberId,
       stateId: selectedState.stateId,
       designationId: selectedDesignation.designationId,
-      deathDate: formData.deathDate,
-      nominee: formData.nominee.trim(),
-      nomineeRelation: formData.nomineeRelation.trim(),
-      nomineeIDentity: formData.nomineeIDentity?.trim() || "",
-      ddno: formData.ddno.trim(),
-      dddate: formData.dddate,
+      deathDate: toIso(formData.deathDate),
+      nominee: formData.nominee || "",
+      nomineeRelation: formData.nomineeRelation || "",
+      nomineeIDentity: formData.nomineeIDentity || "",
+      ddno: formData.ddno || "",
+      dddate: toIso(formData.dddate),
       amount: Number(formData.amount),
-      lastContribution: Number(formData.lastContribution),
+      lastContribution: Number(formData.lastContribution || 0),
       yearOF: Number(formData.yearOF),
     };
 
-    await DeathClaimService.updateDeathClaim(
-      Number(claimId),
-      deathClaimData
-    );
-  } catch (error) {
-    console.error("Error updating death claim:", error);
-    throw error;
-  }
-};
+    await DeathClaimService.updateDeathClaim(Number(id), payload);
+  };
 
-const popupHandlers = {
+  const popupHandlers = {
     memberId: {
       value: selectedMember?.name || "",
-      actualValue:selectedMember?.memberId,
+      actualValue: selectedMember?.memberId,
       onOpen: () => setShowMemberPopup(true),
     },
     stateId: {
       value: selectedState?.name || "",
-      actualValue:selectedState?.stateId,
+      actualValue: selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
     designationId: {
       value: selectedDesignation?.name || "",
-      actualValue:selectedDesignation?.designationId,
+      actualValue: selectedDesignation?.designationId,
       onOpen: () => setShowDesignationPopup(true),
     },
-}
-//nominee Relation options
+  };
+
   const nomineeRelationOptions = [
-    {value:"Spouse", label: "Spouse"},
-    {value:"Father", label: "Father"},
-    {value:"Mother", label: "Mother"},
-    {value:"Son", label: "Son"},
-    {value:"Daughter", label: "Daughter"},
-    {value:"Sibling", label: "Sibling"},
-    {value:"Nephew", label: "Nephew"},
-    {value:"Niece", label: "Niece"},
-    {value:"Grandparent", label: "Grandparent"},
-  ]
+    { value: "Spouse", label: "Spouse" },
+    { value: "Father", label: "Father" },
+    { value: "Mother", label: "Mother" },
+    { value: "Son", label: "Son" },
+    { value: "Daughter", label: "Daughter" },
+    { value: "Sibling", label: "Sibling" },
+    { value: "Nephew", label: "Nephew" },
+    { value: "Niece", label: "Niece" },
+    { value: "Grandparent", label: "Grandparent" },
+  ];
+
   return (
     <>
       <KiduEdit
@@ -132,35 +139,17 @@ const popupHandlers = {
         fields={fields}
         onFetch={handleFetch}
         onUpdate={handleUpdate}
-        submitButtonText="Update Death Claim"
-        showResetButton
-        successMessage="Death claim updated successfully!"
-        errorMessage="Failed to update death claim. Please try again."
         paramName="deathClaimId"
         navigateBackPath="/dashboard/claims/deathclaims-list"
-        loadingText="Loading Death Claim..."
         auditLogConfig={{ tableName: "DeathClaim", recordIdField: "deathClaimId" }}
-        themeColor="#1B3763"
         popupHandlers={popupHandlers}
-         options={{
-         nomineeRelation: nomineeRelationOptions, 
-        }}
+        themeColor="#1B3763"
+        options={{ nomineeRelation: nomineeRelationOptions }}
       />
-      <MemberPopup
-        show={showMemberPopup}
-        handleClose={() => setShowMemberPopup(false)}
-        onSelect={setSelectedMember}
-      />
-      <StatePopup
-        show={showStatePopup}
-        handleClose={() => setShowStatePopup(false)}
-        onSelect={setSelectedState}
-      />
-      <DesignationPopup
-        show={showDesignationPopup}
-        handleClose={() => setShowDesignationPopup(false)}
-        onSelect={setSelectedDesignation}
-      />
+
+      <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />
+      <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={setSelectedState} />
+      <DesignationPopup show={showDesignationPopup} handleClose={() => setShowDesignationPopup(false)} onSelect={setSelectedDesignation} />
     </>
   );
 };
