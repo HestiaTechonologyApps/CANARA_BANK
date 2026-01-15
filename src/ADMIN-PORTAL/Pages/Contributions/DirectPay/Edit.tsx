@@ -6,7 +6,6 @@ import DirectPaymentService from "../../../Services/Contributions/Directpayment.
 import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberPopup from "../Member/MemberPopup";
-import MemberService from "../../../Services/Contributions/Member.services";
 
 const DirectPaymentEdit: React.FC = () => {
 
@@ -22,20 +21,19 @@ const DirectPaymentEdit: React.FC = () => {
     { name: "remarks", rules: { type: "textarea", label: "Remarks", colWidth: 6 } },
   ];
 
-  const handleFetch = async (id: string) => {
+const handleFetch = async (id: string) => {
   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
   const payment = response.value;
 
-  if (payment?.memberId) {
-    const memberRes = await MemberService.getMemberById(payment.memberId);
-    if (memberRes.value) {
-      setSelectedMember(memberRes.value);
-    }
-  }
+ if (payment) {
+  setSelectedMember({
+    memberId: payment.memberId,
+    name: payment.memberName || "",
+  } as unknown as Member);
+ }
 
   return response;
 };
-
 
  const handleUpdate = async (id: string, formData: Record<string, any>) => {
   if (!selectedMember) {

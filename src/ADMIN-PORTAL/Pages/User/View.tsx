@@ -8,7 +8,7 @@ import defaultUserImage from "../../Assets/Images/profile.jpg";
 const UserView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "userId", label: "User ID", icon: "bi-hash" },
-    { key: "staffNo", label: "Staff No", icon: "bi-badge-ad" },
+    //{ key: "staffNo", label: "Staff No", icon: "bi-badge-ad" },
     { key: "userName", label: "User Name", icon: "bi-person" },
     { key: "userEmail", label: "Email", icon: "bi-envelope" },
     { key: "phoneNumber", label: "Phone Number", icon: "bi-telephone" },

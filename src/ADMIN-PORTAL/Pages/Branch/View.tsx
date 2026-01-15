@@ -27,8 +27,10 @@ const BranchView: React.FC = () => {
       paramName="branchId"
       auditLogConfig={{ tableName: "Branch", recordIdField: "branchId" }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
+      showEditButton = {true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this branch? This action cannot be undone."
+
     />
   );
 };

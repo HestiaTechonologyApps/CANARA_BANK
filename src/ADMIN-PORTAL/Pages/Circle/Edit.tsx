@@ -15,7 +15,7 @@ const CircleEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 6 } },
     { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 6 } },
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, colWidth: 6 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 6 } },
     { name: "stateId", rules: { type: "popup", label: "State ID", required: true, colWidth: 6 } },
     { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 6 } },
     { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 6 } },

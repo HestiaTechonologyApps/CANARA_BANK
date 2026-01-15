@@ -14,7 +14,7 @@ import KiduServerTable from "../../../Components/KiduServerTable";
 const columns = [
   { key: "userId", label: "ID", enableSorting: true, type: "text" as const },
   { key: "userName", label: "User Name", enableSorting: true, type: "text" as const },
-  { key: "staffName", label: "Staff", enableSorting: true, type: "text" as const },
+ // { key: "staffName", label: "Staff", enableSorting: true, type: "text" as const },
   { key: "companyName", label: "Company", enableSorting: true, type: "text" as const },
   { key: "userEmail", label: "Email", enableSorting: true, type: "text" as const },
   { key: "phoneNumber", label: "Phone", enableSorting: true, type: "text" as const },
@@ -30,9 +30,6 @@ const UserList: React.FC = () => {
       MemberService.getAllMembers(),
     ]);
 
-    /* 2️⃣ Create lookup maps */
-
-    // CompanyId -> Company Name
     const companyMap = new Map<number, string>(
       companies.map((c: Company) => [c.companyId, c.comapanyName])
     );

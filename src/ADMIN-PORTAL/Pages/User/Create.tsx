@@ -18,7 +18,7 @@ const UserCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "userName", rules: { type: "text", label: "User Name", required: true, minLength: 3, maxLength: 50, colWidth: 4 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, colWidth: 4 } },
-    { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
+   // { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
     { name: "phoneNumber", rules: { type: "text", label: "Phone Number", required: true, minLength: 10, maxLength: 10, colWidth: 4 } },
     { name: "passwordHash", rules: { type: "password", label: "Password", required: true, minLength: 8, colWidth: 4 } },
     { name: "role", rules: { type: "select", label: "Role", required: true, colWidth: 4 } },

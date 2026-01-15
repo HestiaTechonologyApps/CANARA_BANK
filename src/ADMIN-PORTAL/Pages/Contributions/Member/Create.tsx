@@ -29,15 +29,15 @@ const MemberCreate: React.FC = () => {
     { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 6 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 3 } },
 
-    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
+    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 3 } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 3 } },
+    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
 
     { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4 } },
     { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4 } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
 
-    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
 
     { name: "profileImageSrc", rules: { type: "text", label: "Profile Image", placeholder: "profile_image.png", colWidth: 3 } },

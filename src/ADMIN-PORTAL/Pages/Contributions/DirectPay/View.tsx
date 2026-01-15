@@ -42,8 +42,10 @@ const DirectPaymentView: React.FC = () => {
         recordIdField: "directPaymentId",
       }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this Payment? This action cannot be undone."
+
     />
   );
 };

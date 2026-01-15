@@ -14,8 +14,8 @@ const CircleCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 6 } },
     { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 6 } },
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, colWidth: 6 } },
-    { name: "state", rules: { type: "popup", label: "State", required: true, colWidth: 6 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 6 } },
+    { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 6 } },
     { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 6 } },
     { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 6 } },
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } },
@@ -44,7 +44,8 @@ const CircleCreate: React.FC = () => {
 
   const popupHandlers = {
     stateId: {
-      value: selectedState?.name ?? "",
+      value: selectedState?.name || "",
+      actualValue: selectedState?.stateId ,
       onOpen: () => setShowStatePopup(true),
     },
   };
@@ -56,6 +57,7 @@ const CircleCreate: React.FC = () => {
         fields={fields}
         onSubmit={handleSubmit}
         submitButtonText="Create Circle"
+        showResetButton
         successMessage="Circle created successfully!"
         errorMessage="Failed to create circle."
         navigateOnSuccess="/dashboard/settings/circle-list"
@@ -66,10 +68,7 @@ const CircleCreate: React.FC = () => {
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
-        onSelect={(state) => {
-          setSelectedState(state);
-          setShowStatePopup(false);
-        }}
+        onSelect={setSelectedState}
       />
     </>
   );

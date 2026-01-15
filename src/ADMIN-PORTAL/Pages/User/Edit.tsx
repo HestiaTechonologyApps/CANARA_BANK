@@ -22,7 +22,7 @@ const UserEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "userName", rules: { type: "text", label: "User Name", required: true, colWidth: 4 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, colWidth: 4 } },
-    { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
+   // { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
     { name: "phoneNumber", rules: { type: "text", label: "Phone Number", required: true, colWidth: 4 } },
     { name: "role", rules: { type: "select", label: "Role", required: true, colWidth: 4 } },
     { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 4 } },
