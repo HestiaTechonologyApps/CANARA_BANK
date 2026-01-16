@@ -75,7 +75,7 @@ const DeathClaimView: React.FC = () => {
       themeColor="#1B3763"
       showEditButton={true}
       showDeleteButton={true}          
-      deleteConfirmMessage="Are you sure you want to delete this death claim?"
+      deleteConfirmMessage="Are you sure you want to delete this death claim? This action cannot be undone."
     />
   );
 };

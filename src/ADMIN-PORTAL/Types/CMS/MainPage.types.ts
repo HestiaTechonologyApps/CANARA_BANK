@@ -1,6 +1,7 @@
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface MainPage {
+  dpCode: string;
   mainPageId: number;         
   corouselImage1: string;     
   corouselImage2: string;      

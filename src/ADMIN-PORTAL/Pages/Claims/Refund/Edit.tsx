@@ -3,15 +3,13 @@ import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
-
+import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import type { State } from "../../../Types/Settings/States.types";
 import type { Designation } from "../../../Types/Settings/Designation";
 import type { Member } from "../../../Types/Contributions/Member.types";
-
 import StatePopup from "../../Settings/State/StatePopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import MemberPopup from "../../Contributions/Member/MemberPopup";
-
 import MemberService from "../../../Services/Contributions/Member.services";
 import StateService from "../../../Services/Settings/State.services";
 import DesignationService from "../../../Services/Settings/Designation.services";
@@ -85,32 +83,22 @@ const RefundContributionEdit: React.FC = () => {
       throw new Error("Please select all required values");
     }
 
-    const payload = {
+    const payload: Partial<Omit<RefundContribution, "refundContributionId" | "auditLogs">> = {
       staffNo: selectedMember.staffNo,
       stateId: selectedState.stateId,
       memberId: selectedMember.memberId,
       designationId: selectedDesignation.designationId,
-
-      // REQUIRED BY BACKEND
-      refundContribution: formData.type,
-
-      // MUST BE STRING
       refundNO: String(formData.refundNO || "").trim(),
-
       branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
       dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
-
       type: formData.type,
       remark: String(formData.remark || "").trim(),
-
       ddno: String(formData.ddno || "").trim(),
       dddate: toIso(formData.dddate),
       dddateString: toIso(formData.dddate),
-
       amount: Number(formData.amount),
       lastContribution: Number(formData.lastContribution || 0),
       yearOF: Number(formData.yearOF),
-
       deathDate: "",
       deathDateString: "",
     };

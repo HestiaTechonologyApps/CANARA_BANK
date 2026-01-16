@@ -40,7 +40,10 @@ const MainPageEdit: React.FC = () => {
     const page = response.value;
 
     if (page?.companyId) {
-      setSelectedCompany({ companyId: page.companyId } as Company);
+      setSelectedCompany({ companyId: page.companyId,
+        comapanyName: page.companyName || "",
+        dpCode: page.dpCode || "",
+      }as unknown as Company);
     }
 
     return response;
@@ -84,7 +87,7 @@ const payload = {
 };
   const popupHandlers = {
     companyId: {
-      value: selectedCompany?.companyId?.toString() || "",
+      value: selectedCompany?.comapanyName|| "",
       actualValue: selectedCompany?.companyId,
       onOpen: () => setShowCompanyPopup(true),
     },

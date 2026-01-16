@@ -1,3 +1,4 @@
+// src/components/DayQuote/DayQuoteEdit.tsx
 import React, { useState } from "react";
 import KiduEdit from "../../Components/KiduEdit";
 import type { Field } from "../../Components/KiduEdit";
@@ -20,29 +21,37 @@ const DayQuoteEdit: React.FC = () => {
 
   /* ================= FETCH ================= */
   const handleFetch = async (id: string) => {
-  const response = await DayQuoteService.getDayQuoteById(Number(id));
-  const quote = response.value;
+    const response = await DayQuoteService.getDayQuoteById(Number(id));
+    const quote = response.value;
 
-  if (quote?.monthCode) {
-    const months = await MonthService.getAllMonths();
-    const month = months.find(m => m.monthCode === quote.monthCode);
+    if (!quote) return response;
 
-    if (month) {
-      setSelectedMonth(month); // ✅ FULL object
+    // 🔑 FIX 1: Bind popup properly
+    if (quote.monthCode) {
+      const months = await MonthService.getAllMonths();
+      const month = months.find(m => m.monthCode === quote.monthCode);
+      if (month) setSelectedMonth(month);
     }
-  }
 
-  return response;
-};
-
+    // 🔑 FIX 2: MUST return mutated value
+    return {
+      ...response,
+      value: {
+        ...quote,
+        monthCode: quote.monthCode, // ensures form binds
+      },
+    };
+  };
 
   /* ================= UPDATE ================= */
-   const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedMonth) {
       throw new Error("Please select a month");
     }
 
-    const payload: Partial<Omit<DayQuote, "dayQuoteId" | "auditLogs">> = {
+    // 🔑 FIX 3: ID MUST BE IN PAYLOAD
+    const payload: Omit<DayQuote, "auditLogs"> = {
+      dayQuoteId: Number(id),
       day: Number(formData.day),
       monthCode: selectedMonth.monthCode,
       toDayQuote: formData.toDayQuote.trim(),
@@ -51,7 +60,6 @@ const DayQuoteEdit: React.FC = () => {
 
     await DayQuoteService.updateDayQuote(Number(id), payload);
   };
-
 
   const popupHandlers = {
     monthCode: {
@@ -71,8 +79,8 @@ const DayQuoteEdit: React.FC = () => {
         paramName="dayQuoteId"
         navigateBackPath="/dashboard/cms/dayquote-list"
         auditLogConfig={{ tableName: "DayQuote", recordIdField: "dayQuoteId" }}
-        themeColor="#1B3763"
         popupHandlers={popupHandlers}
+        themeColor="#1B3763"
       />
 
       <MonthPopup

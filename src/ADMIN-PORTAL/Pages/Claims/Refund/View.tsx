@@ -57,8 +57,11 @@ const RefundContributionView: React.FC = () => {
         recordIdField: "refundContributionId",
       }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
+      loadingText="Loading Refund details..."
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this refund? This action cannot be undone."
+
     />
   );
 };

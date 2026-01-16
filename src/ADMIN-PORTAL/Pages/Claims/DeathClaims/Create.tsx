@@ -24,15 +24,12 @@ const DeathClaimCreate: React.FC = () => {
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 3 } },
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 3 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
-
     { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4 } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4 } },
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", required: true, colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 6 } },
-
     { name: "ddno", rules: { type: "text", label: "DD Number", required: true, colWidth: 3 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 3 } },
-
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", required: true, colWidth: 3 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 3 } },

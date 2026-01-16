@@ -11,7 +11,7 @@ export interface RefundContribution {
   designationName: string;    
   deathDate: Date | string;      
   deathDateString: Date | string;       
-  refundNO: number;            
+  refundNO: string;            
   branchNameOFTime: string;    
   dpcodeOfTime: string;         
   type: string;             
