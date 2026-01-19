@@ -1,10 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/AboutUs.css";
-import { PublicService } from "../../Services/PublicService";
+import type { PublicPageConfig } from "../Types/PublicPage.types";
+import PublicPageConfigService from "../Services/Publicpage.services";
 
 const AboutUs: React.FC = () => {
-  const about = PublicService.about
+  //const about = PublicService.about
+
+   const [config, setConfig] = useState<PublicPageConfig | null>(null);
+
+  useEffect(() => {
+    const loadAboutConfig = async () => {
+      try {
+        const data = await PublicPageConfigService.getPublicPageConfig();
+        setConfig(data[0]); // CMS returns single record in array
+      } catch (error) {
+        console.error("Failed to load about us config:", error);
+      }
+    };
+
+    loadAboutConfig();
+  }, []);
+
+  // 🔹 Map API → existing structure (NO UI change)
+  const about = {
+    header: {
+      title: config?.aboutHeaderTitle,
+      subtitle: config?.aboutHeaderSubTitle,
+    },
+    mission: {
+      title: config?.aboutMissionTitle,
+      icon: config?.aboutMissionIcon,
+      description: config?.aboutMissionDescription,
+    },
+    vision: {
+      title: config?.aboutVisionTitle,
+      icon: config?.aboutVisionIcon,
+      description: config?.aboutVisionDescription,
+    },
+    history: {
+      title: config?.aboutHistoryTitle,
+      icon: config?.aboutHistoryIcon,
+      paragraphs: {
+        paragraph1: config?.aboutHistoryPara1,
+        paragraph2: config?.aboutHistoryPara2,
+        paragraph3: config?.aboutHistoryPara3,
+        paragraph4: config?.aboutHistoryPara4,
+        paragraph5: config?.aboutHistoryPara5,
+      },
+      // footerNote: config?.aboutHistoryPara5,
+    },
+  };
   return (
     <div className="about-wrapper">
 
@@ -90,7 +136,7 @@ const AboutUs: React.FC = () => {
                 {about.history.paragraphs.paragraph5}
               </p>
 
-              <p className="section-text fw-bold">{about.history.footerNote}</p>
+              {/* <p className="section-text fw-bold">{about.history.footerNote}</p> */}
             </Card>
           </Col>
         </Row>

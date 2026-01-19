@@ -8,17 +8,36 @@ import DayQuotePublicService from "../../Services/DayQuotePublic.services";
 import type { DayQuote } from "../../../ADMIN-PORTAL/Types/CMS/DayQuote.types";
 import type { DailyNews } from "../../../ADMIN-PORTAL/Types/CMS/DailyNews.types";
 import DailyNewsPublicService from "../../Services/DailyNewsPublic.services";
+import type { PublicPageConfig } from "../../Types/PublicPage.types";
+import PublicPageConfigService from "../../Services/Publicpage.services";
 
+interface QuickLink {
+  label: string;
+  route: string;
+}
 
 const NewsSection: React.FC = () => {
   const navigate = useNavigate()
   const news = PublicService.home.news
   const [dayQuote, setDayQuote] = useState<DayQuote | null>(null);
   const [latestNews, setLatestNews] = useState<DailyNews[]>([]);
+  const [config, setConfig] = useState<PublicPageConfig | null>(null);
+  const [quickLinks, setQuickLinks] = useState<QuickLink[]>([]);
   //  Load quote ONCE when this section mounts
   useEffect(() => {
     const loadHomeData = async () => {
       try {
+
+        // 🔹 CMS config
+        const data = await PublicPageConfigService.getPublicPageConfig();
+        const pageConfig = data[0];
+        setConfig(pageConfig);
+
+       
+        if (pageConfig?.newsQuickLinksJson) {
+          setQuickLinks(JSON.parse(pageConfig.newsQuickLinksJson));
+        }
+
         const quote = await DayQuotePublicService.getLastQuote();
         setDayQuote(quote);
 
@@ -40,8 +59,8 @@ const NewsSection: React.FC = () => {
           {/* LEFT SIDE - NEWS LIST */}
           <Col lg={8}>
             <div className="mb-4">
-              <span className="news-label">{news.heading.label}</span>
-              <h2 className="news-heading fs-3">{news.heading.title}</h2>
+              <span className="news-label"> {config?.newsHeroTitle || "Stay Informed"}</span>
+              <h2 className="news-heading fs-3"> {config?.newsHeroSubTitle || "Latest announcements and activities"}</h2>
             </div>
 
             <Row className="gy-3">
@@ -81,9 +100,9 @@ const NewsSection: React.FC = () => {
             <Card className="p-4 border-0 sidebar-blue text-white mt-4 shadow-sm">
               <h4 className="mb-3 fw-bold">{news.sidebar.heading}</h4>
               <ul className="list-unstyled sidebar-links">
-                {news.sidebar.quickLinks.map((link, index) => (
+                {quickLinks.map((link, index) => (
                   <li key={index}>
-                    <Link className="sidebar-link" to={link.path}>
+                    <Link className="sidebar-link" to={link.route}>
                       <HiOutlineArrowRight /> {link.label}
                     </Link>
                   </li>

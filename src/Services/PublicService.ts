@@ -33,11 +33,11 @@ export const PublicService = {
         contactStrip: {
             phone: {
                 iconclass: "bi bi-telephone-fill me-1",
-                value: "+91 98765 43210",
+                value: "047124721760",
             },
             email: {
                 iconclass: "bi-envelope-fill me-1",
-                value: "canarabankemployeesunion@cbfws.org",
+                value: "cbeutvm@gmail.com",
             },
         },
     },
@@ -60,11 +60,11 @@ export const PublicService = {
             buttons: {
                 primary: {
                     label: "Become a Member",
-                    route: "/membership",
+                    route: "/contact-us",
                 },
                 secondary: {
                     label: "Learn More",
-                    route: "/about",
+                    route: "/about-us",
                 },
             },
 
@@ -464,6 +464,7 @@ export const PublicService = {
         card: {
             title: "Download Files",
             iconclass: "bi bi-folder2-open icon-header me-2",
+            downloadicon:""
         },
 
         files: [

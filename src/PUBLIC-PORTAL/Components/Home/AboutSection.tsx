@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../../Style/Home/AboutSection.css";
 import { PublicService } from "../../../Services/PublicService";
+import type { PublicPageConfig } from "../../Types/PublicPage.types";
+import PublicPageConfigService from "../../Services/Publicpage.services";
 
 const AboutSection: React.FC = () => {
   const aboutus = PublicService.home.aboutus
+   const [config, setConfig] = useState<PublicPageConfig | null>(null);
+
+  useEffect(() => {
+    const loadAboutConfig = async () => {
+      try {
+        const data = await PublicPageConfigService.getPublicPageConfig();
+        setConfig(data[0]); // CMS returns single record in array
+      } catch (error) {
+        console.error("Failed to load about config:", error);
+      }
+    };
+
+    loadAboutConfig();
+  }, []);
+
   return (
     <section id="about" className="about-section py-5">
       <Container>
@@ -14,18 +31,18 @@ const AboutSection: React.FC = () => {
           <Col lg={6}>
             <span className="about-label">
               {/* Our History */}
-              {aboutus.label}
+              {config?.homeAboutLabel}
             </span>
             <h2 className="about-title">
               {/* A Legacy of Care & Support */}
-              {aboutus.title}
+              {config?.homeAboutTitle}
             </h2>
             <div className="about-text-wrapper">
               <p>
                 {/* The Scheme was launched at Thiruvananthapuram on December 18, 1962 by the then 
                 General Secretary of Canara Bank Employees' Union Com A N Balasubramaniam, as per 
                 the decision taken at the 21st Conference held at Chennai from 5th to 8th January 1962. */}
-                {aboutus.paragraphs.paragraph1}
+                {config?.homeAboutParagraph}
               </p>
               <p>
                 {/* The Rules and Regulations for the Scheme were formulated by the Central Committee 

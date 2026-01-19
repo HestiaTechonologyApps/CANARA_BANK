@@ -45,7 +45,7 @@ const StaffSidebar = ({ open }: Props) => {
           <NavLink to={`staff-edit/${memberId}`}><UserCog size={ICON_SIZE} /> {open && "Update Nominee"}</NavLink>
           <NavLink to="contribution-list"><CreditCard size={ICON_SIZE} /> {open && "Direct Contribution"}</NavLink>
           <NavLink to="settings"><Settings size={ICON_SIZE} /> {open && "Account Settings"}</NavLink>
-          <NavLink to="history"><BarChart size={ICON_SIZE} /> {open && "Contribution History"}</NavLink>
+          <NavLink to="claims"><BarChart size={ICON_SIZE} /> {open && "Contribution History"}</NavLink>
         </nav>
 
         <div className="sidebar-footer">

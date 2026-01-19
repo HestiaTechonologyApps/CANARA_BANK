@@ -1,10 +1,93 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import "../Style/ContactUs.css";
-import { PublicService } from "../../Services/PublicService";
+import type { PublicPageConfig } from "../Types/PublicPage.types";
+import PublicPageConfigService from "../Services/Publicpage.services";
 
 const ContactUs: React.FC = () => {
-  const contact = PublicService.contact
+ // const contact = PublicService.contact
+   const [config, setConfig] = useState<PublicPageConfig | null>(null);
+
+  useEffect(() => {
+    const loadContactConfig = async () => {
+      try {
+        const data = await PublicPageConfigService.getPublicPageConfig();
+        setConfig(data[0]); // CMS returns single record in array
+      } catch (error) {
+        console.error("Failed to load contact config:", error);
+      }
+    };
+
+    loadContactConfig();
+  }, []);
+
+  // 🔹 Map API → existing structure (NO UI change)
+  const contact = {
+    header: {
+      title: config?.contactHeaderTitle,
+      subtitle: config?.contactHeaderSubTitle,
+    },
+    form: {
+      title: config?.contactHeaderTitle,
+      fields: {
+        fullName: {
+          label: config?.contactFullNameLabel,
+          placeholder: "",
+        },
+        phone: {
+          label: config?.contactPhoneLabel,
+          placeholder: "",
+        },
+        email: {
+          label: config?.contactEmailLabel,
+          placeholder: "",
+        },
+        subject: {
+          label: config?.contactSubjectLabel,
+          placeholder: "",
+        },
+        message: {
+          label: config?.contactMessageLabel,
+          rows: 4,
+          placeholder: "",
+        },
+      },
+      submitButton: {
+        label: config?.contactSubmitButtonLabel,
+        iconclass: "bi bi-send-fill",
+      },
+    },
+    officeInfo: {
+      title: config?.officeTitle,
+      address: {
+        label: "Address",
+        iconclass: "bi bi-geo-alt-fill",
+        lines: {
+          line1: config?.officeAddress,
+          line2: "",
+        },
+      },
+      phone: {
+        label: "Phone",
+        iconclass: "bi bi-telephone-fill",
+        value: config?.officePhone,
+      },
+      email: {
+        label: "Email",
+        iconclass: "bi bi-envelope-fill",
+        value: config?.officeEmail,
+      },
+    },
+    officeHours: {
+      title: config?.officeHoursTitle,
+      timings: [
+        { day: "Monday – Friday", time: config?.officeDay1Time },
+        { day: "Saturday", time: config?.officeDay2Time },
+        { day: "Sunday", time: config?.officeDay3Time },
+      ],
+    },
+  };
+
   return (
     <div className="contact-page-wrapper">
 

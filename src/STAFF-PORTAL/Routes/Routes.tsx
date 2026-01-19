@@ -13,6 +13,7 @@ import StaffAccountDirectEntryCreate from '../Pages/AccountDirectEntry/Create';
 import StaffAccountDirectEntryEdit from '../Pages/AccountDirectEntry/Edit';
 import StaffEdit from '../Pages/StaffEdit';
 import StaffAccountDirectEntryView from '../Pages/AccountDirectEntry/View';
+import Claims from '../../PUBLIC-PORTAL/Pages/Claims';
 
 export const staffRoutes = (
   <Route
@@ -32,6 +33,7 @@ export const staffRoutes = (
     <Route path="contributions/staffaccountDirectEntry-edit/:accountsDirectEntryID" element={<StaffAccountDirectEntryEdit />} />
     <Route path="settings" element={<AccountSettings />} />
     <Route path="history" element={<ShowContribution />} />
+    <Route path="claims" element={<Claims />} />
   </Route>
 );
 
