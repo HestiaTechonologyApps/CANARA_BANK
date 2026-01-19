@@ -213,6 +213,11 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
   },
 
+  CONTACT_MESSAGE: {
+    CREATE: `${API_BASE_URL}/ContactMessage/submit`,
+  },
+
+
   //-------------------------STAFF MODULE------------------------------
 
 };

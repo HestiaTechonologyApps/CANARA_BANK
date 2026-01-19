@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card } from "react-bootstrap";
 import "../Style/Rules.css";
-import { PublicService } from "../../Services/PublicService";
 import PublicPageConfigService from "../Services/Publicpage.services";
 import type { PublicPageConfig } from "../Types/PublicPage.types";
 
@@ -12,7 +11,7 @@ interface RuleSection {
 }
 
 const Rules: React.FC = () => {
-  const rules = PublicService.rules
+ // const rules = PublicService.rules
 
   const [config, setConfig] = useState<PublicPageConfig | null>(null);
   const [sections, setSections] = useState<RuleSection[]>([]);

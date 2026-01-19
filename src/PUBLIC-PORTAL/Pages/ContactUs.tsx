@@ -3,10 +3,21 @@ import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import "../Style/ContactUs.css";
 import type { PublicPageConfig } from "../Types/PublicPage.types";
 import PublicPageConfigService from "../Services/Publicpage.services";
+import type { ContactMessage } from "../Types/ContactMessage.types";
+import ContactMessageService from "../Services/ContactMessage.services";
+import toast, { Toaster } from "react-hot-toast";
 
 const ContactUs: React.FC = () => {
  // const contact = PublicService.contact
    const [config, setConfig] = useState<PublicPageConfig | null>(null);
+   // 🔹 Form State
+  const [formData, setFormData] = useState<ContactMessage>({
+    fullName: "",
+    phoneNumber: "",
+    emailAddress: "",
+    subject: "",
+    message: "",
+  });
 
   useEffect(() => {
     const loadContactConfig = async () => {
@@ -20,6 +31,32 @@ const ContactUs: React.FC = () => {
 
     loadContactConfig();
   }, []);
+
+   // 🔹 Handle input change
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // 🔹 Submit handler
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+       const response = await ContactMessageService.submitMessage(formData);
+       toast.success(response.message);
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        emailAddress: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Contact message submit failed:", error);
+    }
+  };
 
   // 🔹 Map API → existing structure (NO UI change)
   const contact = {
@@ -107,35 +144,45 @@ const ContactUs: React.FC = () => {
             <Card className="contact-card p-4">
               <h5 className="fw-bold mb-4">{contact?.form.title}</h5>
 
-              <Form>
+              <Form  onSubmit={handleSubmit}>
                 <Row className="mb-3">
                   <Col md={6}>
                     <Form.Label>{contact?.form.fields.fullName.label}</Form.Label>
-                    <Form.Control placeholder={contact?.form.fields.fullName.placeholder} />
+                    <Form.Control placeholder={contact?.form.fields.fullName.placeholder} name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}/>
                   </Col>
 
                   <Col md={6}>
                     <Form.Label>{contact?.form.fields.phone.label}</Form.Label>
-                    <Form.Control placeholder={contact?.form.fields.phone.placeholder} />
+                    <Form.Control placeholder={contact?.form.fields.phone.placeholder} name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleChange}/>
                   </Col>
                 </Row>
 
                 <Form.Group className="mb-3">
                   <Form.Label>{contact?.form.fields.email.label}</Form.Label>
-                  <Form.Control placeholder={contact?.form.fields.email.placeholder} />
+                  <Form.Control placeholder={contact?.form.fields.email.placeholder} name="emailAddress"
+                    value={formData.emailAddress}
+                    onChange={handleChange}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>{contact?.form.fields.subject.label}</Form.Label>
-                  <Form.Control placeholder={contact?.form.fields.subject.placeholder} />
+                  <Form.Control placeholder={contact?.form.fields.subject.placeholder}   name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}/>
                 </Form.Group>
 
                 <Form.Group className="mb-4">
                   <Form.Label>{contact?.form.fields.message.label}</Form.Label>
-                  <Form.Control as="textarea" rows={contact?.form.fields.message.rows} placeholder={contact?.form.fields.message.placeholder} />
+                  <Form.Control as="textarea" rows={contact?.form.fields.message.rows} placeholder={contact?.form.fields.message.placeholder}  name="message"
+                    value={formData.message}
+                    onChange={handleChange}/>
                 </Form.Group>
 
-                <Button className="send-btn w-100">
+                <Button  type="submit" className="send-btn w-100">
                   <i className={contact?.form.submitButton.iconclass}></i> {contact?.form.submitButton.label}
                 </Button>
               </Form>
@@ -200,6 +247,8 @@ const ContactUs: React.FC = () => {
 
         </Row>
       </Container>
+      <Toaster position="top-right" />
+
     </div>
   );
 };
