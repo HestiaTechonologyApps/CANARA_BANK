@@ -1,10 +1,8 @@
 // src/Pages/Contributions/DirectPay/List.tsx
-
 import React from "react";
 import KiduServerTable from "../../../../Components/KiduServerTable";
 import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
 import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
-
 
 const columns = [
   { key: "directPaymentId", label: "ID", enableSorting: true, type: "text" as const },

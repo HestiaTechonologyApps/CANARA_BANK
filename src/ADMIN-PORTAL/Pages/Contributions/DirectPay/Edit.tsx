@@ -42,21 +42,16 @@ const handleFetch = async (id: string) => {
 
   const payload = {
     directPaymentId: Number(id),
-
     memberId: selectedMember.memberId,
-
     amount: Number(formData.amount),
     paymentDate: formData.paymentDate,
     paymentDatestring: formData.paymentDate,
-
     paymentMode: formData.paymentMode.trim(),
     referenceNo: formData.referenceNo.trim(),
     remarks: formData.remarks?.trim() || "",
-
     createdByUserId: 0,
     createdDate: new Date().toISOString(),
     createdDatestring: new Date().toISOString(),
-
     isDeleted: false,
   } as Omit<DirectPayment, "auditLogs">;
 

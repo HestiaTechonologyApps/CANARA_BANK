@@ -1,19 +1,15 @@
 // src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryEdit.tsx
-
 import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
-
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
 import MemberService from "../../../Services/Contributions/Member.services";
 import BranchService from "../../../Services/Settings/Branch.services";
 import MonthService from "../../../Services/Settings/Month.services";
-
 import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Month } from "../../../Types/Settings/Month.types";
-
 import MemberPopup from "../Member/MemberPopup";
 import BranchPopup from "../../Branch/BranchPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
@@ -167,9 +163,21 @@ const AccountDirectEntryEdit: React.FC = () => {
         themeColor="#1B3763"
       />
 
-      <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />
-      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} />
-      <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} />
+      <MemberPopup 
+       show={showMemberPopup} 
+       handleClose={() => setShowMemberPopup(false)} 
+       onSelect={setSelectedMember} 
+       />
+      <BranchPopup 
+       show={showBranchPopup} 
+       handleClose={() => setShowBranchPopup(false)} 
+       onSelect={setSelectedBranch} 
+       />
+      <MonthPopup 
+       show={showMonthPopup} 
+       handleClose={() => setShowMonthPopup(false)} 
+       onSelect={setSelectedMonth} 
+       />
     </>
   );
 };

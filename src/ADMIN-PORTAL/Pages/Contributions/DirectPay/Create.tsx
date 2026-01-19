@@ -7,7 +7,6 @@ import KiduCreate from "../../../Components/KiduCreate";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberPopup from "../Member/MemberPopup";
 
-
 const DirectPaymentCreate: React.FC = () => {
   
   const[showMemberPopup,setShowMemberPopup]=useState(false);
@@ -29,20 +28,15 @@ const DirectPaymentCreate: React.FC = () => {
 
   const payload = {
     memberId: selectedMember.memberId,
-
     amount: Number(formData.amount),
-
     paymentDate: formData.paymentDate,
     paymentDatestring: formData.paymentDate,
-
     paymentMode: formData.paymentMode.trim(),
     referenceNo: formData.referenceNo.trim(),
     remarks: formData.remarks?.trim() || "",
-
     createdByUserId: 0,
     createdDate: new Date().toISOString(),
     createdDatestring: new Date().toISOString(),
-
     isDeleted: false,
   } as Omit<DirectPayment, "directPaymentId" | "auditLogs">;
 

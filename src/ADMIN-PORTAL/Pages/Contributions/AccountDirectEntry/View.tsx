@@ -1,5 +1,4 @@
 // src/Pages/Accounts/AccountsDirectEntry/View.tsx
-
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import KiduView from "../../../Components/KiduView";
@@ -31,7 +30,6 @@ const AccountDirectEntryView: React.FC = () => {
 
     if (!entry) return response;
 
-    // 🔥 Normalize dates for display (same idea as Edit)
     return {
       ...response,
       value: {
