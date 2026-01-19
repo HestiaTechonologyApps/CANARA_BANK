@@ -1,5 +1,3 @@
-// src/components/SupportTicket/SupportTicketView.tsx
-
 import React from "react";
 import KiduView from "../../../Components/KiduView";
 import type { ViewField } from "../../../Components/KiduView";

@@ -33,12 +33,11 @@ const DayQuoteEdit: React.FC = () => {
       if (month) setSelectedMonth(month);
     }
 
-    // 🔑 FIX 2: MUST return mutated value
     return {
       ...response,
       value: {
         ...quote,
-        monthCode: quote.monthCode, // ensures form binds
+        monthCode: quote.monthCode, 
       },
     };
   };
