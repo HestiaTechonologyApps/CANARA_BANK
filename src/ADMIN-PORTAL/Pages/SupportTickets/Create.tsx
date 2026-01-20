@@ -14,8 +14,8 @@ const SupportTicketCreate: React.FC = () => {
     { name: "priority", rules: { type: "select", label: "Priority", required: true, colWidth: 4 } },
     { name: "duration", rules: { type: "text", label: "Duration", required: true, colWidth: 4 } },
 
-    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 12 } },
-    { name: "developerRemark", rules: { type: "textarea", label: "Developer Remark", colWidth: 12 } },
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
+    { name: "developerRemark", rules: { type: "textarea", label: "Developer Remark", colWidth: 6 } },
 
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];

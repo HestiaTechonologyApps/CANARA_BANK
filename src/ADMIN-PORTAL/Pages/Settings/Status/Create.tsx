@@ -10,8 +10,8 @@ const StatusCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "name", rules: { type: "text", label: "Status Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter status name", colWidth: 6 } },
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, placeholder: "Enter abbreviation (e.g., ACT, PEN)", colWidth: 6} },
-    { name: "groupId",rules: { type: "select", label: "Group ID", required: true, placeholder: "Enter group ID", colWidth: 4} },
-    { name: "description", rules: { type: "textarea", label: "Description", required: false, maxLength: 500, placeholder: "Enter status description", colWidth: 12 } },
+    { name: "groupId",rules: { type: "select", label: "Group ID", required: true, placeholder: "Enter group ID", colWidth: 6} },
+    { name: "description", rules: { type: "textarea", label: "Description", required: false, maxLength: 500, placeholder: "Enter status description", colWidth: 6 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

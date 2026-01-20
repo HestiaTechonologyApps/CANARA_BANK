@@ -34,7 +34,6 @@ const RefundContributionEdit: React.FC = () => {
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
 
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
-    { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 6 } },
 
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
@@ -42,6 +41,8 @@ const RefundContributionEdit: React.FC = () => {
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
+    { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
+
   ];
 
   const typeOptions = [

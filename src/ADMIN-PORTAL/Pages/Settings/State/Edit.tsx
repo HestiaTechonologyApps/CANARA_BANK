@@ -7,7 +7,7 @@ import type { State } from "../../../Types/Settings/States.types";
 const StateEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, colWidth: 6 } },
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, colWidth: 3 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, colWidth: 6 } },
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 

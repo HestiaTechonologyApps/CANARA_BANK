@@ -35,6 +35,9 @@ const RefundContributionCreate: React.FC = () => {
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
+    { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
+
+
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
