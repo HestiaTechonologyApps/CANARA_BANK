@@ -25,26 +25,20 @@ const RefundContributionCreate: React.FC = () => {
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
     { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
-
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
     { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 6 } },
-
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
-
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
     { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
   ];
 
-  /* ===================== HELPERS ===================== */
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  /* ===================== SUBMIT ===================== */
  const handleSubmit = async (formData: Record<string, any>) => {
   if (!selectedState) throw new Error("Please select State");
   if (!selectedMember) throw new Error("Please select Member");
@@ -55,27 +49,18 @@ const RefundContributionCreate: React.FC = () => {
     stateId: selectedState.stateId,
     memberId: selectedMember.memberId,
     designationId: selectedDesignation.designationId,
-
-    // ✅ REQUIRED BY BACKEND
     refundContribution: formData.type,
-
-    // ✅ MUST BE STRING (NOT NUMBER)
     refundNO: String(formData.refundNO || "").trim(),
-
     branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
     dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
-
     type: formData.type,
     remark: String(formData.remark || "").trim(),
-
     ddno: String(formData.ddno || "").trim(),
     dddate: toIso(formData.dddate),
     dddateString: toIso(formData.dddate),
-
     amount: Number(formData.amount),
     lastContribution: Number(formData.lastContribution || 0),
     yearOF: Number(formData.yearOF),
-
     deathDate: "",
     deathDateString: "",
   };

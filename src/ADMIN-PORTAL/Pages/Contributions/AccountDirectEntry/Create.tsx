@@ -54,22 +54,17 @@ const AccountDirectEntryCreate: React.FC = () => {
     branchId: selectedBranch.branchId,
     monthCode: selectedMonth.monthCode,
     yearOf: Number(formData.yearOf),
-
     ddIba: formData.ddIba || "",
     ddIbaDate: toIso(formData.ddIbaDate),
     amt: Number(formData.amt),
-
     enrl: formData.enrl || "",
     fine: formData.fine || "",
     f9: formData.f9 || "",
     f10: formData.f10 || "",
     f11: formData.f11 || "",
-
-    status: isApproved ? "Approved" : "Pending",
-    isApproved,
+    status: formData.status || "",
   };
 
-  // ✅ ONLY send approval fields when approved
   if (isApproved) {
     if (!formData.approvedDate) {
       throw new Error("Approved Date is required when approving");
@@ -84,6 +79,10 @@ const AccountDirectEntryCreate: React.FC = () => {
   );
 };
 
+//Status
+const statusOptions=[
+  {value:"Submitted", label:"Submitted"}
+]
 
   const popupHandlers = {
     memberId: {
@@ -112,6 +111,9 @@ const AccountDirectEntryCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
         themeColor="#1B3763"
+        options={{
+          status:statusOptions
+        }}
       />
 
       <MemberPopup 

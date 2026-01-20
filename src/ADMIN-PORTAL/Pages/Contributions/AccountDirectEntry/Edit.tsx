@@ -23,35 +23,28 @@ const AccountDirectEntryEdit: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
-  /* ================= DATE HELPERS ================= */
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
   const toDateInput = (val?: string) => (val ? val.split("T")[0] : "");
 
-  /* ================= FIELDS (MATCH CREATE) ================= */
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
     { name: "yearOf", rules: { type: "number", label: "Year", required: true, colWidth: 4 } },
-
     { name: "ddIba", rules: { type: "text", label: "DD / IBA No", colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
-
     { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
     { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
     { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
-
-    { name: "status", rules: { type: "select", label: "Status", colWidth: 3 } },
+    { name: "status", rules: { type: "number", label: "Status", colWidth: 3,disabled:true } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
     { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", required: true,colWidth: 3 } },
   ];
 
-  /* ================= FETCH (MemberEdit-style) ================= */
   const handleFetch = async (id: string) => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
@@ -77,7 +70,7 @@ const AccountDirectEntryEdit: React.FC = () => {
             ? toDateInput(entry.approvedDateString)
             : entry.approvedDate
             ? toDateInput(String(entry.approvedDate))
-            : "",
+            : undefined,
         },
       };
     }
@@ -85,49 +78,47 @@ const AccountDirectEntryEdit: React.FC = () => {
     return response;
   };
 
-  /* ================= UPDATE (Create-style approval logic) ================= */
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth) {
-      throw new Error("Please select all required values");
-    }
+const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  if (!selectedMember || !selectedBranch || !selectedMonth) {
+    throw new Error("Please select all required values");
+  }
 
-    const isApproved = Boolean(formData.isApproved);
+  const isApproved = Boolean(formData.isApproved);
 
-    const payload: Partial<Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs">> = {
-      memberId: selectedMember.memberId,
-      name: selectedMember.name,
-      branchId: selectedBranch.branchId,
-      monthCode: selectedMonth.monthCode,
-      yearOf: Number(formData.yearOf),
+  const payload: Partial<Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs">> = {
+    memberId: selectedMember.memberId,
+    name: selectedMember.name,
+    branchId: selectedBranch.branchId,
+    monthCode: selectedMonth.monthCode,
+    yearOf: Number(formData.yearOf),
 
-      ddIba: formData.ddIba || "",
-      ddIbaDate: toIsoMidnight(formData.ddIbaDate),
-      amt: Number(formData.amt),
+    ddIba: formData.ddIba || "",
+    ddIbaDate: toIsoMidnight(formData.ddIbaDate),
+    amt: Number(formData.amt),
 
-      enrl: formData.enrl || "",
-      fine: formData.fine || "",
-      f9: formData.f9 || "",
-      f10: formData.f10 || "",
-      f11: formData.f11 || "",
+    enrl: formData.enrl || "",
+    fine: formData.fine || "",
+    f9: formData.f9 || "",
+    f10: formData.f10 || "",
+    f11: formData.f11 || "",
 
-      status: isApproved ? "Approved" : "Pending",
-      isApproved,
-    };
-
-    if (isApproved) {
-      if (!formData.approvedDate) {
-        throw new Error("Approved Date is required when approving");
-      }
-
-      payload.approvedBy = formData.approvedBy || "Admin";
-      payload.approvedDate = toIsoMidnight(formData.approvedDate);
-    }
-
-    await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
-    return true;
+    status: isApproved ? "Approved" : "Pending",
+    isApproved,
   };
 
-  /* ================= POPUP HANDLERS ================= */
+  if (isApproved) {
+    if (!formData.approvedDate) {
+      throw new Error("Approved Date is required when approving");
+    }
+
+    payload.approvedBy = formData.approvedBy || "Admin";
+    payload.approvedDate = toIsoMidnight(formData.approvedDate);
+  }
+
+  await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
+  return true;
+};
+
   const popupHandlers = {
     memberId: {
       value: selectedMember?.name || "",
@@ -162,7 +153,6 @@ const AccountDirectEntryEdit: React.FC = () => {
         }}
         themeColor="#1B3763"
       />
-
       <MemberPopup 
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 

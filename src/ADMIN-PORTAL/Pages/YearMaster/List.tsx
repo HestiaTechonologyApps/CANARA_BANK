@@ -19,9 +19,9 @@ const YearMasterList: React.FC = () => {
       title="Year Master"
       columns={columns}
       idKey="yearOf"
-      addRoute="/dashboard/settings/year-master-create"
-      editRoute="/dashboard/settings/year-master-edit"
-      viewRoute="/dashboard/settings/year-master-view"
+      addRoute="/dashboard/settings/yearMaster-create"
+      editRoute="/dashboard/settings/yearMaster-edit"
+      viewRoute="/dashboard/settings/yearMaster-view"
       fetchData={fetchData}
       showAddButton
       showSearch

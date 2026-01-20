@@ -46,7 +46,8 @@ const Sidebar: React.FC = () => {
     { label: "Branches", path: "/dashboard/settings/branch-list", icon: <BsBuildingGear /> },
     { label: "Company", path: "/dashboard/settings/company-list", icon: <BsBuilding /> },
     { label: "Month", path: "/dashboard/settings/month-list", icon: <BsCalendar3 /> },
-    { label: "Users", path: "/dashboard/settings/user-list", icon: <BsPersonFillGear /> }
+    { label: "Users", path: "/dashboard/settings/user-list", icon: <BsPersonFillGear /> },
+    { label: "Year Master", path: "/dashboard/settings/yearMaster-list", icon: <BsCalendar3 /> }
   ];
 
   const contribSubMenu = [

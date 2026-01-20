@@ -24,14 +24,15 @@ const YearMasterView: React.FC = () => {
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
-      editRoute="/dashboard/settings/year-master-edit"
-      listRoute="/dashboard/settings/year-master-list"
+      editRoute="/dashboard/settings/yearMaster-edit"
+      listRoute="/dashboard/settings/yearMaster-list"
       paramName="yearOf"
-      auditLogConfig={{
-        tableName: "YearMaster",
-        recordIdField: "yearOf",
-      }}
+      //auditLogConfig={{ tableName: "YearMaster", recordIdField: "yearOf", }}
       themeColor="#1B3763"
+      deleteConfirmMessage="Are you sure you want to delete this year master? This action cannot be undone."
+      showDeleteButton={true}
+      showEditButton={true}
+      loadingText="Loading year master details..."
     />
   );
 };
