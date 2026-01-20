@@ -15,18 +15,18 @@ const MainPageCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "companyId", rules: { type: "popup", label: "Company ID", required: true, placeholder: "Enter company ID", colWidth: 4 } },
 
-    { name: "mainText", rules: { type: "textarea", label: "Main Text", required: true, placeholder: "Main hero/intro text for the website", colWidth: 6 } },
-    { name: "slogan", rules: { type: "text", label: "Slogan", required: true, minLength: 1, maxLength: 200, placeholder: "Short slogan/tagline", colWidth: 6 } },
+    { name: "mainText", rules: { type: "textarea", label: "Main Text", required: true, placeholder: "Main hero/intro text for the website", colWidth: 4 } },
+    { name: "slogan", rules: { type: "text", label: "Slogan", required: true, minLength: 1, maxLength: 200, placeholder: "Short slogan/tagline", colWidth: 4 } },
 
     { name: "corouselImage1", rules: { type: "text", label: "Carousel Image 1 (URL or path)", required: false, colWidth: 4 } },
     { name: "corouselImage2", rules: { type: "text", label: "Carousel Image 2 (URL or path)", required: false, colWidth: 4 } },
     { name: "corouselImage3", rules: { type: "text", label: "Carousel Image 3 (URL or path)", required: false, colWidth: 4 } },
 
-    { name: "logoImage1", rules: { type: "text", label: "Logo Image 1 (URL or path)", required: false, colWidth: 6 } },
-    { name: "logoImage2", rules: { type: "text", label: "Logo Image 2 (URL or path)", required: false, colWidth: 6 } },
+    { name: "logoImage1", rules: { type: "text", label: "Logo Image 1 (URL or path)", required: false, colWidth: 4 } },
+    { name: "logoImage2", rules: { type: "text", label: "Logo Image 2 (URL or path)", required: false, colWidth: 4 } },
 
-    { name: "contactDesc1", rules: { type: "text", label: "Contact Desc 1", required: false, colWidth: 6 } },
-    { name: "contactDesc2", rules: { type: "text", label: "Contact Desc 2", required: false, colWidth: 6 } },
+    { name: "contactDesc1", rules: { type: "text", label: "Contact Desc 1", required: false, colWidth: 4 } },
+    { name: "contactDesc2", rules: { type: "text", label: "Contact Desc 2", required: false, colWidth: 4 } },
 
     { name: "contactLine1", rules: { type: "text", label: "Contact Line 1", required: false, colWidth: 4 } },
     { name: "contactLine2", rules: { type: "text", label: "Contact Line 2", required: false, colWidth: 4 } },
@@ -37,9 +37,9 @@ const MainPageCreate: React.FC = () => {
     { name: "website", rules: { type: "text", label: "Website", required: true, placeholder: "e.g., www.example.com", colWidth: 4 } },
 
     { name: "email", rules: { type: "email", label: "Email", required: true, placeholder: "e.g., hello@company.com", colWidth: 4 } },
-    { name: "dayQuote", rules: { type: "text", label: "Day Quote", required: false, colWidth: 6 } },
+    { name: "dayQuote", rules: { type: "text", label: "Day Quote", required: false, colWidth: 4 } },
 
-    { name: "rulesRegulation", rules: { type: "textarea", label: "Rules & Regulations", required: false, colWidth: 12 } },
+    { name: "rulesRegulation", rules: { type: "textarea", label: "Rules & Regulations", required: false, colWidth: 6 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -54,8 +54,8 @@ const MainPageCreate: React.FC = () => {
   if (phone.length < 5) throw new Error("Please provide a valid phone number.");
 
   const payload: Omit<MainPage, "mainPageId" | "auditLogs"> = {
-    companyId: selectedCompany.companyId,           
-    companyName: selectedCompany.comapanyName || "", 
+    companyId: selectedCompany.companyId,
+    companyName: selectedCompany.comapanyName || "",
     mainText: (formData.mainText || "").trim(),
     slogan: (formData.slogan || "").trim(),
     corouselImage1: (formData.corouselImage1 || "").trim(),
@@ -74,6 +74,7 @@ const MainPageCreate: React.FC = () => {
     email,
     rulesRegulation: (formData.rulesRegulation || "").trim(),
     dayQuote: (formData.dayQuote || "").trim(),
+    dpCode: ""
   };
 
   await MainPageService.createMainPage(payload);

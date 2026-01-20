@@ -16,7 +16,7 @@ const ManagingCommitteeCreate: React.FC = () => {
   { name: "description1", rules: { type: "textarea", label: "Primary Description", required: true, placeholder: "Brief introduction or role summary", colWidth: 6 } },
   { name: "description2", rules: { type: "textarea", label: "Additional Description", placeholder: "Optional additional details", colWidth: 6 } },
   { name: "imageLocation", rules: { type: "text", label: "Profile Image URL", required: true, placeholder: "https://example.com/image.jpg", colWidth: 6 } },
-  { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 3 } },
+  { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 6 } },
  // { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 3 } },
 ];
 

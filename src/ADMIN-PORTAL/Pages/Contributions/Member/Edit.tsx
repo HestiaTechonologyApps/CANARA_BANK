@@ -32,13 +32,13 @@ const MemberEdit: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fields: Field[] = [
-    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 } },
-    { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 6 } },
-    { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 3 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
-    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 3 } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 3 } },
-    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
+    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
+    { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 4 } },
+    { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
     { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4 } },
     { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4 } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
@@ -46,8 +46,8 @@ const MemberEdit: React.FC = () => {
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4 } },
     { name: "nomineeRelation", rules: { type: "text", label: "Nominee Relation", colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
-    { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 3 } },
-    { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 3 } },
+    { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
+    { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 4 } },
   ];
 
   // Gender options - using numbers to match API response
