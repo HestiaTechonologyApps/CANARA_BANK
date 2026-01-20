@@ -57,6 +57,7 @@ const AccountsDirectEntryList: React.FC = () => {
       subtitle="Manage account direct entries"
       columns={columns}
       idKey="accountsDirectEntryID"   
+      addButtonLabel="Add Entry"
       addRoute="/dashboard/contributions/accountDirectEntry-create"
       editRoute="/dashboard/contributions/accountDirectEntry-edit"
       viewRoute="/dashboard/contributions/accountDirectEntry-view"

@@ -9,15 +9,7 @@ const YearMasterEdit: React.FC = () => {
 
   /* ================= FIELDS ================= */
   const fields: Field[] = [
-    {
-      name: "yearName",
-      rules: {
-        type: "select", // change to "text" if backend expects "2024-2025"
-        label: "Year Name",
-        required: true,
-        colWidth: 6,
-      },
-    },
+    { name: "yearName", rules: { type: "select",  label: "Year Name", required: true, colWidth: 6, }, },
   ];
 
   /* ================= FETCH ================= */
