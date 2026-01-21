@@ -8,8 +8,8 @@ import DayQuotePublicService from "../../Services/DayQuotePublic.services";
 import type { DayQuote } from "../../../ADMIN-PORTAL/Types/CMS/DayQuote.types";
 import type { DailyNews } from "../../../ADMIN-PORTAL/Types/CMS/DailyNews.types";
 import DailyNewsPublicService from "../../Services/DailyNewsPublic.services";
-import type { PublicPageConfig } from "../../Types/PublicPage.types";
 import PublicPageConfigService from "../../Services/Publicpage.services";
+import type { PublicPage } from "../../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 interface QuickLink {
   label: string;
@@ -21,7 +21,7 @@ const NewsSection: React.FC = () => {
   const news = PublicService.home.news
   const [dayQuote, setDayQuote] = useState<DayQuote | null>(null);
   const [latestNews, setLatestNews] = useState<DailyNews[]>([]);
-  const [config, setConfig] = useState<PublicPageConfig | null>(null);
+  const [config, setConfig] = useState<PublicPage | null>(null);
   const [quickLinks, setQuickLinks] = useState<QuickLink[]>([]);
   //  Load quote ONCE when this section mounts
   useEffect(() => {

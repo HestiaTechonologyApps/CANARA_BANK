@@ -122,7 +122,6 @@ const Claims: React.FC = () => {
           <p className="claims-subtitle">{claims.hero.subtitle}</p>
         </Container>
       </section>
-
       {/* Stats Cards */}
       <Container className="claims-stats">
         <Row className="g-4">

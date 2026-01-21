@@ -2,8 +2,8 @@ import React, { useEffect, useState, type JSX } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { FaHeart, FaShieldAlt, FaUsers, FaAward } from "react-icons/fa";
 import "../../Style/Home/Featured.css";
-import type { PublicPageConfig } from "../../Types/PublicPage.types";
 import PublicPageConfigService from "../../Services/Publicpage.services";
+import type { PublicPage } from "../../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 // 🔹 Icon name → component map
 const iconMap: Record<string, JSX.Element> = {
@@ -20,7 +20,7 @@ interface FeatureItem {
 }
 const FeaturesSection: React.FC = () => {
 
-   const [config, setConfig] = useState<PublicPageConfig | null>(null);
+   const [config, setConfig] = useState<PublicPage | null>(null);
   const [features, setFeatures] = useState<FeatureItem[]>([]);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import "../Style/NewsPage.css";
 import type { DailyNews } from "../../ADMIN-PORTAL/Types/CMS/DailyNews.types";
 import DailyNewsPublicService from "../Services/DailyNewsPublic.services";
 import { PublicService } from "../../Services/PublicService";
-
+// ================NEW FIELDS NEED TO BE ADDED FROM API============
 const News: React.FC = () => {
   const news = PublicService.newsPage
   const [newsItems, setNewsItems] = useState<DailyNews[]>([]);
@@ -31,7 +31,7 @@ const News: React.FC = () => {
   return (
     <div className="news-page">
       {/* Hero Section */}
-      <section className="news-hero py-4">
+      <section className="news-hero text-center py-4">
         <Container>
           <span className="news-tag">{news.hero.tag}</span>
           <h1 className="news-title text-white">{news.hero.title}</h1>
@@ -40,7 +40,6 @@ const News: React.FC = () => {
           </p>
         </Container>
       </section>
-
       {/* Breadcrumb */}
       <div className="news-breadcrumb">
         <Container>
@@ -52,7 +51,6 @@ const News: React.FC = () => {
           </span>
         </Container>
       </div>
-
       {/* News Cards Grid */}
       <section className="news-section">
         <Container>
@@ -74,13 +72,10 @@ const News: React.FC = () => {
                         <Calendar size={18} className="news-calendar-icon" />
                         <span>{item.newsDateString}</span>
                       </div>
-
                       <h5 className="news-heading">{item.title}</h5>
-
                       <p className="news-excerpt">
                         {item.description?.length > 150 ? item.description.slice(0, 150) + "..." : item.description}
                       </p>
-
                     </Card.Body>
                   </Card>
                 </Col>

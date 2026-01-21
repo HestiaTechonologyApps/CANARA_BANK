@@ -1,47 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/Downloads.css";
-import { PublicService } from "../../Services/PublicService";
 import { useNavigate } from "react-router-dom";
 import type { Attachment } from "../../Types/Attachment.types";
 import PublicAttachmentService from "../Services/DownloadsPublic.services";
-
-// interface DownloadItem {
-//   title: string;
-//   description: string;
-// }
+import PublicPageConfigService from "../Services/Publicpage.services";
+import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const Downloads: React.FC = () => {
   const navigate = useNavigate()
-  const downloads = PublicService.downloads
-  // const files: DownloadItem[] = [
-  //   {
-  //     title: "APPLICATION FOR MEMBERSHIP",
-  //     description: "APPLICATION FOR MEMBERSHIP.",
-  //   },
-  //   {
-  //     title: "AUTHORITY LETTER",
-  //     description: "LETTER AUTHORISING DEDUCTION OF SUBSCRIPTION.",
-  //   },
-  //   {
-  //     title: "RECEIPT",
-  //     description: "FORM TO ACKNOWLEDGE RECEIPT OF PAYMENT.",
-  //   },
-  //   {
-  //     title: "CLAIM FORM",
-  //     description: "FORM FOR SUBMITTING THE CLAIM.",
-  //   },
-  // ];
-
   const [files, setFiles] = useState<Attachment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     const fetchAttachments = async () => {
       try {
-        const data =
-          await PublicAttachmentService.getPublicAttachments();
+        // 🔹 CMS config
+        const configData = await PublicPageConfigService.getPublicPageConfig();
+        setConfig(configData[0]); // CMS returns single record
 
+        const data = await PublicAttachmentService.getPublicAttachments();
         setFiles(data);
       } catch (error) {
         console.error("Failed to load attachments", error);
@@ -49,7 +28,6 @@ const Downloads: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchAttachments();
   }, []);
 
@@ -62,7 +40,6 @@ const Downloads: React.FC = () => {
         await PublicAttachmentService.downloadAttachment(
           attachmentId
         );
-
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -77,64 +54,54 @@ const Downloads: React.FC = () => {
   };
   return (
     <div className="downloads-wrapper">
-
       {/* HEADER SECTION */}
       <div className="downloads-header text-center py-4">
-        <h2 className="downloads-title">{downloads.header.title}</h2>
+        <h2 className="downloads-title">  {config?.downloadsHeaderTitle || "Downloads"}</h2>
         <p className="downloads-subtitle">
-          {downloads.header.subtitle}
+           {config?.downloadsHeaderSubTitle ||
+            "Access all forms and documents related to the Golden Jubilee Family Welfare Scheme"}
         </p>
       </div>
-
       <Container className="py-5">
         <Row className="g-4 justify-content-center">
-
           {/* CARD COLUMN */}
           <Col lg={12} md={10}>
             <Card className="downloads-card p-4">
-
               <h5 className="fw-bold mb-4 d-flex align-items-center">
-                <i className={downloads.card.iconclass}></i>
-                {downloads.card.title}
+                 {config?.downloadsCardIconClass && (
+                  <i className={config.downloadsCardIconClass}></i>
+                )}
+                {config?.downloadsCardTitle}
               </h5>
-
               {
-              loading ? (
-                <p className="text-center">Loading...</p>
-              ) : (
-              files.map((file, index) => (
-                <Card key={index} className="file-item-card mb-3 p-3">
-                  <div className="d-flex justify-content-between align-items-center">
-
-                    <div>
-                      <h6 className="mb-1 file-title"> {file.fileName}</h6>
-                      <p className="file-desc"> {file.description ?? file.fileName}</p>
-                    </div>
-
-                    {/* <i className="bi bi-download file-download-icon" role="button"
-                      title="Download file" onClick={() => window.open(file.fileUrl, "_blank")}></i> */}
-
-                       <i
-                        className="bi bi-download file-download-icon"
-                        role="button"
-                        title="Download file"
-                        onClick={() =>
-                          handleDownload(
-                            file.attachmentId,
-                            file.fileName
-                          )
-                        }
-                      ></i>
-                  </div>
-                </Card>
-             ) ))}
-
+                loading ? (
+                  <p className="text-center">Loading...</p>
+                ) : (
+                  files.map((file, index) => (
+                    <Card key={index} className="file-item-card mb-3 p-3">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 className="mb-1 file-title"> {file.fileName}</h6>
+                          <p className="file-desc"> {file.description ?? file.fileName}</p>
+                        </div>
+                        <i className={config?.downloadIcon}
+                          role="button"
+                          title="Download file"
+                          onClick={() =>
+                            handleDownload(
+                              file.attachmentId,
+                              file.fileName
+                            )
+                          }
+                        ></i>
+                      </div>
+                    </Card>
+                  )))}
             </Card>
           </Col>
         </Row>
-
         <div className="text-center mt-4">
-          <button onClick={() => navigate("/contact-us")} className="support-btn">{downloads.footer.supportButtonText}</button>
+          <button onClick={() => navigate("/contact-us")} className="support-btn">{config?.downloadsContactButtonText || "Need Support ? Contact Us"}</button>
         </div>
       </Container>
     </div>

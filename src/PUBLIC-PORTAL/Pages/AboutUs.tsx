@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/AboutUs.css";
-import type { PublicPageConfig } from "../Types/PublicPage.types";
 import PublicPageConfigService from "../Services/Publicpage.services";
+import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const AboutUs: React.FC = () => {
   //const about = PublicService.about
 
-   const [config, setConfig] = useState<PublicPageConfig | null>(null);
+   const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     const loadAboutConfig = async () => {

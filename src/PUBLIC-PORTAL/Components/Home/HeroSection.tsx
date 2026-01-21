@@ -3,12 +3,12 @@ import { Container, Button } from "react-bootstrap";
 import { HiArrowRight } from "react-icons/hi";
 import heroImage from "../../Assets/Images/Hero-image.jpg";
 import "../../Style/Home/Hero.css";
-import type { PublicPageConfig } from "../../Types/PublicPage.types";
 import PublicPageConfigService from "../../Services/Publicpage.services";
+import type { PublicPage } from "../../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const HeroSection: React.FC = () => {
   //const hero = PublicService.home.hero
-  const [config, setConfig] = useState<PublicPageConfig | null>(null);
+  const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     const loadHeroConfig = async () => {

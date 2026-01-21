@@ -781,8 +781,9 @@ export const PublicService = {
             },
 
             {
-                heading3:
-                    "3.Information we collect",
+                heading4:
+                    "4.How we use your information",
+                   subheading4:"We use the information we collect in various ways, including to:",
                 lines: {
                     line1: "Provide, operate, and maintain our website",
                     line2: "Improve, personalize, and expand our website",
