@@ -46,7 +46,7 @@ const PublicPageView: React.FC = () => {
       loadingText="Loading public page details..."
       showEditButton={true}
       showDeleteButton={true}
-      deleteConfirmMessage="Are you sure you want to delete this Page?"
+      deleteConfirmMessage="Are you sure you want to delete this Page? This action cannot be undone."
     />
   );
 };

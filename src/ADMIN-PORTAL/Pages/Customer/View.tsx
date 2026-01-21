@@ -42,7 +42,7 @@ const CustomerView: React.FC = () => {
       themeColor="#1B3763"
       showEditButton
       showDeleteButton
-      deleteConfirmMessage="Are you sure you want to delete this customer?"
+      deleteConfirmMessage="Are you sure you want to delete this customer? This action cannot be undone."
     />
   );
 };

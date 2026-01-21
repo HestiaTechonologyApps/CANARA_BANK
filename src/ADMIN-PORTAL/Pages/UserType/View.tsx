@@ -35,8 +35,8 @@ const UserTypeView: React.FC = () => {
       }}
       themeColor="#1B3763"
       loadingText="Loading User Type details..."
-      showEditButton
-      showDeleteButton
+      showEditButton={true}
+      showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this user type? This action cannot be undone."
     />
   );

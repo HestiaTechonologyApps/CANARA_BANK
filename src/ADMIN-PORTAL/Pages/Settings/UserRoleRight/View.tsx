@@ -33,7 +33,7 @@ const UserRoleRightView: React.FC = () => {
       themeColor="#1B3763"
       showEditButton={true}
       showDeleteButton={true}
-      deleteConfirmMessage="Are you sure you want to delete this role right?"
+      deleteConfirmMessage="Are you sure you want to delete this role right? This action cannot be undone."
     />
   );
 };

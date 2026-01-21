@@ -36,8 +36,9 @@ const CircleStateView: React.FC = () => {
         recordIdField: "id",
       }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this circle state? This action cannot be undone."
     />
   );
 };

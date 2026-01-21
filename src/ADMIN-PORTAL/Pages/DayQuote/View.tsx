@@ -35,7 +35,7 @@ const DayQuoteView: React.FC = () => {
       loadingText="Loading day quote..."
       showEditButton
       showDeleteButton
-      deleteConfirmMessage="Are you sure you want to delete this day quote?"
+      deleteConfirmMessage="Are you sure you want to delete this day quote? This action cannot be undone."
       />
   );
 };

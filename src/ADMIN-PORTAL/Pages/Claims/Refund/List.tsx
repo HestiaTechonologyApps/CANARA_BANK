@@ -66,12 +66,12 @@ const RefundContributionList: React.FC = () => {
       addRoute="/dashboard/claims/refundcontribution-create"
       editRoute="/dashboard/claims/refundcontribution-edit"
       viewRoute="/dashboard/claims/refundcontribution-view"
-      showAddButton
-      showExport
-      showSearch
-      showActions
-      showTitle
       fetchData={fetchData}
+      showAddButton={true}
+      showExport={true}
+      showSearch={true}
+      showActions={true}
+      showTitle={true}
       rowsPerPage={10}
     />
   );

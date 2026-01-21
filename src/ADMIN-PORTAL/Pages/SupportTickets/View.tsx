@@ -34,9 +34,9 @@ const SupportTicketView: React.FC = () => {
       paramName="supportTicketId"
       auditLogConfig={{ tableName: "SupportTicket", recordIdField: "supportTicketId" }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
-      deleteConfirmMessage="Are you sure you want to delete this support ticket?"
+      showEditButton={true}
+      showDeleteButton={true}
+      deleteConfirmMessage="Are you sure you want to delete this support ticket? This action cannot be undone."
     />
   );
 };
