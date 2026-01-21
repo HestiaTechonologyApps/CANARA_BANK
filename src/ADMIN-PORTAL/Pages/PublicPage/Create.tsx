@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import KiduSubmit from "../../Components/KiduSubmit";
-
 import PublicPageService from "../../Services/CMS/PublicPage.services";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 import KiduPrevious from "../../../Components/KiduPrevious";
@@ -192,6 +191,10 @@ const PublicPageCreate: React.FC = () => {
                   {input("newsSidebarQuoteTitle", "Sidebar Quote Title")}
                   {textarea("newsSidebarQuoteText", "Sidebar Quote Text")}
                   {textarea("newsQuickLinksJson", "Quick Links JSON")}
+                  {textarea("newsSectionHeadingLabel", "Section Heading Label")}
+                  {textarea("newsSectionHeadingTitle", "Section Heading Title")}
+                  {textarea("newsSectionQuickLinksHead", "Section Quick Links Head")}
+                  {textarea("newsTag", "News Tag")}
                 </Row>
               </Card.Body>
             </Card>
@@ -216,6 +219,11 @@ const PublicPageCreate: React.FC = () => {
                   {textarea("aboutHistoryPara3", "History Paragraph 3")}
                   {textarea("aboutHistoryPara4", "History Paragraph 4")}
                   {textarea("aboutHistoryPara5", "History Paragraph 5")}
+                  {textarea("aboutParagraph1", "About Paragraph 1")}
+                  {textarea("aboutParagraph2", "About Paragraph 2")}
+                  {textarea("aboutParagraph3", "About Paragraph 3")}
+                  {textarea("aboutParagraph4", "About Paragraph 4")}
+                  {textarea("aboutStatsJson", "About Stats JSON")}
                 </Row>
               </Card.Body>
             </Card>
@@ -233,6 +241,7 @@ const PublicPageCreate: React.FC = () => {
                   {textarea("rulesPreamblePara3", "Preamble Paragraph 3")}
                   {textarea("rulesPreamblePara4", "Preamble Paragraph 4")}
                   {textarea("rulesPreamblePara5", "Preamble Paragraph 5")}
+                  {textarea("rulesPreamblePara6", "Preamble Paragraph 6")}
                   {textarea("rulesSectionsJson", "Rules Sections JSON")}
                 </Row>
               </Card.Body>
@@ -246,6 +255,10 @@ const PublicPageCreate: React.FC = () => {
                   {input("downloadsHeaderTitle", "Header Title")}
                   {input("downloadsHeaderSubTitle", "Header Subtitle")}
                   {textarea("downloadItemsJson", "Download Items JSON")}
+                  {textarea("downloadsCardTitle", "Downloads Card Title")}
+                  {textarea("downloadsCardIconClass", "Downloads Card Icon Class")}
+                  {textarea("downloadIcon", "Download Icon")}
+                  {textarea("downloadsContactButtonText", "Contact Button Text")}
                 </Row>
               </Card.Body>
             </Card>

@@ -16,13 +16,12 @@ const PublicPageView: React.FC = () => {
     { key: "isActive", label: "Active", isBoolean: true },
   ];
 
-  // 🔑 THIS IS THE CRITICAL FIX
   const handleFetch = async (id: string) => {
     const page: PublicPage =
       await PublicPageService.getPublicPageById(Number(id));
 
     return {
-      value: page, // ✅ KiduView requires this
+      value: page, 
     };
   };
 
@@ -44,8 +43,9 @@ const PublicPageView: React.FC = () => {
         recordIdField: "publicPageId",
       }}
       themeColor="#1B3763"
-      showEditButton
-      showDeleteButton
+      loadingText="Loading public page details..."
+      showEditButton={true}
+      showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this Page?"
     />
   );

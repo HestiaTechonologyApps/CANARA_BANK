@@ -1,194 +1,210 @@
-import type { AuditTrails } from "../../../Types/AuditLog.types";
+// src/Types/CMS/PublicPage.types.ts
 
 export interface PublicPage {
   publicPageId: number;
 
-  /* ===================== NAVBAR ===================== */
-  navBrandTitle?: string;
-  navBrandSubTitle?: string;
-  navLogoUrl?: string;
-  navLogoAlt?: string;
-  navMenuHead?: boolean;
+  /* ================= NAVBAR ================= */
+  navBrandTitle: string; //
+  navBrandSubTitle: string;//
+  navLogoUrl: string;//
+  navLogoAlt: string;//
+  navMenuHead: boolean;//
 
-  navHomeLabel?: string;
-  navAboutLabel?: string;
-  navRulesLabel?: string;
-  navDownloadsLabel?: string;
-  navCommitteeLabel?: string;
-  navClaimsLabel?: string;
-  navContactLabel?: string;
-  navLoginLabel?: string;
+  navHomeLabel: string;//
+  navAboutLabel: string;//
+  navRulesLabel: string;//
+  navDownloadsLabel: string;//
+  navCommitteeLabel: string;//
+  navClaimsLabel: string;//
+  navContactLabel: string;//
+  navLoginLabel: string;//
 
-  navLoginIcon?: string;
-  navPhoneIcon?: string;
-  navPhoneValue?: string;
-  navEmailIcon?: string;
-  navEmailValue?: string;
+  navLoginIcon: string;//
+  navPhoneIcon: string;//
+  navPhoneValue: string;//
+  navEmailIcon: string;//
+  navEmailValue: string;//
 
-  /* ===================== HOME ===================== */
-  homeHeroBadge?: string;
-  homeHeroTitle?: string;
-  homeHeroLine1?: string;
-  homeHeroHighlight?: string;
-  homeHeroLine3?: string;
-  homeHeroDescription?: string;
+  /* ================= HOME ================= */
+  homeHeroBadge: string;//
+  homeHeroTitle: string;//
+  homeHeroLine1: string;//
+  homeHeroHighlight: string;//
+  homeHeroLine3: string;//
+  homeHeroDescription: string;//
 
-  homePrimaryBtnLabel?: string;
-  homePrimaryBtnRoute?: string;
-  homeSecondaryBtnLabel?: string;
-  homeSecondaryBtnRoute?: string;
+  homePrimaryBtnLabel: string;//
+  homePrimaryBtnRoute: string;//
+  homeSecondaryBtnLabel: string;//
+  homeSecondaryBtnRoute: string;//
 
-  homeHeroImageUrl?: string;
-  homeHeroImageAlt?: string;
+  homeHeroImageUrl: string;//
+  homeHeroImageAlt: string;//
 
-  homeFeatureHeading?: string;
-  homeFeatureLabel?: string;
-  homeFeatureTitle?: string;
-  homeFeatureSubTitle?: string;
-  homeFeatureItemsJson?: string;
+  homeFeatureHeading: string;//
+  homeFeatureLabel: string;//
+  homeFeatureTitle: string;//
+  homeFeatureSubTitle: string;//
+  homeFeatureItemsJson: string;//
 
-  homeAboutLabel?: string;
-  homeAboutTitle?: string;
-  homeAboutParagraph?: string;
+  homeAboutLabel: string;//
+  homeAboutTitle: string;//
+  homeAboutParagraph: string;//
 
-  /* ===================== NEWS ===================== */
-  newsHeroTitle?: string;
-  newsHeroSubTitle?: string;
-  newsBreadcrumbHomeLabel?: string;
-  newsBreadcrumbCurrentLabel?: string;
-  newsLoadingText?: string;
-  newsEmptyText?: string;
+  /* ================= NEWS ================= */
+  newsHeroTitle: string;//
+  newsHeroSubTitle: string;//
+  newsBreadcrumbHomeLabel: string;//
+  newsBreadcrumbCurrentLabel: string;//
 
-  newsItemsJson?: string;
-  newsSidebarQuoteTitle?: string;
-  newsSidebarQuoteText?: string;
-  newsQuickLinksJson?: string;
+  newsLoadingText: string;//
+  newsEmptyText: string;//
+  newsItemsJson: string;//
 
-  /* ===================== ABOUT ===================== */
-  aboutHeaderTitle?: string;
-  aboutHeaderSubTitle?: string;
+  newsSidebarQuoteTitle: string;//
+  newsSidebarQuoteText: string;//
+  newsQuickLinksJson: string;//
 
-  aboutMissionTitle?: string;
-  aboutMissionIcon?: string;
-  aboutMissionDescription?: string;
+  newsSectionHeadingLabel: string;///
+  newsSectionHeadingTitle: string;///
+  newsSectionQuickLinksHead: string;///
+  newsTag: string;///
 
-  aboutVisionTitle?: string;
-  aboutVisionIcon?: string;
-  aboutVisionDescription?: string;
+  /* ================= ABOUT ================= */
+  aboutHeaderTitle: string;//
+  aboutHeaderSubTitle: string;//
 
-  aboutHistoryTitle?: string;
-  aboutHistoryIcon?: string;
-  aboutHistoryPara1?: string;
-  aboutHistoryPara2?: string;
-  aboutHistoryPara3?: string;
-  aboutHistoryPara4?: string;
-  aboutHistoryPara5?: string;
+  aboutMissionTitle: string;//
+  aboutMissionIcon: string;//
+  aboutMissionDescription: string;//
 
-  /* ===================== RULES ===================== */
-  rulesHeaderTitle?: string;
-  rulesHeaderSubTitle?: string;
+  aboutVisionTitle: string;//
+  aboutVisionIcon: string;//
+  aboutVisionDescription: string;//
 
-  rulesPreambleTitle?: string;
-  rulesPreamblePara1?: string;
-  rulesPreamblePara2?: string;
-  rulesPreamblePara3?: string;
-  rulesPreamblePara4?: string;
-  rulesPreamblePara5?: string;
+  aboutHistoryTitle: string;//
+  aboutHistoryIcon: string;//
+  aboutHistoryPara1: string;//
+  aboutHistoryPara2: string;//
+  aboutHistoryPara3: string;//
+  aboutHistoryPara4: string;//
+  aboutHistoryPara5: string;//
 
-  rulesSectionsJson?: string;
+  aboutParagraph1: string;///
+  aboutParagraph2: string;///
+  aboutParagraph3: string;///
+  aboutParagraph4: string;///
 
-  /* ===================== DOWNLOADS ===================== */
-  downloadsHeaderTitle?: string;
-  downloadsHeaderSubTitle?: string;
-  downloadItemsJson?: string;
+  aboutStatsJson: string;///
 
-  /* ===================== COMMITTEE ===================== */
-  committeeHeaderTitle?: string;
-  committeeHeaderSubTitle?: string;
-  committeeMembersJson?: string;
+  /* ================= RULES ================= */
+  rulesHeaderTitle: string;//
+  rulesHeaderSubTitle: string;//
 
-  /* ===================== CLAIMS ===================== */
-  claimsHeroTitle?: string;
-  claimsHeroSubTitle?: string;
+  rulesPreambleTitle: string;//
+  rulesPreamblePara1: string;//
+  rulesPreamblePara2: string;//
+  rulesPreamblePara3: string;//
+  rulesPreamblePara4: string;//
+  rulesPreamblePara5: string;//
+  rulesPreamblePara6: string;///
 
-  claimsStat1Icon?: string;
-  claimsStat1Value?: string;
-  claimsStat1Label?: string;
+  rulesSectionsJson: string;//
 
-  claimsStat2Icon?: string;
-  claimsStat2Value?: string;
-  claimsStat2Label?: string;
+  /* ================= DOWNLOADS ================= */
+  downloadsHeaderTitle: string;//
+  downloadsHeaderSubTitle: string;//
+  downloadItemsJson: string;//
 
-  claimsStat3Icon?: string;
-  claimsStat3Value?: string;
-  claimsStat3Label?: string;
+  downloadsCardTitle: string;///
+  downloadsCardIconClass: string;///
+  downloadIcon: string;///
+  downloadsContactButtonText: string;///
 
-  claimsTableHeadersJson?: string;
-  claimsYearsRange?: string;
+  /* ================= COMMITTEE ================= */
+  committeeHeaderTitle: string;//
+  committeeHeaderSubTitle: string;//
+  committeeMembersJson: string;//
 
-  /* ===================== CONTACT ===================== */
-  contactHeaderTitle?: string;
-  contactHeaderSubTitle?: string;
+  /* ================= CLAIMS ================= */
+  claimsHeroTitle: string;//
+  claimsHeroSubTitle: string;//
 
-  contactFullNameLabel?: string;
-  contactPhoneLabel?: string;
-  contactEmailLabel?: string;
-  contactSubjectLabel?: string;
-  contactMessageLabel?: string;
-  contactSubmitButtonLabel?: string;
+  claimsStat1Icon: string;//
+  claimsStat1Value: string;//
+  claimsStat1Label: string;//
 
-  officeTitle?: string;
-  officeAddress?: string;
-  officePhone?: string;
-  officeEmail?: string;
+  claimsStat2Icon: string;//
+  claimsStat2Value: string;//
+  claimsStat2Label: string;//
 
-  officeHoursTitle?: string;
-  officeDay1Time?: string;
-  officeDay2Time?: string;
-  officeDay3Time?: string;
+  claimsStat3Icon: string;//
+  claimsStat3Value: string;//
+  claimsStat3Label: string;//
 
-  /* ===================== FOOTER ===================== */
-  footerBrandShortName?: string;
-  footerBrandSubTitle?: string;
-  footerBrandDescription?: string;
-  footerLogoAlt?: string;
+  claimsTableHeadersJson: string;//
+  claimsYearsRange: string;//
 
-  footerAddressLine1?: string;
-  footerAddressLine2?: string;
+  /* ================= CONTACT ================= */
+  contactHeaderTitle: string;//
+  contactHeaderSubTitle: string;//
 
-  footerPhoneIcon?: string;
-  footerPhoneValue?: string;
-  footerEmailIcon?: string;
-  footerEmailValue?: string;
+  contactFullNameLabel: string;//
+  contactPhoneLabel: string;//
+  contactEmailLabel: string;//
+  contactSubjectLabel: string;//
+  contactMessageLabel: string;//
+  contactSubmitButtonLabel: string;//
 
-  footerQuickLinksJson?: string;
-  footerOfficeHoursJson?: string;
-  footerCopyrightText?: string;
+  officeTitle: string;//
+  officeAddress: string;//
+  officePhone: string;//
+  officeEmail: string;//
 
-  /* ===================== PRIVACY ===================== */
-  privacyHeroBadge?: string;
-  privacyHeroTitle?: string;
-  privacyHeroSubTitle?: string;
+  officeHoursTitle: string;//
+  officeDay1Time: string;//
+  officeDay2Time: string;//
+  officeDay3Time: string;//
 
-  privacyHeading1?: string;
-  privacyPara1?: string;
-  privacyPara2?: string;
-  privacyParagraph3?: string;
+  /* ================= FOOTER ================= */
+  footerBrandShortName: string;//
+  footerBrandSubTitle: string;//
+  footerBrandDescription: string;//
+  footerLogoAlt: string;//
 
-  privacyHeading2?: string;
-  privacyPara3?: string;
+  footerAddressLine1: string;//
+  footerAddressLine2: string;//
 
-  privacyHeading3?: string;
-  privacyLine1?: string;
-  privacyLine2?: string;
-  privacyLine3?: string;
-  privacyLine4?: string;
-  privacyLine5?: string;
-  privacyLine6?: string;
+  footerPhoneIcon: string;//
+  footerPhoneValue: string;//
+  footerEmailIcon: string;//
+  footerEmailValue: string;//
 
-  /* ===================== STATUS ===================== */
-  isActive?: boolean;
+  footerQuickLinksJson: string;//
+  footerOfficeHoursJson: string;//
+  footerCopyrightText: string;//
 
-  /* ===================== AUDIT ===================== */
-  auditLogs?: AuditTrails[];
+  /* ================= PRIVACY ================= */
+  privacyHeroBadge: string;//
+  privacyHeroTitle: string;//
+  privacyHeroSubTitle: string;//
+
+  privacyHeading1: string;//
+  privacyPara1: string;//
+  privacyPara2: string;//
+  privacyParagraph3: string;//
+
+  privacyHeading2: string;//
+  privacyPara3: string;//
+
+  privacyHeading3: string;//
+  privacyLine1: string;//
+  privacyLine2: string;//
+  privacyLine3: string;//
+  privacyLine4: string;//
+  privacyLine5: string;//
+  privacyLine6: string;//
+
+  /* ================= META ================= */
+  isActive: boolean;//
 }

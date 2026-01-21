@@ -36,15 +36,20 @@ const PublicPageList: React.FC = () => {
   return (
     <KiduServerTable
       title="Public Page Management"
+      subtitle="Manage public page with search, filter, and pagination"
       columns={columns}
       idKey="publicPageId"
+      addButtonLabel="Add Public Page"
       fetchData={fetchData}
       addRoute="/dashboard/cms/publicPage-create"
       editRoute="/dashboard/cms/publicPage-edit"
       viewRoute="/dashboard/cms/publicPage-view"
-      showAddButton
-      showSearch
-      showActions
+      showAddButton={true}
+      showSearch={true}
+      showActions={true}
+      showExport={true}
+      showTitle={true}
+      rowsPerPage={10}
     />
   );
 };
