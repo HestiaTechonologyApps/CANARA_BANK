@@ -50,6 +50,10 @@ const ManagingCommitteeCreate: React.FC = () => {
         title="Create Managing Committee"
         fields={fields}
         onSubmit={handleSubmit}
+        submitButtonText="Create Managing Committee"
+        showResetButton
+        successMessage="Managing Committee created successfully!"
+        errorMessage="Failed to create managing committee. Please try again."
         navigateOnSuccess="/dashboard/cms/manage-committe-list"
         //popupHandlers={popupHandlers}
         themeColor="#1B3763"

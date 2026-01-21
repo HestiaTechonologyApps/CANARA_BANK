@@ -77,8 +77,10 @@ const BranchCreate: React.FC = () => {
         fields={fields}
         onSubmit={handleSubmit}
         popupHandlers={popupHandlers}
+        showResetButton
         navigateOnSuccess="/dashboard/settings/branch-list"
         successMessage="Branch created successfully!"
+        errorMessage="Failed to create branch. Please try again."
         themeColor="#1B3763"
       />
 

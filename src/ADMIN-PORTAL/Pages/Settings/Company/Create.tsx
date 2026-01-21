@@ -67,9 +67,10 @@ const CompanyCreate: React.FC = () => {
       onSubmit={handleSubmit}
       submitButtonText="Create Company"
       loadingState={isLoading}
+      showResetButton
       navigateOnSuccess="/dashboard/settings/company-list"
       successMessage="Company created successfully!"
-      errorMessage="Failed to create company"
+      errorMessage="Failed to create company. Please try again."
       themeColor="#1B3763"
     />
   );

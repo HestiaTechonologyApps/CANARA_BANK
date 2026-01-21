@@ -34,13 +34,14 @@ const CircleStateCreate: React.FC = () => {
 
   return (
     <KiduCreate
-      title="Create Circle-State Mapping"
+      title="Create Circle-State"
       fields={fields}
       onSubmit={handleSubmit}
-      submitButtonText="Create Mapping"
+      submitButtonText="Create Circle state"
+      showResetButton
       loadingState={isLoading}
-      successMessage="Circle-State mapping created successfully!"
-      errorMessage="Failed to create mapping"
+      successMessage="Circle-State created successfully!"
+      errorMessage="Failed to create circle state. Please try again."
       navigateOnSuccess="/dashboard/settings/circle-state-list"
       themeColor="#1B3763"
     />

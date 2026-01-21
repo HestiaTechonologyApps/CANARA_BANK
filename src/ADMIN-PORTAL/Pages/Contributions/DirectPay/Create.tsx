@@ -67,8 +67,10 @@ const DirectPaymentCreate: React.FC = () => {
         title="Create Direct Payment"
         fields={fields}
         onSubmit={handleSubmit}
+        showResetButton
         submitButtonText="Create Direct Payment"
         successMessage="Direct Payment created successfully!"
+        errorMessage="Failed to create direct payment. Please try again."
         navigateOnSuccess="/dashboard/contributions/directpayment-list"
         themeColor="#1B3763"
          popupHandlers={popupHandlers}

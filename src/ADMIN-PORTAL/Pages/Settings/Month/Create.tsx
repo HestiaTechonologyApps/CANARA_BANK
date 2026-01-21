@@ -25,6 +25,8 @@ const MonthCreate: React.FC = () => {
       title="Create Month"
       fields={fields}
       onSubmit={handleSubmit}
+      submitButtonText="Create Month"
+      showResetButton
       successMessage="Month created successfully!"
       errorMessage="Failed to create month. Please try again."
       navigateOnSuccess="/dashboard/settings/month-list"

@@ -59,7 +59,7 @@ const CircleCreate: React.FC = () => {
         submitButtonText="Create Circle"
         showResetButton
         successMessage="Circle created successfully!"
-        errorMessage="Failed to create circle."
+        errorMessage="Failed to create circle.Please try again."
         navigateOnSuccess="/dashboard/settings/circle-list"
         popupHandlers={popupHandlers}
         themeColor="#1B3763"

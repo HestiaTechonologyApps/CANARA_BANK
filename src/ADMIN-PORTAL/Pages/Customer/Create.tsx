@@ -43,7 +43,7 @@ const CustomerCreate: React.FC = () => {
       submitButtonText="Create Customer"
       showResetButton
       successMessage="Customer created successfully!"
-      errorMessage="Failed to create customer."
+      errorMessage="Failed to create customer.Please try again."
       navigateOnSuccess="/dashboard/customer-list"
       navigateDelay={1200}
       themeColor="#1B3763"

@@ -114,7 +114,7 @@ const popupHandlers = {
         submitButtonText="Create Refund"
         showResetButton
         successMessage="Refund created successfully!"
-        errorMessage="Failed to create refund"
+        errorMessage="Failed to create refund. Please try again."
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"

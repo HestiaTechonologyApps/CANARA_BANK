@@ -99,7 +99,7 @@ const DeathClaimCreate: React.FC = () => {
         submitButtonText="Create Death Claim"
         showResetButton
         successMessage="Death claim created successfully!"
-        errorMessage="Failed to create death claim."
+        errorMessage="Failed to create death claim.Please try again"
         navigateOnSuccess="/dashboard/claims/deathclaims-list"
         navigateDelay={1200}
         themeColor="#1B3763"

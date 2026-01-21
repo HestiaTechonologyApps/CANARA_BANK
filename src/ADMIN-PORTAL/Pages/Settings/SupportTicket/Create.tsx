@@ -38,10 +38,10 @@ const SupportTicketCreate: React.FC = () => {
       title="Create Support Ticket"
       fields={fields}
       onSubmit={handleSubmit}
-      submitButtonText="Raise Ticket"
+      submitButtonText="Create Ticket"
       loadingState={loading}
       successMessage="Support ticket created successfully!"
-      errorMessage="Failed to create support ticket"
+      errorMessage="Failed to create support ticket. Please try again."
       navigateOnSuccess="/dashboard/support-ticket/supportTickets-list"
       themeColor="#1B3763"
     />

@@ -40,8 +40,9 @@ const DailyNewsCreate: React.FC = () => {
         fields={fields}
         onSubmit={handleSubmit}
         submitButtonText="Create News"
+        showResetButton
         successMessage="Daily news created successfully!"
-        errorMessage="Failed to create daily news"
+        errorMessage="Failed to create daily news. Please try again."
         navigateOnSuccess="/dashboard/cms/dailynews-list"
         themeColor="#1B3763"
       />
