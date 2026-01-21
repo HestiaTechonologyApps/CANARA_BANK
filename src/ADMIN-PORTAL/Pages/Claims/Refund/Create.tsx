@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
-//import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
 import type { State } from "../../../Types/Settings/States.types";
 import type { Designation } from "../../../Types/Settings/Designation";
@@ -10,15 +9,19 @@ import type { Member } from "../../../Types/Contributions/Member.types";
 import StatePopup from "../../Settings/State/StatePopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import MemberPopup from "../../Contributions/Member/MemberPopup";
+import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
+import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 
 const RefundContributionCreate: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
+  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
   /* ===================== FIELDS ===================== */
   const fields: Field[] = [
@@ -33,7 +36,7 @@ const RefundContributionCreate: React.FC = () => {
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
-    { name: "yearOF", rules: { type: "number", label: "Year Of", required: true, colWidth: 4 } },
+    { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
   ];
 
@@ -43,6 +46,7 @@ const RefundContributionCreate: React.FC = () => {
   if (!selectedState) throw new Error("Please select State");
   if (!selectedMember) throw new Error("Please select Member");
   if (!selectedDesignation) throw new Error("Please select Designation");
+  if(!selectedYearMaster) throw new Error("Please select Year");
 
   const payload = {
     staffNo: selectedMember.staffNo,
@@ -60,7 +64,7 @@ const RefundContributionCreate: React.FC = () => {
     dddateString: toIso(formData.dddate),
     amount: Number(formData.amount),
     lastContribution: Number(formData.lastContribution || 0),
-    yearOF: Number(formData.yearOF),
+    yearOF: selectedYearMaster.yearOf,
     deathDate: "",
     deathDateString: "",
   };
@@ -69,27 +73,30 @@ const RefundContributionCreate: React.FC = () => {
     payload as any
   );
 };
+const popupHandlers = {
+  stateId: {
+    value: selectedState?.name || "",
+    actualValue: selectedState?.stateId,
+    onOpen: () => setShowStatePopup(true),
+  },
+  memberId: {
+    value: selectedMember?.name || "",
+    actualValue: selectedMember?.memberId,
+    onOpen: () => setShowMemberPopup(true),
+  },
+  designationId: {
+    value: selectedDesignation?.name || "",
+    actualValue: selectedDesignation?.designationId,
+    onOpen: () => setShowDesignationPopup(true),
+  },
+  yearOF: {
+    value: selectedYearMaster?.yearName || "",
+    actualValue: selectedYearMaster?.yearOf,
+    onOpen: () => setShowYearMasterPopup(true),
+  },
+};
 
-
-  /* ===================== POPUPS ===================== */
-  const popupHandlers = {
-    stateId: {
-      value: selectedState?.name || "",
-      actualValue: selectedState?.stateId,
-      onOpen: () => setShowStatePopup(true),
-    },
-    memberId: {
-      value: selectedMember?.name || "",
-      actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(true),
-    },
-    designationId: {
-      value: selectedDesignation?.name || "",
-      actualValue: selectedDesignation?.designationId,
-      onOpen: () => setShowDesignationPopup(true),
-    },
-  };
-
+//type options
   const typeOptions = [
     { value: "Refund", label: "Refund" },
     { value: "Loan", label: "Loan" },
@@ -102,6 +109,10 @@ const RefundContributionCreate: React.FC = () => {
         title="Create Refund Contribution"
         fields={fields}
         onSubmit={handleSubmit}
+        submitButtonText="Create Refund"
+        showResetButton
+        successMessage="Refund created successfully!"
+        errorMessage="Failed to create refund"
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"
@@ -134,6 +145,15 @@ const RefundContributionCreate: React.FC = () => {
           setShowDesignationPopup(false);
         }}
       />
+     <YearMasterPopup
+       show={showYearMasterPopup}
+       handleClose={() => setShowYearMasterPopup(false)}
+       onSelect={(y) => {
+        setSelectedYearMaster(y);
+        setShowYearMasterPopup(false);
+     }}
+     />
+
     </>
   );
 };

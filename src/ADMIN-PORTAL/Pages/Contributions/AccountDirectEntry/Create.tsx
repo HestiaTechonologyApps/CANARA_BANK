@@ -43,7 +43,7 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved", colWidth: 4 } },
     { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 4 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date",required:true, colWidth: 4 } },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 4 } },
   ];
 
   const toIsoMidnight = (v?: string) => (v ? `${v}T00:00:00` : "");
@@ -74,9 +74,10 @@ const AccountDirectEntryCreate: React.FC = () => {
       status: formData.status,
       isApproved,
       approvedBy: isApproved ? formData.approvedBy?.trim() || "" : "",
-      approvedDate: isApproved
-        ? toIsoMidnight(formData.approvedDate)
-        : "",
+approvedDate: isApproved && formData.approvedDate
+  ? toIsoMidnight(formData.approvedDate)
+  : "",
+
 
     };
 
@@ -99,10 +100,10 @@ const AccountDirectEntryCreate: React.FC = () => {
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },
-  yearOf: {
-  value: selectedYearMaster?.yearName?.toString() || "",
-  actualValue: selectedYearMaster?.yearOf,
-  onOpen: () => setShowYearMasterPopup(true),
+    yearOf: {
+      value: selectedYearMaster?.yearName?.toString() || "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
 },
 
   };
