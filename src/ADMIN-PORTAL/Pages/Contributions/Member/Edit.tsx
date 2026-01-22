@@ -52,9 +52,9 @@ const MemberEdit: React.FC = () => {
 
   // Gender options
   const genderOptions = [
-    { value: 0, label: "Male" },
-    { value: 1, label: "Female" },
-    { value: 2, label: "Others" }
+    { value: "0", label: "Male" },
+    { value: "1", label: "Female" },
+    { value: "2", label: "Others" }
   ];
 
   // Union Member options
@@ -93,43 +93,47 @@ const MemberEdit: React.FC = () => {
     }
   };
 
-  const handleFetch = async (id: string) => {
-    const response = await MemberService.getMemberById(Number(id));
-    const member = response.value;
+ const handleFetch = async (id: string) => {
+  const response = await MemberService.getMemberById(Number(id));
+  const member = response.value;
 
-    console.log("Fetched member data:", member);
-    console.log("GenderId from API:", member?.genderId, "Type:", typeof member?.genderId);
+  if (member) {
+    setSelectedBranch({
+      branchId: member.branchId,
+      name: member.branchName || ""
+    } as Branch);
 
-    if (member) {
-      setSelectedBranch({
-        branchId: member.branchId,
-        name: member.branchName || "",
-        dpCode: member.dpCode || ""
-      } as unknown as Branch);
+    setSelectedDesignation({
+      designationId: member.designationId,
+      name: member.designationName || ""
+    } as Designation);
 
-      setSelectedDesignation({
-        designationId: member.designationId,
-        name: member.designationName || ""
-      } as unknown as Designation);
+    setSelectedCategory({
+      categoryId: member.categoryId,
+      name: member.categoryname || ""
+    } as Category);
 
-      setSelectedCategory({
-        categoryId: member.categoryId,
-        name: member.categoryname || ""
-      } as unknown as Category);
+    setSelectedStatus({
+      statusId: member.statusId,
+      name: member.status || ""
+    } as Status);
 
-      setSelectedStatus({
-        statusId: member.statusId,
-        name: member.status || ""
-      } as unknown as Status);
-
-      if (member.profileImageSrc) {
-        setCurrentImagePath(member.profileImageSrc);
-        setProfileImagePreview(getFullImageUrl(member.profileImageSrc));
-      }
+    if (member.profileImageSrc) {
+      setCurrentImagePath(member.profileImageSrc);
+      setProfileImagePreview(getFullImageUrl(member.profileImageSrc));
     }
+  }
 
-    return response;
+  // ✅ CRITICAL FIX
+  return {
+    ...response,
+    value: {
+      ...member,
+      genderId: String(member.genderId), // 🔥 MUST BE STRING
+    },
   };
+};
+
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus) {
@@ -156,9 +160,7 @@ const MemberEdit: React.FC = () => {
       memberId: Number(id),
       staffNo: Number(formData.staffNo),
       name: formData.name.trim(),
-      genderId: formData.genderId !== undefined && formData.genderId !== null && formData.genderId !== "" 
-        ? Number(formData.genderId) 
-        : 0,
+      genderId: Number(formData.genderId),
       designationId: selectedDesignation.designationId,
       categoryId: selectedCategory.categoryId,
       branchId: selectedBranch.branchId,
