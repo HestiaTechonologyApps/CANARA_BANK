@@ -150,6 +150,8 @@ import YearMasterCreate from '../Pages/YearMaster/Create';
 import YearMasterEdit from '../Pages/YearMaster/Edit';
 import YearMasterView from '../Pages/YearMaster/View';
 
+import FileUploadCreate from '../Pages/Contributions/MonthlyContribution/FileUpload';
+
 
 // Export route configuration as JSX elements - ALL PROTECTED
 export const adminRoutes = (
@@ -311,7 +313,7 @@ export const adminRoutes = (
       <Route path="settings/yearMaster-view/:yearOf" element={<YearMasterView />} />
 
 
-
+<Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} />
 
   
     </Route>
