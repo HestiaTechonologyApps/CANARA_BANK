@@ -4,7 +4,7 @@ import type { UserType } from "../../Types/Settings/UserType.types";
 import UserTypeService from "../../Services/Settings/UserType.services";
 
 const columns = [
-  { key: "userTypeId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "userTypeId", label: "User TypeID", enableSorting: true, type: "text" as const },
   { key: "abbreviation", label: "Abbreviation", enableSorting: true, type: "text" as const },
   { key: "description", label: "Description", enableSorting: true, type: "text" as const },
 ];

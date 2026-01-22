@@ -6,7 +6,7 @@ import MonthService from "../../Services/Settings/Month.services";
 import type { Month } from "../../Types/Settings/Month.types";
 
 const columns = [
-  { key: "dayQuoteId", label: "ID", type: "text" as const },
+  { key: "dayQuoteId", label: "Day Quote ID", type: "text" as const },
   { key: "day", label: "Day", type: "text" as const },
   { key: "monthName", label: "Month", type: "text" as const },
   { key: "toDayQuote", label: "Quote", type: "text" as const },

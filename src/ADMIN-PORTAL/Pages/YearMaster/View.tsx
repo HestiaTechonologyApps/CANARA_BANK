@@ -7,8 +7,8 @@ import KiduView from "../../Components/KiduView";
 
 
 const fields: ViewField[] = [
-  { key: "yearOf", label: "Year Of", icon: "bi-hash" },
-  { key: "yearName", label: "Year", icon: "bi-calendar" },
+  { key: "yearOf", label: "Year", icon: "bi-hash" },
+  { key: "yearName", label: "Year Name", icon: "bi-calendar" },
 ];
 
 const YearMasterView: React.FC = () => {

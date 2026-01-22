@@ -5,7 +5,7 @@ import PublicPageService from "../../Services/CMS/PublicPage.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "publicPageId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "publicPageId", label: "Public Page ID", enableSorting: true, type: "text" as const },
   { key: "navBrandTitle", label: "Brand", enableSorting: true, type: "text" as const },
   { key: "homeHeroTitle", label: "Hero Title", enableSorting: true, type: "text" as const },
   { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" as const },

@@ -6,7 +6,7 @@ import CircleService from "../../Services/Settings/Circle.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "branchId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "branchId", label: "Branch ID", enableSorting: true, type: "text" as const },
   { key: "dpCode", label: "DP Code", enableSorting: true, type: "text" as const },
   { key: "name", label: "Branch Name", enableSorting: true, type: "text" as const },
   { key: "district", label: "District", enableSorting: true, type: "text" as const },

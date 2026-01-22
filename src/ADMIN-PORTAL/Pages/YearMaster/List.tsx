@@ -4,8 +4,8 @@ import YearMasterService from "../../Services/Settings/YearMaster.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "yearOf", label: "Year Of", type: "text" as const },
-  { key: "yearName", label: "Year", type: "text" as const },
+  { key: "yearOf", label: "Year", type: "text" as const },
+  { key: "yearName", label: "Year Name", type: "text" as const },
 ];
 
 const YearMasterList: React.FC = () => {

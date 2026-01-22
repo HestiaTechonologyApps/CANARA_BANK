@@ -6,7 +6,7 @@ import SupportTicketService from "../../Services/Settings/SupportTicket.services
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "supportTicketId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "supportTicketId", label: "Support TicketID", enableSorting: true, type: "text" as const },
   { key: "supportTicketNum", label: "Ticket No", enableSorting: true, type: "text" as const },
   { key: "priority", label: "Priority", enableSorting: true, type: "text" as const },
   { key: "duration", label: "Duration", enableSorting: true, type: "text" as const },

@@ -5,7 +5,7 @@ import CompanyService from "../../../Services/Settings/Company.services";
 import KiduServerTable from "../../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "companyId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
   { key: "comapanyName", label: "Company Name", enableSorting: true, type: "text" as const },
   { key: "email", label: "Email", type: "text" as const },
   { key: "contactNumber", label: "Contact", type: "text" as const },

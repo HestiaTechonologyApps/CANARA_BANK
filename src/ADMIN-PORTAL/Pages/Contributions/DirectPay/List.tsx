@@ -4,7 +4,7 @@ import DirectPaymentService from "../../../Services/Contributions/Directpayment.
 import type { DirectPayment } from "../../../Types/Contributions/Directpayment.types";
 
 const columns = [
-  { key: "directPaymentId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "directPaymentId", label: "Direct payment ID", enableSorting: true, type: "text" as const },
   { key: "memberName", label: "Member", enableSorting: true, type: "text" as const }, // ✅
   { key: "amount", label: "Amount", enableSorting: true, type: "text" as const },
   { key: "paymentDatestring", label: "Payment Date", enableSorting: true, type: "text" as const },

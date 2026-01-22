@@ -8,7 +8,7 @@ import CompanyService from "../../Services/Settings/Company.services";
 import KiduServerTable from "../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "dailyNewsId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "dailyNewsId", label: "Daily News ID", enableSorting: true, type: "text" as const },
   { key: "title", label: "Title", enableSorting: true, type: "text" as const },
   { key: "newsDate", label: "Date", enableSorting: true, type: "text" as const },
   { key: "companyName", label: "Company", enableSorting: true, type: "text" as const },

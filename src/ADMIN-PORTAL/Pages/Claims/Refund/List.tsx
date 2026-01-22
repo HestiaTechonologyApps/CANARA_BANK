@@ -4,7 +4,7 @@ import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
 
 const columns = [
-  { key: "refundContributionId", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "refundContributionId", label: "Refund ID", enableSorting: true, type: "text" as const },
   { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" as const },
   { key: "memberName", label: "Member", enableSorting: true, type: "text" as const },
   { key: "designationName", label: "Designation", enableSorting: true, type: "text" as const },

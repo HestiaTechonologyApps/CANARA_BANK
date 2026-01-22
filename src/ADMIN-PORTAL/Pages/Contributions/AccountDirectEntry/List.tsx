@@ -4,7 +4,7 @@ import AccountDirectEntryService from "../../../Services/Contributions/AccountDi
 import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
 
 const columns = [
-  { key: "accountsDirectEntryID", label: "ID", enableSorting: true, type: "text" as const },
+  { key: "accountsDirectEntryID", label: "Account Direct EntryID", enableSorting: true, type: "text" as const },
   { key: "memberName", label: "Member", enableSorting: true, type: "text" as const },
   { key: "branchName", label: "Branch", enableSorting: true, type: "text" as const },
   { key: "monthName", label: "Month", enableSorting: true, type: "text" as const },

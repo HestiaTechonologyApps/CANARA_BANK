@@ -3,7 +3,7 @@ import KiduServerTable from "../../../../Components/KiduServerTable";
 import DeathClaimService from "../../../Services/Claims/DeathClaims.services";
 
 const columns = [
-  { key: "deathClaimId", label: "Claim ID", type: "text" as const },
+  { key: "deathClaimId", label: "Death Claim ID", type: "text" as const },
   { key: "memberName", label: "Member", type: "text" as const },
   { key: "stateName", label: "State", type: "text" as const },
   { key: "designationName", label: "Designation", type: "text" as const },
