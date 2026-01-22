@@ -1,21 +1,28 @@
 // src/components/AdminComponents/AdminNavbar.tsx
 import React, { useEffect, useState } from "react";
 import { BsBell, BsChevronDown } from "react-icons/bs";
-import { Container, Image, Offcanvas, Button, Navbar } from "react-bootstrap";
+import { Container, Image, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ActivityPanel from "./ActivityPanel";
 import profile from "../Assets/Images/profile.jpg";
 import { useYear } from "./YearContext";
 import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
 import KiduYearSelector from "../../Components/KiduYearSelector";
 import AuthService from "../../Services/Auth.services";
-import ProfileUpdate from "./Profile";
 import KiduLogoutModal from "../../Components/KiduLogoutModal";
+import ActivityPanel from "./ActivityPanel";
+import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
+import KiduProfileModal from "../Components/KiduProfileModal";
+import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
 
 const NavbarComponent: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showAccountSettings, setShowAccountSettings] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
   const [username, setUsername] = useState<string>("Username");
+   const [useremail, setUseremail] = useState<string>("userEmail");
   const [profilePic, setProfilePic] = useState<string>(profile);
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -31,6 +38,7 @@ const NavbarComponent: React.FC = () => {
         if (parsedUser?.userName) {
           queueMicrotask(() => {
             setUsername(parsedUser.userName);
+            setUseremail(parsedUser.userEmail)
           });
         }
         if (parsedUser?.profilePic) {
@@ -57,7 +65,7 @@ const NavbarComponent: React.FC = () => {
     }
   }, []);
 
-  const toggleSettings = () => setShowSettings((prev) => !prev);
+
   const handleClose = () => setShowNotifications(false);
   const handleShow = () => setShowNotifications(true);
 
@@ -66,10 +74,7 @@ const NavbarComponent: React.FC = () => {
     console.log("Selected Year Updated Globally:", year);
   };
 
-  // const handleLogout = () => {
-  //   AuthService.logout();
-  //   navigate("/");
-  // };
+
   const handleLogout = () => {
     setShowLogoutModal(true);
   };
@@ -145,54 +150,59 @@ const NavbarComponent: React.FC = () => {
                 style={{ width: "30px", height: "30px", objectFit: "cover" }}
               />
               <div className="text-end">
-                <p className="mb-0" style={{ color: "#787486", fontSize: "12px" }}>
+                {/* <p className="mb-0" style={{ color: "#787486", fontSize: "12px" }}>
                   {username}
-                </p>
+                </p> */}
               </div>
-              <BsChevronDown onClick={(e) => {
-                e.stopPropagation();
-                toggleSettings();
-              }} className="ms-2" />
+              <BsChevronDown
+                className="ms-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowDropdown((prev) => !prev);
+                }}
+              />
+
+              {/* Dropdown */}
+              <KiduNavbarDropdown
+                show={showDropdown}
+                onToggle={setShowDropdown}
+                name=  {username}
+                email={useremail}
+
+                onAccountSettings={() => {
+                  setShowDropdown(false);
+                  setShowAccountSettings(true);
+                }}
+
+                onProfile={() => {
+                  setShowDropdown(false);
+                  setShowProfileModal(true);
+                }}
+
+                onLogout={() => {
+                  setShowDropdown(false);
+                  handleLogout();
+                }}
+              />
+              <KiduAccountsettingsModal
+                show={showAccountSettings}
+                onHide={() => setShowAccountSettings(false)}
+              />
+
+              <KiduProfileModal
+                show={showProfileModal}
+                onHide={() => setShowProfileModal(false)}
+              />
+
             </div>
 
-            {/* Logout Button */}
-            <Button
-              size="sm"
-              className="d-flex align-items-center"
-              style={{
-                fontSize: "12px",
-                fontWeight: 500,
-                borderRadius: "20px",
-                backgroundColor: "white",
-                border: "none",
-                color: "#d20000ff"
-              }}
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
           </div>
         </Container>
       </Navbar>
 
       {/* Notification Offcanvas */}
       <ActivityPanel show={showNotifications} handleClose={handleClose} />
-
-      {/* Admin Settings Offcanvas */}
-      <Offcanvas
-        show={showSettings}
-        onHide={() => setShowSettings(false)}
-        placement="end"
-      >
-        <Offcanvas.Header closeButton>
-          <h5 className="fw-semibold text-center" style={{ color: "#1B3763" }}>
-            Account Settings
-          </h5>
-        </Offcanvas.Header>
-        <Offcanvas.Body className="p-0">
-          <ProfileUpdate />
-        </Offcanvas.Body>
-      </Offcanvas>
+      
 
       <KiduLogoutModal
         show={showLogoutModal}

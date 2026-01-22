@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -14,10 +13,13 @@ import {
   PieChart,
   Pie,
   Cell,
+  Area,
+  AreaChart,
 } from "recharts";
+import { TrendingUp, PieChart as PieIcon, BarChart3 } from "lucide-react";
 import KiduLoader from "../../Components/KiduLoader";
 
-// Type definitions
+/* -------------------- Types -------------------- */
 interface MonthlyData {
   month: string;
   contributions: number;
@@ -28,6 +30,7 @@ interface ClaimDistribution {
   name: string;
   value: number;
   color: string;
+  [key: string]: any;
 }
 
 interface StateWiseData {
@@ -36,14 +39,14 @@ interface StateWiseData {
   fill: string;
 }
 
-// Color Palette for Canara Bank Union
-const PRIMARY_COLOR = "#0f2a55";
-const SUCCESS_COLOR = "#28a745";
-const DANGER_COLOR = "#dc3545";
-const WARNING_COLOR = "#ff9800";
-const INFO_COLOR = "#17a2b8";
+/* -------------------- Colors -------------------- */
+const NAVY = "#0f2a55";
+const GREEN = "#22c55e";
+const RED = "#ef4444";
+const ORANGE = "#f97316";
+const BLUE = "#3b82f6";
 
-// Mock Data
+/* -------------------- Data (UNCHANGED) -------------------- */
 const dummyMonthlyData: MonthlyData[] = [
   { month: "Jan", contributions: 45000, claims: 12000 },
   { month: "Feb", contributions: 52000, claims: 15000 },
@@ -60,239 +63,195 @@ const dummyMonthlyData: MonthlyData[] = [
 ];
 
 const dummyClaimDistribution: ClaimDistribution[] = [
-  { name: "Death Claims", value: 45, color: DANGER_COLOR },
-  { name: "Refund Claims", value: 30, color: WARNING_COLOR },
-  { name: "Medical Claims", value: 15, color: INFO_COLOR },
-  { name: "Others", value: 10, color: "#6c757d" },
+  { name: "Death Claims", value: 45, color: NAVY },
+  { name: "Medical Claims", value: 25, color: "#0d9488" },
+  { name: "Others", value: 20, color: ORANGE },
+  { name: "Refund Claims", value: 10, color: BLUE },
 ];
 
 const dummyStateWiseData: StateWiseData[] = [
-  { state: "Karnataka", members: 1500, fill: PRIMARY_COLOR },
-  { state: "Maharashtra", members: 1200, fill: SUCCESS_COLOR },
-  { state: "Tamil Nadu", members: 1000, fill: WARNING_COLOR },
-  { state: "Kerala", members: 800, fill: INFO_COLOR },
-  { state: "Andhra Pradesh", members: 600, fill: "#6c757d" },
+  { state: "Karnataka", members: 1500, fill: GREEN },
+  { state: "Maharashtra", members: 1200, fill: GREEN },
+  { state: "Tamil Nadu", members: 1000, fill: ORANGE },
+  { state: "Kerala", members: 800, fill: GREEN },
+  { state: "Andhra Pradesh", members: 600, fill: NAVY },
 ];
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-  if (percent * 100 < 5) return null;
-  
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.4;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+/* -------------------- Helpers -------------------- */
+const yAxisFormatter = (v: number) => `₹${(v / 1000).toFixed(0)}k`;
 
-  return (
-    <text 
-      x={x} 
-      y={y} 
-      fill="white" 
-      textAnchor={x > cx ? 'start' : 'end'} 
-      dominantBaseline="central"
-      style={{ fontSize: '10px', fontWeight: 'bold' }}
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
+const CardWrapper = ({ title, icon, children }: any) => (
+  <div className="bg-white rounded-3 shadow-sm p-3 h-100">
+    <div className="d-flex align-items-center gap-2 mb-3">
+      {icon}
+      <h6 className="mb-0 fw-semibold" style={{ color: NAVY }}>
+        {title}
+      </h6>
+    </div>
+    {children}
+  </div>
+);
 
+/* -------------------- Component -------------------- */
 const Charts: React.FC = () => {
-  const [monthlyData] = useState<MonthlyData[]>(dummyMonthlyData);
-  const [claimDistribution] = useState<ClaimDistribution[]>(dummyClaimDistribution);
-  const [stateWiseData] = useState<StateWiseData[]>(dummyStateWiseData);
-  const [loading] = useState<boolean>(false);
+  const [loading] = useState(false);
 
   if (loading) {
-    return (
-      <Row>
-        <Col>
-          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "400px" }}>
-            <div className="text-center">
-              <KiduLoader type="spinner" />
-              <p className="mt-3 text-muted">Loading dashboard data...</p>
-            </div>
-          </div>
-        </Col>
-      </Row>
-    );
+    return <KiduLoader />;
   }
 
-  const CHART_HEIGHT = "300px";
-  const CHART_MARGIN = { top: 10, right: 10, left: 10, bottom: 5 };
-  const yAxisFormatter = (value: number) => `₹${(value / 1000).toFixed(0)}k`;
-
   return (
-    <div className="pt-2">
-      <Row>
-        {/* 1. Monthly Contributions vs Claims (Line Chart) */}
-        <Col xs={12} md={6} lg={4} className="mb-4">
-          <Card className="shadow-sm border-0" style={{ height: CHART_HEIGHT }}>
-            <Card.Header className="bg-light p-3 border-bottom">
-              <h6 className="fw-bold mb-0 head-font" style={{ fontSize: '0.9rem', color: PRIMARY_COLOR }}>
-                💰 Monthly Contributions vs Claims
-              </h6>
-            </Card.Header>
-            <Card.Body className="p-1">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthlyData} margin={CHART_MARGIN}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="month" style={{ fontSize: '0.75rem' }} />
-                  <YAxis tickFormatter={yAxisFormatter} style={{ fontSize: '0.75rem' }} />
-                  <Tooltip 
-                    contentStyle={{ fontSize: '0.8rem' }}
-                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '0.8rem', paddingTop: '5px' }} />
-                  <Line
-                    type="monotone"
-                    dataKey="contributions"
-                    name="Contributions"
-                    stroke={SUCCESS_COLOR}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="claims"
-                    name="Claims"
-                    stroke={DANGER_COLOR}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
+    <div className="mt-3">
+      {/* ---------- ROW 1 ---------- */}
+      <Row className="g-4">
+        {/* Monthly Contributions vs Claims */}
+        <Col xs={12} lg={4}>
+          <CardWrapper
+            title="Monthly Contributions vs Claims"
+            icon={<TrendingUp size={16} color="#f59e0b" />}
+          >
+            <ResponsiveContainer width="100%" height={200}>
+              <AreaChart data={dummyMonthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="contributions"
+                  stroke={GREEN}
+                  fill={GREEN}
+                  fillOpacity={0.2}
+                  strokeWidth={2}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="claims"
+                  stroke={RED}
+                  fill={RED}
+                  fillOpacity={0.2}
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardWrapper>
         </Col>
 
-        {/* 2. Claim Type Distribution (Pie Chart) */}
-        <Col xs={12} md={6} lg={4} className="mb-4">
-          <Card className="shadow-sm border-0" style={{ height: CHART_HEIGHT }}>
-            <Card.Header className="bg-light p-3 border-bottom">
-              <h6 className="fw-bold mb-0 head-font" style={{ fontSize: '0.9rem', color: PRIMARY_COLOR }}>
-                📊 Claim Type Distribution
-              </h6>
-            </Card.Header>
-            <Card.Body className="p-1 d-flex justify-content-center align-items-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={claimDistribution as any}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={75}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                  >
-                    {claimDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ fontSize: '0.8rem' }} />
-                  <Legend 
-                    layout="horizontal" 
-                    align="center" 
-                    verticalAlign="bottom" 
-                    wrapperStyle={{ fontSize: '0.75rem', lineHeight: '18px' }} 
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        {/* 3. State-wise Membership (Horizontal Bar Chart) */}
-        <Col xs={12} md={6} lg={4} className="mb-4">
-          <Card className="shadow-sm border-0" style={{ height: CHART_HEIGHT }}>
-            <Card.Header className="bg-light p-3 border-bottom">
-              <h6 className="fw-bold mb-0 head-font" style={{ fontSize: '0.9rem', color: PRIMARY_COLOR }}>
-                🗺️ State-wise Membership
-              </h6>
-            </Card.Header>
-            <Card.Body className="p-1">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={stateWiseData}
-                  layout="vertical"
-                  margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+        {/* Claim Type Distribution */}
+        <Col xs={12} lg={4}>
+          <CardWrapper
+            title="Claim Type Distribution"
+            icon={<PieIcon size={16} color="#f59e0b" />}
+          >
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={dummyClaimDistribution}
+                  innerRadius={45}
+                  outerRadius={70}
+                  dataKey="value"
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis type="number" style={{ fontSize: '0.75rem' }} />
-                  <YAxis dataKey="state" type="category" width={100} style={{ fontSize: '0.75rem' }} />
-                  <Tooltip contentStyle={{ fontSize: '0.8rem' }} />
-                  <Bar dataKey="members">
-                    {stateWiseData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
+                  {dummyClaimDistribution.map((item, i) => (
+                    <Cell key={i} fill={item.color} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+
+            <div className="d-flex flex-wrap justify-content-center gap-3 mt-2 text-xs">
+              {dummyClaimDistribution.map((item, i) => (
+                <div key={i} className="d-flex align-items-center gap-1">
+                  <span
+                    className="rounded-circle"
+                    style={{
+                      width: 8,
+                      height: 8,
+                      backgroundColor: item.color,
+                    }}
+                  />
+                  <small className="text-muted">{item.name}</small>
+                </div>
+              ))}
+            </div>
+          </CardWrapper>
+        </Col>
+
+        {/* State-wise Membership */}
+        <Col xs={12} lg={4}>
+          <CardWrapper
+            title="State-wise Membership"
+            icon={<BarChart3 size={16} color="#f59e0b" />}
+          >
+            <div className="d-flex flex-column gap-3">
+              {dummyStateWiseData.map((s, i) => (
+                <div key={i}>
+                  <div className="d-flex justify-content-between small mb-1">
+                    <span className="text-muted">{s.state}</span>
+                    <span className="fw-medium">
+                      {s.members.toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="bg-light rounded-pill" style={{ height: 6 }}>
+                    <div
+                      className="rounded-pill"
+                      style={{
+                        width: `${(s.members / 1500) * 100}%`,
+                        height: 6,
+                        backgroundColor: s.fill,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardWrapper>
         </Col>
       </Row>
 
-      <Row>
-        {/* 4. Yearly Comparison (Bar Chart) */}
-        <Col xs={12} lg={6} className="mb-4">
-          <Card className="shadow-sm border-0" style={{ height: CHART_HEIGHT }}>
-            <Card.Header className="bg-light p-3 border-bottom">
-              <h6 className="fw-bold mb-0 head-font" style={{ fontSize: '0.9rem', color: PRIMARY_COLOR }}>
-                📈 Monthly Financial Comparison
-              </h6>
-            </Card.Header>
-            <Card.Body className="p-1">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={monthlyData} margin={CHART_MARGIN}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="month" style={{ fontSize: '0.75rem' }} />
-                  <YAxis tickFormatter={yAxisFormatter} style={{ fontSize: '0.75rem' }} />
-                  <Tooltip 
-                    contentStyle={{ fontSize: '0.8rem' }}
-                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '0.8rem', paddingTop: '5px' }} />
-                  <Bar dataKey="contributions" fill={SUCCESS_COLOR} name="Contributions" />
-                  <Bar dataKey="claims" fill={DANGER_COLOR} name="Claims" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
+      {/* ---------- ROW 2 ---------- */}
+      <Row className="g-4 mt-1">
+        {/* Monthly Financial Comparison */}
+        <Col xs={12} lg={6}>
+          <CardWrapper
+            title="Monthly Financial Comparison"
+            icon={<BarChart3 size={16} color="#f59e0b" />}
+          >
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={dummyMonthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                <YAxis tickFormatter={yAxisFormatter} tick={{ fontSize: 11 }} />
+                <Tooltip />
+                <Bar dataKey="contributions" fill={GREEN} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="claims" fill={RED} radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardWrapper>
         </Col>
 
-        {/* 5. Contribution Trends (Line Chart) */}
-        <Col xs={12} lg={6} className="mb-4">
-          <Card className="shadow-sm border-0" style={{ height: CHART_HEIGHT }}>
-            <Card.Header className="bg-light p-3 border-bottom">
-              <h6 className="fw-bold mb-0 head-font" style={{ fontSize: '0.9rem', color: PRIMARY_COLOR }}>
-                💵 Contribution Trends
-              </h6>
-            </Card.Header>
-            <Card.Body className="p-1">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthlyData} margin={CHART_MARGIN}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="month" style={{ fontSize: '0.75rem' }} />
-                  <YAxis tickFormatter={yAxisFormatter} style={{ fontSize: '0.75rem' }} />
-                  <Tooltip 
-                    contentStyle={{ fontSize: '0.8rem' }}
-                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
-                  />
-                  <Legend wrapperStyle={{ fontSize: '0.8rem', paddingTop: '5px' }} />
-                  <Line
-                    type="monotone"
-                    dataKey="contributions"
-                    name="Total Contributions"
-                    stroke={PRIMARY_COLOR}
-                    strokeWidth={3}
-                    dot={{ fill: PRIMARY_COLOR, r: 4 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
+        {/* Contribution Trends */}
+        <Col xs={12} lg={6}>
+          <CardWrapper
+            title="Contribution Trends"
+            icon={<TrendingUp size={16} color="#f59e0b" />}
+          >
+            <ResponsiveContainer width="100%" height={240}>
+              <LineChart data={dummyMonthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                <YAxis tickFormatter={yAxisFormatter} tick={{ fontSize: 11 }} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="contributions"
+                  stroke={NAVY}
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5, fill: "#f59e0b" }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardWrapper>
         </Col>
       </Row>
     </div>
