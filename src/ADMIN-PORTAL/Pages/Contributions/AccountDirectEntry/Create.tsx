@@ -4,13 +4,13 @@ import KiduCreate from "../../../Components/KiduCreate";
 import MemberPopup from "../Member/MemberPopup";
 import BranchPopup from "../../Branch/BranchPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
+import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Month } from "../../../Types/Settings/Month.types";
+import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
-import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 
 const AccountDirectEntryCreate: React.FC = () => {
 
@@ -46,12 +46,17 @@ const AccountDirectEntryCreate: React.FC = () => {
   const toIsoMidnight = (v?: string) => (v ? `${v}T00:00:00` : "");
 
   const handleSubmit = async (formData: Record<string, any>) => {
+
     if (!selectedMember) throw new Error("Please select Member");
     if (!selectedBranch) throw new Error("Please select Branch");
     if (!selectedMonth) throw new Error("Please select Month");
-    if (!selectedYearMaster) throw new Error("Please enter Year");
+    if (!selectedYearMaster) throw new Error("Please select Year");
 
     const isApproved = Boolean(formData.isApproved);
+
+    if (isApproved && !formData.approvedDate) {
+      throw new Error("Approved Date is required when Approved is ON");
+    }
 
     const payload: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs"> = {
       memberId: selectedMember.memberId,
@@ -70,39 +75,22 @@ const AccountDirectEntryCreate: React.FC = () => {
       status: formData.status,
       isApproved,
       approvedBy: isApproved ? formData.approvedBy?.trim() || "" : "",
-      approvedDate: isApproved && formData.approvedDate? toIsoMidnight(formData.approvedDate) : "",
+      approvedDate: isApproved ? toIsoMidnight(formData.approvedDate) : "",
     };
 
     await AccountDirectEntryService.createAccountDirectEntry(payload);
   };
 
   const popupHandlers = {
-    memberId: {
-      value: selectedMember?.name || "",
-      actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(true),
-    },
-    branchId: {
-      value: selectedBranch?.name || "",
-      actualValue: selectedBranch?.branchId,
-      onOpen: () => setShowBranchPopup(true),
-    },
-    monthCode: {
-      value: selectedMonth?.monthName || "",
-      actualValue: selectedMonth?.monthCode,
-      onOpen: () => setShowMonthPopup(true),
-    },
-    yearOf: {
-      value: selectedYearMaster?.yearName?.toString() || "",
-      actualValue: selectedYearMaster?.yearOf,
-      onOpen: () => setShowYearMasterPopup(true),
-},
-
+    memberId: { value: selectedMember?.name || "", onOpen: () => setShowMemberPopup(true) },
+    branchId: { value: selectedBranch?.name || "", onOpen: () => setShowBranchPopup(true) },
+    monthCode: { value: selectedMonth?.monthName || "", onOpen: () => setShowMonthPopup(true) },
+    yearOf: { value: selectedYearMaster?.yearName?.toString() || "", onOpen: () => setShowYearMasterPopup(true) },
   };
-//status options
-const statusOptions =[
-  {value:"Submitted",label:"Submitted"},
-]
+
+  const statusOptions = [
+    { value: "Submitted", label: "Submitted" },
+  ];
 
   return (
     <>
@@ -111,37 +99,34 @@ const statusOptions =[
         fields={fields}
         onSubmit={handleSubmit}
         submitButtonText="Create Entry"
-        showResetButton
         successMessage="Account Direct Entry created successfully!"
         errorMessage="Failed to create Account Direct Entry"
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
-        navigateDelay={1200}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
-        options={{
-          status:statusOptions
-        }}
+        options={{ status: statusOptions }}
       />
-      <MemberPopup
-        show={showMemberPopup}
-        handleClose={() => setShowMemberPopup(false)}
-        onSelect={setSelectedMember}
-      /> 
-      <BranchPopup
-        show={showBranchPopup}
-        handleClose={() => setShowBranchPopup(false)}
-        onSelect={setSelectedBranch}
-      />
-      <MonthPopup
-        show={showMonthPopup}
-        handleClose={() => setShowMonthPopup(false)}
-        onSelect={setSelectedMonth}
-      />
-      <YearMasterPopup
-        show={showYearMasterPopup}
-        handleClose={() => setShowYearMasterPopup(false)}
-        onSelect={setSelectedYearMaster}
-      />
+
+      <MemberPopup 
+       show={showMemberPopup} 
+       handleClose={() => setShowMemberPopup(false)} 
+       onSelect={setSelectedMember} 
+       />
+      <BranchPopup 
+       show={showBranchPopup} 
+       handleClose={() => setShowBranchPopup(false)} 
+       onSelect={setSelectedBranch} 
+       />
+      <MonthPopup 
+       show={showMonthPopup} 
+       handleClose={() => setShowMonthPopup(false)} 
+       onSelect={setSelectedMonth} 
+       />
+      <YearMasterPopup 
+       show={showYearMasterPopup} 
+       handleClose={() => setShowYearMasterPopup(false)} 
+       onSelect={setSelectedYearMaster} 
+       />
     </>
   );
 };

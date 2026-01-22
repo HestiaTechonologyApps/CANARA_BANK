@@ -10,7 +10,6 @@ import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Month } from "../../../Types/Settings/Month.types";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
-
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
 
 const AccountDirectEntryEdit: React.FC = () => {
