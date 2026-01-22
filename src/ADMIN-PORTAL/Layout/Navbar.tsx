@@ -1,6 +1,6 @@
 // src/components/AdminComponents/AdminNavbar.tsx
 import React, { useEffect, useState } from "react";
-import { BsBell, BsChevronDown } from "react-icons/bs";
+import { BsChevronDown } from "react-icons/bs";
 import { Container, Image, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import profile from "../Assets/Images/profile.jpg";
@@ -13,28 +13,25 @@ import ActivityPanel from "./ActivityPanel";
 import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
 import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
+import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
 
 const NavbarComponent: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
-
   const [showDropdown, setShowDropdown] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-
   const [username, setUsername] = useState<string>("Username");
-   const [useremail, setUseremail] = useState<string>("userEmail");
+  const [useremail, setUseremail] = useState<string>("userEmail");
   const [profilePic, setProfilePic] = useState<string>(profile);
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
-
   // Fetch username from localStorage
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
-
         if (parsedUser?.userName) {
           queueMicrotask(() => {
             setUsername(parsedUser.userName);
@@ -45,7 +42,6 @@ const NavbarComponent: React.FC = () => {
           setProfilePic(getFullImageUrl(parsedUser.profilePic));
         }
       }
-
       // 🔄 LISTEN FOR CHANGES TO PROFILE PIC
       const handleProfileUpdate = () => {
         const updatedUser = localStorage.getItem("user");
@@ -54,9 +50,7 @@ const NavbarComponent: React.FC = () => {
           setProfilePic(getFullImageUrl(parsed.profilePic));
         }
       };
-
       window.addEventListener("profile-pic-updated", handleProfileUpdate);
-
       return () => {
         window.removeEventListener("profile-pic-updated", handleProfileUpdate);
       };
@@ -67,7 +61,6 @@ const NavbarComponent: React.FC = () => {
 
 
   const handleClose = () => setShowNotifications(false);
-  const handleShow = () => setShowNotifications(true);
 
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
@@ -133,11 +126,14 @@ const NavbarComponent: React.FC = () => {
             </div>
 
             {/* Notifications */}
-            <BsBell
+            {/* <BsBell
               size={20}
               className="cursor-pointer"
               onClick={handleShow}
-            />
+            /> */}
+
+            <AdminNotificationDropdown />
+
 
             {/* Profile Section */}
             <div
@@ -166,7 +162,7 @@ const NavbarComponent: React.FC = () => {
               <KiduNavbarDropdown
                 show={showDropdown}
                 onToggle={setShowDropdown}
-                name=  {username}
+                name={username}
                 email={useremail}
 
                 onAccountSettings={() => {
@@ -202,8 +198,6 @@ const NavbarComponent: React.FC = () => {
 
       {/* Notification Offcanvas */}
       <ActivityPanel show={showNotifications} handleClose={handleClose} />
-      
-
       <KiduLogoutModal
         show={showLogoutModal}
         onCancel={() => setShowLogoutModal(false)}

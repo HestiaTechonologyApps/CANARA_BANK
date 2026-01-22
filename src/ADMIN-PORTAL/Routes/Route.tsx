@@ -151,6 +151,7 @@ import YearMasterEdit from '../Pages/YearMaster/Edit';
 import YearMasterView from '../Pages/YearMaster/View';
 
 import FileUploadCreate from '../Pages/Contributions/MonthlyContribution/FileUpload';
+import Notifications from '../Pages/Notifications/Notifications';
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
@@ -315,7 +316,8 @@ export const adminRoutes = (
 
 <Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} />
 
-  
+   <Route path="notifications" element={<Notifications />} />
+
     </Route>
     
     {/* Catch-All Route for 404 */}
