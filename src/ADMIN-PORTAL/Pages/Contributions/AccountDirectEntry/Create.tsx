@@ -126,7 +126,7 @@ const statusOptions =[
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={setSelectedMember}
-      />
+      /> 
       <BranchPopup
         show={showBranchPopup}
         handleClose={() => setShowBranchPopup(false)}
