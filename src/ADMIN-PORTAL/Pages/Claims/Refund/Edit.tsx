@@ -77,7 +77,6 @@ const RefundContributionEdit: React.FC = () => {
        const year = await YearMasterService.getYearMasterById(refund.yearOF);
        setSelectedYearMaster(year.value);
     }
-  
     return response;
   };
 
@@ -85,7 +84,8 @@ const RefundContributionEdit: React.FC = () => {
     if (!selectedState || !selectedMember || !selectedDesignation ||! selectedYearMaster) {
       throw new Error("Please select all required values");
     }
-    const payload: Partial<Omit<RefundContribution, "refundContributionId" | "auditLogs">> = {
+    const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
+      refundContributionId: Number(id), 
       staffNo: selectedMember.staffNo,
       stateId: selectedState.stateId,
       memberId: selectedMember.memberId,
