@@ -82,7 +82,6 @@ const DeathClaimEdit: React.FC = () => {
     };
   };
 
-  // ================= UPDATE =================
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedState || !selectedMember || !selectedDesignation || !selectedYearMaster) {
       throw new Error("Please select all required values");

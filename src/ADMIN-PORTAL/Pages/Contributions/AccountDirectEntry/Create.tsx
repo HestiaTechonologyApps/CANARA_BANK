@@ -46,7 +46,6 @@ const AccountDirectEntryCreate: React.FC = () => {
   const toIsoMidnight = (v?: string) => (v ? `${v}T00:00:00` : "");
 
   const handleSubmit = async (formData: Record<string, any>) => {
-
     if (!selectedMember) throw new Error("Please select Member");
     if (!selectedBranch) throw new Error("Please select Branch");
     if (!selectedMonth) throw new Error("Please select Month");
@@ -106,7 +105,6 @@ const AccountDirectEntryCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{ status: statusOptions }}
       />
-
       <MemberPopup 
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 
