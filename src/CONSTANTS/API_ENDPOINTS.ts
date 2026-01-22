@@ -72,6 +72,7 @@ export const API_ENDPOINTS = {
     CREATE: `${API_BASE_URL}/ManagingComitee`,
     UPDATE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
+    UPLOAD_IMAGE:`${API_BASE_URL}/ManagingComitee/upload-image`,
   },
   STATE: {
     GET_ALL: `${API_BASE_URL}/State`,
