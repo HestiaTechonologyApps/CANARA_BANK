@@ -26,7 +26,6 @@ const CompanyCreate: React.FC = () => {
     { name: "country", rules: { type: "text", label: "Country", required: true, colWidth: 4 } },
 
     { name: "zipCode", rules: { type: "text", label: "Zip Code", required: true, colWidth: 4 } },
-    { name: "invoicePrefix", rules: { type: "text", label: "Invoice Prefix", required: true, colWidth: 4 } },
 
     { name: "companyLogo", rules: { type: "text", label: "Company Logo (Base64)", required: false, colWidth: 4 } },
 
