@@ -25,10 +25,7 @@ const MemberCreate: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  // const [profileImage, setProfileImage] = useState<File | null>(null);
-  // const [profileImagePreview, setProfileImagePreview] = useState<string>("");
   const [_isUploading, setIsUploading] = useState(false);
-  // const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
@@ -50,36 +47,6 @@ const MemberCreate: React.FC = () => {
   ];
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
-
-  // const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     if (file.size > 5 * 1024 * 1024) {
-  //       alert("Image size should be less than 5MB");
-  //       return;
-  //     }
-  //     if (!file.type.startsWith('image/')) {
-  //       alert("Please select a valid image file");
-  //       return;
-  //     }
-  //     setProfileImage(file);
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfileImagePreview(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleRemoveImage = () => {
-  //   setProfileImage(null);
-  //   setProfileImagePreview("");
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.value = "";
-  //   }
-  // };
-
-
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedBranch) throw new Error("Please select a branch");
     if (!selectedDesignation) throw new Error("Please select a designation");
@@ -110,21 +77,6 @@ const MemberCreate: React.FC = () => {
     } as Omit<Member, "memberId" | "auditLogs">;
 
     const createdMember = await MemberService.createMember(payload);
-
-    // Upload profile picture if exists
-  //   if (profileImage && createdMember.memberId) {
-  //     try {
-  //       setIsUploading(true);
-  //       await MemberService.uploadProfilePicture(profileImage, createdMember.memberId);
-  //     } catch (error) {
-  //       console.error("Failed to upload profile picture:", error);
-  //       // Don't throw error here, member is already created
-  //       console.warn("Member created but profile picture upload failed");
-  //     } finally {
-  //       setIsUploading(false);
-  //     }
-  //   }
-  // };
 
   // ✅ IMAGE NOW COMES FROM KiduCreate
     if (formData.profileImage && createdMember.memberId) {
@@ -188,81 +140,6 @@ const MemberCreate: React.FC = () => {
 
   return (
     <>
-      {/* <div className="mb-4">
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">Profile Picture</h5>
-            <div className="d-flex align-items-center gap-3">
-              <div>
-                {profileImagePreview ? (
-                  <img 
-                    src={profileImagePreview} 
-                    alt="Profile Preview" 
-                    style={{ 
-                      width: '120px', 
-                      height: '120px', 
-                      objectFit: 'cover', 
-                      borderRadius: '8px',
-                      border: '2px solid #dee2e6'
-                    }} 
-                  />
-                ) : (
-                  <div 
-                    style={{ 
-                      width: '120px', 
-                      height: '120px', 
-                      backgroundColor: '#f8f9fa',
-                      border: '2px dashed #dee2e6',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#6c757d'
-                    }}
-                  >
-                    No Image
-                  </div>
-                )}
-              </div>
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageSelect}
-                  style={{ display: 'none' }}
-                  id="profile-image-input"
-                />
-                <label 
-                  htmlFor="profile-image-input" 
-                  className="btn btn-primary btn-sm mb-2"
-                  style={{ cursor: 'pointer' }}
-                >
-                  Select Image
-                </label>
-                {profileImage && (
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="btn btn-danger btn-sm ms-2 mb-2"
-                  >
-                    Remove
-                  </button>
-                )}
-                <div className="text-muted small">
-                  Max size: 5MB. Accepted formats: JPG, PNG, GIF
-                </div>
-                {isUploading && (
-                  <div className="text-primary small mt-1">
-                    Uploading image...
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <KiduCreate
         title="Create Member"
         fields={fields}

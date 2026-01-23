@@ -8,18 +8,7 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 const columns = [
   { key: "memberId", label: "Member ID", enableSorting: true, type: "text" as const },
   { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" as const },
-  {
-    key: "profileImageSrc",
-    label: "Photo",
-    enableSorting: false,
-    type: "image" as const,
-    imageConfig: {
-      width: 40,
-      height: 40,
-      isCircle: true,
-      defaultImage: defaultProfileImage
-    }
-  },
+  { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" as const, imageConfig: { width: 40, height: 40, isCircle: true, defaultImage: defaultProfileImage } },
   { key: "name", label: "Name", enableSorting: true, type: "text" as const },
   { key: "designationName", label: "Designation", enableSorting: true, type: "text" as const },
   { key: "categoryname", label: "Category", enableSorting: true, type: "text" as const },

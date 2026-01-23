@@ -1,48 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
 import ManagingCommitteeService from "../../Services/CMS/ManagingCommittee.services";
 import type { ManagingCommittee } from "../../Types/CMS/ManagingCommittee.types";
-//import type { Company } from "../../Types/Settings/Company.types";
-//import CompanyPopup from "../Settings/Company/CompanyPopup";
+import profiledefaultimg from "../../Assets/Images/profile.jpg";
 
 const ManagingCommitteeCreate: React.FC = () => {
-  //const [showCompanyPopup, setShowCompanyPopup] = useState(false);
-  //const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
- const fields: Field[] = [
-  { name: "managingComitteeName", rules: { type: "text", label: "Name", required: true, placeholder: "Enter committee member name", colWidth: 6 } },
-  { name: "position", rules: { type: "text", label: "Position", required: true, placeholder: "Chairman / Director / Member", colWidth: 6 } },
-  { name: "description1", rules: { type: "textarea", label: "Primary Description", required: true, placeholder: "Brief introduction or role summary", colWidth: 6 } },
-  { name: "description2", rules: { type: "textarea", label: "Additional Description", placeholder: "Optional additional details", colWidth: 6 } },
-  { name: "imageLocation", rules: { type: "text", label: "Profile Image URL", required: true, placeholder: "https://example.com/image.jpg", colWidth: 6 } },
-  { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 6 } },
- // { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 3 } },
-];
+  const [_isUploading, setIsUploading] = useState(false);
 
+  // ================= FORM FIELDS =================
+  const fields: Field[] = [
+    { name: "managingComitteeName", rules: { type: "text", label: "Name", required: true, placeholder: "Enter committee member name", colWidth: 6 } },
+    { name: "position", rules: { type: "text", label: "Position", required: true, placeholder: "Chairman / Director / Member", colWidth: 6 } },
+    { name: "description1", rules: { type: "textarea", label: "Primary Description", required: true, placeholder: "Brief introduction or role summary", colWidth: 6 } },
+    { name: "description2", rules: { type: "textarea", label: "Additional Description", placeholder: "Optional additional details", colWidth: 6 } },
+    { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 6 } },
+  ];
+
+  // ================= SUBMIT HANDLER =================
   const handleSubmit = async (formData: Record<string, any>) => {
-    //if (!selectedCompany) throw new Error("Please select a company");
-
     const payload: Omit<ManagingCommittee, "managingComiteeId" | "auditLogs"> = {
       managingComitteeName: formData.managingComitteeName.trim(),
       position: formData.position.trim(),
       description1: formData.description1.trim(),
       description2: formData.description2?.trim(),
-      imageLocation: formData.imageLocation.trim(),
+      imageLocation: "", // backend will update after upload
       order: Number(formData.order),
       companyId: formData.companyId,
     };
 
-    await ManagingCommitteeService.createManagingCommittee(payload);
-  };
+    // 1️⃣ Create committee member first
+    const createdCommittee = await ManagingCommitteeService.createManagingCommittee(payload);
 
-  // const popupHandlers = {
-  //   companyId: {
-  //     value: selectedCompany?.companyId?.toString() || "",
-  //     actualValue: selectedCompany?.companyId,
-  //     onOpen: () => setShowCompanyPopup(true),
-  //   },
-  // };
+    // 2️⃣ Upload image (from KiduCreate)
+    if (formData.profileImage && createdCommittee.managingComiteeId) {
+      try {
+        setIsUploading(true);
+        await ManagingCommitteeService.uploadManagingCommitteeImage(
+          formData.profileImage,
+          createdCommittee.managingComiteeId
+        );
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
 
   return (
     <>
@@ -52,18 +57,19 @@ const ManagingCommitteeCreate: React.FC = () => {
         onSubmit={handleSubmit}
         submitButtonText="Create Managing Committee"
         showResetButton
+
+        // ✅ SAME AS MEMBER CREATE
+        imageConfig={{
+          fieldName: "profileImage",
+          defaultImage: profiledefaultimg,
+          label: "Committee Member Image",
+        }}
+
         successMessage="Managing Committee created successfully!"
         errorMessage="Failed to create managing committee. Please try again."
         navigateOnSuccess="/dashboard/cms/manage-committe-list"
-        //popupHandlers={popupHandlers}
         themeColor="#1B3763"
       />
-
-      {/* <CompanyPopup
-        show={showCompanyPopup}
-        handleClose={() => setShowCompanyPopup(false)}
-        onSelect={setSelectedCompany}
-      /> */}
     </>
   );
 };
