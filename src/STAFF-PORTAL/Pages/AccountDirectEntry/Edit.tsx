@@ -9,7 +9,9 @@ import KiduEdit, { type Field } from "../../../ADMIN-PORTAL/Components/KiduEdit"
 import MemberPopup from "../../../ADMIN-PORTAL/Pages/Contributions/Member/MemberPopup";
 import BranchPopup from "../../../ADMIN-PORTAL/Pages/Branch/BranchPopup";
 import MonthPopup from "../../../ADMIN-PORTAL/Pages/Settings/Month/MonthPopup";
-import type { AccountsDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
+import type { AccountDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
+import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
+import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
 
 
 const StaffAccountDirectEntryEdit: React.FC = () => {
@@ -19,6 +21,9 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
+   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
+   
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : null);
 
@@ -26,7 +31,7 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
-    { name: "yearOf", rules: { type: "number", label: "Year", required: true, colWidth: 4 } },
+    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
@@ -60,13 +65,16 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         monthCode: entry.monthCode,
         monthName: entry.monthName,
       } as Month);
+
+        setSelectedYearMaster({ yearOf: entry.yearOf, yearName: entry.yearOf } as YearMaster);
+      
     }
 
     return response;
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth) {
+    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
 
@@ -74,13 +82,14 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       throw new Error("DD / IBA Date is required");
     }
 
-    const payload: Omit<AccountsDirectEntry, "auditLogs"> = {
+    const payload: Omit<AccountDirectEntry, "auditLogs"> = {
       accountsDirectEntryID: Number(id),
       memberId: selectedMember.memberId,
       name: selectedMember.name,
       branchId: selectedBranch.branchId,
       monthCode: selectedMonth.monthCode,
-      yearOf: Number(formData.yearOf),
+      // yearOf: Number(formData.yearOf),
+      yearOf: selectedYearMaster?.yearOf || "",
       ddIba: formData.ddIba || "",
       ddIbaDate: toIso(formData.ddIbaDate),
       amt: Number(formData.amt),
@@ -121,6 +130,11 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },
+    yearOf: {
+      value: selectedYearMaster?.yearName?.toString() || "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
+    },
   };
 
   return (
@@ -142,6 +156,12 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} showAddButton={false} />
       <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} showAddButton={false} />
       <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} showAddButton={false} />
+         <YearMasterPopup
+        show={showYearMasterPopup}
+        handleClose={() => setShowYearMasterPopup(false)}
+        onSelect={setSelectedYearMaster} 
+        showAddButton={false}
+      />
     </>
   );
 };

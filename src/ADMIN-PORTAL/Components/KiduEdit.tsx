@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Image, Card, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEye, FaEyeSlash, FaPen } from "react-icons/fa";
+import { FaEye, FaEyeSlash} from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 import Swal from 'sweetalert2';
 import KiduValidation from "../../Components/KiduValidation";
@@ -452,15 +452,15 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     }
   };
 
-  const formatDate = (isoString: string | null) => {
-    if (!isoString) return "N/A";
-    const date = new Date(isoString);
-    const d = String(date.getDate()).padStart(2, "0");
-    const m = date.toLocaleString("en-US", { month: "long" });
-    const y = date.getFullYear();
-    const t = date.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-    return `${d}-${m}-${y} ${t}`;
-  };
+  // const formatDate = (isoString: string | null) => {
+  //   if (!isoString) return "N/A";
+  //   const date = new Date(isoString);
+  //   const d = String(date.getDate()).padStart(2, "0");
+  //   const m = date.toLocaleString("en-US", { month: "long" });
+  //   const y = date.getFullYear();
+  //   const t = date.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+  //   return `${d}-${m}-${y} ${t}`;
+  // };
 
   const togglePasswordVisibility = (fieldName: string) => {
     setShowPasswords(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
@@ -686,7 +686,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           <Card.Body style={{ padding: "1.5rem" }}>
             <Form onSubmit={handleSubmit}>
               <Row className="mb-3">
-                {imageConfig && (
+                {/* {imageConfig && (
                   <Col xs={12} md={3} className="d-flex flex-column align-items-start mb-4">
                     <div style={{ position: "relative", width: "160px", height: "160px" }}>
                       <Image
@@ -742,6 +742,86 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                           Last Login: {formatDate(formData[imageConfig.showLastLoginField])}
                         </p>
                       )}
+                    </div>
+                  </Col>
+                )} */}
+
+                 {imageConfig && (
+                  <Col xs={12}>
+                    <div className="card mb-4">
+                      <div className="card-body">
+                        <h5 className="card-title mb-3">
+                          {imageConfig.label || "Profile Picture"}
+                        </h5>
+
+                        <div className="d-flex align-items-center gap-3">
+                          {/* Image Preview */}
+                          <div>
+                            {previewUrl ? (
+                              <Image
+                                src={previewUrl}
+                                alt={imageConfig.label || "Preview"}
+                                style={{
+                                  width: "120px",
+                                  height: "120px",
+                                  objectFit: "cover",
+                                  borderRadius: "8px",
+                                  border: "2px solid #dee2e6",
+                                }}
+                                onError={(e: any) => {
+                                  e.target.src = imageConfig.defaultImage;
+                                }}
+                              />
+                            ) : (
+                              <div
+                                style={{
+                                  width: "120px",
+                                  height: "120px",
+                                  backgroundColor: "#f8f9fa",
+                                  border: "2px dashed #dee2e6",
+                                  borderRadius: "8px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  color: "#6c757d",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                No Image
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Actions */}
+                          {imageConfig.editable !== false && (
+                            <div>
+                              <input
+                                type="file"
+                                id={imageConfig.fieldName}
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={{ display: "none" }}
+                              />
+
+                              <label
+                                htmlFor={imageConfig.fieldName}
+                                className="btn btn-primary btn-sm mb-2"
+                                style={{
+                                  cursor: "pointer",
+                                  backgroundColor: themeColor,
+                                  border: "none",
+                                }}
+                              >
+                                {selectedFile ? "Change Image" : "Select Image"}
+                              </label>
+
+                              <div className="text-muted small">
+                                Max size: 5MB. Accepted formats: JPG, PNG, GIF
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </Col>
                 )}

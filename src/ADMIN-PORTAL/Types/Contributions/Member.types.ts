@@ -29,7 +29,7 @@ export interface Member {
   modifiedDate: Date | string;
   modifiedDateString: string;
   nominee: string;
-  profileImageSrc: string;
+  profileImageSrc?: string;
   nomineeRelation: string;
   nomineeIDentity: string;
   unionMember: string;

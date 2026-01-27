@@ -103,14 +103,14 @@ const PublicPageCreate: React.FC = () => {
   /* ===================== RENDER ===================== */
   return (
     <>
-      <div className="container px-4 mt-5" style={{ fontFamily: "Urbanist" }}>
+      <div className="container px-1" style={{ fontFamily: "Urbanist" }}>
         <div className="shadow-sm rounded p-4 bg-white">
 
           {/* ===== HEADER ===== */}
           <div className="d-flex align-items-center mb-3">
             <KiduPrevious />
             <h4 className="fw-bold mb-0 ms-2" style={{ color: themeColor }}>
-              Create Public Page
+              Create content for public page
             </h4>
           </div>
 
@@ -120,7 +120,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== NAVBAR ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Navbar</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Navbar</Card.Header>
               <Card.Body>
                 <Row>
                   {input("navBrandTitle", "Brand Title")}
@@ -149,7 +149,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== HOME PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Home Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Home Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("homeHeroBadge", "Hero Badge")}
@@ -178,7 +178,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== NEWS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">News Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>News Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("newsHeroTitle", "Hero Title")}
@@ -201,7 +201,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== ABOUT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">About Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>About Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("aboutHeaderTitle", "Header Title")}
@@ -230,7 +230,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== RULES PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Rules Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Rules Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("rulesHeaderTitle", "Header Title")}
@@ -249,7 +249,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== DOWNLOADS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Downloads Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Downloads Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("downloadsHeaderTitle", "Header Title")}
@@ -265,7 +265,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== COMMITTEE PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Committee Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Committee Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("committeeHeaderTitle", "Header Title")}
@@ -277,7 +277,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== CLAIMS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Claims Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Claims Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("claimsHeroTitle", "Hero Title")}
@@ -299,7 +299,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== CONTACT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Contact Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Contact Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("contactHeaderTitle", "Header Title")}
@@ -324,7 +324,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== FOOTER ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Footer</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Footer</Card.Header>
               <Card.Body>
                 <Row>
                   {input("footerBrandShortName", "Brand Short Name")}
@@ -346,7 +346,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== PRIVACY PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Privacy Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Privacy Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("privacyHeroBadge", "Hero Badge")}
@@ -371,7 +371,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== STATUS ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold">Status</Card.Header>
+              <Card.Header className="fw-semibold" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Status</Card.Header>
               <Card.Body>
                 {checkbox("isActive", "Is Active")}
               </Card.Body>

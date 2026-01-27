@@ -10,6 +10,8 @@ import BranchPopup from "../../../ADMIN-PORTAL/Pages/Branch/BranchPopup";
 import MonthPopup from "../../../ADMIN-PORTAL/Pages/Settings/Month/MonthPopup";
 import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributions/AccountDirectEntry.services";
 import type { AccountDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
+import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
+import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
 
 const StaffAccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -18,6 +20,10 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null)
+    const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
+      const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+    
+  
   // AUTO-POPULATE MEMBER FROM LOCAL STORAGE
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,7 +40,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month Code", required: true, colWidth: 4 } },
-    { name: "yearOf", rules: { type: "number", label: "Year", required: true, colWidth: 4 } },
+    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "ddIba", rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4, required: true } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
@@ -55,13 +61,14 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     if (!selectedMember) throw new Error("Select member");
     if (!selectedBranch) throw new Error("Select branch");
     if (!selectedMonth) throw new Error("Select month");
-
+ if (!selectedYearMaster) throw new Error("Please select Year");
     const payload: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs"> = {
       memberId: selectedMember.memberId,
       name: selectedMember.name,
       branchId: selectedBranch.branchId,
       monthCode: selectedMonth.monthCode,
-      yearOf: Number(formData.yearOf),
+      // yearOf: Number(formData.yearOf),
+       yearOf: selectedYearMaster.yearOf,
       ddIba: formData.ddIba || "",
       ddIbaDate: toIso(formData.ddIbaDate),
       amt: Number(formData.amt),
@@ -95,7 +102,8 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       value: selectedMonth?.monthName || "",
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
-    }
+    },
+    yearOf: { value: selectedYearMaster?.yearName?.toString() || "", onOpen: () => setShowYearMasterPopup(true) },
   };
 
   //status option
@@ -142,7 +150,13 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
         onSelect={setSelectedMonth}
         showAddButton={false}
       />
-
+      
+      <YearMasterPopup 
+       show={showYearMasterPopup} 
+       handleClose={() => setShowYearMasterPopup(false)} 
+       onSelect={setSelectedYearMaster} 
+        showAddButton={false}
+       />
     </>
   );
 };

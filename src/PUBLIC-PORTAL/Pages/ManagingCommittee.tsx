@@ -4,26 +4,24 @@ import "../Style/ManagingCommittee.css";
 import { PublicService } from "../../Services/PublicService";
 import type { ManagingCommittee } from "../../ADMIN-PORTAL/Types/CMS/ManagingCommittee.types";
 import PublicManagingCommitteeService from "../Services/ManagingCommiteePublic.services";
+import { API_BASE_URL } from "../../CONSTANTS/API_ENDPOINTS";
 
-// interface Member {
-//   name: string;
-//   role: string;
-//   location?: string;
-//   phone?: string;
-//   email?: string;
-// }
 
 const ManagingCommitteePublic: React.FC = () => {
 
-   const managingCommittee = PublicService.managingCommittee
+  const managingCommittee = PublicService.managingCommittee
 
-   const [members, setMembers] = useState<ManagingCommittee[]>([]);
+  const [members, setMembers] = useState<ManagingCommittee[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchManagingCommittee = async () => {
       try {
         const data = await PublicManagingCommitteeService.getManagingCommittee();
+
+        // DEBUG: Log the data to see imageLocation format
+        console.log('Managing Committee Data:', data);
+        console.log('API_BASE_URL:', API_BASE_URL);
 
         // sort by order ASC
         const sortedData = [...data].sort(
@@ -40,7 +38,37 @@ const ManagingCommitteePublic: React.FC = () => {
 
     fetchManagingCommittee();
   }, []);
- 
+
+  //helper function to construct image URL
+  const getImageUrl = (imageLocation: string | null | undefined): string => {
+    if (!imageLocation) {
+      console.log('No imageLocation provided');
+      return '';
+    }
+
+    console.log('Original imageLocation:', imageLocation);
+
+    // If it's already a full URL, return as is
+    if (imageLocation.startsWith('http://') || imageLocation.startsWith('https://')) {
+      console.log('Full URL detected:', imageLocation);
+      return imageLocation;
+    }
+
+    // Construct URL from base
+    let baseUrl = API_BASE_URL;
+
+    // Remove /api from the end if it exists
+    baseUrl = baseUrl.replace(/\/api\/?$/, '');
+
+    // Ensure imageLocation starts with /
+    const path = imageLocation.startsWith('/') ? imageLocation : '/' + imageLocation;
+
+    const finalUrl = `${baseUrl}${path}`;
+    console.log('Constructed URL:', finalUrl);
+
+    return finalUrl;
+  };
+
   return (
     <div className="committee-wrapper">
 
@@ -48,7 +76,7 @@ const ManagingCommitteePublic: React.FC = () => {
       <div className="committee-header text-center py-4">
         <h2 className="committee-title">{managingCommittee.header.title}</h2>
         <p className="committee-subtitle">
-         {managingCommittee.header.subtitle}
+          {managingCommittee.header.subtitle}
         </p>
       </div>
 
@@ -56,29 +84,83 @@ const ManagingCommitteePublic: React.FC = () => {
         <Row className="g-4 justify-content-center">
 
           {
-           loading ? (
-            <p className="text-center">Loading...</p>
-          ) : (
-          members.map((member, index) => (
-            <Col key={index} lg={4} md={6} sm={12}>
-              <Card className="committee-card p-4 text-center">
+            loading ? (
+              <p className="text-center">Loading...</p>
+            ) : (
+              members.map((member, index) => {
+                const imageUrl = getImageUrl(member.imageLocation);
+                return (
+                  <Col key={index} lg={4} md={6} sm={12}>
+                    <Card className="committee-card p-4 text-center">
 
-                {/* Placeholder Avatar */}
-                <div className="avatar-circle mx-auto mb-3">
+                      {/* Placeholder Avatar */}
+                      {/* <div className="avatar-circle mx-auto mb-3">
                   <i className="bi bi-person-fill"></i>
-                </div>
+                </div> */}
 
-                {/* Member Name */}
-                <h5 className="member-name">{member.managingComitteeName}</h5>
+                      {/* Avatar */}
+                      {/* <div className="avatar-circle mx-auto mb-3">
+                      {member.imageLocation ? (
+                        <img
+                          src={`${API_BASE_URL
+                            .replace('http://', 'https://')
+                            .replace('/api', '')}${member.imageLocation}`}
+                          alt={member.managingComitteeName}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: "50%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <i className="bi bi-person-fill"></i>
+                      )}
+                    </div> */}
 
-                {/* Member Role */}
-                <p className="member-role">{member.position}</p>
+                      <div className="avatar-circle mx-auto mb-3">
+                        {imageUrl ? (
+                          <>
+                            <img
+                              src={imageUrl}
+                              alt={member.managingComitteeName}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                              }}
+                              onLoad={(_e) => {
+                                console.log('Image loaded successfully:', imageUrl);
+                              }}
+                              onError={(e) => {
+                                console.error('Image failed to load:', imageUrl);
+                                console.error('Original imageLocation:', member.imageLocation);
+                                e.currentTarget.style.display = 'none';
+                                const icon = e.currentTarget.parentElement?.querySelector('i');
+                                if (icon) {
+                                  icon.classList.remove('d-none');
+                                }
+                              }}
+                            />
+                            <i className="bi bi-person-fill d-none"></i>
+                          </>
+                        ) : (
+                          <i className="bi bi-person-fill"></i>
+                        )}
+                      </div>
 
-                {/* Location */}
-                <p className="member-location">{member.description2}</p>
+                      {/* Member Name */}
+                      <h5 className="member-name">{member.managingComitteeName}</h5>
 
-                {/* CONTACT INFO */}
-                {/* <div className="contact-info mt-3">
+                      {/* Member Role */}
+                      <p className="member-role">{member.position}</p>
+
+                      {/* Location */}
+                      <p className="member-location">{member.description2}</p>
+
+                      {/* CONTACT INFO */}
+                      {/* <div className="contact-info mt-3">
                   <p className="small mb-1">
                     <i className="bi bi-telephone-fill me-2"></i>
                     {member.phone}
@@ -88,9 +170,10 @@ const ManagingCommitteePublic: React.FC = () => {
                     {member.email}
                   </p>
                 </div> */}
-              </Card>
-            </Col>
-          )))}
+                    </Card>
+                  </Col>
+                )
+              }))}
 
         </Row>
       </Container>

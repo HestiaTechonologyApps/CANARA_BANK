@@ -367,7 +367,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   }
 
   return (
-    <Container fluid className="py-3 mt-1">
+    <Container fluid className="pb-3">
       {/* Title always shows regardless of data */}
       {showTitle !== false && (
         <Row className="mb-2 align-items-center">

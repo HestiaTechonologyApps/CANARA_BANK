@@ -63,7 +63,7 @@ const HeroSection: React.FC = () => {
       <Container className="position-relative text-white py-3 hero-content">
         <div className="hero-inner">
           <span className="hero-badge">
-          ✨{hero.badge || "Celebrating 50 Years of Service"}
+          {hero.badge || "Celebrating 50 Years of Service"}
           </span>
           <h1 className="hero-title">
           {hero.title.line1 || "Supporting Our"}
