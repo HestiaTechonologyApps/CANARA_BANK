@@ -35,8 +35,9 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
     UPLOAD: `${API_BASE_URL}/Attachment/upload`,
     DELETE: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
-    GET: `${API_BASE_URL}/Attachment`,
+    //GET: `${API_BASE_URL}/Attachment`,
     DOWNLOAD: (attachmentId: number) => `${API_BASE_URL}/Attachment/download/${attachmentId}`,
+    UPDATE:(id:number)=>`${API_BASE_URL}/Attachment/${id}`
   },
   DAY_QUOTE: {
     GET_ALL: `${API_BASE_URL}/DayQuote`,

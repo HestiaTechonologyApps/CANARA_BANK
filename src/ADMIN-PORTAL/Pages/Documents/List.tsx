@@ -17,8 +17,8 @@ const DocumentList: React.FC = () => {
     searchTerm: string;
   }): Promise<{ data: Attachment[]; total: number }> => {
     const attachments = await AttachmentService.getByTableAndId(
-      "public", // tableName
-      0         // recordId
+      "public", 
+      0        
     );
     return {
       data: attachments as unknown as Attachment[],
