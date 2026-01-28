@@ -1,5 +1,4 @@
 // src/components/CMS/PublicPage/PublicPageCreate.tsx
-
 import React, { useState } from "react";
 import { Form, Row, Col, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -40,11 +39,13 @@ const PublicPageCreate: React.FC = () => {
     try {
       setIsSubmitting(true);
 
-      const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
-        ...(formData as any),
-        isActive: Boolean(formData.isActive),
-        navMenuHead: Boolean(formData.navMenuHead),
-      };
+     const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
+  ...(formData as any),
+  isActive: Boolean(formData.isActive),
+  navMenuHead: String(formData.navMenuHead || ""),
+  contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
+};
+
 
       await PublicPageService.createPublicPage(payload);
 

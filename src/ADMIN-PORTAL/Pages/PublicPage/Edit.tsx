@@ -53,11 +53,12 @@ const PublicPageEdit: React.FC = () => {
     try {
       setIsSubmitting(true);
 
-      const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
-        ...(formData as any),
-        isActive: Boolean(formData.isActive),
-        navMenuHead: Boolean(formData.navMenuHead),
-      };
+          const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
+       ...(formData as any),
+       isActive: Boolean(formData.isActive),
+       navMenuHead: String(formData.navMenuHead || ""),
+       contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
+     };
 
       await PublicPageService.updatePublicPage(
         Number(publicPageId),
@@ -150,7 +151,7 @@ const PublicPageEdit: React.FC = () => {
                   {input("navBrandSubTitle", "Brand Subtitle")}
                   {input("navLogoUrl", "Logo URL")}
                   {input("navLogoAlt", "Logo Alt")}
-                  <Col md={12}>{checkbox("navMenuHead", "Menu Head")}</Col>
+                  {input("navMenuHead","Menu Head")}
                   {input("navHomeLabel", "Home Label")}
                   {input("navAboutLabel", "About Label")}
                   {input("navRulesLabel", "Rules Label")}
