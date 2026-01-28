@@ -47,32 +47,33 @@ const AccountDirectEntryCreate: React.FC = () => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYear) {
       throw new Error("Please select all required values");
     }
+const payload = {
+  accountsDirectEntry: {
+    memberId: selectedMember.memberId,
+    name: selectedMember.name,
+    branchId: selectedBranch.branchId,
+    monthCode: selectedMonth.monthCode,
+    yearOf: selectedYear.yearOf,
+    yearName: Number(selectedYear.yearName),
+    ddIba: formData.ddIba,
+    ddIbaDate: toIso(formData.ddIbaDate),
+    ddIbaDateString: toIso(formData.ddIbaDate),
+    amt: Number(formData.amt),
+    status: formData.status,
+    approvedBy: formData.approvedBy || null,
+    approvedDate: formData.approvedDate ? toIso(formData.approvedDate) : null,
+    approvedDateString: formData.approvedDate ? toIso(formData.approvedDate) : null,
+    isApproved: Boolean(formData.isApproved),
+    enrl: formData.enrl || "",
+    fine: formData.fine || "",
+    f9: formData.f9 || "",
+    f10: formData.f10 || "",
+    f11: formData.f11 || "",
+  }
+};
 
-    const payload = {
-      memberId: selectedMember.memberId,
-      name: selectedMember.name,
-      branchId: selectedBranch.branchId,
-      monthCode: selectedMonth.monthCode,
-      yearOf: selectedYear.yearOf,
-      yearName: Number(selectedYear.yearName), 
-      ddIba: formData.ddIba,
-      ddIbaDate: toIso(formData.ddIbaDate),
-      ddIbaDateString: toIso(formData.ddIbaDate),
-      amt: Number(formData.amt),
-      status: formData.status,
-      approvedBy: formData.approvedBy,
-      approvedDate: toIso(formData.approvedDate),
-      approvedDateString: toIso(formData.approvedDate),
-      isApproved: Boolean(formData.isApproved),
-      enrl: formData.enrl || "",
-      fine: formData.fine || "",
-      f9: formData.f9 || "",
-      f10: formData.f10 || "",
-      f11: formData.f11 || "",
+await AccountDirectEntryService.createAccountDirectEntry(payload as any);
 
-    };
-
-    await AccountDirectEntryService.createAccountDirectEntry(payload as any);
   };
 //status option
 const statusOption=[

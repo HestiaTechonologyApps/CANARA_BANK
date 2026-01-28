@@ -37,6 +37,10 @@ const AccountDirectEntryView: React.FC = () => {
       listRoute="/dashboard/contributions/accountDirectEntry-list"
       editRoute="/dashboard/contributions/accountDirectEntry-edit"
       themeColor="#1B3763"
+      loadingText="Loading account direct entries..."
+      showDeleteButton
+      showEditButton
+      deleteConfirmMessage="Are you sure you want to delete this entry? This action cannot be undone."
     />
   );
 };
