@@ -11,6 +11,11 @@ const AccountDirectEntryView: React.FC = () => {
     { key: "yearName", label: "Year" }, 
     { key: "amt", label: "Amount" },
     { key: "status", label: "Status" },
+    { key: "enrl", label: "ENRL", icon: "bi-file-text" },
+    { key: "fine", label: "Fine", icon: "bi-exclamation-circle" },
+    { key: "f9", label: "F9", icon: "bi-list-check" },
+    { key: "f10", label: "F10", icon: "bi-list-check" },
+    { key: "f11", label: "F11", icon: "bi-list-check" },
     { key: "isApproved", label: "Approved", isBoolean: true },
   ];
 

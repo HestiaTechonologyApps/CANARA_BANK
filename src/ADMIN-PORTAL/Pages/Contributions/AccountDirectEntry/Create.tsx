@@ -30,7 +30,12 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4 } },
+    { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
+    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
+    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
+    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
     { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 4 } },
     { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 4 } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
@@ -59,16 +64,20 @@ const AccountDirectEntryCreate: React.FC = () => {
       approvedDate: toIso(formData.approvedDate),
       approvedDateString: toIso(formData.approvedDate),
       isApproved: Boolean(formData.isApproved),
-      enrl: "",
-      fine: "",
-      f9: "",
-      f10: "",
-      f11: "",
+      enrl: formData.enrl || "",
+      fine: formData.fine || "",
+      f9: formData.f9 || "",
+      f10: formData.f10 || "",
+      f11: formData.f11 || "",
+
     };
 
     await AccountDirectEntryService.createAccountDirectEntry(payload as any);
   };
-
+//status option
+const statusOption=[
+  {value:"Submitted", label:"Submitted"}
+]
   const popupHandlers = {
     memberId: {
       value: selectedMember?.name || "",
@@ -103,6 +112,9 @@ const AccountDirectEntryCreate: React.FC = () => {
         successMessage="Account entry created successfully!"
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
         themeColor="#1B3763"
+        options={{
+          status:statusOption
+        }}
       />
 
       <MemberPopup 

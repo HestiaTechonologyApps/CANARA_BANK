@@ -1,21 +1,15 @@
-// src/ADMIN-PORTAL/Components/Contributions/AccountDirectEntryEdit.tsx
-
 import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
-
-
 import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Month } from "../../../Types/Settings/Month.types";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
-
 import MemberPopup from "../../Contributions/Member/MemberPopup";
 import BranchPopup from "../../Branch/BranchPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-
 import MemberService from "../../../Services/Contributions/Member.services";
 import BranchService from "../../../Services/Settings/Branch.services";
 import MonthService from "../../../Services/Settings/Month.services";
@@ -38,16 +32,17 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
     { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
-
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4 } },
-
-    // ✅ REQUIRED APPROVAL FIELDS
+    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
+    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
+    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
     { name: "approvedBy", rules: { type: "text", label: "Approved By", required: true, colWidth: 4 } },
     { name: "approvedDate", rules: { type: "date", label: "Approved Date", required: true, colWidth: 4 } },
-
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
@@ -59,25 +54,21 @@ const AccountDirectEntryEdit: React.FC = () => {
     const entry = response.value;
     if (!entry) return response;
 
-    // Member
     if (entry.memberId) {
       const member = await MemberService.getMemberById(entry.memberId);
       setSelectedMember(member.value);
     }
 
-    // Branch
     if (entry.branchId) {
       const branch = await BranchService.getBranchById(entry.branchId);
       setSelectedBranch(branch.value);
     }
 
-    // Month
     if (entry.monthCode) {
       const month = await MonthService.getMonthById(entry.monthCode);
       setSelectedMonth(month.value);
     }
 
-    // Year
     if (entry.yearOf) {
       const year = await YearMasterService.getYearMasterById(entry.yearOf);
       setSelectedYear(year.value);
@@ -108,20 +99,15 @@ const AccountDirectEntryEdit: React.FC = () => {
       monthCode: selectedMonth.monthCode,
       yearOf: selectedYear.yearOf,
       yearName: Number(selectedYear.yearName), 
-
       ddIba: formData.ddIba,
       ddIbaDate: toIso(formData.ddIbaDate),
       ddIbaDateString: toIso(formData.ddIbaDate),
-
       amt: Number(formData.amt),
       status: formData.status,
-
       approvedBy: formData.approvedBy.trim(),
       approvedDate: toIso(formData.approvedDate),
       approvedDateString: toIso(formData.approvedDate),
-
       isApproved: Boolean(formData.isApproved),
-
       enrl: formData.enrl || "",
       fine: formData.fine || "",
       f9: formData.f9 || "",
