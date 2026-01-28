@@ -35,7 +35,7 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4 } },
+    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4 ,disabled:true} },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
     { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
