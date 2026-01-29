@@ -1,10 +1,7 @@
-// src/services/SupportTicket/SupportTicket.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { SupportTicket } from "../../Types/Settings/SupportTicket.types";
-
 
 const SupportTicketService = {
  

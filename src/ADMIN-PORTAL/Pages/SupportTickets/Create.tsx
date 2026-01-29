@@ -1,5 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Support/SupportTicketCreate.tsx
-
 import React, { useState } from "react";
 import type { Field } from "../../Components/KiduCreate";
 import type { SupportTicket } from "../../Types/Settings/SupportTicket.types";
@@ -13,10 +11,8 @@ const SupportTicketCreate: React.FC = () => {
     { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4 } },
     { name: "priority", rules: { type: "select", label: "Priority", required: true, colWidth: 4 } },
     { name: "duration", rules: { type: "text", label: "Duration", required: true, colWidth: 4 } },
-
     { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
     { name: "developerRemark", rules: { type: "textarea", label: "Developer Remark", colWidth: 6 } },
-
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
