@@ -39,12 +39,12 @@ const PublicPageCreate: React.FC = () => {
     try {
       setIsSubmitting(true);
 
-     const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
-  ...(formData as any),
-  isActive: Boolean(formData.isActive),
-  navMenuHead: String(formData.navMenuHead || ""),
-  contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
-};
+      const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
+        ...(formData as any),
+        isActive: Boolean(formData.isActive),
+        navMenuHead: String(formData.navMenuHead || ""),
+        contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
+      };
 
 
       await PublicPageService.createPublicPage(payload);
@@ -120,14 +120,14 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== NAVBAR ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Navbar</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Navbar</Card.Header>
               <Card.Body>
                 <Row>
                   {input("navBrandTitle", "Brand Title")}
                   {input("navBrandSubTitle", "Brand Subtitle")}
                   {input("navLogoUrl", "Logo URL")}
                   {input("navLogoAlt", "Logo Alt")}
-                  {input("navMenuHead","Menu Head")}
+                  {input("navMenuHead", "Menu Head")}
                   {input("navHomeLabel", "Home Label")}
                   {input("navAboutLabel", "About Label")}
                   {input("navRulesLabel", "Rules Label")}
@@ -147,7 +147,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== HOME PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Home Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Home Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("homeHeroBadge", "Hero Badge")}
@@ -176,7 +176,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== NEWS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>News Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>News Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("newsHeroTitle", "Hero Title")}
@@ -199,7 +199,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== ABOUT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>About Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>About Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("aboutHeaderTitle", "Header Title")}
@@ -228,7 +228,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== RULES PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Rules Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Rules Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("rulesHeaderTitle", "Header Title")}
@@ -247,7 +247,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== DOWNLOADS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Downloads Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Downloads Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("downloadsHeaderTitle", "Header Title")}
@@ -263,7 +263,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== COMMITTEE PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Committee Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Committee Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("committeeHeaderTitle", "Header Title")}
@@ -275,7 +275,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== CLAIMS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Claims Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Claims Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("claimsHeroTitle", "Hero Title")}
@@ -297,7 +297,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== CONTACT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Contact Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Contact Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("contactHeaderTitle", "Header Title")}
@@ -308,24 +308,24 @@ const PublicPageCreate: React.FC = () => {
                   {input("contactSubjectLabel", "Subject Label")}
                   {input("contactMessageLabel", "Message Label")}
                   {input("contactSubmitButtonLabel", "Submit Button Label")}
-                  {input("contactFullNamePlaceholder","Full Name Placeholder")}
-                  {input("contactPhoneNumberPlaceholder","Phone Number Placeholder")}
-                  {input("contactEmailPlaceholder","Email Placeholder")}
-                  {input("contactSubjectPlaceholder","Subject Placeholder")}
-                  {input("contactMessagePlaceholder","Message Placeholder")}
-                  {input("contactMessageRowNo","Message Row No")}
-                  {input("contactSubmitButtonIconClass","Submit Button Icon Class")}
-                  {input("contactOfficeTitleLabel","Office Title Label")}
-                  {input("contactOfficeTitleIconClass","Office Title Icon Class")}
-                  {input("contactOfficePhoneLabel","Office Phone Label")}
-                  {input("contactOfficePhoneIconClass","Office Icon Class")}
-                  {input("contactOfficeEmailLabel","Office Email Label")}
-                  {input("contactOfficeEmailIconClass","Office Icon Class")}
-                  {input("contactOfficeAddress2","Office Address 2")}
-                  {input("contactOfficeAddress3","Office Address 3")}
-                  {input("contactOfficeDay1","Office Day 1")}
-                  {input("contactOfficeDay2","Office Day 2")}
-                  {input("contactOfficeDay3","Office Day 3")}
+                  {input("contactFullNamePlaceholder", "Full Name Placeholder")}
+                  {input("contactPhoneNumberPlaceholder", "Phone Number Placeholder")}
+                  {input("contactEmailPlaceholder", "Email Placeholder")}
+                  {input("contactSubjectPlaceholder", "Subject Placeholder")}
+                  {input("contactMessagePlaceholder", "Message Placeholder")}
+                  {input("contactMessageRowNo", "Message Row No")}
+                  {input("contactSubmitButtonIconClass", "Submit Button Icon Class")}
+                  {input("contactOfficeTitleLabel", "Office Title Label")}
+                  {input("contactOfficeTitleIconClass", "Office Title Icon Class")}
+                  {input("contactOfficePhoneLabel", "Office Phone Label")}
+                  {input("contactOfficePhoneIconClass", "Office Icon Class")}
+                  {input("contactOfficeEmailLabel", "Office Email Label")}
+                  {input("contactOfficeEmailIconClass", "Office Icon Class")}
+                  {input("contactOfficeAddress2", "Office Address 2")}
+                  {input("contactOfficeAddress3", "Office Address 3")}
+                  {input("contactOfficeDay1", "Office Day 1")}
+                  {input("contactOfficeDay2", "Office Day 2")}
+                  {input("contactOfficeDay3", "Office Day 3")}
                   {input("officeTitle", "Office Title")}
                   {input("officeAddress", "Office Address")}
                   {input("officePhone", "Office Phone")}
@@ -340,7 +340,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== FOOTER ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Footer</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Footer</Card.Header>
               <Card.Body>
                 <Row>
                   {input("footerBrandShortName", "Brand Short Name")}
@@ -362,7 +362,7 @@ const PublicPageCreate: React.FC = () => {
 
             {/* ===================== PRIVACY PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Privacy Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Privacy Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("privacyHeroBadge", "Hero Badge")}
@@ -381,13 +381,47 @@ const PublicPageCreate: React.FC = () => {
                   {input("privacyLine4", "Line 4")}
                   {input("privacyLine5", "Line 5")}
                   {input("privacyLine6", "Line 6")}
+                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
+                  {input("privacyHeading4", "Heading 4")}
+                  {input("privacySubHeading4", "Sub Heading 4")}
+                  {input("privacyLine7", "Line 7")}
+                  {input("privacyHeading5", "Heading 5")}
+                  {input("privacyHeading5Para1", "Heading 5 Para 1")}
+                  {input("privacyHeading6", "Heading 6")}
+                  {input("privacyHeading6Para1", "Heading 6 Para 1")}
+                  {input("privacyHeading7", "Heading 7")}
+                  {input("privacyHeading7Para1", "Heading 7 Para 1")}
+                  {input("privacyHeading8", "Heading 8")}
+                  {input("privacySubHeading8", "Sub Heading 8")}
+                  {input("privacyHeading8Para1", "Heading 8 Para 1")}
+                  {input("privacyHeading8Para2", "Heading 8 Para 2")}
+                  {input("privacyHeading8Para3", "Heading 8 Para 3")}
+                  {input("privacyHeading8Para4", "Heading 8 Para 4")}
+                  {input("privacyHeading9", "Heading 9")}
+                  {input("privacySubHeading9", "Sub Heading 9")}
+                  {input("privacyHeading9Para1", "Heading 9 Para 1")}
+                  {input("privacyHeading9Para2", "Heading 9 Para 2")}
+                  {input("privacyHeading9Para3", "Heading 9 Para 3")}
+                  {input("privacyHeading9Para4", "Heading 9 Para 4")}
+                  {input("privacyHeading9Para5", "Heading 9 Para 5")}
+                  {input("privacyHeading9Para6", "Heading 9 Para 6")}
+                  {input("privacyHeading9Para7", "Heading 9 Para 7")}
+                  {input("privacyHeading10", "Heading 10")}
+                  {input("privacyHeading10Para1", "Heading 10 Para 1")}
+                  {input("privacyHeading10Para2", "Heading 10 Para 2")}
+                  {input("privacyHeading11", "Heading 11")}
+                  {input("privacyHeading11Para1", "Heading 11 Para 1")}
+                  {input("privacyHeading11Para2", "Heading 11 Para 2")}
+                  {input("privacyHeading12", "Heading 12")}
+                  {input("privacyHeading12Para1", "Heading 12 Para 1")}
+
                 </Row>
               </Card.Body>
             </Card>
 
             {/* ===================== STATUS ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Status</Card.Header>
+              <Card.Header className="fw-semibold" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Status</Card.Header>
               <Card.Body>
                 {checkbox("isActive", "Is Active")}
               </Card.Body>
@@ -398,7 +432,7 @@ const PublicPageCreate: React.FC = () => {
               <KiduReset
                 initialValues={initialValues}
                 setFormData={setFormData}
-                setErrors={() => {}}
+                setErrors={() => { }}
               />
               <KiduSubmit
                 isSubmitting={isSubmitting}

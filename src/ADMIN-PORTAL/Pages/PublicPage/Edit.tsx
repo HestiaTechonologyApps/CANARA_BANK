@@ -406,6 +406,39 @@ const PublicPageEdit: React.FC = () => {
                   {input("privacyLine4", "Line 4")}
                   {input("privacyLine5", "Line 5")}
                   {input("privacyLine6", "Line 6")}
+                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
+                  {input("privacyHeading4", "Heading 4")}
+                  {input("privacySubHeading4", "Sub Heading 4")}
+                  {input("privacyLine7", "Line 7")}
+                  {input("privacyHeading5", "Heading 5")}
+                  {input("privacyHeading5Para1", "Heading 5 Para 1")}
+                  {input("privacyHeading6", "Heading 6")}
+                  {input("privacyHeading6Para1", "Heading 6 Para 1")}
+                  {input("privacyHeading7", "Heading 7")}
+                  {input("privacyHeading7Para1", "Heading 7 Para 1")}
+                  {input("privacyHeading8", "Heading 8")}
+                  {input("privacySubHeading8", "Sub Heading 8")}
+                  {input("privacyHeading8Para1", "Heading 8 Para 1")}
+                  {input("privacyHeading8Para2", "Heading 8 Para 2")}
+                  {input("privacyHeading8Para3", "Heading 8 Para 3")}
+                  {input("privacyHeading8Para4", "Heading 8 Para 4")}
+                  {input("privacyHeading9", "Heading 9")}
+                  {input("privacySubHeading9", "Sub Heading 9")}
+                  {input("privacyHeading9Para1", "Heading 9 Para 1")}
+                  {input("privacyHeading9Para2", "Heading 9 Para 2")}
+                  {input("privacyHeading9Para3", "Heading 9 Para 3")}
+                  {input("privacyHeading9Para4", "Heading 9 Para 4")}
+                  {input("privacyHeading9Para5", "Heading 9 Para 5")}
+                  {input("privacyHeading9Para6", "Heading 9 Para 6")}
+                  {input("privacyHeading9Para7", "Heading 9 Para 7")}
+                  {input("privacyHeading10", "Heading 10")}
+                  {input("privacyHeading10Para1", "Heading 10 Para 1")}
+                  {input("privacyHeading10Para2", "Heading 10 Para 2")}
+                  {input("privacyHeading11", "Heading 11")}
+                  {input("privacyHeading11Para1", "Heading 11 Para 1")}
+                  {input("privacyHeading11Para2", "Heading 11 Para 2")}
+                  {input("privacyHeading12", "Heading 12")}
+                  {input("privacyHeading12Para1", "Heading 12 Para 1")}
                 </Row>
               </Card.Body>
             </Card>
