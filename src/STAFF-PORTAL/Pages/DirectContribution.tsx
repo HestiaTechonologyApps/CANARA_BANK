@@ -1,9 +1,11 @@
+//======================= THIS PAGE IS NOT USED =============================
+
 import React, { useState } from "react";
 import { Card, Row, Col, Form, Button } from "react-bootstrap";
 import "../Style/DirectContribution.css";
 import AccountDirectEntryService from "../Services/AccountDirectEntry.services";
 import KiduValidation, { ValidationMessage } from "../../Components/KiduValidation";
-import type { AccountsDirectEntry } from "../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
+import type { AccountDirectEntry } from "../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
 
 const fields = {
   name: { label: "Staff Name" },
@@ -105,7 +107,7 @@ const DirectContribution: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const payload: Omit<AccountsDirectEntry, "accountsDirectEntryID"> = {
+      const payload: Omit<AccountDirectEntry, "accountsDirectEntryID"> = {
         ...formData,
         branchId: Number(formData.branchId),
         monthCode: Number(formData.monthCode),

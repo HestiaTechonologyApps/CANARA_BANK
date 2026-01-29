@@ -88,7 +88,9 @@ const Claims: React.FC = () => {
     });
 
     // return Array.from(stateMap.values()).filter((state) => state.total > 0);
-    return Array.from(stateMap.values());
+    // return Array.from(stateMap.values());
+    return Array.from(stateMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name));
 
   };
 
@@ -118,7 +120,9 @@ const Claims: React.FC = () => {
     });
 
     // return Array.from(designationMap.values()).filter((des) => des.total > 0);
-    return Array.from(designationMap.values());
+    // return Array.from(designationMap.values());
+    return Array.from(designationMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name));
 
   };
 

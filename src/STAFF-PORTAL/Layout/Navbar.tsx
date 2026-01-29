@@ -21,16 +21,9 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
   const userName = parsedUser?.userName || "—";
   const staffNo = parsedUser?.staffNo ?? "—";
 
-
-  // const handleLogout = () => {
-  //   AuthService.logout(); //  same logout logic as AdminNavbar
-  //   navigate("/");
-  // };
-
   const handleLogout = () => {
     setShowLogoutModal(true);
   };
-
   const confirmLogout = () => {
     AuthService.logout();
     navigate("/");

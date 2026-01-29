@@ -20,10 +20,9 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null)
-    const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
-      const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
-    
-  
+  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+
   // AUTO-POPULATE MEMBER FROM LOCAL STORAGE
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -61,14 +60,14 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     if (!selectedMember) throw new Error("Select member");
     if (!selectedBranch) throw new Error("Select branch");
     if (!selectedMonth) throw new Error("Select month");
- if (!selectedYearMaster) throw new Error("Please select Year");
+    if (!selectedYearMaster) throw new Error("Please select Year");
     const payload: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs"> = {
       memberId: selectedMember.memberId,
       name: selectedMember.name,
       branchId: selectedBranch.branchId,
       monthCode: selectedMonth.monthCode,
       // yearOf: Number(formData.yearOf),
-       yearOf: selectedYearMaster.yearOf,
+      yearOf: selectedYearMaster.yearOf,
       ddIba: formData.ddIba || "",
       ddIbaDate: toIso(formData.ddIbaDate),
       amt: Number(formData.amt),
@@ -150,13 +149,13 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
         onSelect={setSelectedMonth}
         showAddButton={false}
       />
-      
-      <YearMasterPopup 
-       show={showYearMasterPopup} 
-       handleClose={() => setShowYearMasterPopup(false)} 
-       onSelect={setSelectedYearMaster} 
+
+      <YearMasterPopup
+        show={showYearMasterPopup}
+        handleClose={() => setShowYearMasterPopup(false)}
+        onSelect={setSelectedYearMaster}
         showAddButton={false}
-       />
+      />
     </>
   );
 };

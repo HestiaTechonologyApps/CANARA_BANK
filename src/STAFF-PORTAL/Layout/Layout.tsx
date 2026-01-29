@@ -9,21 +9,21 @@ const StaffLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="staff-root"  style={{  fontFamily: "Urbanist" , fontSize:"12px" }}>
-        <div className="staff-layout">
-          <StaffSidebar open={sidebarOpen} />
-    
-          <div className={`staff-main ${sidebarOpen ? "expanded" : "collapsed"}`}>
-            <StaffNavbar
-              sidebarOpen={sidebarOpen}
-              toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-            />
-    
-            <div className="staff-content">
-              <Outlet />
-            </div>
+    <div className="staff-root" style={{ fontFamily: "Urbanist", fontSize: "12px" }}>
+      <div className="staff-layout">
+        <StaffSidebar open={sidebarOpen} />
+
+        <div className={`staff-main ${sidebarOpen ? "expanded" : "collapsed"}`}>
+          <StaffNavbar
+            sidebarOpen={sidebarOpen}
+            toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          />
+
+          <div className="staff-content">
+            <Outlet />
           </div>
         </div>
+      </div>
     </div>
   );
 };

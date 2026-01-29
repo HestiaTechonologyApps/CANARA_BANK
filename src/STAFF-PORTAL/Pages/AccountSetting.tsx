@@ -1,7 +1,7 @@
 // src/Pages/Settings/AccountSettings.tsx
 // SOLUTION 2: Don't use disabled form fields for display - use regular text/cards instead
 import React, { useState, useEffect } from "react";
-import {  Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import toast from "react-hot-toast";
 import type { Field } from "../../ADMIN-PORTAL/Components/KiduCreate";
 import UserService from "../../ADMIN-PORTAL/Services/Settings/User.services";
@@ -20,7 +20,7 @@ const AccountSettings: React.FC = () => {
 
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
-    
+
     if (userDataString) {
       try {
         const userData = JSON.parse(userDataString);
@@ -32,7 +32,7 @@ const AccountSettings: React.FC = () => {
     } else {
       toast.error("User information not found. Please login again.");
     }
-    
+
     setIsLoading(false);
   }, []);
 
@@ -73,39 +73,9 @@ const AccountSettings: React.FC = () => {
 
   // Only password fields - no user info fields
   const fields: Field[] = [
-    { 
-      name: "oldPassword", 
-      rules: { 
-        type: "password", 
-        label: "Current Password", 
-        required: true, 
-        minLength: 6, 
-        placeholder: "Enter current password", 
-        colWidth: 4 
-      } 
-    },
-    { 
-      name: "newPassword", 
-      rules: { 
-        type: "password", 
-        label: "New Password", 
-        required: true, 
-        minLength: 6, 
-        placeholder: "Enter new password", 
-        colWidth: 4 
-      } 
-    },
-    { 
-      name: "confirmPassword", 
-      rules: { 
-        type: "password", 
-        label: "Confirm Password", 
-        required: true, 
-        minLength: 6, 
-        placeholder: "Confirm new password", 
-        colWidth: 4 
-      } 
-    },
+    { name: "oldPassword", rules: { type: "password", label: "Current Password", required: true, minLength: 6, placeholder: "Enter current password", colWidth: 4 } },
+    { name: "newPassword", rules: { type: "password", label: "New Password", required: true, minLength: 6, placeholder: "Enter new password", colWidth: 4 } },
+    { name: "confirmPassword", rules: { type: "password", label: "Confirm Password", required: true, minLength: 6, placeholder: "Confirm new password", colWidth: 4 } },
   ];
 
   return (
@@ -162,7 +132,7 @@ const AccountSettings: React.FC = () => {
         <h6 className="fw-bold " style={{ color: "#1B3763" }}>
           Change Password
         </h6>
-        
+
         <KiduCreate
           title="" // Empty title since we have our own header
           fields={fields}

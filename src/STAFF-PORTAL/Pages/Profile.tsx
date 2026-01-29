@@ -13,7 +13,7 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 Fields configuration (labels + keys only)
+  //  Fields configuration (labels + keys only)
   const fields = [
     { label: "Staff No", key: "staffNo" },
     { label: "Name", key: "name" },
@@ -31,7 +31,7 @@ const Profile: React.FC = () => {
     { label: "Nominee Relationship", key: "nomineeRelationship" },
   ];
 
-  // 🔹 Fetch member by ID using AuthService
+  //  Fetch member by ID using AuthService
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -40,13 +40,11 @@ const Profile: React.FC = () => {
 
         // Use AuthService to get memberId
         const memberId = AuthService.getMemberId();
-
         if (!memberId) {
           setError("Member ID not found. Please log in again.");
           setLoading(false);
           return;
         }
-
         console.log("Fetching profile for memberId:", memberId);
 
         // Fetch member details
@@ -78,7 +76,7 @@ const Profile: React.FC = () => {
     return (
       <Card className="profile-card mt-2">
         <Card.Body>
-         <KiduLoader type="staff details" />
+          <KiduLoader type="staff details" />
         </Card.Body>
       </Card>
     );
@@ -133,7 +131,7 @@ const Profile: React.FC = () => {
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[5].label}</span>
-              <span className="profile-value">{user?.dobString ? user.dobString.split(" ").slice(0,3).join(" ") : "—"}</span>
+              <span className="profile-value">{user?.dobString ? user.dobString.split(" ").slice(0, 3).join(" ") : "—"}</span>
             </Col>
           </Row>
 
@@ -151,18 +149,18 @@ const Profile: React.FC = () => {
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[8].label}</span>
-              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0,3).join(" ") : "—"}</span>
+              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0, 3).join(" ") : "—"}</span>
             </Col> {/* from date needed */}
           </Row>
 
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[9].label}</span>
-              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0,3).join(" ") : "—"}</span>
+              <span className="profile-value">{user?.dojtoSchemeString ? user.dojtoSchemeString.split(" ").slice(0, 3).join(" ") : "—"}</span>
             </Col>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[10].label}</span>
-              <span className="profile-value">{user?.modifiedDateString  ? user.modifiedDateString.split(" ").slice(0,3).join(" ") : "—"}</span>
+              <span className="profile-value">{user?.modifiedDateString ? user.modifiedDateString.split(" ").slice(0, 3).join(" ") : "—"}</span>
             </Col>
             {/* Retiremnet date needed */}
 

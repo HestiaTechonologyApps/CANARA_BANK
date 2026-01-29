@@ -25,22 +25,17 @@ const StaffEdit: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
   const fields: Field[] = [
-    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3 , disabled:true } },
+    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3, disabled: true } },
     { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 3 } },
-     { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 3 } },
+    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 3 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 3 } },
-
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 3 } },
     { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 3 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 3 } },
     { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 3 } },
-
-   
     { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 3 } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 3 } },
-
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
-
     { name: "profileImageSrc", rules: { type: "text", label: "Profile Image", colWidth: 3 } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 3 } },
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 3 } },
@@ -72,7 +67,7 @@ const StaffEdit: React.FC = () => {
     { value: "Sibling", label: "Sibling" },
     { value: "Nephew", label: "Nephew" },
     { value: "Niece", label: "Niece" },
-     { value: "Grandparent", label: "Grandparent" }
+    { value: "Grandparent", label: "Grandparent" }
   ]
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
@@ -81,21 +76,21 @@ const StaffEdit: React.FC = () => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
 
-     if (member) {
+    if (member) {
       setSelectedBranch({ branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch);
       setSelectedDesignation({ designationId: member.designationId, name: member.designationName } as unknown as Designation);
       setSelectedCategory({ categoryId: member.categoryId, name: member.categoryname } as unknown as Category);
       setSelectedStatus({ statusId: member.statusId, name: member.status } as unknown as Status);
 
       // Ensure genderId is properly returned as part of the response
-    // The KiduEdit component should handle this, but make sure the value exists
-    return {
-      ...response,
-      value: {
-        ...member,
-        genderId: member.genderId // Explicitly ensure genderId is included
-      }
-    };
+      // The KiduEdit component should handle this, but make sure the value exists
+      return {
+        ...response,
+        value: {
+          ...member,
+          genderId: member.genderId // Explicitly ensure genderId is included
+        }
+      };
 
     }
 
@@ -180,32 +175,32 @@ const StaffEdit: React.FC = () => {
         options={{
           genderId: genderOptions,
           unionMember: unionMemberOptions,
-          nomineeRelation:nomineeRelationOptions
+          nomineeRelation: nomineeRelationOptions
         }}
       />
 
-      <BranchPopup 
-        show={showBranchPopup} 
-        handleClose={() => setShowBranchPopup(false)} 
-        onSelect={setSelectedBranch} 
+      <BranchPopup
+        show={showBranchPopup}
+        handleClose={() => setShowBranchPopup(false)}
+        onSelect={setSelectedBranch}
         showAddButton={false}
       />
-      <DesignationPopup 
-        show={showDesignationPopup} 
-        handleClose={() => setShowDesignationPopup(false)} 
-        onSelect={setSelectedDesignation} 
+      <DesignationPopup
+        show={showDesignationPopup}
+        handleClose={() => setShowDesignationPopup(false)}
+        onSelect={setSelectedDesignation}
         showAddButton={false}
       />
-      <CategoryPopup 
-        show={showCategoryPopup} 
-        handleClose={() => setShowCategoryPopup(false)} 
-        onSelect={setSelectedCategory} 
+      <CategoryPopup
+        show={showCategoryPopup}
+        handleClose={() => setShowCategoryPopup(false)}
+        onSelect={setSelectedCategory}
         showAddButton={false}
       />
-      <StatusPopup 
-        show={showStatusPopup} 
-        handleClose={() => setShowStatusPopup(false)} 
-        onSelect={setSelectedStatus} 
+      <StatusPopup
+        show={showStatusPopup}
+        handleClose={() => setShowStatusPopup(false)}
+        onSelect={setSelectedStatus}
         showAddButton={false}
       />
     </>

@@ -1,3 +1,5 @@
+//======================= THIS PAGE IS NOT USED =============================
+
 import React, { useEffect, useState } from "react";
 import { Card, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
 import { BsSearch } from "react-icons/bs";
@@ -87,10 +89,9 @@ const UpdateNominee: React.FC = () => {
         toast.error("No member ID found");
         return;
       }
-
       try {
         const response = await MemberService.getMemberById(memberId);
-        
+
         if (!response || !response.isSucess) {
           throw new Error(response?.customMessage || "Failed to load member data");
         }
@@ -101,8 +102,8 @@ const UpdateNominee: React.FC = () => {
         // Set form values
         setName(data.name || "");
         setGenderId(data.genderId?.toString() || "");
-       // setDob(formatDateForInput(data.dob));
-       // setDoj(formatDateForInput(data.doj));
+        // setDob(formatDateForInput(data.dob));
+        // setDoj(formatDateForInput(data.doj));
         //setDojtoScheme(formatDateForInput(data.dojtoScheme));
         setNominee(data.nominee || "");
         setNomineeRelation(data.nomineeRelation || "");
@@ -117,8 +118,8 @@ const UpdateNominee: React.FC = () => {
           designationId: data.designationId,
           categoryId: data.categoryId,
           statusId: data.statusId,
-         // dob: formatDateForInput(data.dob),
-         // doj: formatDateForInput(data.doj),
+          // dob: formatDateForInput(data.dob),
+          // doj: formatDateForInput(data.doj),
           //dojtoScheme: formatDateForInput(data.dojtoScheme),
           nominee: data.nominee || "",
           nomineeRelation: data.nomineeRelation || "",
@@ -383,7 +384,7 @@ const UpdateNominee: React.FC = () => {
     setName(initialData.name || "");
     setGenderId(initialData.genderId?.toString() || "");
     //setDob(initialData.dob || "");
-   // setDoj(initialData.doj || "");
+    // setDoj(initialData.doj || "");
     //setDojtoScheme(initialData.dojtoScheme || "");
     setNominee(initialData.nominee || "");
     setNomineeRelation(initialData.nomineeRelation || "");
@@ -421,8 +422,8 @@ const UpdateNominee: React.FC = () => {
                     {fields[1].label}
                     <span style={{ color: "red", marginLeft: "2px" }}>*</span>
                   </Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onBlur={() => validateField("name", name, {
@@ -454,7 +455,7 @@ const UpdateNominee: React.FC = () => {
                     {fields[3].label}
                     <span style={{ color: "red", marginLeft: "2px" }}>*</span>
                   </Form.Label>
-                  <Form.Select 
+                  <Form.Select
                     size="sm"
                     value={genderId}
                     onChange={(e) => setGenderId(e.target.value)}
@@ -474,8 +475,8 @@ const UpdateNominee: React.FC = () => {
                     {fields[4].label}
                     <span style={{ color: "red", marginLeft: "2px" }}>*</span>
                   </Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     type="date"
                     value={dob}
                     onChange={(e) => setDob(e.target.value)}
@@ -563,8 +564,8 @@ const UpdateNominee: React.FC = () => {
                     {fields[8].label}
                     <span style={{ color: "red", marginLeft: "2px" }}>*</span>
                   </Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     type="date"
                     value={doj}
                     onChange={(e) => setDoj(e.target.value)}
@@ -583,8 +584,8 @@ const UpdateNominee: React.FC = () => {
                     {fields[9].label}
                     <span style={{ color: "red", marginLeft: "2px" }}>*</span>
                   </Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     type="date"
                     value={dojtoScheme}
                     onChange={(e) => setDojtoScheme(e.target.value)}
@@ -597,8 +598,8 @@ const UpdateNominee: React.FC = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>{fields[10].label}</Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     placeholder="Enter nominee name"
                     value={nominee}
                     onChange={(e) => setNominee(e.target.value)}
@@ -616,7 +617,7 @@ const UpdateNominee: React.FC = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>{fields[11].label}</Form.Label>
-                  <Form.Select 
+                  <Form.Select
                     size="sm"
                     value={nomineeRelation}
                     onChange={(e) => setNomineeRelation(e.target.value)}
@@ -643,8 +644,8 @@ const UpdateNominee: React.FC = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>{fields[12].label}</Form.Label>
-                  <Form.Control 
-                    size="sm" 
+                  <Form.Control
+                    size="sm"
                     value={nomineeIdentity}
                     onChange={(e) => setNomineeIdentity(e.target.value)}
                     onBlur={() => validateField("nomineeIdentity", nomineeIdentity, {
@@ -661,8 +662,8 @@ const UpdateNominee: React.FC = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>{fields[13].label}</Form.Label>
-                  <Form.Select 
-                    size="sm" 
+                  <Form.Select
+                    size="sm"
                     value={unionMember}
                     onChange={(e) => setUnionMember(e.target.value)}
                   >
@@ -699,17 +700,17 @@ const UpdateNominee: React.FC = () => {
 
             {/* Actions */}
             <div className="update-nominee-actions">
-              <Button 
-                variant="outline-secondary" 
-                size="sm" 
+              <Button
+                variant="outline-secondary"
+                size="sm"
                 onClick={handleReset}
                 disabled={isSubmitting || !hasChanges()}
               >
                 Reset
               </Button>
-              <Button 
-                className="update-btn" 
-                size="sm" 
+              <Button
+                className="update-btn"
+                size="sm"
                 onClick={handleUpdate}
                 disabled={isSubmitting || !hasChanges()}
               >
@@ -726,10 +727,10 @@ const UpdateNominee: React.FC = () => {
             />
           )} */}
 
-          <KiduAuditLogs 
-              tableName="Member" 
-              recordId={0} 
-            />
+          <KiduAuditLogs
+            tableName="Member"
+            recordId={0}
+          />
         </Card.Body>
       </Card>
 

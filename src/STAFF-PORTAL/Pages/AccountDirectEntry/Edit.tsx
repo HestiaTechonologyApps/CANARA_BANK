@@ -21,9 +21,8 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
-   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
-   
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : null);
 
@@ -66,8 +65,8 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         monthName: entry.monthName,
       } as Month);
 
-        setSelectedYearMaster({ yearOf: entry.yearOf, yearName: entry.yearName } as YearMaster);
-      
+      setSelectedYearMaster({ yearOf: entry.yearOf, yearName: entry.yearName } as YearMaster);
+
     }
 
     return response;
@@ -108,7 +107,6 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         approvedDateString: toIso(formData.approvedDate),
       }),
     };
-
 
     await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
     return true;
@@ -156,10 +154,10 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} showAddButton={false} />
       <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} showAddButton={false} />
       <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} showAddButton={false} />
-         <YearMasterPopup
+      <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
-        onSelect={setSelectedYearMaster} 
+        onSelect={setSelectedYearMaster}
         showAddButton={false}
       />
     </>
