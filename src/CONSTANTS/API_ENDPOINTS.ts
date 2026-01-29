@@ -1,6 +1,6 @@
 // src/constants/apiEndpoints.ts
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://api.cbeugjfws.co.in/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.cbeugjfws.co.in/api';
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -198,7 +198,9 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     GET_BY_STAFFID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/GetByMemberId${id}`,
   },
-
+  MONTHLY_CONTRIBUTION:{
+   
+  },
 
   //------------------------PUBLIC MODULE----------------------------------------
   PUBLIC: {
