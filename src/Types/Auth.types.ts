@@ -2,7 +2,7 @@
 import type { AuditTrails } from "./AuditLog.types";
 
 export interface LoginRequest {
-  email: string;
+  userName: string;
   password: string;
 }
 

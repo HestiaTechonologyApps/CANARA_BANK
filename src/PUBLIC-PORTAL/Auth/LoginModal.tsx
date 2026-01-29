@@ -15,60 +15,61 @@ export interface LoginModalProps {
 }
 
 interface Errors {
-  email: string;
+  userName: string;
   password: string;
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForgot }) => {
   const navigate = useNavigate();
   
-  const [email, setEmail] = useState<string>("");
+ const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errors, setErrors] = useState<Errors>({ email: "", password: "" });
+  const [errors, setErrors] = useState<Errors>({ userName: "", password: "" });
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-
-  const validateEmail = (value: string): string => {
-    if (!value) return "Email is required";
-    if (!emailRegex.test(value)) return "Please enter a valid email address";
+  
+  // ONLY REQUIRED VALIDATION
+  const validateUserName = (value: string): string => {
+    if (!value) return "Username is required";
     return "";
   };
 
   const validatePassword = (value: string): string => {
     if (!value) return "Password is required";
-    if (!passwordRegex.test(value))
-      return "Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char";
     return "";
   };
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
-    setEmail(value);
-    if (submitted) setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    setUserName(value);
+    if (submitted) {
+      setErrors((prev) => ({ ...prev, userName: validateUserName(value) }));
+    }
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     setPassword(value);
-    if (submitted) setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    if (submitted) {
+      setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    }
   };
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     setSubmitted(true);
-    const emailError = validateEmail(email);
+   const userNameError = validateUserName(userName);
     const passwordError = validatePassword(password);
-    setErrors({ email: emailError, password: passwordError });
 
-    if (!emailError && !passwordError) {
+     setErrors({ userName: userNameError, password: passwordError });
+
+   if (!userNameError && !passwordError) {
       setIsLoading(true);
       try {
-        const response = await AuthService.login({ email, password });
+        const response = await AuthService.login({ userName, password });
         
         if (response.isSucess && response.value) {
           // Verify user role is valid
@@ -111,9 +112,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
 
   // Reset form when modal closes
   const handleClose = () => {
-    setEmail("");
+    setUserName("");
     setPassword("");
-    setErrors({ email: "", password: "" });
+   setErrors({ userName: "", password: "" });
     setSubmitted(false);
     setShowPassword(false);
     setRememberMe(false);
@@ -138,20 +139,20 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Email Address</Form.Label>
+            <Form.Label>Username</Form.Label>
             <div className="input-icon-wrapper">
               <Mail className="input-icon" size={18} />
               <Form.Control 
-                type="email" 
-                placeholder="Enter your email"
-                value={email}
-                onChange={handleEmailChange}
-                isInvalid={submitted && !!errors.email}
+                type="text" 
+                placeholder="Enter your username"
+                value={userName}
+                onChange={handleUserNameChange}
+                isInvalid={submitted && !!errors.userName}
                 disabled={isLoading}
               />
-              {submitted && errors.email && (
+              {submitted && errors.userName && (
                 <Form.Control.Feedback type="invalid">
-                  {errors.email}
+                  {errors.userName}
                 </Form.Control.Feedback>
               )}
             </div>
