@@ -1,5 +1,3 @@
-// src/Types/CMS/DailyNews.types.ts
-
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface DailyNews {

@@ -1,4 +1,3 @@
-// src/Types/Settings/User.types.ts
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface User {
