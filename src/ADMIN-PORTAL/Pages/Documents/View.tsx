@@ -15,10 +15,9 @@ const DocumentView: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-    const attachment = await AttachmentService.getById(Number(id));
-    return {
-      value: attachment,
-    };
+   const response = await AttachmentService.getById(Number(id));
+return response;
+
   };
 
   const handleDelete = async (id: string) => {

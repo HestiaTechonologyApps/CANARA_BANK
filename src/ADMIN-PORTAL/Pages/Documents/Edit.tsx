@@ -12,11 +12,9 @@ const DocumentEdit: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-    const attachment = await AttachmentService.getById(Number(id));
+   const response = await AttachmentService.getById(Number(id));
+return response; // ✅ same as MemberEdit
 
-    return {
-      value: attachment, 
-    };
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {

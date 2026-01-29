@@ -17,18 +17,18 @@ class AttachmentService {
 
     return response.value || [];
   }
+  
+static async getById(
+  attachmentId: number
+): Promise<CustomResponse<Attachment>> {
 
-  static async getById(
-    attachmentId: number
-  ): Promise<Attachment> {
+  const response: CustomResponse<Attachment> = await HttpService.callApi(
+    API_ENDPOINTS.ATTACHMENT.GET_BY_ID(attachmentId),
+    "GET"
+  );
 
-    const response: CustomResponse<Attachment> = await HttpService.callApi(
-      API_ENDPOINTS.ATTACHMENT.GET_BY_ID(attachmentId),
-      "GET"
-    );
-
-    return response.value;
-  }
+  return response; // ✅ return full response
+}
 
   static async deleteAttachment(
     attachmentId: number,
