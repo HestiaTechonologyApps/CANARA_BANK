@@ -29,7 +29,7 @@ const YearMasterList: React.FC = () => {
       showSearch={true}
       showActions={true}
       showTitle={true}
-      rowsPerPage={18}
+      rowsPerPage={10}
     />
   );
 };
