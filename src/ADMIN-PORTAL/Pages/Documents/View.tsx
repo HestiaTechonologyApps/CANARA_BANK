@@ -33,7 +33,7 @@ const DocumentView: React.FC = () => {
       onDelete={handleDelete}
       paramName="attachmentId"
       listRoute="/dashboard/cms/documents-list"
-      editRoute="/dashboard/cms/document-edit"
+      editRoute="/dashboard/cms/documents-edit"
       auditLogConfig={{
         tableName: "Attachment",
         recordIdField: "attachmentId",

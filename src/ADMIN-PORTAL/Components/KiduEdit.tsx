@@ -13,7 +13,7 @@ import KiduAuditLogs from "../../Components/KiduAuditLogs";
 
 // ==================== TYPES ====================
 export interface FieldRule {
-  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak";
+  type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak" | "file";
   label: string;
   required?: boolean;
   minLength?: number;

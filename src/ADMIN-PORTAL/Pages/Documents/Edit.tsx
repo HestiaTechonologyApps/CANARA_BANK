@@ -7,7 +7,7 @@ import AttachmentService from "../../../Services/Attachment.services";
 const DocumentEdit: React.FC = () => {
 
   const fields: Field[] = [
-    { name: "file", rules: { type: "file", label: "File (optional)", colWidth: 6 } },
+    { name: "file", rules: { type: "file", label: "File", required: true, colWidth: 6 } },
     { name: "description", rules: { type: "text", label: "Description", required: true, colWidth: 6 } },
   ];
 
@@ -15,7 +15,7 @@ const DocumentEdit: React.FC = () => {
     const attachment = await AttachmentService.getById(Number(id));
 
     return {
-      value: attachment,
+      value: attachment, 
     };
   };
 
