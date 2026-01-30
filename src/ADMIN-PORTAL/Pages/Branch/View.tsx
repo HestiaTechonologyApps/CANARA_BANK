@@ -6,12 +6,17 @@ import BranchService from "../../Services/Settings/Branch.services";
 const BranchView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "branchId", label: "Branch ID", icon: "bi-hash" },
-    { key: "name", label: "Branch Name", icon: "bi-building" },
     { key: "dpCode", label: "DP Code", icon: "bi-upc-scan" },
+    { key: "name", label: "Branch Name", icon: "bi-building" },
     { key: "district", label: "District", icon: "bi-geo" },
-    { key: "stateName", label: "State", icon: "bi-flag" },
-    { key: "circleName", label: "Circle", icon: "bi-diagram-3" },
-    { key: "status", label: "Active", icon: "bi-check-circle" },
+    { key: "address1", label: "Address Line 1", icon: "bi-house-door" },
+    { key: "address2", label: "Address Line 2", icon: "bi-house" },
+    { key: "address3", label: "Address Line 3", icon: "bi-house-heart" },
+    { key: "stateId", label: "State ID", icon: "bi-flag" },
+    { key: "circleId", label: "Circle ID", icon: "bi-diagram-3" },
+    { key: "stateName", label: "State", icon: "bi-flag-fill" },
+    { key: "circleName", label: "Circle", icon: "bi-diagram-3-fill" },
+    { key: "status", label: "Active Status", icon: "bi-check-circle" },
     { key: "isRegCompleted", label: "Registration Completed", icon: "bi-shield-check", isBoolean: true, },
   ];
 
