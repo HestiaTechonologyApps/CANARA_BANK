@@ -6,7 +6,7 @@ import KiduView from "../../../Components/KiduView";
 
 const MonthView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "monthId", label: "Month ID" },
+   // { key: "monthId", label: "Month ID" },
     { key: "monthCode", label: "Month Code" },
     { key: "monthName", label: "Month Name" },
     { key: "abbrivation", label: "Abbreviation" },

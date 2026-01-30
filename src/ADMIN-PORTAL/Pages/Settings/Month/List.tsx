@@ -4,7 +4,7 @@ import MonthService from "../../../Services/Settings/Month.services";
 import KiduServerTable from "../../../../Components/KiduServerTable";
 
 const columns = [
-  { key: "monthCode", label: "Month ID", enableSorting: true, type: "text" as const },
+  { key: "monthCode", label: "Month Code", enableSorting: true, type: "text" as const },
   { key: "monthName", label: "Month Name", enableSorting: true, type: "text" as const },
   { key: "abbrivation", label: "Abbreviation", enableSorting: true, type: "text" as const },
 ];
