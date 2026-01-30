@@ -51,8 +51,12 @@ const News: React.FC = () => {
       <section className="news-section">
         <Container>
           {loading ? (
-            <div className="text-center py-5">
-              <p>{config?.newsLoadingText}</p>
+            <div className="text-center py-5 news-loader">
+              <div className="loader-icon mb-3">
+                <span className="pulse-icon">⏳</span>
+              </div>
+              <h5 className="mb-1">Loading</h5>
+              <p className="text-muted small">Please wait a moment…</p>
             </div>
           ) : newsItems.length === 0 ? (
             <div className="text-center py-5">

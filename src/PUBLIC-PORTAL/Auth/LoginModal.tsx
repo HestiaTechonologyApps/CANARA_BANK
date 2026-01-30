@@ -135,7 +135,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
         <h4 className="auth-title">Welcome Back</h4>
         <p className="auth-sub">Sign in to access your Digital Command Center</p>
       </div>
-
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">

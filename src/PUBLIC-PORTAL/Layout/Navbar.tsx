@@ -1,5 +1,5 @@
 // PUBLIC-PORTAL/Components/PublicNavbar.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
 import "../Style/Navbar.css";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,16 +7,33 @@ import LoginModal from "../Auth/LoginModal";
 import SignupModal from "../Auth/SignUp";
 import ResetPasswordModal from "../Auth/ResetPassword";
 import logo from "../Assets/Images/AIBEA_logo.jpg";
-import { PublicService } from "../../Services/PublicService";
+import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
+import PublicPageConfigService from "../Services/Publicpage.services";
 
 const PublicNavbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const navbar = PublicService.navbar;
-  
   const [showLogin, setShowLogin] = useState<boolean>(false);
   const [showSignup, setShowSignup] = useState<boolean>(false);
   const [showForgot, setShowForgot] = useState<boolean>(false);
+  const [config, setConfig] = useState<PublicPage | null>(null);
+
+  useEffect(() => {
+    const loadNavbarConfig = async () => {
+      try {
+        const data = await PublicPageConfigService.getPublicPageConfig();
+        const activeConfig = data.find(
+          (item: PublicPage) => item.isActive === true
+        );
+        setConfig(activeConfig || null);
+      } catch (error) {
+        console.error("Failed to load navbar config:", error);
+      }
+    };
+
+    loadNavbarConfig();
+  }, []);
+
 
   const isActive = (path: string): string =>
     location.pathname === path ? "active-nav" : "";
@@ -25,28 +42,40 @@ const PublicNavbar: React.FC = () => {
     setShowLogin(true);
   };
 
+  const navbar = config
+    ? {
+      menu: [
+        { label: config.navHomeLabel, route: "/" },
+        { label: config.navAboutLabel, route: "/about-us" },
+        { label: config.navRulesLabel, route: "/rules" },
+        { label: config.navDownloadsLabel, route: "/downloads" },
+        { label: config.navCommitteeLabel, route: "/managing-committee" },
+        { label: config.navClaimsLabel, route: "/claims" },
+        { label: config.navContactLabel, route: "/contact-us" },
+      ],
+    }
+    : null;
+
   return (
     <>
       <Navbar expand="lg" className="nav-style bg-white shadow-sm" sticky="top">
         <Container>
           <Navbar.Brand className="d-flex align-items-center gap-2">
-            <img 
-              src={logo} 
-              className="nav-logo" 
-              alt={navbar?.brand?.logoAlt || "50 Years Logo"} 
+            <img
+              src={logo}
+              className="nav-logo"
+              alt={config?.navLogoAlt || "50 Years Logo"}
             />
             <div className="d-flex flex-column lh-sm">
               <span className="fw-semibold nav-title">
-                {navbar?.brand?.title || "Canara Bank Employees' Union"}
+                {config?.navBrandTitle || "Canara Bank Employees' Union"}
               </span>
               <span className="nav-subtitle">
-                {navbar?.brand?.subtitle || "Golden Jubilee Family Welfare Scheme"}
+                {config?.navBrandSubTitle || "Golden Jubilee Family Welfare Scheme"}
               </span>
             </div>
           </Navbar.Brand>
-
           <Navbar.Toggle aria-controls="offcanvasNavbar" />
-
           <Navbar.Offcanvas
             id="offcanvasNavbar"
             placement="end"
@@ -54,7 +83,7 @@ const PublicNavbar: React.FC = () => {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
-                {navbar?.brand?.menuhead || "Menu"}
+                {config?.navMenuHead || "Menu"}
               </Offcanvas.Title>
             </Offcanvas.Header>
 
@@ -71,13 +100,13 @@ const PublicNavbar: React.FC = () => {
                 ))}
               </Nav>
 
-              <Button 
-                onClick={handleLoginClick} 
+              <Button
+                onClick={handleLoginClick}
                 className="login-btn ms-lg-4 mt-3 mt-lg-0"
               >
-                <i className={navbar?.auth?.loginButton?.iconclass || "bi bi-box-arrow-in-right"}></i>
+                <i className={config?.navLoginIcon || "bi bi-box-arrow-in-right"}></i>
                 {" "}
-                {navbar?.auth?.loginButton?.label || "Login"}
+                {config?.navLoginLabel || "Member Login"}
               </Button>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -87,14 +116,14 @@ const PublicNavbar: React.FC = () => {
       <div className="contact-strip text-white py-1 px-3">
         <Container className="d-flex justify-content-center align-items-center gap-4 small">
           <span>
-            <i className={navbar?.contactStrip?.phone?.iconclass || "bi bi-telephone"}></i>
+            <i className={config?.navPhoneIcon || "bi bi-telephone"}></i>
             {" "}
-            {navbar?.contactStrip?.phone?.value || "044-42035575"}
+            {config?.navPhoneValue || "047124721760"}
           </span>
           <span>
-            <i className={navbar?.contactStrip?.email?.iconclass || "bi bi-envelope"}></i>
+            <i className={config?.navEmailIcon || "bi bi-envelope"}></i>
             {" "}
-            {navbar?.contactStrip?.email?.value || "info@cbeu.com"}
+            {config?.navEmailValue || "cbeutvm@gmail.com"}
           </span>
         </Container>
       </div>
@@ -103,31 +132,31 @@ const PublicNavbar: React.FC = () => {
       <LoginModal
         show={showLogin}
         onClose={() => setShowLogin(false)}
-        onSignup={() => { 
-          setShowLogin(false); 
-          setShowSignup(true); 
+        onSignup={() => {
+          setShowLogin(false);
+          setShowSignup(true);
         }}
-        onForgot={() => { 
-          setShowLogin(false); 
-          setShowForgot(true); 
+        onForgot={() => {
+          setShowLogin(false);
+          setShowForgot(true);
         }}
       />
 
       <SignupModal
         show={showSignup}
         onClose={() => setShowSignup(false)}
-        onLogin={() => { 
-          setShowSignup(false); 
-          setShowLogin(true); 
+        onLogin={() => {
+          setShowSignup(false);
+          setShowLogin(true);
         }}
       />
 
       <ResetPasswordModal
         show={showForgot}
         onClose={() => setShowForgot(false)}
-        onLogin={() => { 
-          setShowForgot(false); 
-          setShowLogin(true); 
+        onLogin={() => {
+          setShowForgot(false);
+          setShowLogin(true);
         }}
       />
     </>

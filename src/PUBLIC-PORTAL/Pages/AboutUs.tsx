@@ -5,9 +5,7 @@ import PublicPageConfigService from "../Services/Publicpage.services";
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const AboutUs: React.FC = () => {
-
   const [config, setConfig] = useState<PublicPage | null>(null);
-
   useEffect(() => {
     const loadAboutConfig = async () => {
       try {
@@ -16,7 +14,6 @@ const AboutUs: React.FC = () => {
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
-
         setConfig(activeConfig || null);
       } catch (error) {
         console.error("Failed to load about us config:", error);
@@ -38,14 +35,12 @@ const AboutUs: React.FC = () => {
           {config?.aboutHeaderSubTitle}
         </p>
       </div>
-
       <Container className="py-5">
 
         {/* MISSION + VISION */}
         <Row className="g-4 mb-4">
           <Col md={6}>
             <Card className="about-card p-4">
-
               {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
@@ -53,7 +48,6 @@ const AboutUs: React.FC = () => {
                 </div>
                 <h5 className="section-heading mb-0">{config?.aboutMissionTitle}</h5>
               </div>
-
               <p className="section-text">
                 {config?.aboutMissionDescription}
               </p>
@@ -62,7 +56,6 @@ const AboutUs: React.FC = () => {
 
           <Col md={6}>
             <Card className="about-card p-4">
-
               {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
@@ -70,7 +63,6 @@ const AboutUs: React.FC = () => {
                 </div>
                 <h5 className="section-heading mb-0">{config?.aboutVisionTitle}</h5>
               </div>
-
               <p className="section-text">
                 {config?.aboutVisionDescription}
               </p>
@@ -82,7 +74,6 @@ const AboutUs: React.FC = () => {
         <Row>
           <Col md={12}>
             <Card className="history-card p-4">
-
               {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
@@ -90,23 +81,18 @@ const AboutUs: React.FC = () => {
                 </div>
                 <h5 className="section-heading mb-0">{config?.aboutHistoryTitle}</h5>
               </div>
-
               <p className="section-text">
                 {config?.aboutHistoryPara1}
               </p>
-
               <p className="section-text">
                 {config?.aboutHistoryPara2}
               </p>
-
               <p className="section-text">
                 {config?.aboutHistoryPara3}
               </p>
-
               <p className="section-text">
                 {config?.aboutHistoryPara4}
               </p>
-
               <p className="section-text">
                 {config?.aboutHistoryPara5}
               </p>

@@ -79,7 +79,13 @@ const Downloads: React.FC = () => {
               </h5>
               {
                 loading ? (
-                  <p className="text-center">{config?.newsLoadingText}</p>
+                  <div className="text-center py-5 downloads-loader">
+                    <div className="loader-icon mb-3">
+                      <span className="pulse-icon">⏳</span>
+                    </div>
+                    <h5 className="mb-1">Loading</h5>
+                    <p className="text-muted small">Please wait a moment…</p>
+                  </div>
                 ) : (
                   files.map((file, index) => (
                     <Card key={index} className="file-item-card mb-3 p-3">

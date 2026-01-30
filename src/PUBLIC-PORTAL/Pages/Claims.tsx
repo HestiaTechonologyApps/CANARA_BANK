@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/Claims.css";
-import { PublicService } from "../../Services/PublicService";
 import StateService from "../../ADMIN-PORTAL/Services/Settings/State.services";
 import DesignationService from "../../ADMIN-PORTAL/Services/Settings/Designation.services";
 import type { DeathClaim } from "../../ADMIN-PORTAL/Types/Claims/DeathClaims.type";
@@ -12,6 +11,8 @@ import DeathClaimService from "../../ADMIN-PORTAL/Services/Claims/DeathClaims.se
 import ClaimsTable from "../Components/Claims/KiduClaimsTable";
 import YearMasterService from "../../ADMIN-PORTAL/Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
+import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
+import PublicPageConfigService from "../Services/Publicpage.services";
 
 interface ClaimsTableRow {
   name: string;
@@ -20,14 +21,12 @@ interface ClaimsTableRow {
 }
 
 const Claims: React.FC = () => {
-  const claims = PublicService.claimsPage;
+  // const claims = PublicService.claimsPage;
   const [stateWiseClaims, setStateWiseClaims] = useState<ClaimsTableRow[]>([]);
   const [designationWiseClaims, setDesignationWiseClaims] = useState<ClaimsTableRow[]>([]);
   const [years, setYears] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Dummy years from 2003 to 2030
-  // const years = Array.from({ length: 28 }, (_, i) => (2003 + i).toString());
+  const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     loadClaimsData();
@@ -36,17 +35,24 @@ const Claims: React.FC = () => {
   const loadClaimsData = async () => {
     try {
       setLoading(true);
-      const [deathClaims, states, designations, yearMasters] = await Promise.all([
+      const [deathClaims, states, designations, yearMasters, publicPageConfigs,] = await Promise.all([
         DeathClaimService.getAllDeathClaims(),
         StateService.getAllStates(),
         DesignationService.getAllDesignations(),
-         YearMasterService.getAllYearMasters(),
+        YearMasterService.getAllYearMasters(),
+        PublicPageConfigService.getPublicPageConfig(),
       ]);
-//  Get years from Year Master API
+
+      // ---------- CMS (Public Page Content) ----------
+      const activeConfig = publicPageConfigs.find(
+        (item: PublicPage) => item.isActive === true
+      );
+      setConfig(activeConfig || null);
+
+      //  Get years from Year Master API
       const yearList = yearMasters
         .map((y: YearMaster) => y.yearName.toString())
         .sort();
-
       setYears(yearList);
       // Process state-wise claims
       const stateData = processStateWiseData(deathClaims, states);
@@ -86,11 +92,10 @@ const Claims: React.FC = () => {
         state.total += 1;
       }
     });
-
     // return Array.from(stateMap.values()).filter((state) => state.total > 0);
     // return Array.from(stateMap.values());
     return Array.from(stateMap.values()).sort((a, b) =>
-    a.name.localeCompare(b.name));
+      a.name.localeCompare(b.name));
 
   };
 
@@ -118,27 +123,50 @@ const Claims: React.FC = () => {
         designation.total += 1;
       }
     });
-
     // return Array.from(designationMap.values()).filter((des) => des.total > 0);
     // return Array.from(designationMap.values());
     return Array.from(designationMap.values()).sort((a, b) =>
-    a.name.localeCompare(b.name));
+      a.name.localeCompare(b.name));
 
   };
+
+  const claims = config
+    ? {
+
+      stats: [
+        {
+          icon: config?.claimsStat1Icon,
+          value: config?.claimsStat1Value,
+          label: config?.claimsStat1Label,
+        },
+        {
+          icon: config?.claimsStat2Icon,
+          value: config?.claimsStat2Value,
+          label: config.claimsStat2Label,
+        },
+        {
+          icon: config?.claimsStat3Icon,
+          value: config?.claimsStat3Value,
+          label: config?.claimsStat3Label,
+        },
+      ],
+    }
+    : null;
+
 
   return (
     <>
       {/* Hero Section */}
       <section className="claims-hero py-4">
         <Container>
-          <h2 className="claims-title">{claims.hero.title}</h2>
-          <p className="claims-subtitle">{claims.hero.subtitle}</p>
+          <h2 className="claims-title">{config?.claimsHeroTitle}</h2>
+          <p className="claims-subtitle">{config?.claimsHeroSubTitle}</p>
         </Container>
       </section>
       {/* Stats Cards */}
       <Container className="claims-stats">
         <Row className="g-4">
-          {claims.stats.map((stat, index) => (
+          {claims?.stats.map((stat, index) => (
             <Col md={4} key={index}>
               <Card className="claims-stat-card">
                 <div className="stat-icon">
@@ -157,7 +185,14 @@ const Claims: React.FC = () => {
       {/* Tables */}
       <Container fluid className="claims-tables">
         {loading ? (
-          <div className="text-center py-5">Loading claims data...</div>
+          <div className="text-center py-5 claims-loader">
+            <div className="loader-icon mb-3">
+              <span className="pulse-icon">⏳</span>
+            </div>
+            <h5 className="mb-1">Loading</h5>
+            <p className="text-muted small">Please wait a moment…</p>
+          </div>
+
         ) : (
           <>
             <ClaimsTable

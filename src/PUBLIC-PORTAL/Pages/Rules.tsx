@@ -11,7 +11,6 @@ interface RuleSection {
 }
 
 const Rules: React.FC = () => {
-
   const [config, setConfig] = useState<PublicPage | null>(null);
   const [sections, setSections] = useState<RuleSection[]>([]);
 
@@ -79,7 +78,6 @@ const Rules: React.FC = () => {
             </Card>
           );
         })}
-
       </Container>
     </div>
   );

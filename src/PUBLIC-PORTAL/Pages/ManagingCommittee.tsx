@@ -5,7 +5,7 @@ import { PublicService } from "../../Services/PublicService";
 import type { ManagingCommittee } from "../../ADMIN-PORTAL/Types/CMS/ManagingCommittee.types";
 import PublicManagingCommitteeService from "../Services/ManagingCommiteePublic.services";
 import { API_BASE_URL } from "../../CONSTANTS/API_ENDPOINTS";
-
+// =========================== API fields needed ================================
 
 const ManagingCommitteePublic: React.FC = () => {
 
@@ -82,10 +82,15 @@ const ManagingCommitteePublic: React.FC = () => {
 
       <Container className="py-5">
         <Row className="g-4 justify-content-center">
-
           {
             loading ? (
-              <p className="text-center">Loading...</p>
+             <div className="text-center py-5 committe-loader">
+                    <div className="loader-icon mb-3">
+                      <span className="pulse-icon">⏳</span>
+                    </div>
+                    <h5 className="mb-1">Loading</h5>
+                    <p className="text-muted small">Please wait a moment…</p>
+                  </div>
             ) : (
               members.map((member, index) => {
                 const imageUrl = getImageUrl(member.imageLocation);

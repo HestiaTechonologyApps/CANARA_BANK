@@ -128,7 +128,7 @@ const ContactUs: React.FC = () => {
                   <strong>{config?.officeAddress}</strong>
                   <p className="mb-0 small">
                     {config?.contactOfficeAddress2}<br />
-                    {config?.contactOfficeAddress2}
+                    {config?.contactOfficeAddress3}
                   </p>
                 </div>
               </div>
