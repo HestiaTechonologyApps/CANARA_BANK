@@ -53,12 +53,12 @@ const PublicPageEdit: React.FC = () => {
     try {
       setIsSubmitting(true);
 
-          const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
-       ...(formData as any),
-       isActive: Boolean(formData.isActive),
-       navMenuHead: String(formData.navMenuHead || ""),
-       contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
-     };
+      const payload: Omit<PublicPage, "publicPageId" | "auditLogs"> = {
+        ...(formData as any),
+        isActive: Boolean(formData.isActive),
+        navMenuHead: String(formData.navMenuHead || ""),
+        contactMessageRowNo: Number(formData.contactMessageRowNo || 0),
+      };
 
       await PublicPageService.updatePublicPage(
         Number(publicPageId),
@@ -144,14 +144,14 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== NAVBAR ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Navbar</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Navbar</Card.Header>
               <Card.Body>
                 <Row>
                   {input("navBrandTitle", "Brand Title")}
                   {input("navBrandSubTitle", "Brand Subtitle")}
                   {input("navLogoUrl", "Logo URL")}
                   {input("navLogoAlt", "Logo Alt")}
-                  {input("navMenuHead","Menu Head")}
+                  {input("navMenuHead", "Menu Head")}
                   {input("navHomeLabel", "Home Label")}
                   {input("navAboutLabel", "About Label")}
                   {input("navRulesLabel", "Rules Label")}
@@ -171,7 +171,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== HOME PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Home Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Home Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("homeHeroBadge", "Hero Badge")}
@@ -200,7 +200,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== NEWS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>News Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>News Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("newsHeroTitle", "Hero Title")}
@@ -223,7 +223,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== ABOUT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>About Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>About Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("aboutHeaderTitle", "Header Title")}
@@ -241,7 +241,7 @@ const PublicPageEdit: React.FC = () => {
                   {textarea("aboutHistoryPara3", "History Paragraph 3")}
                   {textarea("aboutHistoryPara4", "History Paragraph 4")}
                   {textarea("aboutHistoryPara5", "History Paragraph 5")}
-                   {textarea("aboutParagraph1", "About Paragraph 1")}
+                  {textarea("aboutParagraph1", "About Paragraph 1")}
                   {textarea("aboutParagraph2", "About Paragraph 2")}
                   {textarea("aboutParagraph3", "About Paragraph 3")}
                   {textarea("aboutParagraph4", "About Paragraph 4")}
@@ -252,7 +252,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== RULES PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Rules Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Rules Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("rulesHeaderTitle", "Header Title")}
@@ -271,13 +271,13 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== DOWNLOADS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Downloads Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Downloads Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("downloadsHeaderTitle", "Header Title")}
                   {input("downloadsHeaderSubTitle", "Header Subtitle")}
                   {textarea("downloadItemsJson", "Download Items JSON")}
-                   {textarea("downloadsCardTitle", "Downloads Card Title")}
+                  {textarea("downloadsCardTitle", "Downloads Card Title")}
                   {textarea("downloadsCardIconClass", "Downloads Card Icon Class")}
                   {textarea("downloadIcon", "Download Icon")}
                   {textarea("downloadsContactButtonText", "Contact Button Text")}
@@ -287,7 +287,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== COMMITTEE PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Committee Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Committee Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("committeeHeaderTitle", "Header Title")}
@@ -299,7 +299,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== CLAIMS PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Claims Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Claims Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("claimsHeroTitle", "Hero Title")}
@@ -321,7 +321,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== CONTACT PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Contact Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Contact Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("contactHeaderTitle", "Header Title")}
@@ -332,24 +332,24 @@ const PublicPageEdit: React.FC = () => {
                   {input("contactSubjectLabel", "Subject Label")}
                   {input("contactMessageLabel", "Message Label")}
                   {input("contactSubmitButtonLabel", "Submit Button Label")}
-                  {input("contactFullNamePlaceholder","Full Name Placeholder")}
-                  {input("contactPhoneNumberPlaceholder","Phone Number Placeholder")}
-                  {input("contactEmailPlaceholder","Email Placeholder")}
-                  {input("contactSubjectPlaceholder","Subject Placeholder")}
-                  {input("contactMessagePlaceholder","Message Placeholder")}
-                  {input("contactMessageRowNo","Message Row No")}
-                  {input("contactSubmitButtonIconClass","Submit Button Icon Class")}
-                  {input("contactOfficeTitleLabel","Office Title Label")}
-                  {input("contactOfficeTitleIconClass","Office Title Icon Class")}
-                  {input("contactOfficePhoneLabel","Office Phone Label")}
-                  {input("contactOfficePhoneIconClass","Office Icon Class")}
-                  {input("contactOfficeEmailLabel","Office Email Label")}
-                  {input("contactOfficeEmailIconClass","Office Icon Class")}
-                  {input("contactOfficeAddress2","Office Address 2")}
-                  {input("contactOfficeAddress3","Office Address 3")}
-                  {input("contactOfficeDay1","Office Day 1")}
-                  {input("contactOfficeDay2","Office Day 2")}
-                  {input("contactOfficeDay3","Office Day 3")}
+                  {input("contactFullNamePlaceholder", "Full Name Placeholder")}
+                  {input("contactPhoneNumberPlaceholder", "Phone Number Placeholder")}
+                  {input("contactEmailPlaceholder", "Email Placeholder")}
+                  {input("contactSubjectPlaceholder", "Subject Placeholder")}
+                  {input("contactMessagePlaceholder", "Message Placeholder")}
+                  {input("contactMessageRowNo", "Message Row No")}
+                  {input("contactSubmitButtonIconClass", "Submit Button Icon Class")}
+                  {input("contactOfficeTitleLabel", "Office Title Label")}
+                  {input("contactOfficeTitleIconClass", "Office Title Icon Class")}
+                  {input("contactOfficePhoneLabel", "Office Phone Label")}
+                  {input("contactOfficePhoneIconClass", "Office Icon Class")}
+                  {input("contactOfficeEmailLabel", "Office Email Label")}
+                  {input("contactOfficeEmailIconClass", "Office Icon Class")}
+                  {input("contactOfficeAddress2", "Office Address 2")}
+                  {input("contactOfficeAddress3", "Office Address 3")}
+                  {input("contactOfficeDay1", "Office Day 1")}
+                  {input("contactOfficeDay2", "Office Day 2")}
+                  {input("contactOfficeDay3", "Office Day 3")}
                   {input("officeTitle", "Office Title")}
                   {input("officeAddress", "Office Address")}
                   {input("officePhone", "Office Phone")}
@@ -365,7 +365,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== FOOTER ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Footer</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Footer</Card.Header>
               <Card.Body>
                 <Row>
                   {input("footerBrandShortName", "Brand Short Name")}
@@ -387,7 +387,7 @@ const PublicPageEdit: React.FC = () => {
 
             {/* ===================== PRIVACY PAGE ===================== */}
             <Card className="mb-4">
-              <Card.Header className="fw-semibold fs-5" style={{backgroundColor:"rgba(12, 89, 243, 0.13)"}}>Privacy Page</Card.Header>
+              <Card.Header className="fw-semibold fs-5" style={{ backgroundColor: "rgba(12, 89, 243, 0.13)" }}>Privacy Page</Card.Header>
               <Card.Body>
                 <Row>
                   {input("privacyHeroBadge", "Hero Badge")}
@@ -400,15 +400,15 @@ const PublicPageEdit: React.FC = () => {
                   {input("privacyHeading2", "Heading 2")}
                   {textarea("privacyPara3", "Paragraph 3 (Alt)")}
                   {input("privacyHeading3", "Heading 3")}
+                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
+                  {input("privacyHeading4", "Heading 4")}
+                  {input("privacySubHeading4", "Sub Heading 4")}
                   {input("privacyLine1", "Line 1")}
                   {input("privacyLine2", "Line 2")}
                   {input("privacyLine3", "Line 3")}
                   {input("privacyLine4", "Line 4")}
                   {input("privacyLine5", "Line 5")}
                   {input("privacyLine6", "Line 6")}
-                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
-                  {input("privacyHeading4", "Heading 4")}
-                  {input("privacySubHeading4", "Sub Heading 4")}
                   {input("privacyLine7", "Line 7")}
                   {input("privacyHeading5", "Heading 5")}
                   {input("privacyHeading5Para1", "Heading 5 Para 1")}
@@ -454,7 +454,7 @@ const PublicPageEdit: React.FC = () => {
               <KiduReset
                 initialValues={formData}
                 setFormData={setFormData}
-                setErrors={() => {}}
+                setErrors={() => { }}
               />
               <KiduSubmit
                 isSubmitting={isSubmitting}

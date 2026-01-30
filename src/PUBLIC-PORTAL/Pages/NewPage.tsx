@@ -10,7 +10,7 @@ import PublicPageConfigService from "../Services/Publicpage.services";
 const News: React.FC = () => {
   const [newsItems, setNewsItems] = useState<DailyNews[]>([]);
   const [loading, setLoading] = useState(true);
-   const [config, setConfig] = useState<PublicPage | null>(null);
+  const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     const loadNews = async () => {

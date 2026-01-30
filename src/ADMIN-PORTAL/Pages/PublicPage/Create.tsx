@@ -375,16 +375,16 @@ const PublicPageCreate: React.FC = () => {
                   {input("privacyHeading2", "Heading 2")}
                   {textarea("privacyPara3", "Paragraph 3 (Alt)")}
                   {input("privacyHeading3", "Heading 3")}
+                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
                   {input("privacyLine1", "Line 1")}
                   {input("privacyLine2", "Line 2")}
                   {input("privacyLine3", "Line 3")}
                   {input("privacyLine4", "Line 4")}
                   {input("privacyLine5", "Line 5")}
                   {input("privacyLine6", "Line 6")}
-                  {input("privacyHeading3Para1", "Heading 3 Para 1")}
+                  {input("privacyLine7", "Line 7")}
                   {input("privacyHeading4", "Heading 4")}
                   {input("privacySubHeading4", "Sub Heading 4")}
-                  {input("privacyLine7", "Line 7")}
                   {input("privacyHeading5", "Heading 5")}
                   {input("privacyHeading5Para1", "Heading 5 Para 1")}
                   {input("privacyHeading6", "Heading 6")}
