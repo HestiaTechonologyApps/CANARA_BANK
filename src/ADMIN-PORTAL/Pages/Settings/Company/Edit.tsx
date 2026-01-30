@@ -20,6 +20,7 @@ const CompanyEdit: React.FC = () => {
     { name: "state", rules: { type: "text", label: "State", required: true, colWidth: 4 } },
     { name: "country", rules: { type: "text", label: "Country", required: true, colWidth: 4 } },
     { name: "zipCode", rules: { type: "text", label: "Zip Code", required: true, colWidth: 4 } },
+    { name: "companyLogo", rules: { type: "text", label: "Company Logo (Base64)", required: false, colWidth: 4 } },
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
