@@ -204,7 +204,7 @@ export const API_ENDPOINTS = {
     CREATE:`${API_BASE_URL}/MonthlyContribution`,
     UPDATE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
     DELETE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
-    UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`
+    UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`,
   },
 
   //------------------------PUBLIC MODULE----------------------------------------

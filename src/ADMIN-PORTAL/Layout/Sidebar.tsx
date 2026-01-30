@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
     { label: "Account Direct Entry", path: "/dashboard/contributions/accountDirectEntry-list" },
     { label: "Direct Pay", path: "/dashboard/contributions/directpayment-list" },
     { label: "Member", path: "/dashboard/contributions/member-list" },
-    { label: "Monthly Contributions", path: "/dashboard/contributions/monthlycontribution-fileupload" }  
+    { label: "Monthly Contributions", path: "/dashboard/contributions/monthlyContribution-list" }  
   ];
 
   const claimsSubMenu = [

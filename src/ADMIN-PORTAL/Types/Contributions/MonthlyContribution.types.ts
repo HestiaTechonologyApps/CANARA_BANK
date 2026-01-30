@@ -1,6 +1,7 @@
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface MonthlyContribution {
+  monthId: number;
   monthlyContributionId: number;
   fileName: string;
   fileLocation: string;

@@ -152,10 +152,15 @@ import YearMasterCreate from '../Pages/YearMaster/Create';
 import YearMasterEdit from '../Pages/YearMaster/Edit';
 import YearMasterView from '../Pages/YearMaster/View';
 
-import FileUploadCreate from '../Pages/Contributions/MonthlyContribution/FileUpload';
+//import FileUploadCreate from '../Pages/Contributions/MonthlyContribution/FileUpload';
+
 import Notifications from '../Pages/Notifications/Notifications';
 
-
+//Monthly Contribution
+import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/List';
+import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
+import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
+import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
@@ -319,8 +324,13 @@ export const adminRoutes = (
       <Route path="settings/yearMaster-edit/:yearOf" element={<YearMasterEdit />} />
       <Route path="settings/yearMaster-view/:yearOf" element={<YearMasterView />} />
 
+       {/* Monthly Contribution */}
+       <Route path="contributions/monthlyContribution-list" element={<MonthlyContributionList/>}/>
+       <Route path="contributions/monthlyContribution-create" element={<MonthlyContributionCreate/>}/>
+       <Route path="contributions/monthlyContribution-edit/:monthlyContributionId" element={<MonthlyContributionEdit/>}/>
+       <Route path="contributions/monthlyContribution-view/:monthlyContributionId" element={<MonthlyContributionView/>}/>
 
-<Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} />
+  {/* <Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} /> */}
 
    <Route path="notifications" element={<Notifications />} />
 
