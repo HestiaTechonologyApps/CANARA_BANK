@@ -201,7 +201,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               formattedData[f.name] = "";
             }
           } else {
-            // FIXED: Handle numeric values properly (don't convert 0 to empty string)
             if (f.rules.type === "select" || f.rules.type === "number") {
               formattedData[f.name] = data[f.name] !== undefined && data[f.name] !== null ? data[f.name] : "";
             } else {
@@ -273,19 +272,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       setSelectedFile(file);
       setPreviewUrl(objectUrl);
     }
-  };
-
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        const base64Data = base64String.split(',')[1];
-        resolve(base64Data);
-      };
-      reader.onerror = error => reject(error);
-    });
   };
 
   const handleChange = (e: React.ChangeEvent<any>) => {
@@ -410,9 +396,9 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     try {
       const submitData = { ...formData };
 
+      // ✅ Pass File object directly (same as KiduCreate)
       if (imageConfig && selectedFile) {
-        const base64Image = await fileToBase64(selectedFile);
-        submitData[imageConfig.fieldName] = base64Image;
+        submitData[imageConfig.fieldName] = selectedFile;
       }
 
       if (auditLogConfig) {
@@ -451,16 +437,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       setIsSubmitting(false);
     }
   };
-
-  // const formatDate = (isoString: string | null) => {
-  //   if (!isoString) return "N/A";
-  //   const date = new Date(isoString);
-  //   const d = String(date.getDate()).padStart(2, "0");
-  //   const m = date.toLocaleString("en-US", { month: "long" });
-  //   const y = date.getFullYear();
-  //   const t = date.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-  //   return `${d}-${m}-${y} ${t}`;
-  // };
 
   const togglePasswordVisibility = (fieldName: string) => {
     setShowPasswords(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
@@ -685,68 +661,9 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           <hr />
           <Card.Body style={{ padding: "1.5rem" }}>
             <Form onSubmit={handleSubmit}>
-              <Row className="mb-3">
-                {/* {imageConfig && (
-                  <Col xs={12} md={3} className="d-flex flex-column align-items-start mb-4">
-                    <div style={{ position: "relative", width: "160px", height: "160px" }}>
-                      <Image
-                        src={previewUrl || imageConfig.defaultImage}
-                        alt={imageConfig.label || "Profile"}
-                        roundedCircle
-                        style={{
-                          width: "160px",
-                          height: "160px",
-                          objectFit: "cover",
-                          border: "1px solid #ccc"
-                        }}
-                        onError={(e: any) => { e.target.src = imageConfig.defaultImage; }}
-                      />
-                      {(imageConfig.editable !== false) && (
-                        <>
-                          <label
-                            htmlFor={imageConfig.fieldName}
-                            style={{
-                              position: "absolute",
-                              bottom: "5px",
-                              right: "5px",
-                              background: themeColor,
-                              borderRadius: "50%",
-                              padding: "8px 11px",
-                              cursor: "pointer"
-                            }}
-                            title={`Upload ${imageConfig.label || "Image"}`}
-                          >
-                            <FaPen style={{ color: "#fff", fontSize: "14px" }} />
-                          </label>
-                          <input
-                            type="file"
-                            id={imageConfig.fieldName}
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            style={{ display: "none" }}
-                          />
-                        </>
-                      )}
-                    </div>
-                    <div className="mt-3 text-start">
-                      {imageConfig.showNameField && (
-                        <h5 className="mb-1">{formData[imageConfig.showNameField] || "Unknown"}</h5>
-                      )}
-                      {imageConfig.showIdField && auditLogConfig && (
-                        <p className="small mb-1 fw-bold text-muted">
-                          ID: {formData[auditLogConfig.recordIdField] || "N/A"}
-                        </p>
-                      )}
-                      {imageConfig.showLastLoginField && (
-                        <p className="small text-danger fst-italic">
-                          Last Login: {formatDate(formData[imageConfig.showLastLoginField])}
-                        </p>
-                      )}
-                    </div>
-                  </Col>
-                )} */}
-
-                 {imageConfig && (
+              <Row className="mb-4">
+                {/* ✅ Image Upload Section - Same as KiduCreate */}
+                {imageConfig && (
                   <Col xs={12}>
                     <div className="card mb-4">
                       <div className="card-body">
@@ -826,7 +743,8 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                   </Col>
                 )}
 
-                <Col xs={12} md={imageConfig ? 9 : 12}>
+                {/* Form Fields Section */}
+                <Col xs={12}>
                   <Row className="g-2">
                     {regularFields.map((field, index) => renderField(field, index))}
                   </Row>

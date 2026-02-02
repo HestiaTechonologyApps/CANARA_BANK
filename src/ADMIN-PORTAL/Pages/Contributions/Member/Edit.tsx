@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import MemberService from "../../../Services/Contributions/Member.services";
@@ -12,6 +12,7 @@ import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import CategoryPopup from "../../Settings/Category/CategoryPopup";
 import StatusPopup from "../../Settings/Status/StatusPopup";
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
+import profiledefaultimg from "../../../Assets/Images/profile.jpg";
 
 const MemberEdit: React.FC = () => {
 
@@ -25,15 +26,11 @@ const MemberEdit: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [profileImagePreview, setProfileImagePreview] = useState<string>("");
-  const [currentImagePath, setCurrentImagePath] = useState<string>("");
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [_isUploading, setIsUploading] = useState(false);
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
-    { name: "name", rules: { type: "text", label: "Name", required: true, colWidth: 4 } },
+    { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
     { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
@@ -47,7 +44,7 @@ const MemberEdit: React.FC = () => {
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
     { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
-    { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 4 } },
+    { name: "totalRefund", rules: { type: "text", label: "Total Refund", placeholder: "0", colWidth: 4 } },
   ];
 
   // Gender options
@@ -62,6 +59,7 @@ const MemberEdit: React.FC = () => {
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" }
   ];
+
   //nominee Relation options
   const nomineeRelationOptions = [
     {value:"Spouse", label: "Spouse"},
@@ -74,98 +72,51 @@ const MemberEdit: React.FC = () => {
     {value:"Niece", label: "Niece"},
     {value:"Grandparent", label: "Grandparent"},
   ]
+
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Image size should be less than 5MB");
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        alert("Please select a valid image file");
-        return;
-      }
-      setProfileImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleFetch = async (id: string) => {
+    const response = await MemberService.getMemberById(Number(id));
+    const member = response.value;
+
+    if (member) {
+      // Set branch data - using type assertion to handle partial Branch data
+      setSelectedBranch({
+        branchId: member.branchId,
+        name: member.branchName || "",
+        dpCode: member.dpCode || "",
+      } as any as Branch);
+
+      setSelectedDesignation({
+        designationId: member.designationId,
+        name: member.designationName || ""
+      } as Designation);
+
+      setSelectedCategory({
+        categoryId: member.categoryId,
+        name: member.categoryname || ""
+      } as Category);
+
+      setSelectedStatus({
+        statusId: member.statusId,
+        name: member.status || ""
+      } as Status);
     }
+
+    // Convert genderId to string for select field and set profile image
+    return {
+      ...response,
+      value: {
+        ...member,
+        genderId: String(member.genderId),
+        profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
+      },
+    };
   };
-
-  const handleRemoveImage = () => {
-    setProfileImage(null);
-    setProfileImagePreview("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
- const handleFetch = async (id: string) => {
-  const response = await MemberService.getMemberById(Number(id));
-  const member = response.value;
-
-  if (member) {
-    setSelectedBranch({
-      branchId: member.branchId,
-      name: member.branchName || ""
-    } as Branch);
-
-    setSelectedDesignation({
-      designationId: member.designationId,
-      name: member.designationName || ""
-    } as Designation);
-
-    setSelectedCategory({
-      categoryId: member.categoryId,
-      name: member.categoryname || ""
-    } as Category);
-
-    setSelectedStatus({
-      statusId: member.statusId,
-      name: member.status || ""
-    } as Status);
-
-    if (member.profileImageSrc) {
-      setCurrentImagePath(member.profileImageSrc);
-      setProfileImagePreview(getFullImageUrl(member.profileImageSrc));
-    }
-  }
-
-  // ✅ CRITICAL FIX
-  return {
-    ...response,
-    value: {
-      ...member,
-      genderId: String(member.genderId), // 🔥 MUST BE STRING
-    },
-  };
-};
-
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus) {
       throw new Error("Please select all required values");
-    }
-
-    let uploadedImagePath = currentImagePath;
-
-    if (profileImage) {
-      try {
-        setIsUploading(true);
-        await MemberService.uploadProfilePicture(profileImage, Number(id));
-        // The backend updates the profile path automatically, so we keep the current path
-        // The updated path will be returned from the API
-      } catch (error) {
-        console.error("Failed to upload profile picture:", error);
-        throw new Error("Failed to upload profile picture");
-      } finally {
-        setIsUploading(false);
-      }
     }
 
     const payload: Omit<Member, "auditLogs"> = {
@@ -184,7 +135,7 @@ const MemberEdit: React.FC = () => {
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
-      profileImageSrc: uploadedImagePath || "",
+      profileImageSrc: "", // Will be set by image upload
       nominee: formData.nominee || "",
       nomineeRelation: formData.nomineeRelation || "",
       nomineeIDentity: formData.nomineeIDentity || "",
@@ -198,7 +149,18 @@ const MemberEdit: React.FC = () => {
       modifiedDateString: formData.modifiedDateString,
     };
 
+    // ✅ Update member data first
     await MemberService.updateMember(Number(id), payload);
+
+    // ✅ Upload image if provided (File object from KiduEdit)
+    if (formData.profileImage instanceof File) {
+      setIsUploading(true);
+      await MemberService.uploadProfilePicture(
+        formData.profileImage,
+        Number(id)
+      );
+      setIsUploading(false);
+    }
   };
 
   const popupHandlers = {
@@ -226,81 +188,6 @@ const MemberEdit: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4">
-        <div className="card">
-          <div className="card-body">
-            <h5 className="card-title">Profile Picture</h5>
-            <div className="d-flex align-items-center gap-3">
-              <div>
-                {profileImagePreview ? (
-                  <img 
-                    src={profileImagePreview} 
-                    alt="Profile Preview" 
-                    style={{ 
-                      width: '120px', 
-                      height: '120px', 
-                      objectFit: 'cover', 
-                      borderRadius: '8px',
-                      border: '2px solid #dee2e6'
-                    }} 
-                  />
-                ) : (
-                  <div 
-                    style={{ 
-                      width: '120px', 
-                      height: '120px', 
-                      backgroundColor: '#f8f9fa',
-                      border: '2px dashed #dee2e6',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#6c757d'
-                    }}
-                  >
-                    No Image
-                  </div>
-                )}
-              </div>
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageSelect}
-                  style={{ display: 'none' }}
-                  id="profile-image-input"
-                />
-                <label 
-                  htmlFor="profile-image-input" 
-                  className="btn btn-primary btn-sm mb-2"
-                  style={{ cursor: 'pointer' }}
-                >
-                  {currentImagePath ? 'Change Image' : 'Select Image'}
-                </label>
-                {profileImage && (
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="btn btn-danger btn-sm ms-2 mb-2"
-                  >
-                    Remove New Image
-                  </button>
-                )}
-                <div className="text-muted small">
-                  Max size: 5MB. Accepted formats: JPG, PNG, GIF
-                </div>
-                {isUploading && (
-                  <div className="text-primary small mt-1">
-                    Uploading image...
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <KiduEdit
         title="Edit Member"
         fields={fields}
@@ -309,6 +196,12 @@ const MemberEdit: React.FC = () => {
         paramName="memberId"
         submitButtonText="Update Member"
         showResetButton
+        imageConfig={{
+          fieldName: "profileImage",
+          defaultImage: profiledefaultimg,
+          label: "Profile Picture",
+          editable: true,
+        }}
         successMessage="Member updated successfully!"
         errorMessage="Failed to update member. Please try again."
         navigateBackPath="/dashboard/contributions/member-list"
