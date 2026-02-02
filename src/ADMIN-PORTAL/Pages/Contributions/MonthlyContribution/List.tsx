@@ -8,8 +8,8 @@ const columns = [
   { key: "fileName", label: "File Name", enableSorting: true, type: "text" as const },
   { key: "fileType", label: "File Type", enableSorting: true, type: "text" as const },
   { key: "fileExtension", label: "Extension", enableSorting: true, type: "text" as const },
-  { key: "monthCode", label: "Month Code", enableSorting: true, type: "text" as const },
-  { key: "yearOf", label: "Year", enableSorting: true, type: "text" as const },
+  { key: "monthName", label: "Month Code", enableSorting: true, type: "text" as const },
+  { key: "yearName", label: "Year", enableSorting: true, type: "text" as const },
 ];
 
 const MonthlyContributionList: React.FC = () => {
@@ -27,7 +27,7 @@ const MonthlyContributionList: React.FC = () => {
       data = data.filter((m: MonthlyContribution) =>
         [m.fileName, m.fileType, m.fileExtension]
           .filter(Boolean)
-          .some(v => v.toString().toLowerCase().includes(q))
+          .some(v => (v ?? '').toString().toLowerCase().includes(q))
       );
     }
 

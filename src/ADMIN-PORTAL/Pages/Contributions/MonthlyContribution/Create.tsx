@@ -21,59 +21,54 @@ const MonthlyContributionCreate: React.FC = () => {
     { name: "file", rules: { type: "file", label: "Upload Files", required: true, colWidth: 12 } },
   ];
 
-const handleSubmit = async (formData: Record<string, any>) => {
-  console.log("CREATE BUTTON CLICKED ✅");
-  console.log("FORM DATA:", formData);
-  console.log("YEAR:", selectedYearMaster);
-  console.log("MONTH:", selectedMonth);
+  const handleSubmit = async (formData: Record<string, any>) => {
+    console.log("CREATE BUTTON CLICKED ✅");
+    console.log("FORM DATA:", formData);
+    console.log("YEAR:", selectedYearMaster);
+    console.log("MONTH:", selectedMonth);
 
-  if (!selectedYearMaster) throw new Error("Please select Year");
-  if (!selectedMonth) throw new Error("Please select Month");
+    if (!selectedYearMaster) throw new Error("Please select Year");
+    if (!selectedMonth) throw new Error("Please select Month");
+    if (!selectedYearMaster.yearOf) throw new Error("Year is invalid");
+    if (!selectedMonth.monthCode) throw new Error("Month is invalid");
 
-  const file =
-    formData.file instanceof File
-      ? formData.file
-      : formData.file?.[0];
+    const file =
+      formData.file instanceof File
+        ? formData.file
+        : formData.file?.[0];
 
-  if (!file) throw new Error("Please select file");
+    if (!file) throw new Error("Please select file");
 
-  // ✅ BACKEND-FRIENDLY JSON PAYLOAD
-  const payload = {
-    YearOF: selectedYearMaster.yearOf,
-    MonthId: selectedMonth.monthCode,
-  };
+    try {
+      // ✅ UPLOAD FILE DIRECTLY using the upload-file API
+      const response = await MonthlyContributionService.uploadFile(
+        file,
+        selectedMonth.monthCode,
+        selectedYearMaster.yearOf
+      );
 
-  console.log("JSON PAYLOAD:", payload);
+      console.log("UPLOAD RESPONSE:", response);
 
-  try {
-    // ✅ STEP 1: CREATE RECORD (JSON)
-    const created = await MonthlyContributionService.createMonthlyContribution(payload);
+      if (!response.isSucess) {
+        throw new Error(response.customMessage || "File upload failed");
+      }
 
-    console.log("CREATED RESPONSE:", created);
-
-    if (!created || !created.monthlyContributionId) {
-      throw new Error("Record not created in backend");
+      console.log("FILE UPLOADED SUCCESSFULLY ✅");
+      console.log("File Path:", response.value);
+    } catch (error) {
+      console.error("UPLOAD ERROR ❌", error);
+      throw error;
     }
-
-    // ✅ STEP 2: UPLOAD FILE (FormData)
-    await MonthlyContributionService.uploadFile(file, created.monthlyContributionId);
-
-    console.log("FILE UPLOADED ✅");
-  } catch (error) {
-    console.error("CREATE ERROR ❌", error);
-    throw error;
-  }
-};
-
+  };
 
   const popupHandlers = {
     yearOF: {
-      value: selectedYearMaster?.yearName || "",
+      value: selectedYearMaster?.yearName ? String(selectedYearMaster.yearName) : "",
       actualValue: selectedYearMaster?.yearOf,
       onOpen: () => setShowYearMasterPopup(true),
     },
     monthId: {
-      value: selectedMonth?.monthName || "",
+      value: selectedMonth?.monthName ? String(selectedMonth.monthName) : "",
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },

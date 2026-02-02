@@ -8,7 +8,7 @@ import MonthPopup from "../../Settings/Month/MonthPopup";
 import { FaSearch } from "react-icons/fa";
 
 const FileUploadCreate: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [_selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [showYearPopup, setShowYearPopup] = useState(false);
   const [selectedYear, setSelectedYear] = useState<YearMaster | null>(null);

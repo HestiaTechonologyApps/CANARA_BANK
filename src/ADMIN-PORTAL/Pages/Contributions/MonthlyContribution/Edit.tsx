@@ -5,7 +5,7 @@ import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import type { Month } from "../../../Types/Settings/Month.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
-import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services"; 
+import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services";
 
 const MonthlyContributionEdit: React.FC = () => {
 
@@ -21,20 +21,25 @@ const MonthlyContributionEdit: React.FC = () => {
     { name: "file", rules: { type: "file", label: "Upload Files", required: false, colWidth: 12 } },
   ];
 
-  // ================= FETCH DATA (LIKE MEMBER EDIT) =================
+  // ================= FETCH DATA =================
   const handleFetch = async (id: string) => {
+    console.log("FETCHING MONTHLY CONTRIBUTION ✅", id);
+
     const response = await MonthlyContributionService.getMonthlyContributionById(Number(id));
     const data = response.value;
 
+    console.log("FETCHED DATA:", data);
+
     if (data) {
+      // Set the selected year and month from fetched data
       setSelectedYearMaster({
-        yearOf: data.yearOf,
-        yearName: data.yearName,
+        yearOf: data.yearOF,
+        yearName: Number(data.yearName) || data.yearOF, // Convert to number as expected by YearMaster type
       } as YearMaster);
 
       setSelectedMonth({
-        monthId: data.monthId,
-        monthName: data.monthName,
+        monthCode: data.monthId, // Using monthCode instead of monthId for consistency
+        monthName: data.monthName || `Month ${data.monthId}`, // Fallback if monthName not available
       } as Month);
     }
 
@@ -42,38 +47,77 @@ const MonthlyContributionEdit: React.FC = () => {
       ...response,
       value: {
         ...data,
-        yearOF: String(data.yearOf), // 🔥 IMPORTANT like genderId fix in MemberEdit
+        yearOF: String(data.yearOF), // Convert to string for form display
+        monthId: String(data.monthId), // Convert to string for form display
+
       },
     };
   };
 
-  // ================= UPDATE DATA (LIKE MEMBER EDIT) =================
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  // ================= UPDATE DATA =================
+  const handleUpdate = async (_id: string, formData: Record<string, any>) => {
+    console.log("UPDATE BUTTON CLICKED ✅");
+    console.log("FORM DATA:", formData);
+    console.log("YEAR:", selectedYearMaster);
+    console.log("MONTH:", selectedMonth);
+
     if (!selectedYearMaster) throw new Error("Please select Year");
     if (!selectedMonth) throw new Error("Please select Month");
+    if (selectedYearMaster.yearOf === undefined) throw new Error("Invalid year selected");
 
-    const payload: Record<string, any> = {
-      yearOF: selectedYearMaster.yearOf!.toString(),
-      monthId: selectedMonth.monthId!.toString(),
-    };
+    // Check if a new file is uploaded
+    const file =
+      formData.file instanceof File
+        ? formData.file
+        : formData.file?.[0];
 
-    if (formData.file) {
-      payload.file = formData.file;
+    // If a new file is provided, upload it
+    if (file) {
+      try {
+        console.log("NEW FILE DETECTED - UPLOADING ✅");
+
+        // ✅ UPLOAD NEW FILE using the upload-file API
+        const response = await MonthlyContributionService.uploadFile(
+          file,
+          selectedMonth.monthCode, // Using monthCode
+          selectedYearMaster.yearOf
+        );
+
+        console.log("FILE UPLOAD RESPONSE:", response);
+
+        if (!response.isSucess) {
+          throw new Error(response.customMessage || "File upload failed");
+        }
+
+        console.log("FILE UPLOADED SUCCESSFULLY ✅");
+        console.log("New File Path:", response.value);
+      } catch (error) {
+        console.error("FILE UPLOAD ERROR ❌", error);
+        throw error;
+      }
+    } else {
+      console.log("NO NEW FILE - KEEPING EXISTING FILE");
+
+      // If no new file, you might want to just update the record metadata
+      // This depends on whether you have a separate update endpoint
+      // For now, we'll just log that no file was changed
+      console.log("No file changes, month and year remain:", {
+        monthCode: selectedMonth.monthCode,
+        yearOf: selectedYearMaster.yearOf,
+      });
     }
-
-    await MonthlyContributionService.updateMonthlyContribution(Number(id), payload);
   };
 
-  // ================= POPUP HANDLERS (LIKE MEMBER EDIT) =================
+  // ================= POPUP HANDLERS =================
   const popupHandlers = {
     yearOF: {
-      value: selectedYearMaster?.yearName || "",
+      value: String(selectedYearMaster?.yearName || ""),
       actualValue: selectedYearMaster?.yearOf,
       onOpen: () => setShowYearMasterPopup(true),
     },
     monthId: {
-      value: selectedMonth?.monthName || "",
-      actualValue: selectedMonth?.monthId,
+      value: String(selectedMonth?.monthName || ""),
+      actualValue: selectedMonth?.monthCode, // Using monthCode for consistency
       onOpen: () => setShowMonthPopup(true),
     },
   };
@@ -98,24 +142,28 @@ const MonthlyContributionEdit: React.FC = () => {
       {/* ===== SAME UI TABLE AS CREATE PAGE ===== */}
       <div className="card mt-4">
         <div className="card-body p-0">
-          <table className="table table-bordered mb-0 align-middle">
+          <table className="table table-bordered mb-0 align-middle kidu-table">
             <tbody>
+              {/* Summary Header */}
               <tr>
                 <td className="kidu-text">Total Contribution</td>
                 <td className="kidu-text">Total Entry</td>
                 <td className="kidu-text">New Member</td>
               </tr>
 
+              {/* Empty Row for Values */}
               <tr>
                 <td className="kidu-text">&nbsp;</td>
                 <td className="kidu-text">&nbsp;</td>
                 <td className="kidu-text">&nbsp;</td>
               </tr>
 
+              {/* Spacer Row */}
               <tr>
                 <td colSpan={3} className="border-0 p-1"></td>
               </tr>
 
+              {/* Staff Table Header */}
               <tr>
                 <td className="kidu-text">Staff No</td>
                 <td className="kidu-text">Name</td>
@@ -126,6 +174,7 @@ const MonthlyContributionEdit: React.FC = () => {
         </div>
       </div>
 
+      {/* ================= POPUPS ================= */}
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
