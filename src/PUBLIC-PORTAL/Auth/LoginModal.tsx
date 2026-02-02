@@ -130,7 +130,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
     >
       <div className="auth-header">
         <div className="auth-icon">
-          <LogIn size={32} className="auth-icon-gold" />
+          <LogIn size={23} className="auth-icon-gold" />
         </div>
         <h4 className="auth-title">Welcome Back</h4>
         <p className="auth-sub">Sign in to access your Digital Command Center</p>
@@ -138,7 +138,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Username</Form.Label>
+            <Form.Label>Username <span className="text-danger">*</span></Form.Label>
             <div className="input-icon-wrapper">
               <Mail className="input-icon" size={18} />
               <Form.Control 
@@ -158,7 +158,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
           </Form.Group>
 
           <Form.Group className="mb-2">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Password <span className="text-danger">*</span></Form.Label>
             <div className="input-icon-wrapper">
               <Lock className="input-icon" size={18} />
               <Form.Control 
@@ -239,12 +239,12 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
             onClick={onSignup}
             disabled={isLoading}
           >
-            Create an account
+           Register here
           </button>
         </div>
 
         <p className="auth-help">
-          Need help? Call <a href="tel:04442035575">044-42035575</a>
+          Need help? Call <a href="tel:04442035575" className="text-secondary text-decoration-none">047124721760</a>
         </p>
       </Modal.Body>
     </Modal>

@@ -1,7 +1,7 @@
 // src/services/AuthService.ts
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { CustomResponse } from "../Types/ApiTypes";
-import type { ForgotPasswordRequest, LoginRequest, LoginResponse } from "../Types/Auth.types";
+import type { ForgotPasswordRequest, LoginRequest, LoginResponse, RegisterRequest } from "../Types/Auth.types";
 import { isValidUserRole } from "../Types/Auth.types";
 import HttpService from "./HttpService";
 
@@ -44,7 +44,7 @@ class AuthService {
           localStorage.setItem('user', userString);
           console.log('User stored:', localStorage.getItem('user') !== null);
           console.log('Stored user data:', localStorage.getItem('user'));
-          
+
           // Store user role separately for easy access
           localStorage.setItem('user_role', response.value.user.role);
           console.log('User role stored:', response.value.user.role);
@@ -116,14 +116,14 @@ class AuthService {
 
       const user = JSON.parse(userStr);
       console.log('Parsed user:', user);
-      
+
       // Validate that parsed user has a valid role
       if (!isValidUserRole(user?.role)) {
         console.error('Stored user has invalid role, clearing storage');
         this.logout();
         return null;
       }
-      
+
       return user;
     } catch (error) {
       console.error('Error parsing user from localStorage:', error);
@@ -135,14 +135,14 @@ class AuthService {
     try {
       const role = localStorage.getItem('user_role');
       console.log('Getting user role:', role);
-      
+
       // Validate role
       if (!isValidUserRole(role)) {
         console.error('Invalid user role found, clearing storage');
         this.logout();
         return null;
       }
-      
+
       return role;
     } catch (error) {
       console.error('Error getting user role from localStorage:', error);
@@ -155,7 +155,7 @@ class AuthService {
     try {
       const memberIdStr = localStorage.getItem('member_id');
       console.log('Getting member ID:', memberIdStr);
-      
+
       if (!memberIdStr) {
         // Try getting from user object as fallback
         const user = this.getCurrentUser();
@@ -166,7 +166,7 @@ class AuthService {
         console.log('No member ID found');
         return null;
       }
-      
+
       const memberId = parseInt(memberIdStr, 10);
       return isNaN(memberId) ? null : memberId;
     } catch (error) {
@@ -180,7 +180,7 @@ class AuthService {
     try {
       const staffNoStr = localStorage.getItem('staff_no');
       console.log('Getting staff number:', staffNoStr);
-      
+
       if (!staffNoStr) {
         // Try getting from user object as fallback
         const user = this.getCurrentUser();
@@ -191,7 +191,7 @@ class AuthService {
         console.log('No staff number found');
         return null;
       }
-      
+
       const staffNo = parseInt(staffNoStr, 10);
       return isNaN(staffNo) ? null : staffNo;
     } catch (error) {
@@ -260,17 +260,17 @@ class AuthService {
       case 'staff':
         console.log('Routing to Staff Portal');
         return '/staff-portal';
-      
+
       case 'admin user':
       case 'adminuser':
         console.log('Routing to Admin Dashboard');
         return '/dashboard';
-      
+
       case 'super admin':
       case 'superadmin':
         console.log('Routing to Admin Dashboard (Super Admin)');
         return '/dashboard';
-      
+
       default:
         console.warn(`Unknown role: ${role}, redirecting to home`);
         return '/';
@@ -284,12 +284,12 @@ class AuthService {
   static isAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
-    
+
     const normalizedRole = role.trim().toLowerCase();
-    return normalizedRole === 'admin user' || 
-           normalizedRole === 'adminuser' || 
-           normalizedRole === 'super admin' || 
-           normalizedRole === 'superadmin';
+    return normalizedRole === 'admin user' ||
+      normalizedRole === 'adminuser' ||
+      normalizedRole === 'super admin' ||
+      normalizedRole === 'superadmin';
   }
 
   /**
@@ -299,7 +299,7 @@ class AuthService {
   static isStaff(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
-    
+
     return role.trim().toLowerCase() === 'staff';
   }
 
@@ -310,7 +310,7 @@ class AuthService {
   static isSuperAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
-    
+
     const normalizedRole = role.trim().toLowerCase();
     return normalizedRole === 'super admin' || normalizedRole === 'superadmin';
   }
@@ -338,6 +338,18 @@ class AuthService {
       "POST",
       data,
       true // public endpoint (no token required)
+    );
+  }
+
+  /*  REGISTER API (ADDED) */
+  static async register(
+    data: RegisterRequest
+  ): Promise<CustomResponse<LoginResponse>> {
+    return await HttpService.callApi<CustomResponse<LoginResponse>>(
+      API_ENDPOINTS.AUTH.REGISTER,
+      "POST",
+      data,
+      true
     );
   }
 }

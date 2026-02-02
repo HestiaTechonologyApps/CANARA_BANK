@@ -6,6 +6,16 @@ export interface LoginRequest {
   password: string;
 }
 
+/* REGISTER TYPES (ADDED) */
+export interface RegisterRequest {
+  staffNo: number;
+  userName: string;
+  userEmail: string;
+  phoneNumber: string;
+  address?: string;
+  password: string;
+}
+
 export interface User {
   userId: number;
   userName: string;
