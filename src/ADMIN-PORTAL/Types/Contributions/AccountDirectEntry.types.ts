@@ -4,7 +4,6 @@ export interface AccountDirectEntry {
   accountsDirectEntryID: number;
   memberId: number;
   memberName?:string;
-  name: string;
   branchId: number;
   branchName?:string;
   monthName?:string;
@@ -22,7 +21,7 @@ export interface AccountDirectEntry {
   f11: string;
   status: string;
   isApproved: boolean;
-  approvedBy: string;
+  approvedBy?: string;
   approvedDate: Date | string;
   approvedDateString?:string;
   auditLogs?: AuditTrails[];

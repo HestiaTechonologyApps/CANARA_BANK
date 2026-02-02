@@ -41,40 +41,41 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
-  const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  const handleSubmit = async (formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
-      throw new Error("Please select all required values");
-    }
-const payload = {
-  memberId: selectedMember.memberId,
-  memberName: selectedMember.name,
-  branchId: selectedBranch.branchId,
-  branchName: selectedBranch.name,
-  monthCode: selectedMonth.monthCode,
-  monthName: selectedMonth.monthName,
-  yearOf: selectedYearMaster.yearOf,
-  yearName: Number(selectedYearMaster.yearName),
-  ddIba: formData.ddIba,
-  ddIbaDate: toIso(formData.ddIbaDate),
-  ddIbaDateString: toIso(formData.ddIbaDate),
-  amt: Number(formData.amt),
-  name: formData.name,
-  status: formData.status,
-  approvedBy: formData.approvedBy || null,
-  approvedDate: formData.approvedDate ? toIso(formData.approvedDate) : null,
-  approvedDateString: formData.approvedDate ? toIso(formData.approvedDate) : null,
-  isApproved: Boolean(formData.isApproved),
-  enrl: formData.enrl || "",
-  fine: formData.fine || "",
-  f9: formData.f9 || "",
-  f10: formData.f10 || "",
-  f11: formData.f11 || "",
+const handleSubmit = async (formData: Record<string, any>) => {
+  if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
+    throw new Error("Please select all required values");
+  }
+
+  await AccountDirectEntryService.createAccountDirectEntry({
+    memberId: selectedMember.memberId,
+    memberName: selectedMember.name,
+    branchId: selectedBranch.branchId,
+    branchName: selectedBranch.name,
+    monthCode: selectedMonth.monthCode,
+    monthName: selectedMonth.monthName,
+    yearOf: selectedYearMaster.yearOf,
+    yearName: Number(selectedYearMaster.yearName),
+    ddIba: formData.ddIba,
+    ddIbaDate: `${formData.ddIbaDate}T00:00:00`,
+    ddIbaDateString: `${formData.ddIbaDate}T00:00:00`,
+    amt: Number(formData.amt),
+    status: formData.status,
+    approvedBy: formData.approvedBy || "",
+    approvedDate: formData.approvedDate
+      ? `${formData.approvedDate}T00:00:00`
+      : null,
+    approvedDateString: formData.approvedDate
+      ? `${formData.approvedDate}T00:00:00`
+      : null,
+    isApproved: Boolean(formData.isApproved),
+    enrl: formData.enrl || "",
+    fine: formData.fine || "",
+    f9: formData.f9 || "",
+    f10: formData.f10 || "",
+    f11: formData.f11 || "",
+  });
 };
-
-await AccountDirectEntryService.createAccountDirectEntry(payload);
-  };
 
 //status option
 const statusOption=[
