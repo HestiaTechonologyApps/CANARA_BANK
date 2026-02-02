@@ -11,6 +11,8 @@ import BranchPopup from "../../ADMIN-PORTAL/Pages/Branch/BranchPopup";
 import DesignationPopup from "../../ADMIN-PORTAL/Pages/Settings/Designation/DesignationPopup";
 import CategoryPopup from "../../ADMIN-PORTAL/Pages/Settings/Category/CategoryPopup";
 import StatusPopup from "../../ADMIN-PORTAL/Pages/Settings/Status/StatusPopup";
+import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
+import profiledefaultimg from "../../ADMIN-PORTAL/Assets/Images/profile.jpg";
 
 const StaffEdit: React.FC = () => {
 
@@ -23,6 +25,8 @@ const StaffEdit: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
+  const [_isUploading, setIsUploading] = useState(false);
+
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3, disabled: true } },
@@ -88,7 +92,8 @@ const StaffEdit: React.FC = () => {
         ...response,
         value: {
           ...member,
-          genderId: member.genderId // Explicitly ensure genderId is included
+          genderId: member.genderId,// Explicitly ensure genderId is included
+          profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
         }
       };
 
@@ -118,7 +123,8 @@ const StaffEdit: React.FC = () => {
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
-      profileImageSrc: formData.profileImageSrc || "",
+      // profileImageSrc: formData.profileImageSrc || "",
+      profileImageSrc: "", // Will be set by image upload
       nominee: formData.nominee || "",
       nomineeRelation: formData.nomineeRelation || "",
       nomineeIDentity: formData.nomineeIDentity || "",
@@ -133,6 +139,15 @@ const StaffEdit: React.FC = () => {
     };
 
     await MemberService.updateMember(Number(id), payload);
+    // ✅ Upload image if provided (File object from KiduEdit)
+    if (formData.profileImage instanceof File) {
+      setIsUploading(true);
+      await MemberService.uploadProfilePicture(
+        formData.profileImage,
+        Number(id)
+      );
+      setIsUploading(false);
+    }
   };
 
   const popupHandlers = {
@@ -172,6 +187,12 @@ const StaffEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         themeColor="#1f4e8c"
         showBackButton={false}
+        imageConfig={{
+          fieldName: "profileImage",
+          defaultImage: profiledefaultimg,
+          label: "Profile Picture",
+          editable: true,
+        }}
         options={{
           genderId: genderOptions,
           unionMember: unionMemberOptions,

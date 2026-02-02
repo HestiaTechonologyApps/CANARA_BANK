@@ -20,7 +20,7 @@ export interface FieldRule {
   maxLength?: number;
   pattern?: RegExp;
   placeholder?: string;
-  colWidth?: 2 | 3 | 4 | 6 | 12;
+  colWidth?: 2 | 3 | 4 | 5 | 6 | 12;
   disabled?: boolean;
 }
 

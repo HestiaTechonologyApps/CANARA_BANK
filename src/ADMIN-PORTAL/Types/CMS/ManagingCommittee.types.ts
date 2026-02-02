@@ -6,7 +6,7 @@ export interface ManagingCommittee {
   position: string;
   description1: string;
   description2?: string;
-  imageLocation: string;
+  imageLocation?: string;
   order: number;
   companyId: number;
   companyName?: string;
