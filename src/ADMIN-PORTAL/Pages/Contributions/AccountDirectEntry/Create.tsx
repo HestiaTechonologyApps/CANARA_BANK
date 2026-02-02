@@ -15,12 +15,12 @@ const AccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
-  const [showYearPopup, setShowYearPopup] = useState(false);
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [selectedYear, setSelectedYear] = useState<YearMaster | null>(null);
+  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -44,37 +44,38 @@ const AccountDirectEntryCreate: React.FC = () => {
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYear) {
+    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
 const payload = {
-  accountsDirectEntry: {
-    memberId: selectedMember.memberId,
-    name: selectedMember.name,
-    branchId: selectedBranch.branchId,
-    monthCode: selectedMonth.monthCode,
-    yearOf: selectedYear.yearOf,
-    yearName: Number(selectedYear.yearName),
-    ddIba: formData.ddIba,
-    ddIbaDate: toIso(formData.ddIbaDate),
-    ddIbaDateString: toIso(formData.ddIbaDate),
-    amt: Number(formData.amt),
-    status: formData.status,
-    approvedBy: formData.approvedBy || null,
-    approvedDate: formData.approvedDate ? toIso(formData.approvedDate) : null,
-    approvedDateString: formData.approvedDate ? toIso(formData.approvedDate) : null,
-    isApproved: Boolean(formData.isApproved),
-    enrl: formData.enrl || "",
-    fine: formData.fine || "",
-    f9: formData.f9 || "",
-    f10: formData.f10 || "",
-    f11: formData.f11 || "",
-  }
+  memberId: selectedMember.memberId,
+  memberName: selectedMember.name,
+  branchId: selectedBranch.branchId,
+  branchName: selectedBranch.name,
+  monthCode: selectedMonth.monthCode,
+  monthName: selectedMonth.monthName,
+  yearOf: selectedYearMaster.yearOf,
+  yearName: Number(selectedYearMaster.yearName),
+  ddIba: formData.ddIba,
+  ddIbaDate: toIso(formData.ddIbaDate),
+  ddIbaDateString: toIso(formData.ddIbaDate),
+  amt: Number(formData.amt),
+  name: formData.name,
+  status: formData.status,
+  approvedBy: formData.approvedBy || null,
+  approvedDate: formData.approvedDate ? toIso(formData.approvedDate) : null,
+  approvedDateString: formData.approvedDate ? toIso(formData.approvedDate) : null,
+  isApproved: Boolean(formData.isApproved),
+  enrl: formData.enrl || "",
+  fine: formData.fine || "",
+  f9: formData.f9 || "",
+  f10: formData.f10 || "",
+  f11: formData.f11 || "",
 };
 
-await AccountDirectEntryService.createAccountDirectEntry(payload as any);
-
+await AccountDirectEntryService.createAccountDirectEntry(payload);
   };
+
 //status option
 const statusOption=[
   {value:"Submitted", label:"Submitted"}
@@ -96,9 +97,9 @@ const statusOption=[
       onOpen: () => setShowMonthPopup(true),
     },
     yearOf: {
-      value: selectedYear ? String(selectedYear.yearName) : "",
-      actualValue: selectedYear?.yearOf,
-      onOpen: () => setShowYearPopup(true),
+      value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
     },
   };
 
@@ -134,9 +135,9 @@ const statusOption=[
        onSelect={setSelectedMonth} 
        />
       <YearMasterPopup 
-       show={showYearPopup} 
-       handleClose={() => setShowYearPopup(false)} 
-       onSelect={setSelectedYear} 
+       show={showYearMasterPopup} 
+       handleClose={() => setShowYearMasterPopup(false)} 
+       onSelect={setSelectedYearMaster} 
        />
     </>
   );

@@ -20,12 +20,12 @@ const AccountDirectEntryEdit: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
-  const [showYearPopup, setShowYearPopup] = useState(false);
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [selectedYear, setSelectedYear] = useState<YearMaster | null>(null);
+  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -35,14 +35,14 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4 ,disabled:true} },
+    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4, disabled: true } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
     { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
     { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
     { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
-    { name: "approvedBy", rules: { type: "text", label: "Approved By", required: true, colWidth: 4 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", required: true, colWidth: 4 } },
+    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 4 } },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 4 } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
@@ -52,6 +52,7 @@ const AccountDirectEntryEdit: React.FC = () => {
   const handleFetch = async (id: string) => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
+
     if (!entry) return response;
 
     if (entry.memberId) {
@@ -71,7 +72,7 @@ const AccountDirectEntryEdit: React.FC = () => {
 
     if (entry.yearOf) {
       const year = await YearMasterService.getYearMasterById(entry.yearOf);
-      setSelectedYear(year.value);
+      setSelectedYearMaster(year.value);
     }
 
     return {
@@ -86,27 +87,29 @@ const AccountDirectEntryEdit: React.FC = () => {
 
   // ================= UPDATE =================
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYear) {
+    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
 
     const payload: Partial<Omit<AccountDirectEntry, "auditLogs">> = {
       accountsDirectEntryID: Number(id),
-
       memberId: selectedMember.memberId,
-      name: selectedMember.name,
+      memberName: selectedMember.name,
       branchId: selectedBranch.branchId,
+      branchName: selectedBranch.name,
       monthCode: selectedMonth.monthCode,
-      yearOf: selectedYear.yearOf,
-      yearName: Number(selectedYear.yearName), 
+      monthName: selectedMonth.monthName,
+      yearOf: selectedYearMaster.yearOf,
+      yearName: Number(selectedYearMaster.yearName),
       ddIba: formData.ddIba,
       ddIbaDate: toIso(formData.ddIbaDate),
       ddIbaDateString: toIso(formData.ddIbaDate),
+      name:formData.name,
       amt: Number(formData.amt),
       status: formData.status,
-      approvedBy: formData.approvedBy.trim(),
-      approvedDate: toIso(formData.approvedDate),
-      approvedDateString: toIso(formData.approvedDate),
+      approvedBy: formData.approvedBy || null,
+      approvedDate: formData.approvedDate ? toIso(formData.approvedDate) : null,
+      approvedDateString: formData.approvedDate ? toIso(formData.approvedDate) : null,
       isApproved: Boolean(formData.isApproved),
       enrl: formData.enrl || "",
       fine: formData.fine || "",
@@ -136,9 +139,9 @@ const AccountDirectEntryEdit: React.FC = () => {
       onOpen: () => setShowMonthPopup(true),
     },
     yearOf: {
-      value: selectedYear ? String(selectedYear.yearName) : "",
-      actualValue: selectedYear?.yearOf,
-      onOpen: () => setShowYearPopup(true),
+      value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
     },
   };
 
@@ -151,9 +154,6 @@ const AccountDirectEntryEdit: React.FC = () => {
         onUpdate={handleUpdate}
         paramName="accountsDirectEntryID"
         submitButtonText="Update Entry"
-        showResetButton
-        successMessage="Account entry updated successfully!"
-        errorMessage="Failed to update entry. Please try again."
         navigateBackPath="/dashboard/contributions/accountDirectEntry-list"
         auditLogConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
         popupHandlers={popupHandlers}
@@ -176,9 +176,9 @@ const AccountDirectEntryEdit: React.FC = () => {
        onSelect={setSelectedMonth} 
        />
       <YearMasterPopup 
-       show={showYearPopup} 
-       handleClose={() => setShowYearPopup(false)} 
-       onSelect={setSelectedYear} 
+       show={showYearMasterPopup} 
+       handleClose={() => setShowYearMasterPopup(false)} 
+       onSelect={setSelectedYearMaster} 
        />
     </>
   );

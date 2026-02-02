@@ -13,7 +13,7 @@ const UserView: React.FC = () => {
     { key: "userEmail", label: "Email", icon: "bi-envelope" },
     { key: "phoneNumber", label: "Phone Number", icon: "bi-telephone" },
     { key: "address", label: "Address", icon: "bi-geo-alt" },
-    { key: "companyId", label: "Company ID", icon: "bi-building" },
+    { key: "comapanyName", label: "Company", icon: "bi-building" },
     { key: "role", label: "Role", icon: "bi-person-badge" },
     { key: "createAt", label: "Created At", icon: "bi-calendar-plus", isDate: true },
     { key: "lastlogin", label: "Last Login", icon: "bi-clock-history", isDate: true },

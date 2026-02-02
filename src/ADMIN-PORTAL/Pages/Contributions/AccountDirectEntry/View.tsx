@@ -8,7 +8,9 @@ const AccountDirectEntryView: React.FC = () => {
     { key: "memberName", label: "Member" },
     { key: "branchName", label: "Branch" },
     { key: "monthName", label: "Month" },
-    { key: "yearName", label: "Year" }, 
+    { key: "yearName", label: "Year" },
+    { key: "ddIba", label: "DD / IBA" },
+    { key: "ddIbaDateString", label: "DD / IBA Date" },
     { key: "amt", label: "Amount" },
     { key: "status", label: "Status" },
     { key: "enrl", label: "ENRL", icon: "bi-file-text" },
@@ -16,6 +18,8 @@ const AccountDirectEntryView: React.FC = () => {
     { key: "f9", label: "F9", icon: "bi-list-check" },
     { key: "f10", label: "F10", icon: "bi-list-check" },
     { key: "f11", label: "F11", icon: "bi-list-check" },
+    { key: "approvedBy", label: "Approved By", icon: "bi-person-check" },
+    { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
     { key: "isApproved", label: "Approved", isBoolean: true },
   ];
 
@@ -37,7 +41,7 @@ const AccountDirectEntryView: React.FC = () => {
       listRoute="/dashboard/contributions/accountDirectEntry-list"
       editRoute="/dashboard/contributions/accountDirectEntry-edit"
       themeColor="#1B3763"
-      loadingText="Loading account direct entries..."
+      loadingText="Loading account direct entry details..."
       showDeleteButton
       showEditButton
       deleteConfirmMessage="Are you sure you want to delete this entry? This action cannot be undone."
