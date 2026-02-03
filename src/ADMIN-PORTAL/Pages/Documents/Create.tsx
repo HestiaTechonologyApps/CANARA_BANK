@@ -28,10 +28,10 @@ const DocumentCreate: React.FC = () => {
         title="Upload document"
         fields={fields}
         onSubmit={handleSubmit}
-        submitButtonText="Upload"
+        submitButtonText="Upload Document"
         showResetButton
         successMessage="Document uploaded successfully!"
-        errorMessage="Failed to upload document"
+        errorMessage="Failed to upload document. Please try again."
         navigateOnSuccess="/dashboard/cms/documents-list"
          navigateDelay={1500}
         themeColor="#1B3763"

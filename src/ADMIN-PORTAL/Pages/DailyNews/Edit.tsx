@@ -15,15 +15,24 @@ const DailyNewsEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
 
-  const handleFetch = async (id: string) => {
-    const response = await DailyNewsService.getDailyNewsById(Number(id));
-    const news = response.value;
+const handleFetch = async (id: string) => {
+  const response = await DailyNewsService.getDailyNewsById(Number(id));
+  const news = response.value;
 
-    if (!news) throw new Error("Daily news not found");
+  if (!news) throw new Error("Daily news not found");
 
-    originalDataRef.current = news;
-    return response; 
-  };
+  // ✅ TIMEZONE-SAFE conversion for <input type="date">
+  if (news.newsDate) {
+    const d = new Date(news.newsDate);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    news.newsDate = `${yyyy}-${mm}-${dd}`;
+  }
+
+  originalDataRef.current = news;
+  return response;
+};
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!originalDataRef.current) {

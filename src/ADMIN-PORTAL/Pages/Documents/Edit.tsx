@@ -12,8 +12,8 @@ const DocumentEdit: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-   const response = await AttachmentService.getById(Number(id));
-return response; // ✅ same as MemberEdit
+    const response = await AttachmentService.getById(Number(id));
+    return response;
 
   };
 

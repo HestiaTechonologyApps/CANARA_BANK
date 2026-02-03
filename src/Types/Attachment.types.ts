@@ -1,5 +1,7 @@
 // types/Attachment.types.ts
 export interface Attachment {
+    existingFileUrl: string;
+    existingFileName: string;
     attachmentId: number;
     tableName: string;
     recordId: number;

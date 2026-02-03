@@ -23,6 +23,7 @@ const handleFetch = async (id: string) => {
       newsDate: res.value.newsDate
         ? new Date(res.value.newsDate).toLocaleDateString("en-GB")
         : "",
+      isActive: res.value.isActive ? "Yes" : "No",
     },
   };
 };
