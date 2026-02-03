@@ -9,14 +9,13 @@ import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
 import KiduYearSelector from "../../Components/KiduYearSelector";
 import AuthService from "../../Services/Auth.services";
 import KiduLogoutModal from "../../Components/KiduLogoutModal";
-import ActivityPanel from "./ActivityPanel";
 import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
 import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
 import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
 
 const NavbarComponent: React.FC = () => {
-  const [showNotifications, setShowNotifications] = useState(false);
+  // const [showNotifications, setShowNotifications] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -60,7 +59,7 @@ const NavbarComponent: React.FC = () => {
   }, []);
 
 
-  const handleClose = () => setShowNotifications(false);
+  // const handleClose = () => setShowNotifications(false);
 
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
@@ -197,7 +196,7 @@ const NavbarComponent: React.FC = () => {
       </Navbar>
 
       {/* Notification Offcanvas */}
-      <ActivityPanel show={showNotifications} handleClose={handleClose} />
+      {/* <ActivityPanel show={showNotifications} handleClose={handleClose} /> */}
       <KiduLogoutModal
         show={showLogoutModal}
         onCancel={() => setShowLogoutModal(false)}

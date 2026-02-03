@@ -5,8 +5,8 @@ import { BsGear, BsBoxArrowRight } from "react-icons/bs";
 
 interface KiduNavbarDropdownProps {
   show: boolean;
-  name:string;
-  email:string;
+  name: string;
+  email: string;
   onToggle: (show: boolean) => void;
   onAccountSettings: () => void;
   onProfile: () => void;
@@ -57,10 +57,10 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
 
         <Dropdown.Divider />
 
-       <Dropdown.Item onClick={onProfile}>
-  <User />
-  Profile
-</Dropdown.Item>
+        <Dropdown.Item onClick={onProfile}>
+          <User />
+          Profile
+        </Dropdown.Item>
 
         <Dropdown.Divider />
         <Dropdown.Item
