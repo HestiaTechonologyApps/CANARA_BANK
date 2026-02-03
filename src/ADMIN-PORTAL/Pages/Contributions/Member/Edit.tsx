@@ -29,7 +29,7 @@ const MemberEdit: React.FC = () => {
   const [_isUploading, setIsUploading] = useState(false);
 
   const fields: Field[] = [
-    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
+    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4, disabled :true} },
     { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4 } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
