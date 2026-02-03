@@ -13,29 +13,40 @@ const columns = [
   { key: "yearName", label: "Year", type: "text" as const }, 
 ];
 
+const formatDateOnly = (value?: string | Date) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
 const DeathClaimList: React.FC = () => {
-  const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
-    let data: DeathClaim[] = await DeathClaimService.getAllDeathClaims();
+ const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
+  let data: DeathClaim[] = await DeathClaimService.getAllDeathClaims();
 
-    if (searchTerm) {
-      const q = searchTerm.toLowerCase();
-      data = data.filter(d =>
-        [
-          d.memberName,
-          d.stateName,
-          d.designationName,
-          d.yearName?.toString(), 
-        ]
-          .filter(Boolean)
-          .some(v => String(v).toLowerCase().includes(q))
-      );
-    }
+  // ✅ Date-only formatting
+  data = data.map(d => ({
+    ...d,
+    deathDate: formatDateOnly(d.deathDate),
+  }));
 
-    return {
-      data: data.slice((pageNumber - 1) * pageSize, pageNumber * pageSize),
-      total: data.length,
-    };
+  if (searchTerm) {
+    const q = searchTerm.toLowerCase();
+    data = data.filter(d =>
+      [
+        d.memberName,
+        d.stateName,
+        d.designationName,
+        d.yearName?.toString(),
+      ]
+        .filter(Boolean)
+        .some(v => String(v).toLowerCase().includes(q))
+    );
+  }
+
+  return {
+    data: data.slice((pageNumber - 1) * pageSize, pageNumber * pageSize),
+    total: data.length,
   };
+};
 
   return (
     <KiduServerTable

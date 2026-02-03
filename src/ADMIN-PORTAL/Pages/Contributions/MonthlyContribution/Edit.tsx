@@ -18,7 +18,7 @@ const MonthlyContributionEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
     { name: "monthId", rules: { type: "popup", label: "Select", required: true, colWidth: 6 } },
-    { name: "file", rules: { type: "file", label: "Upload Files", required: false, colWidth: 12 } },
+    { name: "file", rules: { type: "file", label: "Upload Files", required: true, colWidth: 12 } },
   ];
 
   // ================= FETCH DATA =================
@@ -31,15 +31,14 @@ const MonthlyContributionEdit: React.FC = () => {
     console.log("FETCHED DATA:", data);
 
     if (data) {
-      // Set the selected year and month from fetched data
       setSelectedYearMaster({
         yearOf: data.yearOF,
-        yearName: Number(data.yearName) || data.yearOF, // Convert to number as expected by YearMaster type
+        yearName: Number(data.yearName) || data.yearOF,
       } as YearMaster);
 
       setSelectedMonth({
-        monthCode: data.monthId, // Using monthCode instead of monthId for consistency
-        monthName: data.monthName || `Month ${data.monthId}`, // Fallback if monthName not available
+        monthCode: data.monthId, 
+        monthName: data.monthName || `Month ${data.monthId}`, 
       } as Month);
     }
 
@@ -47,8 +46,8 @@ const MonthlyContributionEdit: React.FC = () => {
       ...response,
       value: {
         ...data,
-        yearOF: String(data.yearOF), // Convert to string for form display
-        monthId: String(data.monthId), // Convert to string for form display
+        yearOF: String(data.yearOF), 
+        monthId: String(data.monthId), 
 
       },
     };
@@ -65,21 +64,18 @@ const MonthlyContributionEdit: React.FC = () => {
     if (!selectedMonth) throw new Error("Please select Month");
     if (selectedYearMaster.yearOf === undefined) throw new Error("Invalid year selected");
 
-    // Check if a new file is uploaded
     const file =
       formData.file instanceof File
         ? formData.file
         : formData.file?.[0];
 
-    // If a new file is provided, upload it
     if (file) {
       try {
         console.log("NEW FILE DETECTED - UPLOADING ✅");
 
-        // ✅ UPLOAD NEW FILE using the upload-file API
         const response = await MonthlyContributionService.uploadFile(
           file,
-          selectedMonth.monthCode, // Using monthCode
+          selectedMonth.monthCode, 
           selectedYearMaster.yearOf
         );
 
@@ -98,9 +94,6 @@ const MonthlyContributionEdit: React.FC = () => {
     } else {
       console.log("NO NEW FILE - KEEPING EXISTING FILE");
 
-      // If no new file, you might want to just update the record metadata
-      // This depends on whether you have a separate update endpoint
-      // For now, we'll just log that no file was changed
       console.log("No file changes, month and year remain:", {
         monthCode: selectedMonth.monthCode,
         yearOf: selectedYearMaster.yearOf,
@@ -117,7 +110,7 @@ const MonthlyContributionEdit: React.FC = () => {
     },
     monthId: {
       value: String(selectedMonth?.monthName || ""),
-      actualValue: selectedMonth?.monthCode, // Using monthCode for consistency
+      actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },
   };

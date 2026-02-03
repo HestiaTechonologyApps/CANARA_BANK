@@ -9,7 +9,7 @@ import YearMasterService from "../../../Services/Settings/YearMaster.services";
 
 const DeathClaimView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "deathClaimId", label: "Claim ID", icon: "bi-hash" },
+    { key: "deathClaimId", label: "Death Claim ID", icon: "bi-hash" },
     { key: "memberName", label: "Member", icon: "bi-person" },
     { key: "stateName", label: "State", icon: "bi-flag" },
     { key: "designationName", label: "Designation", icon: "bi-briefcase" },
@@ -24,38 +24,47 @@ const DeathClaimView: React.FC = () => {
     { key: "yearName", label: "Year", icon: "bi-calendar-check" }, 
   ];
 
+const formatDateOnly = (value?: string | Date) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
   const handleFetch = async (id: string) => {
-    const response = await DeathClaimService.getDeathClaimById(Number(id));
-    const claim = response.value;
+  const response = await DeathClaimService.getDeathClaimById(Number(id));
+  const claim = response.value;
 
-    if (!claim) return response;
+  if (!claim) return response;
 
-    if (claim.memberId) {
-      const members = await MemberService.getAllMembers();
-      const member = members.find(m => m.memberId === claim.memberId);
-      claim.memberName = member?.name || "N/A";
-    }
+  // ✅ Date-only formatting
+  claim.deathDate = formatDateOnly(claim.deathDate);
+  claim.dddate = formatDateOnly(claim.dddate);
 
-    if (claim.stateId) {
-      const state = await StateService.getStateById(claim.stateId);
-      claim.stateName = state.value?.name || "N/A";
-    }
+  if (claim.memberId) {
+    const members = await MemberService.getAllMembers();
+    const member = members.find(m => m.memberId === claim.memberId);
+    claim.memberName = member?.name || "N/A";
+  }
 
-    if (claim.designationId) {
-      const desig = await DesignationService.getDesignationById(claim.designationId);
-      claim.designationName = desig.value?.name || "N/A";
-    }
+  if (claim.stateId) {
+    const state = await StateService.getStateById(claim.stateId);
+    claim.stateName = state.value?.name || "N/A";
+  }
 
-    if (claim.yearOF) {
-      const year = await YearMasterService.getYearMasterById(claim.yearOF);
-      claim.yearName = year.value?.yearName || claim.yearOF;
-    }
+  if (claim.designationId) {
+    const desig = await DesignationService.getDesignationById(claim.designationId);
+    claim.designationName = desig.value?.name || "N/A";
+  }
 
-    return {
-      ...response,
-      value: claim,
-    };
+  if (claim.yearOF) {
+    const year = await YearMasterService.getYearMasterById(claim.yearOF);
+    claim.yearName = year.value?.yearName || claim.yearOF;
+  }
+
+  return {
+    ...response,
+    value: claim,
   };
+};
 
   const handleDelete = async (id: string) => {
     await DeathClaimService.deleteDeathClaim(Number(id));
