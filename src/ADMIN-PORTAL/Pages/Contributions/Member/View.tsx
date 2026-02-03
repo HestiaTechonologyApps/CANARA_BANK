@@ -26,20 +26,29 @@ const MemberView: React.FC = () => {
     { key: "unionMember", label: "Union Member", icon: "bi-patch-check" },
     { key: "totalRefund", label: "Total Refund", icon: "bi-cash" }
   ];
+const formatDateOnly = (value?: string) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
 
-  const handleFetch = async (memberId: string) => {
-    const response = await MemberService.getMemberById(Number(memberId));
+const handleFetch = async (memberId: string) => {
+  const response = await MemberService.getMemberById(Number(memberId));
 
-    if (response.value) {
-      if (response.value.profileImageSrc) {
-        response.value.profileImageSrc = getFullImageUrl(response.value.profileImageSrc);
-      } else {
-        response.value.profileImageSrc = defaultProfileImage;
-      }
-    }
+  if (response.value) {
+    // Profile image
+    response.value.profileImageSrc = response.value.profileImageSrc
+      ? getFullImageUrl(response.value.profileImageSrc)
+      : defaultProfileImage;
 
-    return response;
-  };
+    // ✅ Date-only formatting
+    response.value.dobString = formatDateOnly(response.value.dobString);
+    response.value.dojString = formatDateOnly(response.value.dojString);
+    response.value.dojtoSchemeString = formatDateOnly(response.value.dojtoSchemeString);
+  }
+
+  return response;
+};
+
 
   const handleDelete = async (memberId: string) => {
     await MemberService.deleteMember(Number(memberId));

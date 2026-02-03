@@ -14,9 +14,17 @@ const DirectPaymentView: React.FC = () => {
     { key: "remarks", label: "Remarks", icon: "bi-chat-text" },
   ];
 
-  const handleFetch = async (id: string) => {
-    return await DirectPaymentService.getDirectPaymentById(Number(id));
-  };
+const handleFetch = async (id: string) => {
+  const response = await DirectPaymentService.getDirectPaymentById(Number(id));
+
+  if (response.value?.paymentDatestring) {
+    response.value.paymentDatestring =
+      new Date(response.value.paymentDatestring).toLocaleDateString("en-IN");
+  }
+
+  return response;
+};
+
   const handleDelete = async (id: string) => {
     await DirectPaymentService.deleteDirectPayment(Number(id));
   };

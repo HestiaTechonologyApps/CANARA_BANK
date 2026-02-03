@@ -13,37 +13,44 @@ const columns = [
 ];
 
 const DirectPaymentList: React.FC = () => {
-  const fetchData = async (params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: any[]; total: number }> => {
+ const fetchData = async (params: {
+  pageNumber: number;
+  pageSize: number;
+  searchTerm: string;
+}): Promise<{ data: any[]; total: number }> => {
 
-    let payments: DirectPayment[] =
-      await DirectPaymentService.getAllDirectPayments();
+  let payments: DirectPayment[] =
+    await DirectPaymentService.getAllDirectPayments();
 
-    if (params.searchTerm) {
-      const q = params.searchTerm.toLowerCase();
-      payments = payments.filter(p =>
-        [
-          p.directPaymentId?.toString(),
-          p.memberName,
-          p.referenceNo,
-          p.paymentMode,
-        ]
-          .filter(Boolean)
-          .some(v => String(v).toLowerCase().includes(q))
-      );
-    }
+  payments = payments.map(p => ({
+    ...p,
+    paymentDatestring: p.paymentDatestring
+      ? new Date(p.paymentDatestring).toLocaleDateString("en-IN")
+      : "",
+  }));
 
-    const start = (params.pageNumber - 1) * params.pageSize;
-    const end = start + params.pageSize;
+  if (params.searchTerm) {
+    const q = params.searchTerm.toLowerCase();
+    payments = payments.filter(p =>
+      [
+        p.directPaymentId?.toString(),
+        p.memberName,
+        p.referenceNo,
+        p.paymentMode,
+      ]
+        .filter(Boolean)
+        .some(v => String(v).toLowerCase().includes(q))
+    );
+  }
 
-    return {
-      data: payments.slice(start, end),
-      total: payments.length,
-    };
+  const start = (params.pageNumber - 1) * params.pageSize;
+  const end = start + params.pageSize;
+
+  return {
+    data: payments.slice(start, end),
+    total: payments.length,
   };
+};
 
   return (
     <KiduServerTable
