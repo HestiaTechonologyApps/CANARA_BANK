@@ -123,8 +123,8 @@ const StaffEdit: React.FC = () => {
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
-      // profileImageSrc: formData.profileImageSrc || "",
-      profileImageSrc: "", // Will be set by image upload
+       profileImageSrc: formData.profileImageSrc || "",
+      // profileImageSrc: "", // Will be set by image upload
       nominee: formData.nominee || "",
       nomineeRelation: formData.nomineeRelation || "",
       nomineeIDentity: formData.nomineeIDentity || "",

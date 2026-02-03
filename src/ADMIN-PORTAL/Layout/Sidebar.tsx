@@ -1,27 +1,7 @@
 import React, { useState } from "react";
 import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  BsGridFill,
-  BsGearFill,
-  BsCashStack,
-  BsPeople,
-  BsNewspaper,
-  BsBarChart,
-  BsChevronDown,
-  BsListUl,
-  BsGeoAlt,
-  BsPersonCheck,
-  BsToggleOn,
-  BsAward,
-  BsCircle,
-  BsBuildingGear,
-  BsPersonFillGear,
-  BsBuilding,
-  BsCalendar3,
-  BsBag,
-  BsTicketPerforated
-} from "react-icons/bs";
+import { BsGridFill, BsGearFill, BsCashStack, BsPeople, BsNewspaper, BsBarChart, BsChevronDown, BsListUl, BsGeoAlt, BsPersonCheck, BsToggleOn, BsAward, BsCircle, BsBuildingGear, BsPersonFillGear, BsBuilding,BsCalendar3,  BsBag,  BsTicketPerforated} from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
@@ -367,14 +347,14 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/supportTickets-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
               style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsTicketPerforated
-                    className={isActive ? "text-primary" : "text-white"}
+                    className={isActive ? "text-white" : "text-white"}
                     style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
@@ -391,14 +371,14 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/customer-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
               style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsPeople
-                    className={isActive ? "text-primary" : "text-white"}
+                    className={isActive ? "text-white" : "text-white"}
                     style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
@@ -414,7 +394,7 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/approval"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
               style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
             >

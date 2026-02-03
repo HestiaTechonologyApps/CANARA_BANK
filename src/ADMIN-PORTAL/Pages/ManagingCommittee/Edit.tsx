@@ -52,7 +52,7 @@ const ManagingCommitteeEdit: React.FC = () => {
       position: formData.position,
       description1: formData.description1,
       description2: formData.description2,
-      // imageLocation: formData.imageLocation,
+      imageLocation: formData.imageLocation,
       //imageLocation: "",
       order: Number(formData.order),
       companyId: formData.companyId,

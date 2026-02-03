@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Button,
-  Tab,
-  Tabs,
-  Form
-} from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Modal, Button, Tab, Tabs, Form} from "react-bootstrap";
 import { Eye, EyeOff, Upload, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "../../ADMIN-PORTAL/Services/Settings/User.services";
+import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
+import MemberService from "../Services/Contributions/Member.services";
 
 interface KiduAccountsettingsModalProps {
   show: boolean;
@@ -33,24 +29,29 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
 }) => {
   const [key, setKey] = useState<string>("photo");
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
   const [loading, setLoading] = useState(false);
+  // 🔹 image upload refs & state
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  // ✅ Load user from localStorage (same as AccountSettings.tsx)
+  // Load user from localStorage (same as AccountSettings.tsx)
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
     if (userDataString) {
       try {
         const userData = JSON.parse(userDataString);
         setCurrentUser(userData);
+
+        if (userData.profileImagePath) {
+          setPreview(getFullImageUrl(userData.profileImagePath));
+        }
       } catch (error) {
         toast.error("Unable to load user information");
       }
@@ -64,7 +65,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
     onHide();
   };
 
-  // ✅ PASSWORD CHANGE LOGIC (CONNECTED TO API)
+  // PASSWORD CHANGE LOGIC (CONNECTED TO API)
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -104,12 +105,56 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
 
       await UserService.changePassword(payload);
 
-      toast.success("Password changed successfully ✅");
+      toast.success("Password changed successfully");
       resetForm();
     } catch (error: any) {
       toast.error(
         error?.message || "Failed to change password. Please check your current password."
       );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // IMAGE SELECT
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  // IMAGE UPLOAD API CALL
+  const handleSavePhoto = async () => {
+    if (!selectedFile) {
+      toast.error("Please select an image");
+      return;
+    }
+    try {
+      setLoading(true);
+      const uploadedPath = await MemberService.uploadProfilePicture(selectedFile);
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const updatedUser = {
+          ...JSON.parse(storedUser),
+          profileImagePath: uploadedPath,
+        };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setCurrentUser(updatedUser);
+        setPreview(getFullImageUrl(uploadedPath));
+
+        // notify sidebar/navbar
+        window.dispatchEvent(new CustomEvent("profile-pic-updated"));
+      }
+
+      toast.success("Profile photo updated successfully");
+      setSelectedFile(null);
+    } catch (error: any) {
+      toast.error(error.message || "Image upload failed");
     } finally {
       setLoading(false);
     }
@@ -121,9 +166,10 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
       onHide={resetForm}
       centered
       backdrop="static"
+      style={{ fontFamily: "Urbanist" }}
     >
       <Modal.Header closeButton className="border-bottom">
-        <Modal.Title style={{ color: NAVY, fontWeight: 600, fontSize: "15px" }}>
+        <Modal.Title style={{ color: NAVY, fontWeight: 600, fontSize: "21px" }}>
           Account Settings
         </Modal.Title>
       </Modal.Header>
@@ -155,7 +201,20 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     fontWeight: 600,
                   }}
                 >
-                  {currentUser?.userName?.charAt(0).toUpperCase() || "U"}
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="profile"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" , borderRadius:"10px"}}
+                    />
+                  ) : (
+                    <div
+                      className="d-flex h-100 align-items-center justify-content-center text-white"
+                      style={{ fontSize: 33, fontWeight: 600 }}
+                    >
+                      {currentUser?.userName?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -165,6 +224,10 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     height: 30,
                     backgroundColor: RED,
                     color: WHITE,
+                  }}
+                  onClick={() => {
+                    setPreview(null);
+                    setSelectedFile(null);
                   }}
                 >
                   <Trash2 size={12} />
@@ -182,20 +245,29 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                   border: "2px dashed #dee2e6",
                   cursor: "pointer",
                 }}
+                onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="mb-2 text-muted" />
                 <p className="mb-0 fw-medium">Click to upload new photo</p>
                 <small className="text-muted">PNG, JPG up to 5MB</small>
               </div>
-
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFileChange}
+              />
               <div className="d-flex justify-content-end gap-2 w-100">
-                <Button variant="outline-secondary" onClick={resetForm}>
+                <Button variant="outline-secondary" onClick={resetForm} style={{fontSize:"13px"}}>
                   Cancel
                 </Button>
                 <Button
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY }}
+                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize:"13px" }}
+                  onClick={handleSavePhoto}
+                  disabled={loading}
                 >
-                  Save Photo
+                   {loading ? "Saving..." : "Save Photo"}
                 </Button>
               </div>
             </div>
@@ -205,12 +277,13 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
           <Tab eventKey="password" title="Reset Password">
             <Form onSubmit={handlePasswordSubmit} className="mt-3">
               <Form.Group className="mb-3">
-                <Form.Label>Current Password</Form.Label>
+                <Form.Label  className="fw-semibold" style={{ color: NAVY }}>Current Password <span className="text-danger">*</span></Form.Label>
                 <div className="position-relative">
                   <Form.Control
                     type={showCurrent ? "text" : "password"}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Enter your current password"
                   />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
@@ -223,12 +296,13 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>New Password</Form.Label>
+                <Form.Label  className="fw-semibold" style={{ color: NAVY }}>New Password <span className="text-danger">*</span></Form.Label>
                 <div className="position-relative">
                   <Form.Control
                     type={showNew ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
+                     placeholder="Enter your new password"
                   />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
@@ -241,12 +315,13 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
               </Form.Group>
 
               <Form.Group className="mb-2">
-                <Form.Label>Confirm New Password</Form.Label>
+                <Form.Label className="fw-semibold" style={{ color: NAVY }}>Confirm New Password <span className="text-danger">*</span></Form.Label>
                 <div className="position-relative">
                   <Form.Control
                     type={showConfirm ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                     placeholder="Confirm your password"
                   />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
@@ -258,18 +333,18 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                 </div>
               </Form.Group>
 
-              <small className="text-muted">
+              {/* <small className="text-muted">
                 Password must be at least 8 characters
-              </small>
+              </small> */}
 
               <div className="d-flex justify-content-end gap-2 mt-4">
-                <Button variant="outline-secondary" onClick={resetForm}>
+                <Button variant="outline-secondary" onClick={resetForm} style={{fontSize:"13px"}}>
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={loading}
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY }}
+                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY ,fontSize:"13px"}}
                 >
                   {loading ? "Updating..." : "Update Password"}
                 </Button>

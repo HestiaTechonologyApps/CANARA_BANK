@@ -640,6 +640,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     <>
       <div
         className="container-fluid d-flex justify-content-center align-items-center mt-1"
+        style={{ fontFamily: "Urbanist" }}
       >
         <Card
           className="shadow-lg px-3 py-3 w-100"
