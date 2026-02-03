@@ -6,7 +6,7 @@ import KiduView from "../../../Components/KiduView";
 const MonthlyContributionView: React.FC = () => {
 
   const fields: ViewField[] = [
-    { key: "monthlyContributionId", label: "ID", icon: "bi-hash" },
+    { key: "monthlyContributionId", label: "Monthly Contribution ID", icon: "bi-hash" },
     { key: "fileName", label: "File Name", icon: "bi-file-earmark" },
     { key: "fileType", label: "File Type", icon: "bi-filetype-pdf" },
     { key: "fileExtension", label: "Extension", icon: "bi-file-earmark-text" },

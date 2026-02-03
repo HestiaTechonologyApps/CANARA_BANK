@@ -5,7 +5,7 @@ import MainPageService from "../../Services/CMS/MainPage.services";
 
 const MainPageView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "mainPageId", label: "ID", icon: "bi-hash" },
+    { key: "mainPageId", label: "Main Page ID", icon: "bi-hash" },
     { key: "companyId", label: "Company ID", icon: "bi-building" },
     { key: "companyName", label: "Company Name", icon: "bi-building-check" },
     { key: "mainText", label: "Main Text", icon: "bi-file-text" },

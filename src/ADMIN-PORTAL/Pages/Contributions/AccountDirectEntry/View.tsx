@@ -4,7 +4,7 @@ import AccountDirectEntryService from "../../../Services/Contributions/AccountDi
 
 const AccountDirectEntryView: React.FC = () => {
   const fields = [
-    { key: "accountsDirectEntryID", label: "Entry ID" },
+    { key: "accountsDirectEntryID", label: "Account Direct Entry ID" },
     { key: "memberName", label: "Member" },
     { key: "branchName", label: "Branch" },
     { key: "monthName", label: "Month" },

@@ -7,7 +7,7 @@ import KiduView from "../../Components/KiduView";
 const DocumentView: React.FC = () => {
 
   const fields: ViewField[] = [
-    { key: "attachmentId", label: "ID", icon: "bi-hash" },
+    { key: "attachmentId", label: "Attachment ID", icon: "bi-hash" },
     { key: "fileName", label: "File Name", icon: "bi-file-earmark" },
     { key: "description", label: "Description", icon: "bi-card-text" },
     { key: "tableName", label: "Table Name", icon: "bi-table" },

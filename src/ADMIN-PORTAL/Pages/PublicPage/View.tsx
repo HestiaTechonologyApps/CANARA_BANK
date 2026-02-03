@@ -7,7 +7,7 @@ import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
 const PublicPageView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "publicPageId", label: "ID" },
+    { key: "publicPageId", label: "Public Page ID" },
     { key: "navBrandTitle", label: "Brand Title" },
     { key: "navBrandSubTitle", label: "Brand Subtitle" },
     { key: "homeHeroTitle", label: "Hero Title" },

@@ -5,7 +5,7 @@ import type { ViewField } from "../../Components/KiduView";
 
 const DailyNewsView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "dailyNewsId", label: "ID" },
+    { key: "dailyNewsId", label: "Daily News ID" },
     { key: "title", label: "Title" },
     { key: "description", label: "Description" },
     { key: "newsDate", label: "News Date" },

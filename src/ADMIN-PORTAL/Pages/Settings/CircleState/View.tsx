@@ -5,7 +5,7 @@ import type { ViewField } from "../../../Components/KiduView";
 import CircleStateService from "../../../Services/Settings/CircleState.services";
 
 const fields: ViewField[] = [
-  { key: "circleId", label: "Circle ID", icon: "bi-diagram-3" },
+  { key: "circleId", label: "Circle State ID", icon: "bi-diagram-3" },
   { key: "stateId", label: "State ID", icon: "bi-geo-alt" },
 
   { key: "createdByUserId", label: "Created By", icon: "bi-person" },

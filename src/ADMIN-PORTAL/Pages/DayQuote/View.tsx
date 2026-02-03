@@ -5,7 +5,7 @@ import DayQuoteService from "../../Services/CMS/DayQuote.services";
 
 const DayQuoteView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "dayQuoteId", label: "ID" },
+    { key: "dayQuoteId", label: "Day Quote ID" },
     { key: "day", label: "Day" },
     { key: "monthCode", label: "Month" },
     { key: "toDayQuote", label: "Quote" },

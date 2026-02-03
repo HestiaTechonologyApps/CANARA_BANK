@@ -5,7 +5,7 @@ import RefundContributionService from "../../../Services/Claims/Refund.services"
 
 const RefundContributionView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "refundContributionId", label: "Refund ID", icon: "bi-hash" },
+    { key: "refundContributionId", label: "Refund Contribution ID", icon: "bi-hash" },
     { key: "staffNo", label: "Staff No", icon: "bi-123" },
     { key: "memberName", label: "Member", icon: "bi-person" },
     { key: "designationName", label: "Designation", icon: "bi-briefcase" },

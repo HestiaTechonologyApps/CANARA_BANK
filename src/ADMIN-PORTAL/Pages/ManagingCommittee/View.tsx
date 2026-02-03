@@ -6,7 +6,7 @@ import ManagingCommitteeService from "../../Services/CMS/ManagingCommittee.servi
 
 const ManagingCommitteeView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "managingComiteeId", label: "ID", icon: "bi-hash" },
+    { key: "managingComiteeId", label: "Managing Comitee ID", icon: "bi-hash" },
     { key: "managingComitteeName", label: "Name", icon: "bi-person-badge" },
     { key: "position", label: "Position", icon: "bi-award" },
     { key: "description1", label: "Description 1", icon: "bi-card-text" },
