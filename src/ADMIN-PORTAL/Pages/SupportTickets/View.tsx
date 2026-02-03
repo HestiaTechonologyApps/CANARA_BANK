@@ -12,7 +12,7 @@ const SupportTicketView: React.FC = () => {
     { key: "description", label: "Description", icon: "bi-file-text" },
     { key: "developerRemark", label: "Developer Remark", icon: "bi-chat-left-text" },
     { key: "isApproved", label: "Approved", icon: "bi-check-circle", isBoolean:true },
-    { key: "approvedDateSting", label: "Approved Date", icon: "bi-calendar-check" },
+    { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
   ];
 
   const handleFetch = async (id: string) =>

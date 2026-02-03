@@ -45,7 +45,6 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
-  // ---------- FETCH ----------
   const handleFetch = async (id: string) => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
@@ -66,7 +65,6 @@ const AccountDirectEntryEdit: React.FC = () => {
     };
   };
 
-  // ---------- UPDATE ----------
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");

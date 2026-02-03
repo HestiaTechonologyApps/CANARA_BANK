@@ -3,7 +3,6 @@ import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
 import CustomerService from "../../Services/Customers/Customers.services";
 
-
 const CustomerView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "customerId", label: "Customer ID", icon: "bi-hash" },
@@ -18,7 +17,20 @@ const CustomerView: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-    return CustomerService.getCustomerById(Number(id));
+    const res = await CustomerService.getCustomerById(Number(id));
+    const customer = res.value;
+
+    if (!customer) return res;
+
+    return {
+      ...res,
+      value: {
+        ...customer,
+        dob: customer.dob
+          ? new Date(customer.dob).toLocaleDateString("en-IN")
+          : "",
+      },
+    };
   };
 
   const handleDelete = async (id: string) => {
