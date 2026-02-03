@@ -43,7 +43,7 @@ const PublicPageList: React.FC = () => {
       fetchData={fetchData}
       addRoute="/dashboard/cms/publicPage-create"
       editRoute="/dashboard/cms/publicPage-edit"
-      viewRoute="/dashboard/cms/publicPage-view"
+      // viewRoute="/dashboard/cms/publicPage-view"
       showAddButton={true}
       showSearch={true}
       showActions={true}
