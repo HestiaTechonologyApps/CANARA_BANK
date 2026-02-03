@@ -9,7 +9,6 @@ import MemberPopup from "../../Contributions/Member/MemberPopup";
 import BranchPopup from "../../Branch/BranchPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
 
 const AccountDirectEntryCreate: React.FC = () => {
@@ -77,8 +76,11 @@ const AccountDirectEntryCreate: React.FC = () => {
       f11: formData.f11 || "",
     });
   };
-
-  const statusOptions = [{ value: "Submitted", label: "Submitted" }];
+  
+//status option
+  const statusOptions = [
+    { value: "Submitted", label: "Submitted" }
+  ];
 
   const popupHandlers = {
     memberId: {
