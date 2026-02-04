@@ -1,4 +1,4 @@
-// KiduServerTable.tsx - Fixed for server-side search
+// KiduServerTable.tsx - Server-side pagination version
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Button, Row, Col, Container, Pagination } from "react-bootstrap";
 import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
@@ -97,8 +97,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           searchTerm: search,
         });
 
-        // Reverse the data to show latest records first
-        setData((result.data || []).reverse());
+        // Set data as-is (don't reverse here - it's done in KiduServerTableList)
+        setData(result.data || []);
         setTotal(result.total || 0);
       } catch (err: any) {
         console.error("❌ KiduServerTable - Error:", err);
@@ -177,6 +177,10 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                   borderRadius: "50%",
                   objectFit: "cover",
                   border: "2px solid #1B3763"
+                }}
+                onError={(e: any) => {
+                  e.target.src = "/assets/Images/profile.jpeg";
+                  e.target.onerror = null;
                 }}
               />
             );
