@@ -78,7 +78,6 @@ const MemberCreate: React.FC = () => {
 
     const createdMember = await MemberService.createMember(payload);
 
-  // ✅ IMAGE NOW COMES FROM KiduCreate
     if (formData.profileImage && createdMember.memberId) {
       setIsUploading(true);
       await MemberService.uploadProfilePicture(

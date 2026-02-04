@@ -1,6 +1,7 @@
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface ManagingCommittee {
+  profileImageSrc: string;
   managingComiteeId: number;
   managingComitteeName: string;
   position: string;

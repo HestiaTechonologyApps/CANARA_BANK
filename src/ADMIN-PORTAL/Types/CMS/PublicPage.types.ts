@@ -110,6 +110,9 @@ export interface PublicPage {
   committeeHeaderTitle: string;
   committeeHeaderSubTitle: string;
   committeeMembersJson: string;
+  managingcommitteheadertitle:string;//
+  managingcommitteheadersubtitle:string;//
+
 
   // Claims Page
   claimsHeroTitle: string;
@@ -181,6 +184,7 @@ export interface PublicPage {
   footerEmailValue: string;
   footerQuickLinksJson: string;
   footerOfficeHoursJson: string;
+  footerQuickHead :string;//
   footerCopyrightText: string;
 
   // Privacy Page
@@ -238,4 +242,3 @@ export interface PublicPage {
   isActive: boolean;
   auditLogs?: AuditTrails[];
 }
-

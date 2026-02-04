@@ -25,15 +25,14 @@ const ManagingCommitteeCreate: React.FC = () => {
       position: formData.position.trim(),
       description1: formData.description1.trim(),
       description2: formData.description2?.trim(),
-      imageLocation: "", // backend will update after upload
+      imageLocation: "",
       order: Number(formData.order),
       companyId: formData.companyId,
+      profileImageSrc: ""
     };
 
-    // 1️⃣ Create committee member first
     const createdCommittee = await ManagingCommitteeService.createManagingCommittee(payload);
 
-    // 2️⃣ Upload image (from KiduCreate)
     if (formData.profileImage && createdCommittee.managingComiteeId) {
       try {
         setIsUploading(true);
@@ -57,14 +56,11 @@ const ManagingCommitteeCreate: React.FC = () => {
         onSubmit={handleSubmit}
         submitButtonText="Create Managing Committee"
         showResetButton
-
-        // ✅ SAME AS MEMBER CREATE
         imageConfig={{
           fieldName: "profileImage",
           defaultImage: profiledefaultimg,
           label: "Committee Member Image",
         }}
-
         successMessage="Managing Committee created successfully!"
         errorMessage="Failed to create managing committee. Please try again."
         navigateOnSuccess="/dashboard/cms/manage-committe-list"

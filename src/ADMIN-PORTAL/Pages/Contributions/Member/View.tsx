@@ -49,7 +49,6 @@ const handleFetch = async (memberId: string) => {
   return response;
 };
 
-
   const handleDelete = async (memberId: string) => {
     await MemberService.deleteMember(Number(memberId));
   };

@@ -56,6 +56,7 @@ const ManagingCommitteeEdit: React.FC = () => {
       //imageLocation: "",
       order: Number(formData.order),
       companyId: formData.companyId,
+      profileImageSrc: ""
     };
 
     await ManagingCommitteeService.updateManagingCommittee(Number(id), payload);

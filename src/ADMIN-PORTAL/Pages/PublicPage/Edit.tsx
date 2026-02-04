@@ -293,6 +293,8 @@ const PublicPageEdit: React.FC = () => {
                   {input("committeeHeaderTitle", "Header Title")}
                   {input("committeeHeaderSubTitle", "Header Subtitle")}
                   {textarea("committeeMembersJson", "Committee Members JSON")}
+                  {input("managingcommitteheadertitle","Managing Committe Header Title")}
+                  {input("managingcommitteheadersubtitle","Managing Committe Header Subtitle")}
                 </Row>
               </Card.Body>
             </Card>
@@ -380,6 +382,7 @@ const PublicPageEdit: React.FC = () => {
                   {input("footerEmailValue", "Email Value")}
                   {textarea("footerQuickLinksJson", "Quick Links JSON")}
                   {textarea("footerOfficeHoursJson", "Office Hours JSON")}
+                  {input("footerQuickHead","Footer Quick Head")}
                   {input("footerCopyrightText", "Copyright Text")}
                 </Row>
               </Card.Body>
