@@ -232,49 +232,8 @@ export const API_ENDPOINTS = {
     CREATE:`${API_BASE_URL}/ContactMessage/submit`, 
   },
 
-
-  //-------------------------STAFF MODULE------------------------------
-
 };
 
-// // ✅ Helper function to get full image URL
-// export const getFullImageUrl = (imagePath: string | null | undefined): string => {
-//   console.log('getFullImageUrl called with:', imagePath);
-  
-//   if (!imagePath) {
-//     console.log('No image path provided');
-//     return '';
-//   }
-
-//   // If already a complete URL, return as is
-//   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-//     console.log('Already a full URL:', imagePath);
-//     return imagePath;
-//   }
-
-//   // If it's a placeholder URL pattern
-//   if (imagePath.includes('placeholder')) {
-//     console.log('Placeholder URL detected:', imagePath);
-//     return imagePath;
-//   }
-
-//   // Get base URL without /api suffix
-//   const baseUrl = API_BASE_URL.replace('/api', '');
-//   console.log('Base URL (without /api):', baseUrl);
-
-//   // Ensure proper path construction - remove leading slash from imagePath if present
-//   const cleanPath = imagePath.replace(/^\/+/, '');
-//   const fullUrl = `${baseUrl}/${cleanPath}`;
-  
-//   console.log('Final full URL:', fullUrl);
-//   return fullUrl;
-// };
-
-// // ✅ Get base website URL (without /api)
-// export const getBaseWebsiteUrl = (): string => {
-//   const baseUrl = API_BASE_URL.replace('/api', '');
-//   return baseUrl;
-// };
 
 // ✅ Helper function to get full image URL - FIXED VERSION
 export const getFullImageUrl = (imagePath: string | null | undefined): string => {
@@ -321,6 +280,48 @@ export const getBaseWebsiteUrl = (): string => {
   const baseUrl = API_BASE_URL.replace('/api', '');
   return baseUrl;
 };
+
+
+//-------------------------STAFF MODULE------------------------------
+
+// // ✅ Helper function to get full image URL
+// export const getFullImageUrl = (imagePath: string | null | undefined): string => {
+//   console.log('getFullImageUrl called with:', imagePath);
+  
+//   if (!imagePath) {
+//     console.log('No image path provided');
+//     return '';
+//   }
+
+//   // If already a complete URL, return as is
+//   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+//     console.log('Already a full URL:', imagePath);
+//     return imagePath;
+//   }
+
+//   // If it's a placeholder URL pattern
+//   if (imagePath.includes('placeholder')) {
+//     console.log('Placeholder URL detected:', imagePath);
+//     return imagePath;
+//   }
+
+//   // Get base URL without /api suffix
+//   const baseUrl = API_BASE_URL.replace('/api', '');
+//   console.log('Base URL (without /api):', baseUrl);
+
+//   // Ensure proper path construction - remove leading slash from imagePath if present
+//   const cleanPath = imagePath.replace(/^\/+/, '');
+//   const fullUrl = `${baseUrl}/${cleanPath}`;
+  
+//   console.log('Final full URL:', fullUrl);
+//   return fullUrl;
+// };
+
+// // ✅ Get base website URL (without /api)
+// export const getBaseWebsiteUrl = (): string => {
+//   const baseUrl = API_BASE_URL.replace('/api', '');
+//   return baseUrl;
+// };
 
 
 
