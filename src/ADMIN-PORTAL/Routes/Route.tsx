@@ -145,6 +145,7 @@ import SupportTicketView from '../Pages/SupportTickets/View';
 
 //Contact Message
 import ContactMessageList from '../Pages/CMS/ContactMessages/List';
+import ContactMessageView from '../Pages/CMS/ContactMessages/View';
 
 //Year Master
 import YearMasterList from '../Pages/YearMaster/List';
@@ -317,6 +318,7 @@ export const adminRoutes = (
 
       {/* Contact Message */}
       <Route path="cms/contactMessage-list" element={<ContactMessageList />} />
+      <Route path="cms/contactMessage-view/:id" element={<ContactMessageView />} />
 
       {/* Year Master */}
       <Route path="settings/yearMaster-list" element={<YearMasterList />} />

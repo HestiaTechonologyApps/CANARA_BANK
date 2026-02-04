@@ -226,11 +226,13 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
   },
 
-  CONTACT_MESSAGE: {
-    GET_ALL:`${API_BASE_URL}/ContactMessage`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/ContactMessage/${id}`,
-    CREATE:`${API_BASE_URL}/ContactMessage/submit`, 
-  },
+CONTACT_MESSAGE: {
+  GET_ALL: `${API_BASE_URL}/ContactMessage`,
+  GET_BY_ID: (id: number) => `${API_BASE_URL}/ContactMessage/${id}`,
+  CREATE: `${API_BASE_URL}/ContactMessage/submit`,
+  MARK_AS_READ: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-read`,
+  MARK_AS_REPLIED: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-replied`,
+},
 
 };
 
