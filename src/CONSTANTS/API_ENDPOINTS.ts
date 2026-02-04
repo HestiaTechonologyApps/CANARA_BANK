@@ -237,7 +237,46 @@ export const API_ENDPOINTS = {
 
 };
 
-// ✅ Helper function to get full image URL
+// // ✅ Helper function to get full image URL
+// export const getFullImageUrl = (imagePath: string | null | undefined): string => {
+//   console.log('getFullImageUrl called with:', imagePath);
+  
+//   if (!imagePath) {
+//     console.log('No image path provided');
+//     return '';
+//   }
+
+//   // If already a complete URL, return as is
+//   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+//     console.log('Already a full URL:', imagePath);
+//     return imagePath;
+//   }
+
+//   // If it's a placeholder URL pattern
+//   if (imagePath.includes('placeholder')) {
+//     console.log('Placeholder URL detected:', imagePath);
+//     return imagePath;
+//   }
+
+//   // Get base URL without /api suffix
+//   const baseUrl = API_BASE_URL.replace('/api', '');
+//   console.log('Base URL (without /api):', baseUrl);
+
+//   // Ensure proper path construction - remove leading slash from imagePath if present
+//   const cleanPath = imagePath.replace(/^\/+/, '');
+//   const fullUrl = `${baseUrl}/${cleanPath}`;
+  
+//   console.log('Final full URL:', fullUrl);
+//   return fullUrl;
+// };
+
+// // ✅ Get base website URL (without /api)
+// export const getBaseWebsiteUrl = (): string => {
+//   const baseUrl = API_BASE_URL.replace('/api', '');
+//   return baseUrl;
+// };
+
+// ✅ Helper function to get full image URL - FIXED VERSION
 export const getFullImageUrl = (imagePath: string | null | undefined): string => {
   console.log('getFullImageUrl called with:', imagePath);
   
@@ -252,19 +291,26 @@ export const getFullImageUrl = (imagePath: string | null | undefined): string =>
     return imagePath;
   }
 
-  // If it's a placeholder URL pattern
-  if (imagePath.includes('placeholder')) {
-    console.log('Placeholder URL detected:', imagePath);
+  // If it's a blob URL (from file upload preview), return as is
+  if (imagePath.startsWith('blob:')) {
+    console.log('Blob URL detected:', imagePath);
     return imagePath;
   }
 
-  // Get base URL without /api suffix
-  const baseUrl = API_BASE_URL.replace('/api', '');
-  console.log('Base URL (without /api):', baseUrl);
+  // If it's a placeholder URL pattern or local asset
+  if (imagePath.includes('placeholder') || imagePath.includes('/assets/') || imagePath.includes('/Assets/')) {
+    console.log('Placeholder or asset URL detected:', imagePath);
+    return imagePath;
+  }
+
+  // ✅ FIXED: Always use the backend server URL directly
+  // This ensures images work regardless of which port the frontend is running on
+  const backendUrl = 'http://sreenathganga-001-site16.jtempurl.com';
+  console.log('Backend URL:', backendUrl);
 
   // Ensure proper path construction - remove leading slash from imagePath if present
   const cleanPath = imagePath.replace(/^\/+/, '');
-  const fullUrl = `${baseUrl}/${cleanPath}`;
+  const fullUrl = `${backendUrl}/${cleanPath}`;
   
   console.log('Final full URL:', fullUrl);
   return fullUrl;
@@ -275,3 +321,15 @@ export const getBaseWebsiteUrl = (): string => {
   const baseUrl = API_BASE_URL.replace('/api', '');
   return baseUrl;
 };
+
+
+
+
+
+
+
+
+
+
+
+
