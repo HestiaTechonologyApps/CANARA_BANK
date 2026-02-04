@@ -18,20 +18,21 @@ const BranchEdit: React.FC = () => {
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
   const fields: Field[] = [
-    //{ name: "branchId", rules: { type: "number", label: "Branch ID", disabled: true, colWidth: 3 } },
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 3 } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 6 } },
-
     { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4 } },
+    { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
     { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },
     { name: "address3", rules: { type: "text", label: "Address Line 3", colWidth: 4 } },
-
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
-
-    { name: "status", rules: { type: "toggle", label: "Active" } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
+  ];
+
+  const statusOptions = [
+    { value: "Active", label: "Active" },
+    { value: "Inactive", label: "Inactive" },
   ];
 
   const handleFetch = async (id: string) => {
@@ -43,10 +44,19 @@ const BranchEdit: React.FC = () => {
       CircleService.getAllCircles(),
     ]);
 
-    setSelectedState(states.find(s => s.stateId === branch.stateId) || null);
-    setSelectedCircle(circles.find(c => c.circleId === branch.circleId) || null);
+    const state = states.find(s => s.stateId === branch.stateId) || null;
+    const circle = circles.find(c => c.circleId === branch.circleId) || null;
 
-    return response;
+    setSelectedState(state);
+    setSelectedCircle(circle);
+
+    return {
+      ...response,
+      value: {
+        ...branch,
+        status: branch.status, 
+      },
+    };
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -64,7 +74,7 @@ const BranchEdit: React.FC = () => {
       address3: formData.address3?.trim() || "",
       stateId: selectedState.stateId,
       circleId: selectedCircle.circleId,
-      status: formData.status ? "Active" : "Inactive",
+      status: formData.status, 
       isRegCompleted: Boolean(formData.isRegCompleted),
       stateName: selectedState.name,
       circleName: selectedCircle.name,
@@ -83,10 +93,7 @@ const BranchEdit: React.FC = () => {
       value: selectedCircle?.name || "",
       actualValue: selectedCircle?.circleId,
       onOpen: () => {
-        if (!selectedState) {
-          alert("Please select State first");
-          return;
-        }
+        if (!selectedState) return alert("Please select State first");
         setShowCirclePopup(true);
       },
     },
@@ -100,6 +107,7 @@ const BranchEdit: React.FC = () => {
         onFetch={handleFetch}
         onUpdate={handleUpdate}
         popupHandlers={popupHandlers}
+        options={{ status: statusOptions }}
         submitButtonText="Update Branch"
         showResetButton
         successMessage="Branch updated successfully!"
@@ -116,7 +124,7 @@ const BranchEdit: React.FC = () => {
         handleClose={() => setShowStatePopup(false)}
         onSelect={(state) => {
           setSelectedState(state);
-          setSelectedCircle(null); // reset circle
+          setSelectedCircle(null);
           setShowStatePopup(false);
         }}
       />

@@ -19,12 +19,12 @@ const BranchCreate: React.FC = () => {
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4 } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4 } },
     { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4 } },
+    { name: "status", rules: { type: "select", label: "Status", colWidth:4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
     { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },
     { name: "address3", rules: { type: "text", label: "Address Line 3", colWidth: 4 } },
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
-    { name: "status", rules: { type: "toggle", label: "Active" } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
   ];
 
@@ -67,7 +67,11 @@ const BranchCreate: React.FC = () => {
       },
     },
   };
-
+//status option
+const statusOptions = [
+  {value:"Active", label:"Active"},
+  {value:"Inactive", label:"Inactive"}
+]
   return (
     <>
       <KiduCreate
@@ -75,6 +79,9 @@ const BranchCreate: React.FC = () => {
         fields={fields}
         onSubmit={handleSubmit}
         popupHandlers={popupHandlers}
+        options={{
+          status: statusOptions
+        }}
         showResetButton
         navigateOnSuccess="/dashboard/settings/branch-list"
         successMessage="Branch created successfully!"

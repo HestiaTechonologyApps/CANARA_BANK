@@ -1,4 +1,3 @@
-// BranchList.tsx
 import React from "react";
 import type { Branch } from "../../Types/Settings/Branch.types";
 import BranchService from "../../Services/Settings/Branch.services";
@@ -33,7 +32,8 @@ const BranchList: React.FC = () => {
         { key: "district", label: "District", enableSorting: true, type: "text" },
         { key: "stateName", label: "State", enableSorting: true, type: "text" },
         { key: "circleName", label: "Circle", enableSorting: true, type: "text" },
-        { key: "status", label: "Active", enableSorting: true, type: "checkbox" },
+        { key: "status", label: "Status", enableSorting: true, type: "text" },
+        { key:"isRegCompleted", label:"Reg Completed",enableSorting:true, type: "checkbox"}
       ]}
 
       idKey="branchId"
