@@ -1,47 +1,44 @@
-// src/components/CMS/DayQuoteList.tsx
 import React from "react";
-import KiduServerTable from "../../../Components/KiduServerTable";
+import KiduServerTableList from "../../../Components/KiduServerTableList";
 import AttachmentService from "../../../Services/Attachment.services";
 import type { Attachment } from "../../../Types/Attachment.types";
 
-const columns = [
-  { key: "attachmentId", label: "ID", type: "text" as const },
-  { key: "fileName", label: "File Name", type: "text" as const },
-  { key: "description", label: "Description", type: "text" as const },
-];
-
 const DocumentList: React.FC = () => {
-  const fetchData = async (_params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: Attachment[]; total: number }> => {
-    const attachments = await AttachmentService.getByTableAndId(
-      "public", 
-      0        
-    );
-    return {
-      data: attachments as unknown as Attachment[],
-      total: attachments.length,
-    };
-  };
-
   return (
-    <KiduServerTable
+    <KiduServerTableList
+      /* ================= DATA ================= */
+      fetchService={async (): Promise<Attachment[]> => {
+        return (await AttachmentService.getByTableAndId(
+          "public",
+          0
+        )) as unknown as Attachment[];
+      }}
+
+      /* ================= COLUMNS ================= */
+      columns={[
+        { key: "attachmentId", label: "ID", enableSorting: true, type: "text" },
+        { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
+        { key: "description", label: "Description", enableSorting: true, type: "text" },
+      ]}
+
+      /* ================= TABLE ================= */
+      idKey="attachmentId"
       title="Documents"
       subtitle="Manage documents uploaded"
-      columns={columns}
-      idKey="attachmentId"
+
+      /* ================= ROUTES ================= */
       addButtonLabel="Add document"
       addRoute="/dashboard/cms/documents-create"
       editRoute="/dashboard/cms/documents-edit"
       viewRoute="/dashboard/cms/documents-view"
+
+      /* ================= FEATURES ================= */
       showAddButton
       showExport
       showSearch
       showActions
-      showTitle
-      fetchData={fetchData}
+
+      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

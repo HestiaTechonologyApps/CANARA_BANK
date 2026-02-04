@@ -1,71 +1,45 @@
 import React from "react";
-import KiduServerTable from "../../../../Components/KiduServerTable";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
-import type { AccountDirectEntry } from "../../../Types/Contributions/AccountDirectEntry.types";
-
-const columns = [
-  { key: "accountsDirectEntryID", label: "Account Direct Entry ID", enableSorting: true, type: "text" as const },
-  { key: "memberName", label: "Member", enableSorting: true, type: "text" as const },
-  { key: "branchName", label: "Branch", enableSorting: true, type: "text" as const },
-  { key: "monthName", label: "Month", enableSorting: true, type: "text" as const },
-  { key: "yearName", label: "Year", enableSorting: true, type: "text" as const },
-  { key: "amt", label: "Amount", enableSorting: true, type: "text" as const },
-  { key: "status", label: "Status", enableSorting: true, type: "text" as const },
-  { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" as const },
-];
+import KiduServerTableList from "../../../../Components/KiduServerTableList";
 
 const AccountsDirectEntryList: React.FC = () => {
-  const fetchData = async (params: {
-    pageNumber: number;
-    pageSize: number;
-    searchTerm: string;
-  }): Promise<{ data: AccountDirectEntry[]; total: number }> => {
-
-    let entries = await AccountDirectEntryService.getAllAccountDirectEntries();
-
-    // 🔎 Search (type-safe)
-    if (params.searchTerm) {
-      const q = params.searchTerm.toLowerCase();
-      entries = entries.filter(e =>
-        [
-          e.accountsDirectEntryID?.toString(),
-          e.memberName,
-          e.branchName,
-          e.monthName,
-          e.status,
-          e.yearName?.toString(),
-          e.yearOf?.toString(),
-        ]
-          .filter(Boolean)
-          .some(v => String(v).toLowerCase().includes(q))
-      );
-    }
-
-    const start = (params.pageNumber - 1) * params.pageSize;
-    const end = start + params.pageSize;
-
-    return {
-      data: entries.slice(start, end),
-      total: entries.length,
-    };
-  };
-
   return (
-    <KiduServerTable
+    <KiduServerTableList
+      /* ================= DATA FETCH ================= */
+      fetchService={AccountDirectEntryService.getAllAccountDirectEntries}
+
+      /* ================= TABLE CONFIG ================= */
+      columns={[
+        { key: "accountsDirectEntryID", label: "Account Direct Entry ID", enableSorting: true, type: "text" },
+        { key: "memberName", label: "Member", enableSorting: true, type: "text" },
+        { key: "branchName", label: "Branch", enableSorting: true, type: "text" },
+        { key: "monthName", label: "Month", enableSorting: true, type: "text" },
+        { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+        { key: "amt", label: "Amount", enableSorting: true, type: "text" },
+        { key: "status", label: "Status", enableSorting: true, type: "text" },
+        { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
+      ]}
+
+      /* ================= KEYS ================= */
+      idKey="accountsDirectEntryID"
+
+      /* ================= UI ================= */
       title="Accounts Direct Entry"
       subtitle="Manage account direct entries with search, filter, and pagination."
-      columns={columns}
-      idKey="accountsDirectEntryID"
       addButtonLabel="Add Entry"
+
+      /* ================= ROUTES ================= */
       addRoute="/dashboard/contributions/accountDirectEntry-create"
       editRoute="/dashboard/contributions/accountDirectEntry-edit"
       viewRoute="/dashboard/contributions/accountDirectEntry-view"
-      showAddButton
-      showExport
-      showSearch
-      showActions
-      showTitle
-      fetchData={fetchData}
+
+      /* ================= FEATURES ================= */
+      showAddButton={true}
+      showExport={true}
+      showSearch={true}
+      showActions={true}
+
+      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );
