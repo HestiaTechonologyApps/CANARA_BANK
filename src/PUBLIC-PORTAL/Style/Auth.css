@@ -126,3 +126,57 @@
   color: #f4c045;
   font-weight: 600;
 }
+
+.input-icon-wrapper {
+  position: relative;
+}
+
+/* Left icon */
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+  font-size: "6px"
+}
+
+/* Add left padding so text doesn’t overlap icon */
+.input-icon-wrapper .form-control {
+  padding-left: 40px;
+}
+
+/* IMPORTANT: keep feedback out of flow */
+.input-icon-wrapper .invalid-feedback {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 44px !important;
+}
+
+.password-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.form-control.is-invalid {
+  box-shadow: none;
+}
+

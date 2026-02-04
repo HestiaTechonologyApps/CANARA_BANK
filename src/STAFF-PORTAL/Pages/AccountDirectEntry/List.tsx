@@ -1,6 +1,6 @@
 // src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryList.tsx
 import React from "react";
-import KiduServerTable from "../../../Components/KiduServerTable";
+import KiduServerTableList from "../../../Components/KiduServerTableList";
 import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributions/AccountDirectEntry.services";
 
 const columns = [
@@ -16,51 +16,40 @@ const columns = [
 
 const StaffAccountDirectEntryList: React.FC = () => {
 
-  const fetchData = async ({ pageNumber, pageSize, searchTerm }: any) => {
-    //  Get logged-in memberId from localStorage
+  // Fetch service - returns all data
+  const fetchService = async () => {
+    // Get logged-in memberId from localStorage
     const storedUser = localStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const staffId = parsedUser?.memberId;
+    
     if (!staffId) {
-      return { data: [], total: 0 };
+      return [];
     }
-    //  Fetch entries by staffId
+    
+    // Fetch entries by staffId
     const response = await AccountDirectEntryService.getAccountDirectEntryByStaffId(staffId);
-    const entries = response.value ?? [];
-    //  Normalize / fallback fields
-    let enrichedData = entries.map((e: any) => ({
+    return response.value ?? [];
+  };
+
+  // Transform data - normalize/fallback fields
+  const transformData = (entries: any[]) => {
+    return entries.map((e: any) => ({
       ...e,
       monthName: e.monthName ?? e.monthCode,
       branchName: e.branchName ?? "-",
     }));
-    //  SEARCH (same pattern as BranchList)
-    if (searchTerm) {
-      const q = searchTerm.toLowerCase();
-      enrichedData = enrichedData.filter((e: any) =>
-        e.name?.toLowerCase().includes(q) ||
-        e.branchName?.toLowerCase().includes(q) ||
-        e.monthName?.toLowerCase().includes(q) ||
-        String(e.yearOf).includes(q) ||
-        String(e.amt).includes(q)
-      );
-    }
-    //  PAGINATION
-    const start = (pageNumber - 1) * pageSize;
-    const pagedData = enrichedData.slice(start, start + pageSize);
-    return {
-      data: pagedData,
-      total: enrichedData.length,
-    };
   };
 
   return (
-    <KiduServerTable
+    <KiduServerTableList
       title="Account Direct Entry"
       subtitle="Manage entry with search and pagination"
       columns={columns}
       idKey="accountsDirectEntryID"
       addButtonLabel="Add Entry"
-      fetchData={fetchData}
+      fetchService={fetchService}
+      transformData={transformData}
       addRoute="/staff-portal/contributions/staffaccountDirectEntry-create"
       editRoute="/staff-portal/contributions/staffaccountDirectEntry-edit"
       viewRoute="/staff-portal/contributions/staffaccountDirectEntry-view"
@@ -68,7 +57,6 @@ const StaffAccountDirectEntryList: React.FC = () => {
       showAddButton
       showSearch
       showExport
-      showTitle
       rowsPerPage={10}
     />
   );

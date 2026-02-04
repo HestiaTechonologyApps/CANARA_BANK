@@ -137,7 +137,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       </div>
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-4">
             <Form.Label>Username <span className="text-danger">*</span></Form.Label>
             <div className="input-icon-wrapper">
               <Mail className="input-icon" size={18} />
@@ -157,7 +157,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
             </div>
           </Form.Group>
 
-          <Form.Group className="mb-2">
+          <Form.Group className="mb-4">
             <Form.Label>Password <span className="text-danger">*</span></Form.Label>
             <div className="input-icon-wrapper">
               <Lock className="input-icon" size={18} />

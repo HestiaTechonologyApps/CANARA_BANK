@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { UserPlus, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { UserPlus, Eye, EyeOff } from "lucide-react";
 import "../Style/Auth.css";
 import type { RegisterRequest } from "../../Types/Auth.types";
 import AuthService from "../../Services/Auth.services";
@@ -85,17 +85,18 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
     // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    } else if (!/(?=.*[a-z])/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one lowercase letter";
-    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one uppercase letter";
-    } else if (!/(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one number";
-    } else if (!/(?=.*[@$!%*?&#])/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one special character (@$!%*?&#)";
-    }
+    } 
+    // else if (formData.password.length < 6) {
+    //   newErrors.password = "Password must be at least 6 characters";
+    // } else if (!/(?=.*[a-z])/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one lowercase letter";
+    // } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one uppercase letter";
+    // } else if (!/(?=.*\d)/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one number";
+    // } else if (!/(?=.*[@$!%*?&#])/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one special character (@$!%*?&#)";
+    // }
 
     // Email validation
     if (!formData.userEmail.trim()) {
@@ -233,8 +234,8 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                 <Form.Label>
                   Password <span className="text-danger">*</span>
                 </Form.Label>
-                <div className="input-icon-wrapper position-relative">
-                  <Lock className="input-icon" />
+                <div className="password-wrapper position-relative">
+                  {/* <Lock className="input-icon" /> */}
                   <Form.Control
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -248,17 +249,17 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="btn btn-link position-absolute"
-                    style={{
-                      right: "10px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      padding: "0",
-                      border: "none",
-                      background: "none",
-                      cursor: "pointer",
-                      zIndex: 10,
-                    }}
+                    className="password-eye"
+                    // style={{
+                    //   right: "10px",
+                    //   top: "50%",
+                    //   transform: "translateY(-50%)",
+                    //   padding: "0",
+                    //   border: "none",
+                    //   background: "none",
+                    //   cursor: "pointer",
+                    //   zIndex: 10,
+                    // }}
                     disabled={isSubmitting}
                   >
                     {showPassword ? (
@@ -279,8 +280,8 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                 <Form.Label>
                   Email Id <span className="text-danger">*</span>
                 </Form.Label>
-                <div className="input-icon-wrapper">
-                  <Mail className="input-icon" />
+                {/* <div className="input-icon-wrapper">
+                  <Mail className="input-icon" /> */}
                   <Form.Control
                     type="email"
                     name="userEmail"
@@ -293,7 +294,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                   <Form.Control.Feedback type="invalid">
                     {errors.userEmail}
                   </Form.Control.Feedback>
-                </div>
+                {/* </div> */}
               </Form.Group>
             </Col>
 
