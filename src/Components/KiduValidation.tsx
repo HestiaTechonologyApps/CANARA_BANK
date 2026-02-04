@@ -93,16 +93,16 @@ export const KiduValidation = {
       return { isValid: false, message: `Please enter a valid website URL.`, label };
 
     if (rules.type === "password" && strVal) {
-      if (strVal.length < 8)
-        return { isValid: false, message: `${rawLabel} must be at least 8 characters.`, label };
-      if (!/[A-Z]/.test(strVal))
-        return { isValid: false, message: `${rawLabel} must contain an uppercase letter.`, label };
-      if (!/[a-z]/.test(strVal))
-        return { isValid: false, message: `${rawLabel} must contain a lowercase letter.`, label };
-      if (!/[0-9]/.test(strVal))
-        return { isValid: false, message: `${rawLabel} must contain a number.`, label };
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(strVal))
-        return { isValid: false, message: `${rawLabel} must contain a special character.`, label };
+      // if (strVal.length < 8)
+      //   return { isValid: false, message: `${rawLabel} must be at least 8 characters.`, label };
+      // if (!/[A-Z]/.test(strVal))
+      //   return { isValid: false, message: `${rawLabel} must contain an uppercase letter.`, label };
+      // if (!/[a-z]/.test(strVal))
+      //   return { isValid: false, message: `${rawLabel} must contain a lowercase letter.`, label };
+      // if (!/[0-9]/.test(strVal))
+      //   return { isValid: false, message: `${rawLabel} must contain a number.`, label };
+      // if (!/[!@#$%^&*(),.?":{}|<>]/.test(strVal))
+      //   return { isValid: false, message: `${rawLabel} must contain a special character.`, label };
     }
 
     if (rules.minLength && strVal.length < rules.minLength)
