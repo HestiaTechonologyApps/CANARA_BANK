@@ -13,7 +13,6 @@ const ManagingCommitteeList: React.FC = () => {
 
         return committees.map((m: any) => ({
           ...m,
-
           profileImageSrc: m.imageLocation
             ? getFullImageUrl(m.imageLocation)
             : defaultProfileImage,
@@ -21,13 +20,12 @@ const ManagingCommitteeList: React.FC = () => {
       }}
 
       columns={[
-        { key: "managingComiteeId", label: "Committee ID", enableSorting: true, type: "text", },
-        { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image", imageConfig: { width: 40, height: 40, isCircle: true, defaultImage: defaultProfileImage, }, },
-        { key: "managingComitteeName", label: "Name", enableSorting: true, type: "text", },
-        { key: "position", label: "Position", enableSorting: true, type: "text", },
-        { key: "order", label: "Order", enableSorting: true, type: "text", },
+        { key: "managingComiteeId", label: "Committee ID", enableSorting: true, type: "text" },
+        { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" }, 
+        { key: "managingComitteeName", label: "Name", enableSorting: true, type: "text" },
+        { key: "position", label: "Position", enableSorting: true, type: "text" },
+        { key: "order", label: "Order", enableSorting: true, type: "text" },
       ]}
-
 
       idKey="managingComiteeId"
       title="Managing Committee"
