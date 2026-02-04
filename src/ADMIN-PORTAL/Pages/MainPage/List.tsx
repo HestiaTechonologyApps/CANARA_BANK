@@ -8,7 +8,6 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 const MainPageList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA ================= */
       fetchService={async (): Promise<any[]> => {
         const [mainPages, companies] = await Promise.all([
           MainPageService.getAllMainPages(),
@@ -25,7 +24,6 @@ const MainPageList: React.FC = () => {
         }));
       }}
 
-      /* ================= COLUMNS ================= */
       columns={[
         { key: "mainPageId", label: "Main Page ID", enableSorting: true, type: "text" },
         { key: "companyName", label: "Company", enableSorting: true, type: "text" },
@@ -35,24 +33,17 @@ const MainPageList: React.FC = () => {
         { key: "dayQuote", label: "Day Quote", enableSorting: false, type: "text" },
       ]}
 
-      /* ================= TABLE ================= */
       idKey="mainPageId"
       title="Main Page Management"
       subtitle="Manage main page details with search, filter, and pagination."
-
-      /* ================= ROUTES ================= */
       addButtonLabel="Add Main Page"
       addRoute="/dashboard/cms/mainpage-create"
       editRoute="/dashboard/cms/mainpage-edit"
       viewRoute="/dashboard/cms/mainpage-view"
-
-      /* ================= FEATURES ================= */
       showAddButton
       showExport
       showSearch
       showActions
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

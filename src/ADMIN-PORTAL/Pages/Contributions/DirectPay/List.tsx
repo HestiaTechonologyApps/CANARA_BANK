@@ -6,12 +6,9 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const DirectPaymentList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA FETCH ================= */
       fetchService={async () => {
         const payments: DirectPayment[] =
           await DirectPaymentService.getAllDirectPayments();
-
-        // ✅ Format payment date once
         return payments.map(p => ({
           ...p,
           paymentDatestring: p.paymentDatestring
@@ -20,7 +17,6 @@ const DirectPaymentList: React.FC = () => {
         }));
       }}
 
-      /* ================= TABLE CONFIG ================= */
       columns={[
         { key: "directPaymentId", label: "Direct payment ID", enableSorting: true, type: "text" },
         { key: "memberName", label: "Member", enableSorting: true, type: "text" },
@@ -30,26 +26,17 @@ const DirectPaymentList: React.FC = () => {
         { key: "referenceNo", label: "Reference No", enableSorting: true, type: "text" },
       ]}
 
-      /* ================= KEYS ================= */
       idKey="directPaymentId"
-
-      /* ================= UI ================= */
       title="Direct Payment Management"
       subtitle="Manage direct payments with search, filter, and pagination."
       addButtonLabel="Add Direct Payment"
-
-      /* ================= ROUTES ================= */
       addRoute="/dashboard/contributions/directpayment-create"
       editRoute="/dashboard/contributions/directpayment-edit"
       viewRoute="/dashboard/contributions/directpayment-view"
-
-      /* ================= FEATURES ================= */
       showAddButton={true}
       showExport={true}
       showSearch={true}
       showActions={true}
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

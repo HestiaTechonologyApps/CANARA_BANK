@@ -8,7 +8,6 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 const DailyNewsList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA FETCH ================= */
       fetchService={async () => {
         const [news, companies] = await Promise.all([
           DailyNewsService.getAllDailyNews(),
@@ -28,7 +27,6 @@ const DailyNewsList: React.FC = () => {
         }));
       }}
 
-      /* ================= TABLE CONFIG ================= */
       columns={[
         { key: "dailyNewsId", label: "Daily News ID", enableSorting: true, type: "text" },
         { key: "title", label: "Title", enableSorting: true, type: "text" },
@@ -37,26 +35,17 @@ const DailyNewsList: React.FC = () => {
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
 
-      /* ================= KEYS ================= */
       idKey="dailyNewsId"
-
-      /* ================= UI ================= */
       title="Daily News Management"
       subtitle="Manage daily news articles with search, filter, and pagination."
-
-      /* ================= ROUTES ================= */
       addButtonLabel="Add News"
       addRoute="/dashboard/cms/dailynews-create"
       editRoute="/dashboard/cms/dailynews-edit"
       viewRoute="/dashboard/cms/dailynews-view"
-
-      /* ================= FEATURES ================= */
       showAddButton={true}
       showExport={true}
       showSearch={true}
       showActions={true}
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

@@ -1,4 +1,3 @@
-// src/components/CMS/PublicPage/PublicPageList.tsx
 import React from "react";
 import PublicPageService from "../../Services/CMS/PublicPage.services";
 import KiduServerTableList from "../../../Components/KiduServerTableList";

@@ -5,10 +5,7 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const MonthlyContributionList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA FETCH ================= */
       fetchService={MonthlyContributionService.getAllMonthlyContributions}
-
-      /* ================= TABLE CONFIG ================= */
       columns={[
         { key: "monthlyContributionId", label: "ID", enableSorting: true, type: "text" },
         { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
@@ -18,24 +15,15 @@ const MonthlyContributionList: React.FC = () => {
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
       ]}
 
-      /* ================= KEYS ================= */
       idKey="monthlyContributionId"
-
-      /* ================= UI ================= */
       title="Monthly Contribution Management"
       addButtonLabel="Add Monthly Contribution"
-
-      /* ================= ROUTES ================= */
       addRoute="/dashboard/contributions/monthlyContribution-create"
       editRoute="/dashboard/contributions/monthlyContribution-edit"
       viewRoute="/dashboard/contributions/monthlyContribution-view"
-
-      /* ================= FEATURES ================= */
       showAddButton={true}
       showSearch={true}
       showActions={true}
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

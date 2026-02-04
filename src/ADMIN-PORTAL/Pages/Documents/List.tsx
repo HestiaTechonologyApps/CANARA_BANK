@@ -6,7 +6,6 @@ import type { Attachment } from "../../../Types/Attachment.types";
 const DocumentList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA ================= */
       fetchService={async (): Promise<Attachment[]> => {
         return (await AttachmentService.getByTableAndId(
           "public",
@@ -14,31 +13,23 @@ const DocumentList: React.FC = () => {
         )) as unknown as Attachment[];
       }}
 
-      /* ================= COLUMNS ================= */
       columns={[
         { key: "attachmentId", label: "ID", enableSorting: true, type: "text" },
         { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
         { key: "description", label: "Description", enableSorting: true, type: "text" },
       ]}
 
-      /* ================= TABLE ================= */
       idKey="attachmentId"
       title="Documents"
       subtitle="Manage documents uploaded"
-
-      /* ================= ROUTES ================= */
       addButtonLabel="Add document"
       addRoute="/dashboard/cms/documents-create"
       editRoute="/dashboard/cms/documents-edit"
       viewRoute="/dashboard/cms/documents-view"
-
-      /* ================= FEATURES ================= */
       showAddButton
       showExport
       showSearch
       showActions
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

@@ -5,10 +5,8 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 const UserList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA FETCH ================= */
       fetchService={UserService.getAllUsers}
 
-      /* ================= TABLE CONFIG ================= */
       columns={[
         { key: "userId", label: "User ID", enableSorting: true, type: "text" },
         { key: "userName", label: "User Name", enableSorting: true, type: "text" },
@@ -19,26 +17,17 @@ const UserList: React.FC = () => {
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
 
-      /* ================= KEYS ================= */
       idKey="userId"
-
-      /* ================= UI ================= */
       title="User Management"
       subtitle="Manage system users with search and pagination"
       addButtonLabel="Add User"
-
-      /* ================= ROUTES ================= */
       addRoute="/dashboard/settings/user-create"
       editRoute="/dashboard/settings/user-edit"
       viewRoute="/dashboard/settings/user-view"
-
-      /* ================= FEATURES ================= */
       showAddButton={true}
       showExport={true}
       showSearch={true}
       showActions={true}
-
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );
