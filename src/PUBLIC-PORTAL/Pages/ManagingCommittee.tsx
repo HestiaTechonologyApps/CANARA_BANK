@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "../Style/ManagingCommittee.css";
-import { PublicService } from "../../Services/PublicService";
 import type { ManagingCommittee } from "../../ADMIN-PORTAL/Types/CMS/ManagingCommittee.types";
 import PublicManagingCommitteeService from "../Services/ManagingCommiteePublic.services";
 import { API_BASE_URL } from "../../CONSTANTS/API_ENDPOINTS";
-// =========================== API fields needed ================================
+import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
+import PublicPageConfigService from "../Services/Publicpage.services";
 
 const ManagingCommitteePublic: React.FC = () => {
 
-  const managingCommittee = PublicService.managingCommittee
-
+  // const managingCommittee = PublicService.managingCommittee
+  const [config, setConfig] = useState<PublicPage | null>(null);
   const [members, setMembers] = useState<ManagingCommittee[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchManagingCommittee = async () => {
       try {
+        // CMS page config (ACTIVE only)
+        const configData = await PublicPageConfigService.getPublicPageConfig();
+        const activeConfig = configData.find(
+          (item: PublicPage) => item.isActive === true
+        );
+        setConfig(activeConfig || null);
         const data = await PublicManagingCommitteeService.getManagingCommittee();
 
         // DEBUG: Log the data to see imageLocation format
@@ -74,9 +80,9 @@ const ManagingCommitteePublic: React.FC = () => {
 
       {/* HEADER SECTION */}
       <div className="committee-header text-center py-4">
-        <h2 className="committee-title">{managingCommittee.header.title}</h2>
+        <h2 className="committee-title">{config?.committeeHeaderTitle}</h2>
         <p className="committee-subtitle">
-          {managingCommittee.header.subtitle}
+          {config?.committeeHeaderSubTitle}
         </p>
       </div>
 
@@ -84,13 +90,13 @@ const ManagingCommitteePublic: React.FC = () => {
         <Row className="g-4 justify-content-center">
           {
             loading ? (
-             <div className="text-center py-5 committe-loader">
-                    <div className="loader-icon mb-3">
-                      <span className="pulse-icon">⏳</span>
-                    </div>
-                    <h5 className="mb-1">Loading</h5>
-                    <p className="text-muted small">Please wait a moment…</p>
-                  </div>
+              <div className="text-center py-5 committe-loader">
+                <div className="loader-icon mb-3">
+                  <span className="pulse-icon">⏳</span>
+                </div>
+                <h5 className="mb-1">Loading</h5>
+                <p className="text-muted small">Please wait a moment…</p>
+              </div>
             ) : (
               members.map((member, index) => {
                 const imageUrl = getImageUrl(member.imageLocation);
