@@ -191,7 +191,6 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
   },
-
   ACCOUNT_DIRECT_ENTRY: {
     GET_ALL: `${API_BASE_URL}/AccountDirecyEntry`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,

@@ -3,14 +3,14 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 import AttachmentService from "../../../Services/Attachment.services";
 import type { Attachment } from "../../../Types/Attachment.types";
 
-const DocumentList: React.FC = () => {
+const AttachmentList: React.FC = () => {
   return (
     <KiduServerTableList
       fetchService={async (): Promise<Attachment[]> => {
         return (await AttachmentService.getByTableAndId(
           "public",
           0
-        )) as unknown as Attachment[];
+        )) as Attachment[];
       }}
 
       columns={[
@@ -20,12 +20,12 @@ const DocumentList: React.FC = () => {
       ]}
 
       idKey="attachmentId"
-      title="Documents"
-      subtitle="Manage documents uploaded"
-      addButtonLabel="Add document"
-      addRoute="/dashboard/cms/documents-create"
-      editRoute="/dashboard/cms/documents-edit"
-      viewRoute="/dashboard/cms/documents-view"
+      title="Attachments"
+      subtitle="Manage attachments uploaded"
+      addButtonLabel="Add Attachment"
+      addRoute="/dashboard/cms/attachments-create"
+      editRoute="/dashboard/cms/attachments-edit"
+      viewRoute="/dashboard/cms/attachments-view"
       showAddButton
       showExport
       showSearch
@@ -35,4 +35,4 @@ const DocumentList: React.FC = () => {
   );
 };
 
-export default DocumentList;
+export default AttachmentList;

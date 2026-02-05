@@ -43,9 +43,9 @@ const Sidebar: React.FC = () => {
   ];
 
   const cmsSubMenu = [
+    { label: "Attachments", path: "/dashboard/cms/attachments-list" },
     { label: "Contact Message", path: "/dashboard/cms/contactmessage-list"},
     { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
-    { label: "Documents", path: "/dashboard/cms/documents-list" },
     { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
     { label: "Public Page", path: "/dashboard/cms/publicpage-list" },

@@ -18,17 +18,16 @@ class AttachmentService {
     return response.value || [];
   }
   
-static async getById(
-  attachmentId: number
-): Promise<CustomResponse<Attachment>> {
+  static async getById(
+    attachmentId: number
+  ): Promise<CustomResponse<Attachment>> {
+    const response: CustomResponse<Attachment> = await HttpService.callApi(
+      API_ENDPOINTS.ATTACHMENT.GET_BY_ID(attachmentId),
+      "GET"
+    );
 
-  const response: CustomResponse<Attachment> = await HttpService.callApi(
-    API_ENDPOINTS.ATTACHMENT.GET_BY_ID(attachmentId),
-    "GET"
-  );
-
-  return response; // ✅ return full response
-}
+    return response;
+  }
 
   static async deleteAttachment(
     attachmentId: number,
@@ -53,7 +52,6 @@ static async getById(
     );
   }
 
-  // ✅ Corrected token-enabled download
   static async downloadAttachment(attachmentId: number, fileName: string) {
     return HttpService.downloadFile(
       API_ENDPOINTS.ATTACHMENT.DOWNLOAD(attachmentId),
@@ -61,16 +59,29 @@ static async getById(
     );
   }
 
-  // ✅ NEW UPDATE METHOD (added only)
+  // ✅ CORRECTED UPDATE METHOD
   static async updateAttachment(
     attachmentId: number,
     data: Partial<Attachment>
   ): Promise<Attachment> {
+    
+    // Remove undefined, null, and empty values
+    const cleanData = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => 
+        value !== undefined && 
+        value !== null && 
+        value !== ''
+      )
+    );
+
+    console.log('🔍 Update Attachment ID:', attachmentId);
+    console.log('🔍 Cleaned Update Data:', cleanData);
+    console.log('🔍 Endpoint:', API_ENDPOINTS.ATTACHMENT.UPDATE(attachmentId));
 
     const response: CustomResponse<Attachment> = await HttpService.callApi(
       API_ENDPOINTS.ATTACHMENT.UPDATE(attachmentId),
       "PUT",
-      data
+      cleanData
     );
 
     return response.value;

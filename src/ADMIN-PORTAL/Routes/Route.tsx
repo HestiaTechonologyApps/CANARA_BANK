@@ -113,11 +113,11 @@ import DailyNewsCreate from '../Pages/DailyNews/Create';
 import DailyNewsEdit from '../Pages/DailyNews/Edit';
 import DailyNewsView from '../Pages/DailyNews/View';
 
-//Document
-import DocumentList from '../Pages/Documents/List';
-import DocumentCreate from '../Pages/Documents/Create';
-import DocumentEdit from '../Pages/Documents/Edit';
-import DocumentView from '../Pages/Documents/View';
+//Attachments
+import AttachmentList from '../Pages/Attachment/List';
+import AttachmentCreate from '../Pages/Attachment/Create';
+import AttachmentEdit from '../Pages/Attachment/Edit';
+import AttachmentView from '../Pages/Attachment/View';
 
 //Direct Pay
 import DirectPaymentList from '../Pages/Contributions/DirectPay/List';
@@ -162,6 +162,7 @@ import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/
 import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
 import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
+
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
@@ -287,10 +288,10 @@ export const adminRoutes = (
       <Route path="cms/dailynews-view/:dailyNewsId" element={<DailyNewsView />} />
       
       {/* Documents*/}
-      <Route path="cms/documents-list" element={<DocumentList />} />
-      <Route path="cms/documents-create" element={<DocumentCreate />} />
-      <Route path="cms/documents-edit/:attachmentId" element={<DocumentEdit/>}/>
-      <Route path="cms/documents-view/:attachmentId" element={<DocumentView/>}/>
+      <Route path="cms/attachments-list" element={<AttachmentList />} />
+      <Route path="cms/attachments-create" element={< AttachmentCreate/>} />
+      <Route path="cms/attachments-edit/:attachmentId" element={<AttachmentEdit/>}/>
+      <Route path="cms/attachments-view/:attachmentId" element={<AttachmentView/>}/>
       
       {/* Direct Pay */}
       <Route path="contributions/directpayment-list" element={<DirectPaymentList />} />

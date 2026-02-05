@@ -1,11 +1,9 @@
-// src/components/CMS/DocumentView.tsx
 import React from "react";
 import AttachmentService from "../../../Services/Attachment.services";
 import type { ViewField } from "../../Components/KiduView";
 import KiduView from "../../Components/KiduView";
 
-const DocumentView: React.FC = () => {
-
+const AttachmentView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "attachmentId", label: "Attachment ID", icon: "bi-hash" },
     { key: "fileName", label: "File Name", icon: "bi-file-earmark" },
@@ -15,9 +13,7 @@ const DocumentView: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-   const response = await AttachmentService.getById(Number(id));
-return response;
-
+    return AttachmentService.getById(Number(id));
   };
 
   const handleDelete = async (id: string) => {
@@ -26,24 +22,24 @@ return response;
 
   return (
     <KiduView
-      title="Document Details"
+      title="Attachment Details"
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}
       paramName="attachmentId"
-      listRoute="/dashboard/cms/documents-list"
-      editRoute="/dashboard/cms/documents-edit"
+      listRoute="/dashboard/cms/attachments-list"
+      editRoute="/dashboard/cms/attachments-edit"
       auditLogConfig={{
         tableName: "Attachment",
         recordIdField: "attachmentId",
       }}
       themeColor="#1B3763"
-      loadingText="Loading document details..."
+      loadingText="Loading attachment details..."
       showEditButton={true}
       showDeleteButton={true}
-      deleteConfirmMessage="Are you sure you want to delete this document?"
+      deleteConfirmMessage="Are you sure you want to delete this attachment?"
     />
   );
 };
 
-export default DocumentView;
+export default AttachmentView;
