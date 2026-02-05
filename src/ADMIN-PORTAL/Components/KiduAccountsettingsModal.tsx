@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Modal, Button, Tab, Tabs, Form} from "react-bootstrap";
+import { Modal, Button, Tab, Tabs, Form } from "react-bootstrap";
 import { Eye, EyeOff, Upload, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "../../ADMIN-PORTAL/Services/Settings/User.services";
@@ -49,8 +49,8 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
         const userData = JSON.parse(userDataString);
         setCurrentUser(userData);
 
-        if (userData.profileImagePath) {
-          setPreview(getFullImageUrl(userData.profileImagePath));
+        if (userData.profileImageSrc) {
+          setPreview(getFullImageUrl(userData.profileImageSrc));
         }
       } catch (error) {
         toast.error("Unable to load user information");
@@ -141,7 +141,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
       if (storedUser) {
         const updatedUser = {
           ...JSON.parse(storedUser),
-          profileImagePath: uploadedPath,
+          profileImageSrc: uploadedPath,
         };
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setCurrentUser(updatedUser);
@@ -205,7 +205,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     <img
                       src={preview}
                       alt="profile"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" , borderRadius:"10px"}}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }}
                     />
                   ) : (
                     <div
@@ -259,15 +259,15 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                 onChange={handleFileChange}
               />
               <div className="d-flex justify-content-end gap-2 w-100">
-                <Button variant="outline-secondary" onClick={resetForm} style={{fontSize:"13px"}}>
+                <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
                   Cancel
                 </Button>
                 <Button
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize:"13px" }}
+                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}
                   onClick={handleSavePhoto}
                   disabled={loading}
                 >
-                   {loading ? "Saving..." : "Save Photo"}
+                  {loading ? "Saving..." : "Save Photo"}
                 </Button>
               </div>
             </div>
@@ -277,7 +277,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
           <Tab eventKey="password" title="Reset Password">
             <Form onSubmit={handlePasswordSubmit} className="mt-3">
               <Form.Group className="mb-3">
-                <Form.Label  className="fw-semibold" style={{ color: NAVY }}>Current Password <span className="text-danger">*</span></Form.Label>
+                <Form.Label className="fw-semibold" style={{ color: NAVY }}>Current Password <span className="text-danger">*</span></Form.Label>
                 <div className="position-relative">
                   <Form.Control
                     type={showCurrent ? "text" : "password"}
@@ -296,13 +296,13 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label  className="fw-semibold" style={{ color: NAVY }}>New Password <span className="text-danger">*</span></Form.Label>
+                <Form.Label className="fw-semibold" style={{ color: NAVY }}>New Password <span className="text-danger">*</span></Form.Label>
                 <div className="position-relative">
                   <Form.Control
                     type={showNew ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                     placeholder="Enter your new password"
+                    placeholder="Enter your new password"
                   />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
@@ -321,7 +321,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     type={showConfirm ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                     placeholder="Confirm your password"
+                    placeholder="Confirm your password"
                   />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
@@ -338,13 +338,13 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
               </small> */}
 
               <div className="d-flex justify-content-end gap-2 mt-4">
-                <Button variant="outline-secondary" onClick={resetForm} style={{fontSize:"13px"}}>
+                <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={loading}
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY ,fontSize:"13px"}}
+                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}
                 >
                   {loading ? "Updating..." : "Update Password"}
                 </Button>

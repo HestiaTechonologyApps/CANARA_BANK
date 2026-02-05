@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { Mail, Phone, Calendar, Shield, MapPin, Building,} from "lucide-react";
+import { Mail, Phone, Calendar, Shield, MapPin, Building, } from "lucide-react";
 import type { Member } from "../Types/Contributions/Member.types";
 import MemberService from "../Services/Contributions/Member.services";
+import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
 
 interface KiduProfileModalProps {
   show: boolean;
@@ -19,6 +20,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [member, setMember] = useState<Member | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!show) return;
@@ -30,6 +32,10 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
         if (!storedUser) return;
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
+        // Set profile image if available
+        if (parsedUser.profileImageSrc) {
+          setProfileImage(getFullImageUrl(parsedUser.profileImageSrc));
+        }
         const memberId = parsedUser.memberId;
         if (!memberId) return;
         // Call Member API
@@ -57,7 +63,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
     >
       {/* Header */}
       <Modal.Header closeButton className="border-bottom">
-        <Modal.Title style={{ color: NAVY, fontWeight: 600, fontSize:"20px" }}>
+        <Modal.Title style={{ color: NAVY, fontWeight: 600, fontSize: "20px" }}>
           Admin Profile
         </Modal.Title>
       </Modal.Header>
@@ -81,9 +87,18 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
                   fontSize: "30px",
                   fontWeight: 700,
                   border: `4px solid ${GOLD}`,
+                  overflow: "hidden",
                 }}
               >
-                {member.name?.charAt(0)}
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="profile"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  member.name?.charAt(0)
+                )}
               </div>
               <h6 className="mt-2 mb-1 fw-semibold">{member.name}</h6>
               <span
@@ -109,8 +124,8 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
                 { icon: <Building size={16} color={NAVY} />, label: "Category", value: member.categoryname },
                 { icon: <MapPin size={16} color={NAVY} />, label: "Branch", value: member.branchName },
                 { icon: <Shield size={16} color={NAVY} />, label: "Status", value: member.status },
-                { icon: <Calendar size={16} color={NAVY} />, label: "Date of Joining", value: member.dojString },
-                { icon: <Calendar size={16} color={NAVY} />, label: "DOB", value: member.dobString },
+                { icon: <Calendar size={16} color={NAVY} />, label: "Date of Joining", value: member.dojString?.split(' ').slice(0, 3).join(' ') },
+                { icon: <Calendar size={16} color={NAVY} />, label: "DOB", value: member.dobString?.split(' ').slice(0, 3).join(' ') },
                 { icon: <Shield size={16} color={NAVY} />, label: "Gender", value: member.gender },
                 // { icon: <Building size={16} color={NAVY} />, label: "Staff No", value: member.staffNo },
               ].map((item, index) => (
@@ -153,7 +168,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
       {/* Footer */}
       <Modal.Footer className="border-top">
         <Button variant="warning" className="fs-6">
-         Show Contribution
+          Show Contribution
         </Button>
       </Modal.Footer>
     </Modal>

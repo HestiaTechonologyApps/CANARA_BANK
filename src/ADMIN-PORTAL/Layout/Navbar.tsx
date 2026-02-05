@@ -37,8 +37,8 @@ const NavbarComponent: React.FC = () => {
             setUseremail(parsedUser.userEmail)
           });
         }
-        if (parsedUser?.profilePic) {
-          setProfilePic(getFullImageUrl(parsedUser.profilePic));
+        if (parsedUser?.profileImageSrc) {
+          setProfilePic(getFullImageUrl(parsedUser.profileImageSrc));
         }
       }
       // 🔄 LISTEN FOR CHANGES TO PROFILE PIC
@@ -46,7 +46,7 @@ const NavbarComponent: React.FC = () => {
         const updatedUser = localStorage.getItem("user");
         if (updatedUser) {
           const parsed = JSON.parse(updatedUser);
-          setProfilePic(getFullImageUrl(parsed.profilePic));
+          setProfilePic(getFullImageUrl(parsed.profileImageSrc));
         }
       };
       window.addEventListener("profile-pic-updated", handleProfileUpdate);
