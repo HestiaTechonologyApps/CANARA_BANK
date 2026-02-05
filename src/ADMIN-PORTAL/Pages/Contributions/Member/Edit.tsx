@@ -149,10 +149,8 @@ const MemberEdit: React.FC = () => {
       modifiedDateString: formData.modifiedDateString,
     };
 
-    // ✅ Update member data first
     await MemberService.updateMember(Number(id), payload);
 
-    // ✅ Upload image if provided (File object from KiduEdit)
     if (formData.profileImage instanceof File) {
       setIsUploading(true);
       await MemberService.uploadProfilePicture(

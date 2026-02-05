@@ -154,6 +154,7 @@ export const API_ENDPOINTS = {
     CREATE: `${API_BASE_URL}/Company/Create`,
     UPDATE: (id: number) => `${API_BASE_URL}/Company/Update/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Company/Delete/${id}`,
+    UPLOAD_FILE:`${API_BASE_URL}/Company/UploadCompanyLogo/upload-company-logo`,
   },
   CIRCLE_STATE: {
     GET_ALL: `${API_BASE_URL}/CircleState`,

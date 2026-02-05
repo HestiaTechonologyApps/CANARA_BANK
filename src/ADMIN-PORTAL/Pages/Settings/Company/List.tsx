@@ -1,14 +1,27 @@
 import React from "react";
+import type { Company } from "../../../Types/Settings/Company.types";
 import CompanyService from "../../../Services/Settings/Company.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
+import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
+import defaultCompanyLogo from "../../../Assets/Images/profile.jpg";
 
 const CompanyList: React.FC = () => {
   return (
     <KiduServerTableList
       fetchService={CompanyService.getAllCompanies}
 
+      transformData={(companies: Company[]) =>
+        companies.map(company => ({
+          ...company,
+          companyLogo: company.companyLogo
+            ? getFullImageUrl(company.companyLogo)
+            : defaultCompanyLogo,
+        }))
+      }
+
       columns={[
         { key: "companyId", label: "Company ID", enableSorting: true, type: "text" },
+        { key: "companyLogo", label: "Logo", enableSorting: false, type: "image" },
         { key: "comapanyName", label: "Company Name", enableSorting: true, type: "text" },
         { key: "email", label: "Email", type: "text" },
         { key: "contactNumber", label: "Contact", type: "text" },

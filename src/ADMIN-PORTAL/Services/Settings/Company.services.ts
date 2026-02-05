@@ -20,7 +20,6 @@ const CompanyService = {
       API_ENDPOINTS.COMPANY.GET_BY_ID(id),
       "GET"
     );
-  
     return response;
   },
 
@@ -53,6 +52,21 @@ const CompanyService = {
       "DELETE"
     );
   },
+
+  // ✅ ADDED — Upload Company Logo
+  async uploadCompanyLogo(file: File, companyId: number): Promise<void> {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("companyId", companyId.toString());
+
+   await HttpService.callApi(
+  API_ENDPOINTS.COMPANY.UPLOAD_FILE,
+  "POST",
+  formData
+);
+
+  },
 };
+
 
 export default CompanyService;

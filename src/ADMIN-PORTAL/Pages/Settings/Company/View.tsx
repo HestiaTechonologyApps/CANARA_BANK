@@ -1,8 +1,9 @@
-// src/components/Company/CompanyView.tsx
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import CompanyService from "../../../Services/Settings/Company.services";
 import KiduView from "../../../Components/KiduView";
+import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
+import defaultCompanyLogo from "../../../Assets/Images/profile.jpg";
 
 const fields: ViewField[] = [
   { key: "companyId", label: "Company ID", icon: "bi-hash" },
@@ -18,16 +19,26 @@ const fields: ViewField[] = [
   { key: "state", label: "State", icon: "bi-flag" },
   { key: "country", label: "Country", icon: "bi-flag-fill" },
   { key: "zipCode", label: "Zip Code", icon: "bi-mailbox" },
-  { key: "companyLogo", label: "Company Logo", icon: "bi-image" },
   { key: "isActive", label: "Active", icon: "bi-check-circle", isBoolean: true },
 ];
 
 const CompanyView: React.FC = () => {
-  const handleFetch = async (id: string) =>
-    CompanyService.getCompanyById(Number(id));
 
-  const handleDelete = async (id: string) =>
-    CompanyService.deleteCompany(Number(id));
+  const handleFetch = async (companyId: string) => {
+    const response = await CompanyService.getCompanyById(Number(companyId));
+
+    if (response.value) {
+      response.value.companyLogo = response.value.companyLogo
+        ? getFullImageUrl(response.value.companyLogo)
+        : defaultCompanyLogo;
+    }
+
+    return response;
+  };
+
+  const handleDelete = async (companyId: string) => {
+    await CompanyService.deleteCompany(Number(companyId));
+  };
 
   return (
     <KiduView
@@ -38,6 +49,13 @@ const CompanyView: React.FC = () => {
       editRoute="/dashboard/settings/company-edit"
       listRoute="/dashboard/settings/company-list"
       paramName="companyId"
+      imageConfig={{
+        fieldName: "companyLogo",
+        defaultImage: defaultCompanyLogo,
+        showNameField: "comapanyName",
+        showIdField: "companyId",
+        isCircle: false,
+      }}
       themeColor="#1B3763"
       loadingText="Loading company details..."
       showEditButton={true}
