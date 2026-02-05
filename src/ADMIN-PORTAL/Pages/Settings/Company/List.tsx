@@ -10,14 +10,32 @@ const CompanyList: React.FC = () => {
     <KiduServerTableList
       fetchService={CompanyService.getAllCompanies}
 
-      transformData={(companies: Company[]) =>
-        companies.map(company => ({
-          ...company,
-          companyLogo: company.companyLogo
+      transformData={(companies: Company[]) => {
+        console.log("=== TRANSFORM DATA DEBUG ===");
+        console.log("Raw companies data:", companies);
+        
+        const transformed = companies.map(company => {
+          const originalLogo = company.companyLogo;
+          const transformedLogo = company.companyLogo
             ? getFullImageUrl(company.companyLogo)
-            : defaultCompanyLogo,
-        }))
-      }
+            : defaultCompanyLogo;
+          
+          console.log("Company ID:", company.companyId);
+          console.log("Original logo:", originalLogo);
+          console.log("Transformed logo:", transformedLogo);
+          console.log("---");
+          
+          return {
+            ...company,
+            companyLogo: transformedLogo,
+          };
+        });
+        
+        console.log("Final transformed data:", transformed);
+        console.log("=== END DEBUG ===");
+        
+        return transformed;
+      }}
 
       columns={[
         { key: "companyId", label: "Company ID", enableSorting: true, type: "text" },

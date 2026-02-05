@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Field } from "../../../Components/KiduEdit";
 import CompanyService from "../../../Services/Settings/Company.services";
@@ -7,6 +7,9 @@ import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import companyDefaultLogo from "../../../Assets/Images/profile.jpg";
 
 const CompanyEdit: React.FC = () => {
+
+  const [_isUploading, setIsUploading] = useState(false);
+
   const fields: Field[] = [
     { name: "comapanyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 4 }, },
     { name: "website", rules: { type: "text", label: "Website", required: true, colWidth: 4 }, },
@@ -31,9 +34,11 @@ const CompanyEdit: React.FC = () => {
       ...response,
       value: {
         ...company,
+        // Keep BOTH: the original path AND the display URL
+        companyLogoSrc: company.companyLogo || "",  // ✅ Store original path
         companyLogo: company.companyLogo
           ? getFullImageUrl(company.companyLogo)
-          : "",
+          : "",  // ✅ Display URL
       },
     };
   };
@@ -56,7 +61,7 @@ const CompanyEdit: React.FC = () => {
       country: formData.country,
       zipCode: formData.zipCode,
       invoicePrefix: formData.invoicePrefix,
-      companyLogo: formData.companyLogo || "",
+      companyLogo: formData.companyLogoSrc || "",  // ✅ Use original path
       isActive: Boolean(formData.isActive),
       isDeleted: false,
     };
@@ -64,14 +69,12 @@ const CompanyEdit: React.FC = () => {
     await CompanyService.updateCompany(Number(companyId), payload);
 
     if (formData.companyLogo instanceof File) {
-      try {
-        await CompanyService.uploadCompanyLogo(
-          formData.companyLogo,
-          Number(companyId)
-        );
-      } catch (error) {
-        console.error("Company logo upload failed", error);
-      }
+      setIsUploading(true);
+      await CompanyService.uploadCompanyLogo(
+        formData.companyLogo,
+        Number(companyId)
+      );
+      setIsUploading(false);
     }
   };
 
