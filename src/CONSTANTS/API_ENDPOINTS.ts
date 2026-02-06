@@ -213,7 +213,14 @@ export const API_ENDPOINTS = {
     CREATE:`${API_BASE_URL}/Report`,
     GET_BY_ID:(id: number) => `${API_BASE_URL}/Report/${id}`,
     UPDATE:(id: number)=> `${API_BASE_URL}/Report/${id}`,
-    DELETE:(id: number)=>`${API_BASE_URL}/Report/${id}`
+    DELETE:(id: number)=>`${API_BASE_URL}/Report/${id}`,
+  },
+  REPORT_TYPE:{
+    GET_ALL:`${API_BASE_URL}/ReportType`,
+    CREATE:`${API_BASE_URL}/ReportType`,
+    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
+    UPDATE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
+    DELETE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
   },
 
   //------------------------PUBLIC MODULE----------------------------------------

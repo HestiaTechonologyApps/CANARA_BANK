@@ -23,6 +23,7 @@ const Sidebar: React.FC = () => {
     { label: "Company", path: "/dashboard/settings/company-list", icon: <BsBuilding /> },
     { label: "Designation", path: "/dashboard/settings/designation-list", icon: <BsAward /> },
     { label: "Month", path: "/dashboard/settings/month-list", icon: <BsCalendar3 /> },
+    { label: "Report Type", path: "/dashboard/settings/reportType-list"},
     { label: "States", path: "/dashboard/settings/state-list", icon: <BsGeoAlt /> },
     { label: "Status", path: "/dashboard/settings/status-list", icon: <BsToggleOn /> },
     { label: "Users", path: "/dashboard/settings/user-list", icon: <BsPersonFillGear /> },

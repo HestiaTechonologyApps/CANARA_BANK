@@ -48,7 +48,7 @@ const ReportsCreate: React.FC = () => {
             reportId: 0,
             reportType: formData.reportType?.trim(),
             yearOf: selectedYearMaster.yearOf,
-            yearName: selectedYearMaster.yearName,
+            yearName: String(selectedYearMaster.yearOf),
             monthCode: selectedMonth.monthCode,
             monthName: selectedMonth.monthName,
             circleId: selectedCircle.circleId,
