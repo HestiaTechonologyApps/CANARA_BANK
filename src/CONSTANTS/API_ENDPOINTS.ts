@@ -287,9 +287,6 @@ export const getFullImageUrl = (imagePath: string | null | undefined): string =>
   // Ensure proper path construction - remove leading slash from imagePath if present
   const cleanPath = imagePath.replace(/^\/+/, '');
   const fullUrl = `${backendUrl}/${cleanPath}`;
-
-  // Use a CORS proxy (temporary solution)
-  return `https://corsproxy.io/?${encodeURIComponent(fullUrl)}`;
   
   console.log('Final full URL:', fullUrl);
   return fullUrl;
