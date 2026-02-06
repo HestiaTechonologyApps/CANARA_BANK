@@ -118,6 +118,7 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/Member/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Member/${id}`,
     UPLOAD_PROFILE_PIC: `${API_BASE_URL}/Member/upload-profile-pic`,
+    GET_ALL_PAGINETED: `${API_BASE_URL}/Member/paged`,
   },
   DEATH_CLAIMS: {
     GET_ALL: `${API_BASE_URL}/DeathClaim`,
