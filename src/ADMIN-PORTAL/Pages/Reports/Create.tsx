@@ -12,9 +12,9 @@ import MonthPopup from "../Settings/Month/MonthPopup";
 import BranchPopup from "../Branch/BranchPopup";
 import YearMasterPopup from "../YearMaster/YearMasterPopup";
 import MemberPopup from "../Contributions/Member/MemberPopup";
-import type { Reports } from "../../Types/Reports/Reports.types";
 import type { ReportType } from "../../Types/Settings/ReportType.types";
 import ReportTypePopup from "../Settings/ReportType/ReportTypePopup";
+import type { Reports } from "../../Types/Reports/Reports.types";
 
 const ReportsCreate: React.FC = () => {
     const [showReportTypePopup, setShowReportTypePopup] = useState(false);
@@ -42,16 +42,21 @@ const ReportsCreate: React.FC = () => {
     ];
 
     const handleSubmit = async (formData: Record<string, any>) => {
-        if (!selectedReportType) throw new Error("Please select a report type");
-        if (!selectedYearMaster) throw new Error("Please select a year");
-        if (!selectedMonth) throw new Error("Please select a month");
-        if (!selectedCircle) throw new Error("Please select a circle");
-        if (!selectedBranch) throw new Error("Please select a branch");
-        if (!selectedMember) throw new Error("Please select a member");
+        if (
+            !selectedReportType ||
+            !selectedYearMaster ||
+            !selectedMonth ||
+            !selectedCircle ||
+            !selectedBranch ||
+            !selectedMember
+        ) {
+            throw new Error("Please select all required fields");
+        }
 
         const payload: Omit<Reports, "auditLogs"> = {
             reportId: 0,
-            reportType: String(selectedReportType.reportTypeId),
+            reportTypeId: selectedReportType.reportTypeId,
+            reportTypeName: selectedReportType.reportTypeName,
             yearOf: selectedYearMaster.yearOf,
             yearName: String(selectedYearMaster.yearOf),
             monthCode: selectedMonth.monthCode,
@@ -65,52 +70,52 @@ const ReportsCreate: React.FC = () => {
             memberName: selectedMember.name,
             staffNo: selectedMember.staffNo,
             createdDate: new Date().toISOString(),
-            createdDateString: new Date().toLocaleString(),
+            createdDateString: new Date().toLocaleDateString("en-IN"),
             modifiedDate: new Date().toISOString(),
-            modifiedDateString: new Date().toLocaleString(),
+            modifiedDateString: new Date().toLocaleDateString("en-IN"),
             isActive: Boolean(formData.isActive),
         };
 
         await ReportService.createReport(payload);
     };
 
+
     const popupHandlers = {
         reportType: {
-            value: selectedReportType ? String(selectedReportType.reportTypeName) : "",
+            value: selectedReportType?.reportTypeName ?? "",
             actualValue: selectedReportType?.reportTypeId,
             onOpen: () => setShowReportTypePopup(true),
         },
         yearOf: {
-            value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+            value: selectedYearMaster ? String(selectedYearMaster.yearOf) : "",
             actualValue: selectedYearMaster?.yearOf,
             onOpen: () => setShowYearMasterPopup(true),
         },
         monthCode: {
-            value: selectedMonth ? String(selectedMonth.monthName) : "",
+            value: selectedMonth?.monthName ?? "",
             actualValue: selectedMonth?.monthCode,
             onOpen: () => setShowMonthPopup(true),
         },
         circleId: {
-            value: selectedCircle ? String(selectedCircle.name) : "",
+            value: selectedCircle?.name ?? "",
             actualValue: selectedCircle?.circleId,
             onOpen: () => setShowCirclePopup(true),
         },
         branchId: {
             value: selectedBranch
-                ? `${String(selectedBranch.dpCode)} - ${String(selectedBranch.name)}`
+                ? `${selectedBranch.dpCode} - ${selectedBranch.name}`
                 : "",
             actualValue: selectedBranch?.branchId,
             onOpen: () => setShowBranchPopup(true),
         },
         memberId: {
             value: selectedMember
-                ? `${String(selectedMember.staffNo)} - ${String(selectedMember.name)}`
+                ? `${selectedMember.staffNo} - ${selectedMember.name}`
                 : "",
             actualValue: selectedMember?.memberId,
             onOpen: () => setShowMemberPopup(true),
         },
     };
-
 
     return (
         <>
@@ -143,7 +148,6 @@ const ReportsCreate: React.FC = () => {
                     setShowYearMasterPopup(false);
                 }}
             />
-
             <MonthPopup
                 show={showMonthPopup}
                 handleClose={() => setShowMonthPopup(false)}
@@ -152,7 +156,6 @@ const ReportsCreate: React.FC = () => {
                     setShowMonthPopup(false);
                 }}
             />
-
             <CirclePopup
                 show={showCirclePopup}
                 handleClose={() => setShowCirclePopup(false)}
@@ -161,7 +164,6 @@ const ReportsCreate: React.FC = () => {
                     setShowCirclePopup(false);
                 }}
             />
-
             <BranchPopup
                 show={showBranchPopup}
                 handleClose={() => setShowBranchPopup(false)}
@@ -170,7 +172,6 @@ const ReportsCreate: React.FC = () => {
                     setShowBranchPopup(false);
                 }}
             />
-
             <MemberPopup
                 show={showMemberPopup}
                 handleClose={() => setShowMemberPopup(false)}

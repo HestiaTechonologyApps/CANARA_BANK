@@ -8,7 +8,7 @@ const ReportsList: React.FC = () => {
       fetchService={async () => await ReportService.getAllReports()}
       columns={[
         { key: "reportId", label: "Report ID", enableSorting: true, type: "text" },
-        { key: "reportType", label: "Report Type", enableSorting: true, type: "text" },
+        { key: "reportTypeName", label: "Report Type", enableSorting: true, type: "text" },
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
         { key: "monthName", label: "Month", enableSorting: true, type: "text" },
         { key: "circleName", label: "Circle", enableSorting: true, type: "text" },

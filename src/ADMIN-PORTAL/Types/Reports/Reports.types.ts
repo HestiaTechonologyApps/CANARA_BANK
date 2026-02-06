@@ -2,7 +2,8 @@ import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface Reports {
   reportId: number;
-  reportType: string;
+  reportTypeId: number;
+  reportTypeName:string;
   yearOf?: number;
   yearName: string;
   monthCode: number;

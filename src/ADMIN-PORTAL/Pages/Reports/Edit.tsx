@@ -3,33 +3,59 @@ import KiduEdit from "../../Components/KiduEdit";
 import type { Field } from "../../Components/KiduEdit";
 import ReportService from "../../Services/Reports/Reports.services";
 import type { Reports } from "../../Types/Reports/Reports.types";
-import type { YearMaster } from "../../Types/Settings/YearMaster.types";
-import type { Month } from "../../Types/Settings/Month.types";
-import type { Circle } from "../../Types/Settings/Circle.types";
-import type { Branch } from "../../Types/Settings/Branch.types";
-import type { Member } from "../../Types/Contributions/Member.types";
-import CirclePopup from "../Circle/CirclePopup";
-import MonthPopup from "../Settings/Month/MonthPopup";
-import BranchPopup from "../Branch/BranchPopup";
-import YearMasterPopup from "../YearMaster/YearMasterPopup";
-import MemberPopup from "../Contributions/Member/MemberPopup";
-import type { ReportType } from "../../Types/Settings/ReportType.types";
 import ReportTypePopup from "../Settings/ReportType/ReportTypePopup";
+import YearMasterPopup from "../YearMaster/YearMasterPopup";
+import MonthPopup from "../Settings/Month/MonthPopup";
+import CirclePopup from "../Circle/CirclePopup";
+import BranchPopup from "../Branch/BranchPopup";
+import MemberPopup from "../Contributions/Member/MemberPopup";
+
+type ReportTypeSelection = {
+  reportTypeId: number;
+  reportTypeName: string;
+};
+
+type YearSelection = {
+  yearOf: number;
+  yearName: string;
+};
+
+type MonthSelection = {
+  monthCode: number;
+  monthName: string;
+};
+
+type CircleSelection = {
+  circleId: number;
+  name: string;
+};
+
+type BranchSelection = {
+  branchId: number;
+  dpCode: number;
+  name: string;
+};
+
+type MemberSelection = {
+  memberId: number;
+  name: string;
+  staffNo: number;
+};
 
 const ReportsEdit: React.FC = () => {
-  const [showReportTypePopup,setShowReportTypePopup] = useState(false);
-  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+  const [showReportTypePopup, setShowReportTypePopup] = useState(false);
+  const [showYearPopup, setShowYearPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
   const [showCirclePopup, setShowCirclePopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
 
-  const [selectedReportType,setSelectedReportType] = useState<ReportType | null>(null)
-  const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
-  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [selectedReportType, setSelectedReportType] = useState<ReportTypeSelection | null>(null);
+  const [selectedYear, setSelectedYear] = useState<YearSelection | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<MonthSelection | null>(null);
+  const [selectedCircle, setSelectedCircle] = useState<CircleSelection | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<BranchSelection | null>(null);
+  const [selectedMember, setSelectedMember] = useState<MemberSelection | null>(null);
 
   const fields: Field[] = [
     { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 6 } },
@@ -46,34 +72,51 @@ const ReportsEdit: React.FC = () => {
     const data = res.value;
 
     if (!data) return res;
-    setSelectedReportType({reportTypeId: data.reportId} as ReportType)
-    setSelectedYearMaster({ yearOf: data.yearOf } as YearMaster);
-    setSelectedMonth({ monthCode: data.monthCode, monthName: data.monthName } as Month);
-    setSelectedCircle({ circleId: data.circleId, name: data.circleName } as Circle);
+    setSelectedReportType({
+      reportTypeId: data.reportTypeId,
+      reportTypeName: data.reportTypeName,
+    });
+
+    setSelectedYear({
+      yearOf: data.yearOf!,
+      yearName: data.yearName,
+    });
+
+    setSelectedMonth({
+      monthCode: data.monthCode,
+      monthName: data.monthName,
+    });
+
+    setSelectedCircle({
+      circleId: data.circleId,
+      name: data.circleName,
+    });
+
     setSelectedBranch({
       branchId: data.branchId,
       dpCode: data.dpCode,
       name: data.branchName,
-    } as Branch);
+    });
+
     setSelectedMember({
       memberId: data.memberId,
-      staffNo: data.staffNo,
       name: data.memberName,
-    } as Member);
+      staffNo: data.staffNo,
+    });
 
     return res;
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedReportType ||!selectedYearMaster || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember) {
+    if ( !selectedReportType || !selectedYear || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember) {
       throw new Error("Please select all required fields");
     }
-
-    const payload: Partial<Reports> = {
+    const payload: Omit<Reports, "auditLogs"> = {
       reportId: Number(id),
-      reportType: String(selectedReportType.reportTypeId),
-      yearOf: selectedYearMaster.yearOf,
-      yearName: String(selectedYearMaster.yearOf),
+      reportTypeId: selectedReportType.reportTypeId,
+      reportTypeName: selectedReportType.reportTypeName,
+      yearOf: selectedYear.yearOf,
+      yearName: selectedYear.yearName,
       monthCode: selectedMonth.monthCode,
       monthName: selectedMonth.monthName,
       circleId: selectedCircle.circleId,
@@ -84,8 +127,10 @@ const ReportsEdit: React.FC = () => {
       memberId: selectedMember.memberId,
       memberName: selectedMember.name,
       staffNo: selectedMember.staffNo,
+      createdDate: formData.createdDate,
+      createdDateString: formData.createdDateString,
       modifiedDate: new Date().toISOString(),
-      modifiedDateString: new Date().toLocaleString(),
+      modifiedDateString: new Date().toLocaleDateString("en-IN"),
       isActive: Boolean(formData.isActive),
     };
 
@@ -94,41 +139,42 @@ const ReportsEdit: React.FC = () => {
 
   const popupHandlers = {
     reportType: {
-            value: selectedReportType ? String(selectedReportType.reportTypeName) : "",
-            actualValue: selectedReportType?.reportTypeId,
-            onOpen: () => setShowReportTypePopup(true),
-        },
+      value: selectedReportType?.reportTypeName ?? "",
+      actualValue: selectedReportType?.reportTypeId,
+      onOpen: () => setShowReportTypePopup(true),
+    },
     yearOf: {
-      value: selectedYearMaster ? String(selectedYearMaster.yearOf) : "",
-      actualValue: selectedYearMaster?.yearOf,
-      onOpen: () => setShowYearMasterPopup(true),
+      value: selectedYear ? String(selectedYear.yearOf) : "",
+      actualValue: selectedYear?.yearOf,
+      onOpen: () => setShowYearPopup(true),
     },
     monthCode: {
-      value: selectedMonth ? String(selectedMonth.monthName) : "",
+      value: selectedMonth?.monthName ?? "",
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },
     circleId: {
-      value: selectedCircle ? String(selectedCircle.name) : "",
+      value: selectedCircle?.name ?? "",
       actualValue: selectedCircle?.circleId,
       onOpen: () => setShowCirclePopup(true),
     },
     branchId: {
       value: selectedBranch
-        ? `${String(selectedBranch.dpCode)} - ${String(selectedBranch.name)}`
+        ? `${selectedBranch.dpCode} - ${selectedBranch.name}`
         : "",
       actualValue: selectedBranch?.branchId,
       onOpen: () => setShowBranchPopup(true),
     },
     memberId: {
       value: selectedMember
-        ? `${String(selectedMember.staffNo)} - ${String(selectedMember.name)}`
+        ? `${selectedMember.staffNo} - ${selectedMember.name}`
         : "",
       actualValue: selectedMember?.memberId,
       onOpen: () => setShowMemberPopup(true),
     },
   };
 
+  // ---------------- Render ----------------
   return (
     <>
       <KiduEdit
@@ -150,58 +196,13 @@ const ReportsEdit: React.FC = () => {
         }}
         themeColor="#1B3763"
       />
-      <ReportTypePopup
-                show={showReportTypePopup}
-                handleClose={() => setShowReportTypePopup(false)}
-                onSelect={(y) => {
-                    setSelectedReportType(y);
-                    setShowReportTypePopup(false);
-                }}
-            />
-      <YearMasterPopup
-        show={showYearMasterPopup}
-        handleClose={() => setShowYearMasterPopup(false)}
-        onSelect={(y) => {
-          setSelectedYearMaster(y);
-          setShowYearMasterPopup(false);
-        }}
-      />
 
-      <MonthPopup
-        show={showMonthPopup}
-        handleClose={() => setShowMonthPopup(false)}
-        onSelect={(m) => {
-          setSelectedMonth(m);
-          setShowMonthPopup(false);
-        }}
-      />
-
-      <CirclePopup
-        show={showCirclePopup}
-        handleClose={() => setShowCirclePopup(false)}
-        onSelect={(c) => {
-          setSelectedCircle(c);
-          setShowCirclePopup(false);
-        }}
-      />
-
-      <BranchPopup
-        show={showBranchPopup}
-        handleClose={() => setShowBranchPopup(false)}
-        onSelect={(b) => {
-          setSelectedBranch(b);
-          setShowBranchPopup(false);
-        }}
-      />
-
-      <MemberPopup
-        show={showMemberPopup}
-        handleClose={() => setShowMemberPopup(false)}
-        onSelect={(m) => {
-          setSelectedMember(m);
-          setShowMemberPopup(false);
-        }}
-      />
+      <ReportTypePopup show={showReportTypePopup} handleClose={() => setShowReportTypePopup(false)} onSelect={(v) => { setSelectedReportType(v); setShowReportTypePopup(false); }} />
+      <YearMasterPopup show={showYearPopup} handleClose={() => setShowYearPopup(false)} onSelect={(v) => { setSelectedYear(v); setShowYearPopup(false); }} />
+      <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={(v) => { setSelectedMonth(v); setShowMonthPopup(false); }} />
+      <CirclePopup show={showCirclePopup} handleClose={() => setShowCirclePopup(false)} onSelect={(v) => { setSelectedCircle(v); setShowCirclePopup(false); }} />
+      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={(v) => { setSelectedBranch(v); setShowBranchPopup(false); }} />
+      <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={(v) => { setSelectedMember(v); setShowMemberPopup(false); }} />
     </>
   );
 };
