@@ -45,6 +45,7 @@ const AccountDirectEntryView: React.FC = () => {
       showDeleteButton
       showEditButton
       deleteConfirmMessage="Are you sure you want to delete this entry? This action cannot be undone."
+      auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
     />
   );
 };

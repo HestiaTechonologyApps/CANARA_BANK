@@ -128,7 +128,7 @@ const AccountDirectEntryEdit: React.FC = () => {
         onUpdate={handleUpdate}
         paramName="accountsDirectEntryID"
         navigateBackPath="/dashboard/contributions/accountDirectEntry-list"
-        auditLogConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
+        auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
       />

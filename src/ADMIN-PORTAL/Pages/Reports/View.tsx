@@ -37,7 +37,7 @@ const ReportsView: React.FC = () => {
       listRoute="/dashboard/report-list"
       paramName="reportId"
       auditLogConfig={{
-        tableName: "Reports",
+        tableName: "Report",
         recordIdField: "reportId",
       }}
       themeColor="#1B3763"
