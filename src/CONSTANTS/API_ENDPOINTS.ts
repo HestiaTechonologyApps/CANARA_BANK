@@ -281,7 +281,7 @@ export const getFullImageUrl = (imagePath: string | null | undefined): string =>
 
   // ✅ FIXED: Always use the backend server URL directly
   // This ensures images work regardless of which port the frontend is running on
-  const backendUrl = 'https://sreenathganga-001-site16.jtempurl.com';
+  const backendUrl = 'http://sreenathganga-001-site16.jtempurl.com';
   console.log('Backend URL:', backendUrl);
 
   // Ensure proper path construction - remove leading slash from imagePath if present
