@@ -1,0 +1,51 @@
+import React from "react";
+import KiduView from "../../Components/KiduView";
+import type { ViewField } from "../../Components/KiduView";
+import ReportService from "../../Services/Reports/Reports.services";
+
+const ReportsView: React.FC = () => {
+  const fields: ViewField[] = [
+    { key: "reportId", label: "Report ID", icon: "bi-hash" },
+    { key: "reportType", label: "Report Type", icon: "bi-file-text" },
+    { key: "yearName", label: "Year", icon: "bi-calendar" },
+    { key: "monthName", label: "Month", icon: "bi-calendar-month" },
+    { key: "circleName", label: "Circle", icon: "bi-diagram-3" },
+    { key: "branchName", label: "Branch", icon: "bi-building" },
+    { key: "memberName", label: "Member", icon: "bi-person" },
+    { key: "staffNo", label: "Staff Number", icon: "bi-person-badge" },
+    { key: "createdDateString", label: "Created Date", icon: "bi-clock" },
+    { key: "modifiedDateString", label: "Modified Date", icon: "bi-clock-history" },
+    { key: "isActive", label: "Active", icon: "bi-check-circle", isBoolean: true },
+  ];
+
+  const handleFetch = async (id: string) => {
+    const res = await ReportService.getReportById(Number(id));
+    return res;
+  };
+
+  const handleDelete = async (id: string) => {
+    await ReportService.deleteReport(Number(id));
+  };
+
+  return (
+    <KiduView
+      title="Report Details"
+      fields={fields}
+      onFetch={handleFetch}
+      onDelete={handleDelete}
+      editRoute="/dashboard/report-edit"
+      listRoute="/dashboard/report-list"
+      paramName="reportId"
+      auditLogConfig={{
+        tableName: "Reports",
+        recordIdField: "reportId",
+      }}
+      themeColor="#1B3763"
+      showEditButton
+      showDeleteButton
+      deleteConfirmMessage="Are you sure you want to delete this report? This action cannot be undone."
+    />
+  );
+};
+
+export default ReportsView;

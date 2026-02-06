@@ -207,6 +207,13 @@ export const API_ENDPOINTS = {
     DELETE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
     UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`,
   },
+  REPORTS:{
+    GET_ALL:`${API_BASE_URL}/Report`,
+    CREATE:`${API_BASE_URL}/Report`,
+    GET_BY_ID:(id: number) => `${API_BASE_URL}/Report/${id}`,
+    UPDATE:(id: number)=> `${API_BASE_URL}/Report/${id}`,
+    DELETE:(id: number)=>`${API_BASE_URL}/Report/${id}`
+  },
 
   //------------------------PUBLIC MODULE----------------------------------------
   PUBLIC: {
