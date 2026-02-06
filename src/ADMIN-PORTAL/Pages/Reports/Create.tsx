@@ -44,62 +44,62 @@ const ReportsCreate: React.FC = () => {
         if (!selectedBranch) throw new Error("Please select a branch");
         if (!selectedMember) throw new Error("Please select a member");
 
-       const payload: Omit<Reports, "auditLogs"> = {
-  reportId: 0,
-  reportType: formData.reportType?.trim(),
-  yearOf: selectedYearMaster.yearOf,
-  yearName: selectedYearMaster.yearName,
-  monthCode: selectedMonth.monthCode,
-  monthName: selectedMonth.monthName,
-  circleId: selectedCircle.circleId,
-  circleName: selectedCircle.name,
-  branchId: selectedBranch.branchId,
-  dpCode: selectedBranch.dpCode,
-  branchName: selectedBranch.name,
-  memberId: selectedMember.memberId,
-  memberName: selectedMember.name,
-  staffNo: selectedMember.staffNo,
-  createdDate: new Date().toISOString(),
-  createdDateString: new Date().toLocaleString(),
-  modifiedDate: new Date().toISOString(),
-  modifiedDateString: new Date().toLocaleString(),
-  isActive: Boolean(formData.isActive),
-};
+        const payload: Omit<Reports, "auditLogs"> = {
+            reportId: 0,
+            reportType: formData.reportType?.trim(),
+            yearOf: selectedYearMaster.yearOf,
+            yearName: selectedYearMaster.yearName,
+            monthCode: selectedMonth.monthCode,
+            monthName: selectedMonth.monthName,
+            circleId: selectedCircle.circleId,
+            circleName: selectedCircle.name,
+            branchId: selectedBranch.branchId,
+            dpCode: selectedBranch.dpCode,
+            branchName: selectedBranch.name,
+            memberId: selectedMember.memberId,
+            memberName: selectedMember.name,
+            staffNo: selectedMember.staffNo,
+            createdDate: new Date().toISOString(),
+            createdDateString: new Date().toLocaleString(),
+            modifiedDate: new Date().toISOString(),
+            modifiedDateString: new Date().toLocaleString(),
+            isActive: Boolean(formData.isActive),
+        };
 
         await ReportService.createReport(payload);
     };
 
-  const popupHandlers = {
-  yearOf: {
-    value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
-    actualValue: selectedYearMaster?.yearOf,
-    onOpen: () => setShowYearMasterPopup(true),
-  },
-  monthCode: {
-    value: selectedMonth ? String(selectedMonth.monthName) : "",
-    actualValue: selectedMonth?.monthCode,
-    onOpen: () => setShowMonthPopup(true),
-  },
-  circleId: {
-    value: selectedCircle ? String(selectedCircle.name) : "",
-    actualValue: selectedCircle?.circleId,
-    onOpen: () => setShowCirclePopup(true),
-  },
-  branchId: {
-    value: selectedBranch
-      ? `${String(selectedBranch.dpCode)} - ${String(selectedBranch.name)}`
-      : "",
-    actualValue: selectedBranch?.branchId,
-    onOpen: () => setShowBranchPopup(true),
-  },
-  memberId: {
-    value: selectedMember
-      ? `${String(selectedMember.staffNo)} - ${String(selectedMember.name)}`
-      : "",
-    actualValue: selectedMember?.memberId,
-    onOpen: () => setShowMemberPopup(true),
-  },
-};
+    const popupHandlers = {
+        yearOf: {
+            value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+            actualValue: selectedYearMaster?.yearOf,
+            onOpen: () => setShowYearMasterPopup(true),
+        },
+        monthCode: {
+            value: selectedMonth ? String(selectedMonth.monthName) : "",
+            actualValue: selectedMonth?.monthCode,
+            onOpen: () => setShowMonthPopup(true),
+        },
+        circleId: {
+            value: selectedCircle ? String(selectedCircle.name) : "",
+            actualValue: selectedCircle?.circleId,
+            onOpen: () => setShowCirclePopup(true),
+        },
+        branchId: {
+            value: selectedBranch
+                ? `${String(selectedBranch.dpCode)} - ${String(selectedBranch.name)}`
+                : "",
+            actualValue: selectedBranch?.branchId,
+            onOpen: () => setShowBranchPopup(true),
+        },
+        memberId: {
+            value: selectedMember
+                ? `${String(selectedMember.staffNo)} - ${String(selectedMember.name)}`
+                : "",
+            actualValue: selectedMember?.memberId,
+            onOpen: () => setShowMemberPopup(true),
+        },
+    };
 
 
     return (
