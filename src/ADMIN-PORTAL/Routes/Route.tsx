@@ -169,6 +169,12 @@ import ReportsCreate from '../Pages/Reports/Create';
 import ReportsEdit from '../Pages/Reports/Edit';
 import ReportsView from '../Pages/Reports/View';
 
+//Report Type
+import ReportTypeList from '../Pages/Settings/ReportType/List';
+import ReportTypeCreate from '../Pages/Settings/ReportType/Create';
+import ReportTypeEdit from '../Pages/Settings/ReportType/Edit';
+import ReportTypeView from '../Pages/Settings/ReportType/View';
+
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
@@ -345,6 +351,11 @@ export const adminRoutes = (
        <Route path="report-edit/:reportId" element={<ReportsEdit/>}/>
        <Route path="report-view/:reportId" element={<ReportsView/>}/>
 
+      {/* Report Type */}
+      <Route path="settings/reportType-list" element={<ReportTypeList/>}/>
+      <Route path="settings/reportType-create" element={<ReportTypeCreate/>}/>
+      <Route path="settings/reportType-edit/:reportTypeId" element={<ReportTypeEdit/>}/>
+      <Route path="settings/reportType-view/:reportTypeId" element={<ReportTypeView/>}/>
 
 
 
