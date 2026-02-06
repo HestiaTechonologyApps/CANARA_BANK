@@ -145,7 +145,7 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         paramName="accountsDirectEntryID"
         popupHandlers={popupHandlers}
         auditLogConfig={{
-          tableName: "AccountsDirectEntries",
+          tableName: "ACCOUNT_DIRECT_ENTRY",
           recordIdField: "accountsDirectEntryID",
         }}
         themeColor="#1B3763"

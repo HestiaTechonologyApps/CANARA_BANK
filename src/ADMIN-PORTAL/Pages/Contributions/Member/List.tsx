@@ -1,5 +1,4 @@
 import React from "react";
-import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberService from "../../../Services/Contributions/Member.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
@@ -8,9 +7,23 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 const MemberList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={MemberService.getAllMembers}
-      transformData={(members: Member[]) => 
-        members.map(member => ({
+      paginatedFetchService={async (params) => {
+        const response = await MemberService.getMembersPaginated({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+        
+        return {
+          data: response.data,
+          total: response.total
+        };
+      }}
+      
+      transformData={(data) => 
+        data.map(member => ({
           ...member,
           profileImageSrc: member.profileImageSrc
             ? getFullImageUrl(member.profileImageSrc)

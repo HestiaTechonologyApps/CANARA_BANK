@@ -36,3 +36,21 @@ export interface Member {
   totalRefund: string;
   auditLogs?: AuditTrails[];
 }
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  totalRecords: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+}
+
+export interface MemberPaginationParams {
+  pageNumber?: number;
+  pageSize?: number;
+  searchTerm?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}

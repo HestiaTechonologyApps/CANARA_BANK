@@ -63,7 +63,6 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     if (!selectedYearMaster) throw new Error("Please select Year");
     const payload: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs"> = {
       memberId: selectedMember.memberId,
-      name: selectedMember.name,
       branchId: selectedBranch.branchId,
       monthCode: selectedMonth.monthCode,
       // yearOf: Number(formData.yearOf),

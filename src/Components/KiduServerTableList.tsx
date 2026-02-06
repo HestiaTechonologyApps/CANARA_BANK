@@ -1,4 +1,4 @@
-// KiduServerTableList.tsx - Wrapper for KiduServerTable with service integration
+// KiduServerTableList.tsx - Updated with paginated service support
 import React from "react";
 import KiduServerTable from "./KiduServerTable";
 
@@ -10,8 +10,15 @@ interface Column {
 }
 
 interface KiduServerTableListProps {
-  // Data fetching
-  fetchService: () => Promise<any[]>;
+  // Data fetching - support both patterns
+  fetchService?: () => Promise<any[]>;
+  paginatedFetchService?: (params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  }) => Promise<{ data: any[]; total: number }>;
   transformData?: (data: any[]) => any[];
   
   // Table configuration
@@ -41,6 +48,7 @@ interface KiduServerTableListProps {
 
 const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
   fetchService,
+  paginatedFetchService,
   transformData,
   columns,
   idKey = "id",
@@ -60,7 +68,7 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
   onAddClick,
 }) => {
   
-  // Cache the full dataset
+  // Cache the full dataset (only for non-paginated services)
   let cachedData: any[] | null = null;
   
   // Adapted to match old KiduServerTable's fetchData signature
@@ -68,8 +76,33 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
     pageNumber: number;
     pageSize: number;
     searchTerm: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
   }): Promise<{ data: any[]; total: number }> => {
     try {
+      // If paginated service is provided, use it directly
+      if (paginatedFetchService) {
+        const result = await paginatedFetchService({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+        
+        // Apply transformation if provided
+        if (transformData) {
+          result.data = transformData(result.data);
+        }
+        
+        return result;
+      }
+      
+      // Otherwise, use the non-paginated service with client-side pagination
+      if (!fetchService) {
+        throw new Error("Either fetchService or paginatedFetchService must be provided");
+      }
+      
       // Fetch all data only once (on first call or when cache is empty)
       if (!cachedData) {
         let allData = await fetchService();

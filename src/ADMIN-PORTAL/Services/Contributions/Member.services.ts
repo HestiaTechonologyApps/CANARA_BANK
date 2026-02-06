@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import AuthService from "../../../Services/Auth.services";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { Member } from "../../Types/Contributions/Member.types";
+import type { Member, MemberPaginationParams, PaginatedResponse } from "../../Types/Contributions/Member.types";
 
 const MemberService = {
   async getAllMembers(): Promise<Member[]> {
@@ -182,6 +182,46 @@ const MemberService = {
       throw new Error('Failed to upload profile picture');
     }
   },
+
+  async getMembersPaginated(params: MemberPaginationParams): Promise<{
+    data: Member[];
+    total: number;
+  }> {
+    const {
+      pageNumber = 1,
+      pageSize = 10,
+      searchTerm = '',
+      sortBy = '',
+      sortOrder = 'asc'
+    } = params;
+
+    // Build query string
+    const queryParams = new URLSearchParams({
+      pageNumber: pageNumber.toString(),
+      pageSize: pageSize.toString(),
+    });
+
+    if (searchTerm) {
+      queryParams.append('searchTerm', searchTerm);
+    }
+    if (sortBy) {
+      queryParams.append('sortBy', sortBy);
+      queryParams.append('sortOrder', sortOrder);
+    }
+
+    const url = `${API_ENDPOINTS.MEMBER.GET_ALL_PAGINETED}?${queryParams.toString()}`;
+
+    const response = await HttpService.callApi<CustomResponse<PaginatedResponse<Member>>>(
+      url,
+      "GET"
+    );
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords
+    };
+  },
+
 };
 
 export default MemberService;
