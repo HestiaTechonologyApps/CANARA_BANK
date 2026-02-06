@@ -13,14 +13,18 @@ import BranchPopup from "../Branch/BranchPopup";
 import YearMasterPopup from "../YearMaster/YearMasterPopup";
 import MemberPopup from "../Contributions/Member/MemberPopup";
 import type { Reports } from "../../Types/Reports/Reports.types";
+import type { ReportType } from "../../Types/Settings/ReportType.types";
+import ReportTypePopup from "../Settings/ReportType/ReportTypePopup";
 
 const ReportsCreate: React.FC = () => {
+    const [showReportTypePopup, setShowReportTypePopup] = useState(false);
     const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
     const [showMonthPopup, setShowMonthPopup] = useState(false);
     const [showCirclePopup, setShowCirclePopup] = useState(false);
     const [showBranchPopup, setShowBranchPopup] = useState(false);
     const [showMemberPopup, setShowMemberPopup] = useState(false);
 
+    const [selectedReportType, setSelectedReportType] = useState<ReportType | null>(null)
     const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
     const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
     const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
@@ -28,7 +32,7 @@ const ReportsCreate: React.FC = () => {
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
     const fields: Field[] = [
-        { name: "reportType", rules: { type: "text", label: "Report Type", required: true, colWidth: 6 } },
+        { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 6 } },
         { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
         { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 6 } },
         { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 6 } },
@@ -38,6 +42,7 @@ const ReportsCreate: React.FC = () => {
     ];
 
     const handleSubmit = async (formData: Record<string, any>) => {
+        if (!selectedReportType) throw new Error("Please select a report type");
         if (!selectedYearMaster) throw new Error("Please select a year");
         if (!selectedMonth) throw new Error("Please select a month");
         if (!selectedCircle) throw new Error("Please select a circle");
@@ -46,7 +51,7 @@ const ReportsCreate: React.FC = () => {
 
         const payload: Omit<Reports, "auditLogs"> = {
             reportId: 0,
-            reportType: formData.reportType?.trim(),
+            reportType: String(selectedReportType.reportTypeId),
             yearOf: selectedYearMaster.yearOf,
             yearName: String(selectedYearMaster.yearOf),
             monthCode: selectedMonth.monthCode,
@@ -70,6 +75,11 @@ const ReportsCreate: React.FC = () => {
     };
 
     const popupHandlers = {
+        reportType: {
+            value: selectedReportType ? String(selectedReportType.reportTypeName) : "",
+            actualValue: selectedReportType?.reportTypeId,
+            onOpen: () => setShowReportTypePopup(true),
+        },
         yearOf: {
             value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
             actualValue: selectedYearMaster?.yearOf,
@@ -117,7 +127,14 @@ const ReportsCreate: React.FC = () => {
                 navigateDelay={1200}
                 themeColor="#1B3763"
             />
-
+            <ReportTypePopup
+                show={showReportTypePopup}
+                handleClose={() => setShowReportTypePopup(false)}
+                onSelect={(y) => {
+                    setSelectedReportType(y);
+                    setShowReportTypePopup(false);
+                }}
+            />
             <YearMasterPopup
                 show={showYearMasterPopup}
                 handleClose={() => setShowYearMasterPopup(false)}

@@ -22,7 +22,7 @@ export interface AccountDirectEntry {
   status: string;
   isApproved: boolean;
   approvedBy?: string;
-  approvedDate: Date | string;
+  approvedDate?: Date | string;
   approvedDateString?:string;
   auditLogs?: AuditTrails[];
 }
