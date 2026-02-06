@@ -11,12 +11,12 @@ const CircleCreate: React.FC = () => {
   const [selectedState, setSelectedState] = useState<State | null>(null);
 
   const fields: Field[] = [
-    { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 6 } },
-    { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 6 } },
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 6 } },
-    { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 6 } },
-    { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 6 } },
-    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 6 } },
+    { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 4 } },
+    { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 4 } },
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 4 } },
+    { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
+    { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 4 } },
+    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 4 } },
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } },
   ];
 

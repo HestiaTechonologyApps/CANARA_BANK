@@ -26,7 +26,7 @@ try{
 
   return (
     <KiduCreate
-      title="Create Year Master"
+      title="Create Year"
       fields={fields}
       onSubmit={handleSubmit}
       submitButtonText="Create Year"

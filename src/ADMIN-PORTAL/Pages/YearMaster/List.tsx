@@ -13,7 +13,7 @@ const YearMasterList: React.FC = () => {
       ]}
 
       idKey="yearOf"
-      title="Year Master"
+      title="Year"
       subtitle="Manage year with search, filter, and pagination."
       addButtonLabel="Add year"
       addRoute="/dashboard/settings/yearMaster-create"

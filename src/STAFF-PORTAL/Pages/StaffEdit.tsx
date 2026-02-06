@@ -40,7 +40,6 @@ const StaffEdit: React.FC = () => {
     { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 3 } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 3 } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
-    { name: "profileImageSrc", rules: { type: "text", label: "Profile Image", colWidth: 3 } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 3 } },
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 3 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity Number", colWidth: 3 } },

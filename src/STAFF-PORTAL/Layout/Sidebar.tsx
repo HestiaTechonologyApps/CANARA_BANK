@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { User, UserCog, CreditCard, Settings, BarChart, Home, LogOut } from "lucide-react";
+import { User, UserCog, CreditCard, Settings, BarChart, LogOut } from "lucide-react";
 import "../Style/Sidebar.css";
 import AuthService from "../../Services/Auth.services";
 import { useState } from "react";
@@ -43,9 +43,6 @@ const StaffSidebar = ({ open }: Props) => {
         </nav>
 
         <div className="sidebar-footer">
-          <button onClick={() => navigate("/")}>
-            <Home size={ICON_SIZE} /> {open && "Back to Home"}
-          </button>
           <button className="text-danger" onClick={handleLogout}>
             <LogOut size={ICON_SIZE} /> {open && "Logout"}
           </button>

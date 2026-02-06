@@ -41,7 +41,7 @@ const YearMasterEdit: React.FC = () => {
 
   return (
     <KiduEdit
-      title="Edit Year Master"
+      title="Edit Year"
       fields={fields}
       onFetch={handleFetch}
       onUpdate={handleUpdate}

@@ -8,7 +8,7 @@ const CircleView: React.FC = () => {
     { key: "circleId", label: "Circle ID", icon: "bi-hash" },
     { key: "circleCode", label: "Circle Code", icon: "bi-diagram-3" },
     { key: "name", label: "Circle Name", icon: "bi-geo-alt" },
-    { key: "abbreviation", label: "Abbreviation", icon: "bi-text-short" },
+    { key: "abbreviation", label: "Abbreviation", icon: "bi-hash" },
     { key: "stateName", label: "State", icon: "bi-flag" },
     { key: "dateFromString", label: "Date From", icon: "bi-calendar-event" },
     { key: "dateToString", label: "Date To", icon: "bi-calendar-x" },

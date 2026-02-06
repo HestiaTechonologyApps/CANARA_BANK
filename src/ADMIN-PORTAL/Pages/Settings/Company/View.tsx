@@ -54,7 +54,7 @@ const CompanyView: React.FC = () => {
         defaultImage: defaultCompanyLogo,
         showNameField: "comapanyName",
         showIdField: "companyId",
-        isCircle: false,
+        isCircle: true,
       }}
       themeColor="#1B3763"
       loadingText="Loading company details..."

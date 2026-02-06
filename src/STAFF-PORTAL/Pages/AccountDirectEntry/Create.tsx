@@ -112,7 +112,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   return (
     <>
       <KiduCreate
-        title="Create Account Direcy Entry"
+        title="Create Account Direct Entry"
         fields={fields}
         onSubmit={handleSubmit}
         popupHandlers={popupHandlers}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { BsGridFill, BsGearFill, BsCashStack,  BsNewspaper, BsBarChart, BsChevronDown, BsListUl, BsGeoAlt, BsPersonCheck, BsToggleOn, BsAward, BsCircle, BsBuildingGear, BsPersonFillGear, BsBuilding,BsCalendar3,  BsBag,  BsTicketPerforated} from "react-icons/bs";
+import { BsGridFill, BsGearFill, BsCashStack, BsNewspaper, BsBarChart, BsChevronDown, BsBag, BsTicketPerforated } from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
@@ -17,37 +17,37 @@ const Sidebar: React.FC = () => {
   };
 
   const settingsSubMenu = [
-    { label: "Branches", path: "/dashboard/settings/branch-list", icon: <BsBuildingGear /> },
-    { label: "Category", path: "/dashboard/settings/category-list", icon: <BsListUl /> },
-    { label: "Circles", path: "/dashboard/settings/circle-list", icon: <BsCircle /> },
-    { label: "Company", path: "/dashboard/settings/company-list", icon: <BsBuilding /> },
-    { label: "Designation", path: "/dashboard/settings/designation-list", icon: <BsAward /> },
-    { label: "Month", path: "/dashboard/settings/month-list", icon: <BsCalendar3 /> },
-    { label: "Report Type", path: "/dashboard/settings/reportType-list"},
-    { label: "States", path: "/dashboard/settings/state-list", icon: <BsGeoAlt /> },
-    { label: "Status", path: "/dashboard/settings/status-list", icon: <BsToggleOn /> },
-    { label: "Users", path: "/dashboard/settings/user-list", icon: <BsPersonFillGear /> },
-    { label: "User Types", path: "/dashboard/settings/usertype-list", icon: <BsPersonCheck /> },
-    { label: "Year Master", path: "/dashboard/settings/yearMaster-list", icon: <BsCalendar3 /> }
+    { label: "Branches", path: "/dashboard/settings/branch-list" },
+    { label: "Category", path: "/dashboard/settings/category-list" },
+    { label: "Circles", path: "/dashboard/settings/circle-list" },
+    { label: "Company", path: "/dashboard/settings/company-list" },
+    { label: "Designation", path: "/dashboard/settings/designation-list" },
+    { label: "Month", path: "/dashboard/settings/month-list" },
+    { label: "Report Type", path: "/dashboard/settings/reportType-list" },
+    { label: "States", path: "/dashboard/settings/state-list" },
+    { label: "Status", path: "/dashboard/settings/status-list" },
+    { label: "Users", path: "/dashboard/settings/user-list" },
+    { label: "User Types", path: "/dashboard/settings/usertype-list" },
+    { label: "Year", path: "/dashboard/settings/yearMaster-list" }
   ];
 
   const contribSubMenu = [
     { label: "Account Direct Entry", path: "/dashboard/contributions/accountDirectEntry-list" },
     { label: "Direct Pay", path: "/dashboard/contributions/directpayment-list" },
     { label: "Member", path: "/dashboard/contributions/member-list" },
-    { label: "Monthly Contributions", path: "/dashboard/contributions/monthlyContribution-list" }  
+    { label: "Monthly Contributions", path: "/dashboard/contributions/monthlyContribution-list" }
   ];
 
   const claimsSubMenu = [
     { label: "Death Claims", path: "/dashboard/claims/deathclaims-list" },
-    { label: "Refund", path: "/dashboard/claims/refundcontribution-list" } 
+    { label: "Refund", path: "/dashboard/claims/refundcontribution-list" }
   ];
 
   const cmsSubMenu = [
     { label: "Attachments", path: "/dashboard/cms/attachments-list" },
-    { label: "Contact Message", path: "/dashboard/cms/contactmessage-list"},
+    { label: "Contact Messages", path: "/dashboard/cms/contactmessage-list" },
     { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
-   // { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
+    // { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
     { label: "Public Page", path: "/dashboard/cms/publicpage-list" },
     { label: "Quotes", path: "/dashboard/cms/dayquote-list" }
@@ -133,7 +133,7 @@ const Sidebar: React.FC = () => {
                 `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-2 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-warning" : ""}`
               }
               style={{
-                fontSize: "13px",
+                fontSize: "14px",
                 textDecoration: "none",
                 padding: "5px 0",
                 width: hovered ? "85%" : "45px",
@@ -160,7 +160,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('settings')}
               >
                 <BsGearFill className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -188,9 +188,8 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-flex align-items-center gap-2 p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "11px", textDecoration: "none" }}
+                      style={{ fontSize: "13px", textDecoration: "none" }}
                     >
-                      {sub.icon}
                       <span className="fw-bold">{sub.label}</span>
                     </NavLink>
                   ))}
@@ -202,7 +201,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('contributions')}
               >
                 <BsCashStack className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -243,7 +242,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('claims')}
               >
                 <FaFileInvoice className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -271,7 +270,7 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "11px", textDecoration: "none" }}
+                      style={{ fontSize: "13px", textDecoration: "none" }}
                     >
                       <span className="fw-bold">{sub.label}</span>
                     </NavLink>
@@ -284,7 +283,7 @@ const Sidebar: React.FC = () => {
             <div>
               <div
                 className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
-                style={{ fontSize: "13px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('cms')}
               >
                 <BsNewspaper className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
@@ -312,7 +311,7 @@ const Sidebar: React.FC = () => {
                       className={({ isActive }) =>
                         `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
                       }
-                      style={{ fontSize: "11px", textDecoration: "none" }}
+                      style={{ fontSize: "13px", textDecoration: "none" }}
                     >
                       <span className="fw-bold">{sub.label}</span>
                     </NavLink>
@@ -325,14 +324,14 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/report-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
-              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
+              style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsBarChart
-                    className={isActive ? "text-primary" : "text-white"}
+                    className={isActive ? "text-white" : "text-white"}
                     style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
@@ -350,7 +349,7 @@ const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
-              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
+              style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
@@ -397,16 +396,16 @@ const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }
-              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
+              style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsBag
-                    className={isActive ? "text-primary" : "text-white"}
+                    className={isActive ? "text-white" : "text-white"}
                     style={{ fontSize: "20px", minWidth: "20px" }}
                   />
                   {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-primary" : "text-white"}`}>
+                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
                       Approval
                     </span>
                   )}

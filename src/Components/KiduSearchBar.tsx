@@ -45,11 +45,11 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
             backgroundColor: "#1B3763",
             border: "none",
             color: "white",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
+            // paddingLeft: "1rem",
+            // paddingRight: "1rem",
           }}
         >
-          <FaSearch />
+          <FaSearch size={13} className="mb-1"/>
         </Button>
       </InputGroup>
     </div>

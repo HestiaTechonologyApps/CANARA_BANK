@@ -20,7 +20,7 @@ const YearMasterView: React.FC = () => {
 
   return (
     <KiduView
-      title="Year Master Details"
+      title="Year Details"
       fields={fields}
       onFetch={handleFetch}
       onDelete={handleDelete}

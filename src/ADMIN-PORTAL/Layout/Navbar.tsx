@@ -13,6 +13,8 @@ import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
 import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
 import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
+import profiledefaultImg from "../Assets/Images/profile.jpg"
+
 
 const NavbarComponent: React.FC = () => {
   // const [showNotifications, setShowNotifications] = useState(false);
@@ -139,7 +141,7 @@ const NavbarComponent: React.FC = () => {
               className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
             >
               <Image
-                src={profilePic}
+                src={profilePic? profilePic : profiledefaultImg}
                 alt="profile"
                 className="rounded-circle me-2 border border-2"
                 style={{ width: "30px", height: "30px", objectFit: "cover" }}

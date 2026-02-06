@@ -6,7 +6,7 @@ import KiduCreate from "../../../Components/KiduCreate";
 const ReportTypeCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "reportTypeName", rules: { type: "text", label: "Report Type Name", required: true, colWidth: 6 }, },
-    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 },},
+    { name: "description", rules: { type: "textarea", label: "Description", required: false, colWidth: 6 },},
     { name: "isActive", rules: { type: "toggle", label: "Active" },},
   ];
 
