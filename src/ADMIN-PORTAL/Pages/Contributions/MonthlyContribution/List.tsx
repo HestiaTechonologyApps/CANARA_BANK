@@ -11,7 +11,7 @@ const MonthlyContributionList: React.FC = () => {
         { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
         { key: "fileType", label: "File Type", enableSorting: true, type: "text" },
         { key: "fileExtension", label: "Extension", enableSorting: true, type: "text" },
-        { key: "monthName", label: "Month Code", enableSorting: true, type: "text" },
+        { key: "monthName", label: "Month", enableSorting: true, type: "text" },
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
       ]}
 

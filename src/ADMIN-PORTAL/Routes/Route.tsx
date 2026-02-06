@@ -163,6 +163,12 @@ import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContributio
 import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
 
+//Report
+import ReportsList from '../Pages/Reports/List';
+import ReportsCreate from '../Pages/Reports/Create';
+import ReportsEdit from '../Pages/Reports/Edit';
+import ReportsView from '../Pages/Reports/View';
+
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
@@ -332,6 +338,15 @@ export const adminRoutes = (
        <Route path="contributions/monthlyContribution-create" element={<MonthlyContributionCreate/>}/>
        <Route path="contributions/monthlyContribution-edit/:monthlyContributionId" element={<MonthlyContributionEdit/>}/>
        <Route path="contributions/monthlyContribution-view/:monthlyContributionId" element={<MonthlyContributionView/>}/>
+
+       {/* Reports */}
+       <Route path="report-list" element={<ReportsList/>}/>
+       <Route path="report-create" element={<ReportsCreate/>}/>
+       <Route path="report-edit/:reportId" element={<ReportsEdit/>}/>
+       <Route path="report-view/:reportId" element={<ReportsView/>}/>
+
+
+
 
   {/* <Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} /> */}
 

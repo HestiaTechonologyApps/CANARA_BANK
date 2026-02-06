@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { BsGridFill, BsGearFill, BsCashStack, BsPeople, BsNewspaper, BsBarChart, BsChevronDown, BsListUl, BsGeoAlt, BsPersonCheck, BsToggleOn, BsAward, BsCircle, BsBuildingGear, BsPersonFillGear, BsBuilding,BsCalendar3,  BsBag,  BsTicketPerforated} from "react-icons/bs";
+import { BsGridFill, BsGearFill, BsCashStack,  BsNewspaper, BsBarChart, BsChevronDown, BsListUl, BsGeoAlt, BsPersonCheck, BsToggleOn, BsAward, BsCircle, BsBuildingGear, BsPersonFillGear, BsBuilding,BsCalendar3,  BsBag,  BsTicketPerforated} from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
     { label: "Attachments", path: "/dashboard/cms/attachments-list" },
     { label: "Contact Message", path: "/dashboard/cms/contactmessage-list"},
     { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
-    { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
+   // { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
     { label: "Public Page", path: "/dashboard/cms/publicpage-list" },
     { label: "Quotes", path: "/dashboard/cms/dayquote-list" }
@@ -322,7 +322,7 @@ const Sidebar: React.FC = () => {
 
             {/* Reports Menu */}
             <NavLink
-              to="/dashboard/reports"
+              to="/dashboard/report-list"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-white" : ""}`
               }
@@ -368,7 +368,7 @@ const Sidebar: React.FC = () => {
 
 
             {/* Customers Menu */}
-            <NavLink
+            {/* <NavLink
               to="/dashboard/customer-list"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
@@ -388,7 +388,7 @@ const Sidebar: React.FC = () => {
                   )}
                 </>
               )}
-            </NavLink>
+            </NavLink> */}
 
             {/* Approval Menu */}
             <NavLink
