@@ -152,6 +152,10 @@ const RefundContributionEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
         themeColor="#1B3763"
+        attachmentConfig={{
+          tableName: "RefundContribution",
+          recordIdField: "refundContributionId"
+        }}
       />
       <StatePopup 
        show={showStatePopup} 

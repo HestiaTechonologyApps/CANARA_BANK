@@ -7,6 +7,7 @@ import KiduLoader from "../../Components/KiduLoader";
 import KiduPrevious from "../../Components/KiduPrevious";
 import KiduAuditLogs from "../../Components/KiduAuditLogs";
 import { Toaster } from "react-hot-toast";
+import Attachments from "../../Components/KiduAttachments";
 
 
 // ==================== TYPES ====================
@@ -32,6 +33,11 @@ export interface AuditLogConfig {
   recordIdField: string;
 }
 
+export interface AttachmentConfig  {
+  tableName: string;
+  recordIdField: string;
+}
+
 export interface KiduViewProps {
   title: string;
   fields: ViewField[];
@@ -42,6 +48,7 @@ export interface KiduViewProps {
   paramName?: string;
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
+  attachmentConfig?:AttachmentConfig;
   themeColor?: string;
   loadingText?: string;
   showEditButton?: boolean;
@@ -60,6 +67,7 @@ const KiduView: React.FC<KiduViewProps> = ({
   paramName = "id",
   imageConfig,
   auditLogConfig,
+  attachmentConfig,
   themeColor = "#882626ff",
   loadingText = "Loading details...",
   showEditButton = true,
@@ -334,6 +342,16 @@ const KiduView: React.FC<KiduViewProps> = ({
             </tbody>
           </Table>
         </div>
+
+        {/* ATTACHMENTS SECTION */}
+        {attachmentConfig && data[attachmentConfig.recordIdField] && (
+          <div className="mt-4">
+            <Attachments
+              tableName={attachmentConfig.tableName}
+              recordId={data[attachmentConfig.recordIdField]}
+            />
+          </div>
+        )}
 
         {/* AUDIT LOGS */}
         {auditLogConfig && data[auditLogConfig.recordIdField] && (

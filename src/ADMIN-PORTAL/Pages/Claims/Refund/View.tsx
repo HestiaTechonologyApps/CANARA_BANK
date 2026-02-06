@@ -46,6 +46,10 @@ const RefundContributionView: React.FC = () => {
         tableName: "RefundContribution",
         recordIdField: "refundContributionId",
       }}
+      attachmentConfig={{
+    tableName: "RefundContribution",
+    recordIdField: "refundContributionId"
+  }}
       themeColor="#1B3763"
       loadingText="Loading Refund details..."
       showEditButton={true}

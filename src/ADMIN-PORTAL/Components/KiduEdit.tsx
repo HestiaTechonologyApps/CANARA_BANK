@@ -10,6 +10,7 @@ import KiduPrevious from "../../Components/KiduPrevious";
 import KiduReset from "../../Components/KiduReset";
 import KiduLoader from "../../Components/KiduLoader";
 import KiduAuditLogs from "../../Components/KiduAuditLogs";
+import Attachments from "../../Components/KiduAttachments";
 
 // ==================== TYPES ====================
 export interface FieldRule {
@@ -56,6 +57,11 @@ export interface AuditLogConfig {
   recordIdField: string;
 }
 
+export interface AttachmentConfig  {
+  tableName: string;
+  recordIdField: string;
+}
+
 export interface KiduEditProps {
   title: string;
   subtitle?: string;
@@ -73,6 +79,7 @@ export interface KiduEditProps {
   errorMessage?: string;
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
+  attachmentConfig?:AttachmentConfig;
   themeColor?: string;
   paramName?: string;
   navigateBackPath?: string;
@@ -96,6 +103,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   errorMessage,
   imageConfig,
   auditLogConfig,
+  attachmentConfig,
   themeColor = "#882626ff",
   paramName = "id",
   navigateBackPath,
@@ -774,6 +782,18 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               )}
 
               {children}
+
+              {/* Attachments Section - Only show if attachmentConfig is provided and recordId exists */}
+              {attachmentConfig && formData[attachmentConfig.recordIdField] && (
+                <Row className="mb-3">
+                  <Col xs={12}>
+                    <Attachments
+                      tableName={attachmentConfig.tableName}
+                      recordId={formData[attachmentConfig.recordIdField]}
+                    />
+                  </Col>
+                </Row>
+              )}
 
               <div className="d-flex justify-content-end gap-2 mt-4 me-2">
                 {showResetButton && (

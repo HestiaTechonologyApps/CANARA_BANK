@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, Modal, Form, Table, Spinner, Alert, OverlayTrigger, Tooltip, Accordion } from "react-bootstrap";
-import { Upload, Download, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive, FileAudio, FileVideo, FileJson, FileCode, FileType } from "lucide-react";
+import { Button, Modal, Form, Table, Spinner, Alert, OverlayTrigger, Tooltip, Card, Collapse } from "react-bootstrap";
+import { Upload, Download, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive, FileAudio, FileVideo, FileJson, FileCode, FileType, Paperclip, ChevronDown, ChevronUp } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import type { Attachment } from "../Types/Attachment.types";
 import AttachmentService from "../Services/Attachment.services";
@@ -22,6 +22,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
     const [uploadError, setUploadError] = useState<string | null>(null);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [attachmentToDelete, setAttachmentToDelete] = useState<number | null>(null);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (tableName && recordId) fetchAttachments();
@@ -106,7 +107,6 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
         }
     };
 
-    // ✅ Correct download call
     const handleDownload = async (attachmentId: number, fileName: string) => {
         try {
             await AttachmentService.downloadAttachment(attachmentId, fileName);
@@ -146,109 +146,173 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
         const ext = fileName.split(".").pop()?.toLowerCase();
 
         switch (ext) {
-            case "pdf": return <FileText size={20} className="text-danger" />;
+            case "pdf": return <FileText size={18} className="text-danger" />;
             case "xls":
-            case "xlsx": return <FileSpreadsheet size={20} className="text-success" />;
+            case "xlsx": return <FileSpreadsheet size={18} className="text-success" />;
             case "doc":
-            case "docx": return <FileText size={20} className="text-primary" />;
+            case "docx": return <FileText size={18} className="text-primary" />;
             case "png":
             case "jpg":
             case "jpeg":
-            case "gif": return <FileImage size={20} className="text-warning" />;
+            case "gif": return <FileImage size={18} className="text-warning" />;
             case "zip":
-            case "rar": return <FileArchive size={20} className="text-secondary" />;
+            case "rar": return <FileArchive size={18} className="text-secondary" />;
             case "mp3":
-            case "wav": return <FileAudio size={20} className="text-info" />;
+            case "wav": return <FileAudio size={18} className="text-info" />;
             case "mp4":
             case "mov":
-            case "avi": return <FileVideo size={20} className="text-info" />;
-            case "json": return <FileJson size={20} className="text-muted" />;
+            case "avi": return <FileVideo size={18} className="text-info" />;
+            case "json": return <FileJson size={18} className="text-muted" />;
             case "js":
             case "jsx":
             case "ts":
             case "tsx":
             case "html":
-            case "css": return <FileCode size={20} className="text-purple-600" />;
-            default: return <FileType size={20} className="text-dark" />;
+            case "css": return <FileCode size={18} className="text-purple-600" />;
+            default: return <FileType size={18} className="text-dark" />;
         }
     };
 
     return (
         <>
-            <Accordion className="mt-4 custom-accordion">
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header>
-                        <span className="fw-bold fs-6 head-font" style={{ color: "#173a6a" }}>
-                            Attachments {attachments.length > 0 ? `(${attachments.length})` : "(0)"}
+            <Card className="mt-1 shadow-sm border-0" style={{ overflow: "hidden" }}>
+                <Card.Header 
+                     className="d-flex justify-content-between align-items-center py-3 px-4" 
+                    style={{ 
+                        backgroundColor: "#173a6a",
+                        borderBottom: "2px solid #e9ecef",
+                        cursor: "pointer"
+                    }}
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <div className="d-flex align-items-center gap-2">
+                        <Paperclip size={18} className="text-white" />
+                        <h6 className="mb-0 fw-semibold text-white" style={{ fontSize: '0.95rem' }}>
+                            Attachments
+                        </h6>
+                        <span 
+                            className="badge rounded-pill" 
+                            style={{ 
+                                backgroundColor: '#ffffff', 
+                                color: '#0d6efd',
+                                fontSize: '0.75rem',
+                                padding: '0.25rem 0.5rem'
+                            }}
+                        >
+                            {attachments.length}
                         </span>
-                    </Accordion.Header>
+                    </div>
+                    <div className="d-flex align-items-center gap-2">
+                        {isOpen ? <ChevronUp size={18} className="text-white"/> : <ChevronDown size={18} className="text-white"/>}
+                    </div>
+                </Card.Header>
 
-                    <Accordion.Body>
-                        <div className="d-flex justify-content-end mb-3">
-                            <Button size="sm" className="head-font fw-bold" style={{ backgroundColor: "#173a6a", border: "none" }} onClick={() => setShowModal(true)}>
-                                <Upload size={16} className="me-1 head-font" /> Add Attachment
+                <Collapse in={isOpen}>
+                
+                    <Card.Body className="p-3">
+                         <div className="d-flex justify-content-end">
+                             <Button 
+                                size="sm" 
+                                className="d-flex align-items-center gap-1"
+                                style={{ fontSize: '0.85rem', padding: '0.375rem 0.75rem' , backgroundColor:"#173a6a" }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowModal(true);
+                                }}
+                            >
+                                <Upload size={12} /> Add
                             </Button>
-                        </div>
-
+                         </div>
                         {loading ? (
                             <div className="text-center py-4">
-                                <Spinner animation="border" variant="primary" />
-                                <p className="mt-2 text-muted">Loading attachments...</p>
+                                <Spinner animation="border" variant="primary" size="sm" />
+                                <p className="mt-3 text-muted mb-0 small">Loading attachments...</p>
                             </div>
                         ) : error ? (
-                            <Alert variant="danger">{error}</Alert>
+                            <Alert variant="danger" className="mb-0 small">{error}</Alert>
                         ) : attachments.length === 0 ? (
-                            <div className="text-center py-1">
-                                <FileText size={35} className="text-muted mb-3" />
-                                <p className="text-muted mb-0">No attachments found.</p>
-                                <p className="text-muted small">Click "Add Attachment" to upload files.</p>
+                            <div className="text-center py-4">
+                                <FileText size={40} className="text-muted mb-2" style={{ opacity: 0.3 }} />
+                                <p className="text-muted mb-1 small">No attachments found</p>
+                                <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>
+                                    Click "Add" to upload files
+                                </p>
                             </div>
                         ) : (
                             <div className="table-responsive">
-                                <Table bordered hover responsive className="mb-0">
-                                    <thead style={{ backgroundColor: "#e9ecef" }}>
-                                        <tr className="text-center">
-                                            <th className="bg-secondary text-white" style={{ width: "5%" }}>SL</th>
-                                            <th className="bg-secondary text-white" style={{ width: "30%" }}>File Name</th>
-                                            <th className="bg-secondary text-white" style={{ width: "20%" }}>Description</th>
-                                            <th className="bg-secondary text-white" style={{ width: "10%" }}>Size</th>
-                                            <th className="bg-secondary text-white" style={{ width: "25%" }}>Uploaded</th>
-                                            <th className="bg-secondary text-white" style={{ width: "5%" }}>Actions</th>
+                                <Table hover className="mb-0 align-middle" style={{ fontSize: '0.875rem' }}>
+                                    <thead className="bg-light">
+                                        <tr>
+                                            <th style={{ width: "5%", padding: '0.5rem' }} className="text-center">#</th>
+                                            <th style={{ width: "35%", padding: '0.5rem' }}>File Name</th>
+                                            <th style={{ width: "25%", padding: '0.5rem' }}>Description</th>
+                                            <th style={{ width: "10%", padding: '0.5rem' }} className="text-center">Size</th>
+                                            <th style={{ width: "20%", padding: '0.5rem' }}>Uploaded</th>
+                                            <th style={{ width: "5%", padding: '0.5rem' }} className="text-center">Actions</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         {attachments.map((attachment, idx) => (
-                                            <tr key={attachment.attachmentId} className="text-center">
-                                                <td>{idx + 1}</td>
-                                                <td>
+                                            <tr key={attachment.attachmentId}>
+                                                <td className="text-center text-muted" style={{ padding: '0.5rem', fontSize: '0.8rem' }}>
+                                                    {idx + 1}
+                                                </td>
+                                                <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex align-items-center gap-2">
                                                         {getFileIcon(attachment.fileName)}
-                                                        <span className="text-truncate" style={{ maxWidth: "250px" }}>{attachment.fileName}</span>
+                                                        <span 
+                                                            className="text-truncate" 
+                                                            style={{ maxWidth: "280px" }} 
+                                                            title={attachment.fileName}
+                                                        >
+                                                            {attachment.fileName}
+                                                        </span>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <span className="text-truncate d-inline-block" style={{ maxWidth: "300px" }}>{attachment.description || "-"}</span>
+                                                <td style={{ padding: '0.5rem' }}>
+                                                    <span 
+                                                        className="text-muted text-truncate d-inline-block" 
+                                                        style={{ maxWidth: "200px", fontSize: '0.85rem' }} 
+                                                        title={attachment.description || "-"}
+                                                    >
+                                                        {attachment.description || "-"}
+                                                    </span>
                                                 </td>
-                                                <td>{attachment.fileSize}</td>
-                                                <td>
-                                                    <small className="text-muted">
-                                                        {formatDate(attachment.uploaddedOn)}
-                                                        <br />
-                                                        <span className="text-muted">by {attachment.uploadedBy}</span>
-                                                    </small>
+                                                <td className="text-center" style={{ padding: '0.5rem', fontSize: '0.85rem' }}>
+                                                    {attachment.fileSize}
                                                 </td>
-                                                <td>
+                                                <td style={{ padding: '0.5rem' }}>
+                                                    <div style={{ fontSize: '0.8rem' }}>
+                                                        <div className="text-muted">{formatDate(attachment.uploaddedOn)}</div>
+                                                        <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+                                                            by {attachment.uploadedBy}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex gap-1 justify-content-center">
                                                         <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
-                                                            <Button variant="outline" size="sm" style={{ border: "1px solid #173a6a" }} onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}>
-                                                                <Download size={16} color="#18575A" />
+                                                            <Button 
+                                                                variant="outline-primary" 
+                                                                size="sm" 
+                                                                className="d-flex align-items-center justify-content-center"
+                                                                style={{ width: '30px', height: '30px', padding: 0 }}
+                                                                onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}
+                                                            >
+                                                                <Download size={13} />
                                                             </Button>
                                                         </OverlayTrigger>
 
                                                         <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
-                                                            <Button variant="outline-danger" size="sm" onClick={() => confirmDeleteAttachment(attachment.attachmentId)}>
-                                                                <Trash2 size={16} />
+                                                            <Button 
+                                                                variant="outline-danger" 
+                                                                size="sm"
+                                                                className="d-flex align-items-center justify-content-center"
+                                                                style={{ width: '30px', height: '30px', padding: 0 }}
+                                                                onClick={() => confirmDeleteAttachment(attachment.attachmentId)}
+                                                            >
+                                                                <Trash2 size={13} />
                                                             </Button>
                                                         </OverlayTrigger>
                                                     </div>
@@ -259,79 +323,147 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                 </Table>
                             </div>
                         )}
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+                    </Card.Body>
+                </Collapse>
+            </Card>
 
-            <Modal show={showModal} onHide={handleCloseModal} centered size="lg" className="head-font">
-                <Modal.Header closeButton style={{ backgroundColor: "#173a6a", color: "white" }}>
-                    <Modal.Title className="fs-5"><Upload size={20} className="me-2" /> Upload Attachment</Modal.Title>
+            {/* Upload Modal */}
+            <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
+                <Modal.Header closeButton className="border-0 pb-2">
+                    <Modal.Title className="d-flex align-items-center gap-2" style={{ fontSize: '1.1rem' }}>
+                        <Upload size={22} className="text-primary" />
+                        <span>Upload Attachment</span>
+                    </Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
-                    {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+                <Modal.Body className="px-4 pb-3">
+                    {uploadError && (
+                        <Alert variant="danger" dismissible onClose={() => setUploadError(null)} className="py-2">
+                            {uploadError}
+                        </Alert>
+                    )}
 
-                    <div {...getRootProps()} style={{ border: "2px dashed #173a6a", borderRadius: "8px", padding: "40px", textAlign: "center", cursor: "pointer", backgroundColor: isDragActive ? "#e8f4f5" : "#f8f9fa", transition: "all 0.3s ease" }}>
+                    <div 
+                        {...getRootProps()} 
+                        className="border rounded p-4 text-center"
+                        style={{ 
+                            borderStyle: 'dashed',
+                            borderWidth: '2px',
+                            borderColor: isDragActive ? '#0d6efd' : '#dee2e6',
+                            backgroundColor: isDragActive ? '#f0f8ff' : '#f8f9fa',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
                         <input {...getInputProps()} />
-                        <Upload size={20} className="mb-3" style={{ color: "#173a6a" }} />
+                        <Upload size={40} className="mb-2" style={{ color: '#6c757d', opacity: 0.5 }} />
                         {isDragActive ? (
-                            <p className="mb-0 text-primary fw-medium">Drop the file here...</p>
+                            <p className="mb-0 text-primary fw-medium small">Drop the file here...</p>
                         ) : (
                             <>
-                                <p className="mb-2 fw-medium">Drag & drop a file here, or click to select</p>
-                                <p className="text-muted small mb-0">Maximum file size: 10MB</p>
+                                <p className="mb-1 fw-medium small">Drag & drop a file here, or click to browse</p>
+                                <p className="text-muted mb-0" style={{ fontSize: '0.8rem' }}>Maximum file size: 10MB</p>
                             </>
                         )}
                     </div>
 
                     {selectedFile && (
-                        <div className="mt-3 p-3 bg-light rounded">
+                        <div className="mt-3 p-2 bg-light rounded border">
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center gap-2">
                                     {getFileIcon(selectedFile.name)}
                                     <div>
-                                        <p className="mb-0 fw-medium">{selectedFile.name}</p>
+                                        <p className="mb-0 fw-medium" style={{ fontSize: '0.9rem' }}>
+                                            {selectedFile.name}
+                                        </p>
                                         <small className="text-muted">{formatFileSize(selectedFile.size)}</small>
                                     </div>
                                 </div>
-                                <Button variant="outline-danger" size="sm" onClick={() => setSelectedFile(null)}>
-                                    <X size={16} />
+                                <Button 
+                                    variant="outline-danger" 
+                                    size="sm" 
+                                    onClick={() => setSelectedFile(null)}
+                                    className="d-flex align-items-center justify-content-center"
+                                    style={{ width: '28px', height: '28px', padding: 0 }}
+                                >
+                                    <X size={14} />
                                 </Button>
                             </div>
                         </div>
                     )}
 
-                    <Form.Group className="mt-3">
-                        <Form.Label>Description (Optional)</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="Enter a description for this file..." value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
-                        <Form.Text className="text-muted">{description.length}/500 characters</Form.Text>
+                    <Form.Group className="mt-3 mb-0">
+                        <Form.Label className="fw-semibold small mb-1">Description (Optional)</Form.Label>
+                        <Form.Control 
+                            as="textarea" 
+                            rows={3} 
+                            placeholder="Enter a description for this file..." 
+                            value={description} 
+                            onChange={(e) => setDescription(e.target.value)} 
+                            maxLength={500}
+                            style={{ fontSize: '0.9rem' }}
+                        />
+                        <Form.Text className="text-muted" style={{ fontSize: '0.8rem' }}>
+                            {description.length}/500 characters
+                        </Form.Text>
                     </Form.Group>
                 </Modal.Body>
 
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Cancel</Button>
-                    <Button variant="primary" onClick={handleUpload} disabled={!selectedFile || uploading} style={{ backgroundColor: "#173a6a", borderColor: "#173a6a" }}>
+                <Modal.Footer className="border-0 pt-0">
+                    <Button 
+                        variant="outline-secondary" 
+                        onClick={handleCloseModal} 
+                        size="sm"
+                        style={{ fontSize: '0.875rem' }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        variant="primary" 
+                        onClick={handleUpload} 
+                        disabled={!selectedFile || uploading}
+                        size="sm"
+                        className="d-flex align-items-center gap-2"
+                        style={{ fontSize: '0.875rem' }}
+                    >
                         {uploading ? (
                             <>
-                                <Spinner size="sm" className="me-2" /> Uploading...
+                                <Spinner size="sm" /> Uploading...
                             </>
                         ) : (
                             <>
-                                <Upload size={16} className="me-2" /> Upload
+                                <Upload size={14} /> Upload
                             </>
                         )}
                     </Button>
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Delete</Modal.Title>
+            {/* Delete Confirmation Modal */}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered size="sm">
+                <Modal.Header closeButton className="border-0 pb-2">
+                    <Modal.Title style={{ fontSize: '1rem' }}>Confirm Delete</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this attachment?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>No</Button>
-                    <Button variant="danger" onClick={handleDeleteConfirmed}>Yes, Delete</Button>
+                <Modal.Body className="px-4 py-3">
+                    <p className="mb-0 small">Are you sure you want to delete this attachment?</p>
+                </Modal.Body>
+                <Modal.Footer className="border-0 pt-0">
+                    <Button 
+                        variant="outline-secondary" 
+                        onClick={() => setShowDeleteModal(false)} 
+                        size="sm"
+                        style={{ fontSize: '0.875rem' }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        variant="danger" 
+                        onClick={handleDeleteConfirmed} 
+                        size="sm"
+                        style={{ fontSize: '0.875rem' }}
+                    >
+                        Delete
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>
