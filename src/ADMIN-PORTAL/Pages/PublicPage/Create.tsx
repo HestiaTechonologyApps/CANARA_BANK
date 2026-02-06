@@ -453,85 +453,69 @@ const PublicPageCreate: React.FC = () => {
   /* ===================== RENDER ===================== */
   return (
     <>
-      <div className="container-fluid px-3 py-4" style={{ fontFamily: "Urbanist", backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
-        <div className="row g-3">
-          
-          {/* ===== LEFT SIDEBAR - SECTION NAVIGATOR ===== */}
-          <div className="col-lg-3">
-            <div className="sticky-top" style={{ top: "20px" }}>
-              <Card className="shadow-sm border-0" style={{ borderRadius: "12px" }}>
-                <Card.Header className="bg-white border-0 pt-4 pb-3">
+      <div className="px-4 py-3" style={{ fontFamily: "Urbanist" }}>
+            {/* ===== HEADER ===== */}
+            <div className="d-flex align-items-center justify-content-between mb-3">
+              <div className="d-flex align-items-center gap-3">
+                <KiduPrevious />
+                <div>
+                  <h4 className="fw-bold mb-1" style={{ color: themeColor }}>
+                    Create Public Page Content
+                  </h4>
+                  <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
+                    Fill in the details for your public-facing website pages
+                  </p>
+                </div>
+              </div>
+              <Badge bg="secondary" className="px-3 py-2" style={{ fontSize: "0.85rem" }}>
+                Step {currentSection + 1}/{SECTIONS.length}
+              </Badge>
+            </div>
+
+            {/* ===== SECTION TABS NAVIGATION ===== */}
+            <div className="position-sticky bg-white shadow-sm mb-3" style={{ top: "0", zIndex: 10, marginLeft: "-1rem", marginRight: "-1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingTop: "0.75rem", paddingBottom: "0.75rem" }}>
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <div>
                   <h6 className="fw-bold mb-1" style={{ color: themeColor }}>
                     Page Sections
                   </h6>
                   <small className="text-muted">
                     {currentSection + 1} of {SECTIONS.length}
                   </small>
-                  <ProgressBar 
-                    now={progressPercentage} 
-                    className="mt-2"
-                    style={{ height: "6px", borderRadius: "10px" }}
-                  />
-                </Card.Header>
-                <Card.Body className="p-2">
-                  <div className="d-flex flex-column gap-1">
-                    {SECTIONS.map((section, index) => (
-                      <button
-                        key={section.id}
-                        onClick={() => handleSectionClick(index)}
-                        className={`btn text-start d-flex align-items-center gap-2 px-3 py-2 ${
-                          currentSection === index
-                            ? "btn-primary"
-                            : "btn-light"
-                        }`}
-                        style={{
-                          borderRadius: "8px",
-                          border: "none",
-                          backgroundColor: currentSection === index ? themeColor : "transparent",
-                          color: currentSection === index ? "white" : "#666",
-                          transition: "all 0.3s ease",
-                          fontSize: "0.9rem"
-                        }}
-                      >
-                        <span style={{ fontSize: "1.2rem" }}>{section.icon}</span>
-                        <span className="flex-grow-1">{section.label}</span>
-                        {currentSection === index && (
-                          <Badge bg="light" text="dark" style={{ fontSize: "0.7rem" }}>
-                            Current
-                          </Badge>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
-          </div>
-
-          {/* ===== MAIN CONTENT AREA ===== */}
-          <div className="col-lg-9">
-            <Card className="shadow-sm border-0 mb-3" style={{ borderRadius: "12px" }}>
-              <Card.Body className="p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                  <div className="d-flex align-items-center gap-3">
-                    <KiduPrevious />
-                    <div>
-                      <h4 className="fw-bold mb-1" style={{ color: themeColor }}>
-                        Create Public Page Content
-                      </h4>
-                      <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
-                        Fill in the details for your public-facing website pages
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-end">
-                    <Badge bg="secondary" className="px-3 py-2" style={{ fontSize: "0.85rem" }}>
-                      Step {currentSection + 1}/{SECTIONS.length}
-                    </Badge>
-                  </div>
                 </div>
-              </Card.Body>
-            </Card>
+                <ProgressBar 
+                  now={progressPercentage} 
+                  className="flex-grow-1 mx-4"
+                  style={{ height: "6px", borderRadius: "10px", maxWidth: "300px" }}
+                />
+              </div>
+              <div className="d-flex gap-2 overflow-auto pb-2" style={{ scrollbarWidth: "thin" }}>
+                {SECTIONS.map((section, index) => (
+                  <button
+                    key={section.id}
+                    onClick={() => handleSectionClick(index)}
+                    className={`btn d-flex align-items-center gap-2 px-3 py-2 ${
+                      currentSection === index
+                        ? "btn-primary"
+                        : "btn-outline-secondary"
+                    }`}
+                    style={{
+                      borderRadius: "8px",
+                      backgroundColor: currentSection === index ? themeColor : "white",
+                      color: currentSection === index ? "white" : "#666",
+                      borderColor: currentSection === index ? themeColor : "#ddd",
+                      transition: "all 0.3s ease",
+                      fontSize: "0.85rem",
+                      whiteSpace: "nowrap",
+                      minWidth: "fit-content"
+                    }}
+                  >
+                    <span style={{ fontSize: "1rem" }}>{section.icon}</span>
+                    <span>{section.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <Form onSubmit={handleSubmit}>
               <Card className="shadow-sm border-0" style={{ borderRadius: "12px" }}>
@@ -608,8 +592,6 @@ const PublicPageCreate: React.FC = () => {
                 </div>
               </div>
             </Form>
-          </div>
-        </div>
 
         <Toaster position="top-right" />
       </div>
