@@ -93,3 +93,64 @@
   align-items: center;
   justify-content: center;
 }
+/* =========================
+   RESPONSIVE NAVBAR
+   ========================= */
+
+/* Tablet & below */
+@media (max-width: 1024px) {
+  .staff-navbar.expanded {
+    left: 210px;
+  }
+
+  .staff-navbar.collapsed {
+    left: 70px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .staff-navbar {
+    left: 0 !important;
+    right: 0;
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  /* Sidebar state should NOT affect navbar on mobile */
+  .staff-navbar.expanded,
+  .staff-navbar.collapsed {
+    left: 0 !important;
+  }
+
+  /* Prevent overflow on very small screens */
+  .staff-navbar .right {
+    gap: 6px;
+  }
+
+  .staff-navbar .left {
+    gap: 8px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .staff-navbar {
+    height: auto;
+    min-height: 39px;
+  }
+
+  /* Keep content readable without changing styles */
+  .staff-navbar .left p,
+  .staff-navbar .left h4 {
+    white-space: nowrap;
+  }
+}
+/* =========================
+   MOBILE FIX: KEEP NAVBAR ON TOP
+   ========================= */
+@media (max-width: 768px) {
+  .staff-navbar {
+    z-index: 120; /* higher than sidebar */
+  }
+}

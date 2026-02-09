@@ -53,3 +53,35 @@
   padding: 10px 20px;
   text-align: left;
 }
+
+/* =========================
+   RESPONSIVE SIDEBAR
+   ========================= */
+
+/* Tablet & below */
+@media (max-width: 1024px) {
+  .staff-sidebar.open {
+    width: 210px;
+  }
+
+  .staff-sidebar.collapsed {
+    width: 70px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .staff-sidebar {
+    transform: translateX(-100%);
+    width: 210px; /* keep SAME open width */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .staff-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .staff-sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+}
