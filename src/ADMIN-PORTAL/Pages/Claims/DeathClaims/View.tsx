@@ -88,6 +88,10 @@ const formatDateOnly = (value?: string | Date) => {
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this death claim? This action cannot be undone."
+      attachmentConfig={{
+          tableName: "DeathClaim",
+          recordIdField:"deathClaimId"
+        }}
     />
   );
 };

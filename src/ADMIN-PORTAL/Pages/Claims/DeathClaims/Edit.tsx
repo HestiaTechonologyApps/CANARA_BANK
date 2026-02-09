@@ -162,6 +162,10 @@ const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
         popupHandlers={popupHandlers}
         options={{ nomineeRelation: nomineeRelationOptions }}
         themeColor="#1B3763"
+        attachmentConfig={{
+          tableName: "DeathClaim",
+          recordIdField:"deathClaimId"
+        }}
       />
 
       <StatePopup
