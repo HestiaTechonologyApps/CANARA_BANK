@@ -3,42 +3,35 @@ import KiduEdit from "../../Components/KiduEdit";
 import type { Field } from "../../Components/KiduEdit";
 import ReportService from "../../Services/Reports/Reports.services";
 import type { Reports } from "../../Types/Reports/Reports.types";
-
 import ReportTypePopup from "../Settings/ReportType/ReportTypePopup";
 import YearMasterPopup from "../YearMaster/YearMasterPopup";
 import MonthPopup from "../Settings/Month/MonthPopup";
 import CirclePopup from "../Circle/CirclePopup";
 import BranchPopup from "../Branch/BranchPopup";
 import MemberPopup from "../Contributions/Member/MemberPopup";
-
-/* ---------------- Selection Models ---------------- */
+import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 
 type ReportTypeSelection = {
   reportTypeId: number;
   reportTypeName: string;
 };
-
 type YearSelection = {
   yearOf: number;
   yearName: string;
 };
-
 type MonthSelection = {
   monthCode: number;
   monthName: string;
 };
-
 type CircleSelection = {
   circleId: number;
   name: string;
 };
-
 type BranchSelection = {
   branchId: number;
   dpCode: number;
   name: string;
 };
-
 type MemberSelection = {
   memberId: number;
   name: string;
@@ -46,7 +39,6 @@ type MemberSelection = {
 };
 
 const ReportsEdit: React.FC = () => {
-  /* ---------------- Popup State ---------------- */
 
   const [showReportTypePopup, setShowReportTypePopup] = useState(false);
   const [showYearPopup, setShowYearPopup] = useState(false);
@@ -55,8 +47,6 @@ const ReportsEdit: React.FC = () => {
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
 
-  /* ---------------- Selected Values ---------------- */
-
   const [selectedReportType, setSelectedReportType] = useState<ReportTypeSelection | null>(null);
   const [selectedYear, setSelectedYear] = useState<YearSelection | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<MonthSelection | null>(null);
@@ -64,7 +54,6 @@ const ReportsEdit: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState<BranchSelection | null>(null);
   const [selectedMember, setSelectedMember] = useState<MemberSelection | null>(null);
 
-  /* ---------------- Fields ---------------- */
 
   const fields: Field[] = [
     { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 6 } },
@@ -76,49 +65,53 @@ const ReportsEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
-  /* ---------------- Fetch ---------------- */
 
   const handleFetch = async (id: string) => {
-    const res = await ReportService.getReportById(Number(id));
-    const data = res.value;
-    if (!data) return res;
+  const res = await ReportService.getReportById(Number(id));
+  const data = res.value;
+  if (!data) return res;
 
-    setSelectedReportType({
-      reportTypeId: data.reportTypeId,
-      reportTypeName: data.reportTypeName,
-    });
+  setSelectedReportType({
+    reportTypeId: data.reportTypeId,
+    reportTypeName: data.reportTypeName,
+  });
 
-    setSelectedYear({
-      yearOf: data.yearOf!,
-      yearName: data.yearName,
-    });
+  setSelectedYear({
+    yearOf: data.yearOf!,
+    yearName: String(data.yearOf),
+  });
 
-    setSelectedMonth({
-      monthCode: data.monthCode,
-      monthName: data.monthName,
-    });
+  setSelectedMonth({
+    monthCode: data.monthCode,
+    monthName: data.monthName,
+  });
 
-    setSelectedCircle({
-      circleId: data.circleId,
-      name: data.circleName,
-    });
+  setSelectedCircle({
+    circleId: data.circleId,
+    name: data.circleName,
+  });
 
-    setSelectedBranch({
-      branchId: data.branchId,
-      dpCode: data.dpCode,
-      name: data.branchName,
-    });
+  setSelectedBranch({
+    branchId: data.branchId,
+    dpCode: data.dpCode,
+    name: data.branchName,
+  });
 
-    setSelectedMember({
-      memberId: data.memberId,
-      name: data.memberName,
-      staffNo: data.staffNo,
-    });
+  setSelectedMember({
+    memberId: data.memberId,
+    name: data.memberName,
+    staffNo: data.staffNo,
+  });
 
-    return res;
+  // ✅ THIS IS CRITICAL
+  return {
+    ...res,
+    value: {
+      ...data,
+      yearOf: data.yearOf,   // ensure formData.yearOf exists
+    },
   };
-
-  /* ---------------- Update ---------------- */
+};
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedReportType || !selectedYear || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember) {
@@ -127,39 +120,29 @@ const ReportsEdit: React.FC = () => {
 
     const payload: Omit<Reports, "auditLogs"> = {
       reportId: Number(id),
-
       reportTypeId: selectedReportType.reportTypeId,
       reportTypeName: selectedReportType.reportTypeName,
-
       yearOf: selectedYear.yearOf,
       yearName: selectedYear.yearName,
-
       monthCode: selectedMonth.monthCode,
       monthName: selectedMonth.monthName,
-
       circleId: selectedCircle.circleId,
       circleName: selectedCircle.name,
-
       branchId: selectedBranch.branchId,
       dpCode: selectedBranch.dpCode,
       branchName: selectedBranch.name,
-
       memberId: selectedMember.memberId,
       memberName: selectedMember.name,
       staffNo: selectedMember.staffNo,
-
       createdDate: formData.createdDate,
       createdDateString: formData.createdDateString,
       modifiedDate: new Date().toISOString(),
       modifiedDateString: new Date().toLocaleDateString("en-IN"),
-
       isActive: Boolean(formData.isActive),
     };
 
     await ReportService.updateReport(Number(id), payload);
   };
-
-  /* ---------------- Popup Handlers ---------------- */
 
   const popupHandlers = {
     reportType: {
@@ -167,11 +150,12 @@ const ReportsEdit: React.FC = () => {
       actualValue: selectedReportType?.reportTypeId,
       onOpen: () => setShowReportTypePopup(true),
     },
-    yearOf: {
-      value: selectedYear?.yearName ?? "",
-      actualValue: selectedYear?.yearOf,
-      onOpen: () => setShowYearPopup(true),
-    },
+   yearOf: {
+  value: selectedYear ? String(selectedYear.yearOf) : "",
+  actualValue: selectedYear?.yearOf,
+  onOpen: () => setShowYearPopup(true),
+},
+
     monthCode: {
       value: selectedMonth?.monthName ?? "",
       actualValue: selectedMonth?.monthCode,
@@ -193,8 +177,6 @@ const ReportsEdit: React.FC = () => {
       onOpen: () => setShowMemberPopup(true),
     },
   };
-
-  /* ---------------- Render ---------------- */
 
   return (
     <>
@@ -218,8 +200,6 @@ const ReportsEdit: React.FC = () => {
         themeColor="#1B3763"
       />
 
-      {/* ---------- Popups ---------- */}
-
       <ReportTypePopup
         show={showReportTypePopup}
         handleClose={() => setShowReportTypePopup(false)}
@@ -233,16 +213,16 @@ const ReportsEdit: React.FC = () => {
       />
 
       <YearMasterPopup
-        show={showYearPopup}
-        handleClose={() => setShowYearPopup(false)}
-        onSelect={(v) => {
-          setSelectedYear({
-            yearOf: v.yearOf,
-            yearName: String(v.yearOf),
-          });
-          setShowYearPopup(false);
-        }}
-      />
+  show={showYearPopup}
+  handleClose={() => setShowYearPopup(false)}
+  onSelect={(v: YearMaster) => {
+    setSelectedYear({
+      yearOf: v.yearOf ?? 0,
+      yearName: String(v.yearOf ?? 0),
+    });
+    setShowYearPopup(false);
+  }}
+/>
 
       <MonthPopup
         show={showMonthPopup}
