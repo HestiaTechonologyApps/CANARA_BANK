@@ -73,7 +73,25 @@ const StaffEdit: React.FC = () => {
     { value: "Grandparent", label: "Grandparent" }
   ]
 
-  const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
+  //const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
+// Helper to convert ISO string to date input format (YYYY-MM-DD)
+const fromIso = (isoString?: string | Date) => {
+  if (!isoString) return "";
+  const dateString = isoString instanceof Date ? isoString.toISOString() : isoString;
+  return dateString.split('T')[0]; // Returns YYYY-MM-DD
+};
+
+// Helper to convert date input format to ISO string without timezone shift
+const toIsoMidnight = (val?: string) => {
+  if (!val) return "";
+  
+  // Ensure we're working with YYYY-MM-DD format
+  const dateParts = val.split('-');
+  if (dateParts.length !== 3) return val; // Return as-is if not in expected format
+  
+  // Construct ISO string with explicit midnight time
+  return `${val}T00:00:00`;
+};
 
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
@@ -91,6 +109,9 @@ const StaffEdit: React.FC = () => {
         ...response,
         value: {
           ...member,
+           dob: fromIso(member.dob),
+          doj: fromIso(member.doj),
+          dojtoScheme: fromIso(member.dojtoScheme),
           genderId: member.genderId,// Explicitly ensure genderId is included
           profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
         }

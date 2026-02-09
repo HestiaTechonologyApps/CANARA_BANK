@@ -6,6 +6,7 @@ import { FaFileInvoice } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
 import KiduLogoutModal from "../../Components/KiduLogoutModal";
+import "../Style/Sidebar.css"
 
 const Sidebar: React.FC = () => {
   const [hovered, setHovered] = useState(false);
@@ -23,6 +24,7 @@ const Sidebar: React.FC = () => {
     { label: "Company", path: "/dashboard/settings/company-list" },
     { label: "Designation", path: "/dashboard/settings/designation-list" },
     { label: "Month", path: "/dashboard/settings/month-list" },
+    { label: "Report Engine", path: "/dashboard/settings/reportEngine-list" },
     { label: "Report Type", path: "/dashboard/settings/reportType-list" },
     { label: "States", path: "/dashboard/settings/state-list" },
     { label: "Status", path: "/dashboard/settings/status-list" },

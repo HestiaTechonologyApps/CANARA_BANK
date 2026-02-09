@@ -175,14 +175,20 @@ import ReportTypeCreate from '../Pages/Settings/ReportType/Create';
 import ReportTypeEdit from '../Pages/Settings/ReportType/Edit';
 import ReportTypeView from '../Pages/Settings/ReportType/View';
 
+//ReportType
+import ReportEngineCreate from '../Pages/Settings/ReportEngine/Create';
+import ReportEngineList from '../Pages/Settings/ReportEngine/List';
+import ReportEngineEdit from '../Pages/Settings/ReportEngine/Edit';
+import ReportEngineView from '../Pages/Settings/ReportEngine/View';
+
 
 
 // Export route configuration as JSX elements - ALL PROTECTED
 export const adminRoutes = (
   <>
     {/* Admin Dashboard - Protected for Admin User and Super Admin only */}
-    <Route 
-      path="/dashboard" 
+    <Route
+      path="/dashboard"
       element={
         <ProtectedRoute allowedRoles={['Admin User', 'Super Admin']}>
           <DashBoard />
@@ -190,133 +196,133 @@ export const adminRoutes = (
       }
     >
       <Route index element={<HomePage />} />
-      
+
       {/* User */}
       <Route path="settings/user-list" element={<UserList />} />
       <Route path="settings/user-create" element={<UserCreate />} />
       <Route path="settings/user-edit/:userId" element={<UserEdit />} />
       <Route path="settings/user-view/:userId" element={<UserView />} />
-      
+
       {/* Customer */}
       <Route path="customer-list" element={<CustomerList />} />
       <Route path="customer-create" element={<CustomerCreate />} />
       <Route path="customer-edit/:customerId" element={<CustomerEdit />} />
       <Route path="customer-view/:customerId" element={<CustomerView />} />
-      
+
       {/* State */}
       <Route path="settings/state-list" element={<StateList />} />
       <Route path="settings/state-create" element={<StateCreate />} />
       <Route path="settings/state-edit/:stateId" element={<StateEdit />} />
       <Route path="settings/state-view/:stateId" element={<StateView />} />
-      
+
       {/* Category */}
       <Route path="settings/category-list" element={<CategoryList />} />
       <Route path="settings/category-create" element={<CategoryCreate />} />
       <Route path="settings/category-edit/:categoryId" element={<CategoryEdit />} />
       <Route path="settings/category-view/:categoryId" element={<CategoryView />} />
-      
+
       {/* Branch */}
       <Route path="settings/branch-list" element={<BranchList />} />
       <Route path="settings/branch-create" element={<BranchCreate />} />
       <Route path="settings/branch-edit/:branchId" element={<BranchEdit />} />
       <Route path="settings/branch-view/:branchId" element={<BranchView />} />
-      
+
       {/* Circles */}
       <Route path="settings/circle-list" element={<CircleList />} />
       <Route path="settings/circle-create" element={<CircleCreate />} />
       <Route path="settings/circle-edit/:circleId" element={<CircleEdit />} />
       <Route path="settings/circle-view/:circleId" element={<CircleView />} />
-      
+
       {/* Company */}
       <Route path="settings/company-list" element={<CompanyList />} />
       <Route path="settings/company-create" element={<CompanyCreate />} />
       <Route path="settings/company-edit/:companyId" element={<CompanyEdit />} />
       <Route path="settings/company-view/:companyId" element={<CompanyView />} />
-      
+
       {/* Designation */}
       <Route path="settings/designation-list" element={<DesignationList />} />
       <Route path="settings/designation-create" element={<DesignationCreate />} />
       <Route path="settings/designation-edit/:designationId" element={<DesignationEdit />} />
       <Route path="settings/designation-view/:designationId" element={<DesignationView />} />
-      
+
       {/* Status */}
       <Route path="settings/status-list" element={<StatusList />} />
       <Route path="settings/status-create" element={<StatusCreate />} />
       <Route path="settings/status-edit/:statusId" element={<StatusEdit />} />
       <Route path="settings/status-view/:statusId" element={<StatusView />} />
-      
+
       {/* UserType */}
       <Route path="settings/usertype-list" element={<UserTypeList />} />
       <Route path="settings/usertype-create" element={<UserTypeCreate />} />
       <Route path="settings/usertype-edit/:userTypeId" element={<UserTypeEdit />} />
       <Route path="settings/usertype-view/:userTypeId" element={<UserTypeView />} />
-      
+
       {/* Month */}
       <Route path="settings/month-list" element={<MonthList />} />
       <Route path="settings/month-create" element={<MonthCreate />} />
       <Route path="settings/month-edit/:monthId" element={<MonthEdit />} />
       <Route path="settings/month-view/:monthId" element={<MonthView />} />
-      
+
       {/* Manage Committe */}
       <Route path="cms/manage-committe-list" element={<ManagingCommitteeList />} />
       <Route path="cms/manage-committe-create" element={<ManagingCommitteeCreate />} />
       <Route path="cms/manage-committe-edit/:managingComiteeId" element={<ManagingCommitteeEdit />} />
       <Route path="cms/manage-committe-view/:managingComiteeId" element={<ManagingCommitteeView />} />
-      
+
       {/* Main Page */}
       <Route path="cms/mainpage-list" element={<MainPageList />} />
       <Route path="cms/mainpage-create" element={<MainPageCreate />} />
       <Route path="cms/mainpage-edit/:mainPageId" element={<MainPageEdit />} />
       <Route path="cms/mainpage-view/:mainPageId" element={<MainPageView />} />
-      
+
       {/* Member */}
       <Route path="contributions/member-list" element={<MemberList />} />
       <Route path="contributions/member-create" element={<MemberCreate />} />
       <Route path="contributions/member-edit/:memberId" element={<MemberEdit />} />
       <Route path="contributions/member-view/:memberId" element={<MemberView />} />
-      
+
       {/* Refund */}
       <Route path="claims/refundcontribution-list" element={<RefundContributionList />} />
       <Route path="claims/refundcontribution-create" element={<RefundContributionCreate />} />
       <Route path="claims/refundcontribution-edit/:refundContributionId" element={<RefundContributionEdit />} />
       <Route path="claims/refundcontribution-view/:refundContributionId" element={<RefundContributionView />} />
-      
+
       {/* Death Claims */}
       <Route path="claims/deathclaims-list" element={<DeathClaimList />} />
       <Route path="claims/deathclaims-create" element={<DeathClaimCreate />} />
       <Route path="claims/deathclaims-edit/:deathClaimId" element={<DeathClaimEdit />} />
       <Route path="claims/deathclaims-view/:deathClaimId" element={<DeathClaimView />} />
-      
+
       {/* Day Quote */}
       <Route path="cms/dayquote-list" element={<DayQuoteList />} />
       <Route path="cms/dayquote-create" element={<DayQuoteCreate />} />
       <Route path="cms/dayquote-edit/:dayQuoteId" element={<DayQuoteEdit />} />
       <Route path="cms/dayquote-view/:dayQuoteId" element={<DayQuoteView />} />
-      
+
       {/* Daily News */}
       <Route path="cms/dailynews-list" element={<DailyNewsList />} />
       <Route path="cms/dailynews-create" element={<DailyNewsCreate />} />
       <Route path="cms/dailynews-edit/:dailyNewsId" element={<DailyNewsEdit />} />
       <Route path="cms/dailynews-view/:dailyNewsId" element={<DailyNewsView />} />
-      
+
       {/* Documents*/}
       <Route path="cms/attachments-list" element={<AttachmentList />} />
-      <Route path="cms/attachments-create" element={< AttachmentCreate/>} />
-      <Route path="cms/attachments-edit/:attachmentId" element={<AttachmentEdit/>}/>
-      <Route path="cms/attachments-view/:attachmentId" element={<AttachmentView/>}/>
-      
+      <Route path="cms/attachments-create" element={< AttachmentCreate />} />
+      <Route path="cms/attachments-edit/:attachmentId" element={<AttachmentEdit />} />
+      <Route path="cms/attachments-view/:attachmentId" element={<AttachmentView />} />
+
       {/* Direct Pay */}
       <Route path="contributions/directpayment-list" element={<DirectPaymentList />} />
       <Route path="contributions/directpayment-create" element={<DirectPaymentCreate />} />
       <Route path="contributions/directpayment-edit/:directPaymentId" element={<DirectPaymentEdit />} />
       <Route path="contributions/directpayment-view/:directPaymentId" element={<DirectPaymentView />} />
-      
+
       {/* Account Direcy Entry */}
       <Route path="contributions/accountDirectEntry-list" element={<AccountDirectEntryList />} />
       <Route path="contributions/accountDirectEntry-create" element={<AccountDirectEntryCreate />} />
       <Route path="contributions/accountDirectEntry-edit/:accountsDirectEntryID" element={<AccountDirectEntryEdit />} />
       <Route path="contributions/accountDirectEntry-view/:accountsDirectEntryID" element={<AccountDirectEntryView />} />
-      
+
       {/* Public Page */}
       <Route path="cms/publicPage-list" element={<PublicPageList />} />
       <Route path="cms/publicPage-create" element={<PublicPageCreate />} />
@@ -339,32 +345,37 @@ export const adminRoutes = (
       <Route path="settings/yearMaster-edit/:yearOf" element={<YearMasterEdit />} />
       <Route path="settings/yearMaster-view/:yearOf" element={<YearMasterView />} />
 
-       {/* Monthly Contribution */}
-       <Route path="contributions/monthlyContribution-list" element={<MonthlyContributionList/>}/>
-       <Route path="contributions/monthlyContribution-create" element={<MonthlyContributionCreate/>}/>
-       <Route path="contributions/monthlyContribution-edit/:monthlyContributionId" element={<MonthlyContributionEdit/>}/>
-       <Route path="contributions/monthlyContribution-view/:monthlyContributionId" element={<MonthlyContributionView/>}/>
+      {/* Monthly Contribution */}
+      <Route path="contributions/monthlyContribution-list" element={<MonthlyContributionList />} />
+      <Route path="contributions/monthlyContribution-create" element={<MonthlyContributionCreate />} />
+      <Route path="contributions/monthlyContribution-edit/:monthlyContributionId" element={<MonthlyContributionEdit />} />
+      <Route path="contributions/monthlyContribution-view/:monthlyContributionId" element={<MonthlyContributionView />} />
 
-       {/* Reports */}
-       <Route path="report-list" element={<ReportsList/>}/>
-       <Route path="report-create" element={<ReportsCreate/>}/>
-       <Route path="report-edit/:reportId" element={<ReportsEdit/>}/>
-       <Route path="report-view/:reportId" element={<ReportsView/>}/>
+      {/* Reports */}
+      <Route path="report-list" element={<ReportsList />} />
+      <Route path="report-create" element={<ReportsCreate />} />
+      <Route path="report-edit/:reportId" element={<ReportsEdit />} />
+      <Route path="report-view/:reportId" element={<ReportsView />} />
 
       {/* Report Type */}
-      <Route path="settings/reportType-list" element={<ReportTypeList/>}/>
-      <Route path="settings/reportType-create" element={<ReportTypeCreate/>}/>
-      <Route path="settings/reportType-edit/:reportTypeId" element={<ReportTypeEdit/>}/>
-      <Route path="settings/reportType-view/:reportTypeId" element={<ReportTypeView/>}/>
+      <Route path="settings/reportType-list" element={<ReportTypeList />} />
+      <Route path="settings/reportType-create" element={<ReportTypeCreate />} />
+      <Route path="settings/reportType-edit/:reportTypeId" element={<ReportTypeEdit />} />
+      <Route path="settings/reportType-view/:reportTypeId" element={<ReportTypeView />} />
+
+      {/* Report Engine */}
+      <Route path="settings/reportEngine-list" element={<ReportEngineList />} />
+      <Route path="settings/reportEngine-create" element={<ReportEngineCreate />} />
+      <Route path="settings/reportEngine-edit/:reportEngineId" element={<ReportEngineEdit />} />
+      <Route path="settings/reportEngine-view/:reportEngineId" element={<ReportEngineView />} />
 
 
+      {/* <Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} /> */}
 
-  {/* <Route path='contributions/monthlycontribution-fileupload' element={<FileUploadCreate />} /> */}
-
-   <Route path="notifications" element={<Notifications />} />
+      <Route path="notifications" element={<Notifications />} />
 
     </Route>
-    
+
     {/* Catch-All Route for 404 */}
     <Route path="*" element={<PageNotFound />} />
   </>

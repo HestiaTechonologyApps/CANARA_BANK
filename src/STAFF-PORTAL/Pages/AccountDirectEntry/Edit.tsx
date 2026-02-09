@@ -24,8 +24,25 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
-  const toIso = (v?: string) => (v ? `${v}T00:00:00` : null);
+ // const toIso = (v?: string) => (v ? `${v}T00:00:00` : null);
 
+ const toIso = (v?: string) => {
+  if (!v) return null;
+  
+  // Create date object from input value
+  const date = new Date(v + 'T00:00:00');
+  
+  // Return ISO string in local timezone (not UTC)
+  const offset = date.getTimezoneOffset();
+  const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+  
+  return localDate.toISOString().slice(0, 19);
+};
+
+const fromIso = (isoString?: string) => {
+  if (!isoString) return '';
+  return isoString.split('T')[0]; // Returns YYYY-MM-DD
+};
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
@@ -66,7 +83,8 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
       } as Month);
 
       setSelectedYearMaster({ yearOf: entry.yearOf, yearName: entry.yearName } as YearMaster);
-
+entry.ddIbaDate = fromIso(entry.ddIbaDate);
+    entry.approvedDate = fromIso(entry.approvedDate);
     }
 
     return response;

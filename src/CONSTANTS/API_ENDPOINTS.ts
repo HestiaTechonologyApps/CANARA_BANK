@@ -223,6 +223,14 @@ export const API_ENDPOINTS = {
     DELETE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
   },
 
+  REPORT_ENGINE:{
+    GET_ALL:`${API_BASE_URL}/ReportEngine`,
+    CREATE:`${API_BASE_URL}/ReportEngine`,
+    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+    UPDATE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+    DELETE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+  },
+
   //------------------------PUBLIC MODULE----------------------------------------
   PUBLIC: {
     GET_ALL_DAYQUOTE: `${API_BASE_URL}/Public/dayquotes`,
