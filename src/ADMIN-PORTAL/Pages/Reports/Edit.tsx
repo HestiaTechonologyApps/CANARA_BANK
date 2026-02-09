@@ -67,51 +67,50 @@ const ReportsEdit: React.FC = () => {
 
 
   const handleFetch = async (id: string) => {
-  const res = await ReportService.getReportById(Number(id));
-  const data = res.value;
-  if (!data) return res;
+    const res = await ReportService.getReportById(Number(id));
+    const data = res.value;
+    if (!data) return res;
 
-  setSelectedReportType({
-    reportTypeId: data.reportTypeId,
-    reportTypeName: data.reportTypeName,
-  });
+    setSelectedReportType({
+      reportTypeId: data.reportTypeId,
+      reportTypeName: data.reportTypeName,
+    });
 
-  setSelectedYear({
-    yearOf: data.yearOf!,
-    yearName: String(data.yearOf),
-  });
+    setSelectedYear({
+      yearOf: data.yearOf!,
+      yearName: String(data.yearOf),
+    });
 
-  setSelectedMonth({
-    monthCode: data.monthCode,
-    monthName: data.monthName,
-  });
+    setSelectedMonth({
+      monthCode: data.monthCode,
+      monthName: data.monthName,
+    });
 
-  setSelectedCircle({
-    circleId: data.circleId,
-    name: data.circleName,
-  });
+    setSelectedCircle({
+      circleId: data.circleId,
+      name: data.circleName,
+    });
 
-  setSelectedBranch({
-    branchId: data.branchId,
-    dpCode: data.dpCode,
-    name: data.branchName,
-  });
+    setSelectedBranch({
+      branchId: data.branchId,
+      dpCode: data.dpCode,
+      name: data.branchName,
+    });
 
-  setSelectedMember({
-    memberId: data.memberId,
-    name: data.memberName,
-    staffNo: data.staffNo,
-  });
+    setSelectedMember({
+      memberId: data.memberId,
+      name: data.memberName,
+      staffNo: data.staffNo,
+    });
 
-  // ✅ THIS IS CRITICAL
-  return {
-    ...res,
-    value: {
-      ...data,
-      yearOf: data.yearOf,   // ensure formData.yearOf exists
-    },
+    return {
+      ...res,
+      value: {
+        ...data,
+        yearOf: data.yearOf,
+      },
+    };
   };
-};
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedReportType || !selectedYear || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember) {
@@ -150,11 +149,11 @@ const ReportsEdit: React.FC = () => {
       actualValue: selectedReportType?.reportTypeId,
       onOpen: () => setShowReportTypePopup(true),
     },
-   yearOf: {
-  value: selectedYear ? String(selectedYear.yearOf) : "",
-  actualValue: selectedYear?.yearOf,
-  onOpen: () => setShowYearPopup(true),
-},
+    yearOf: {
+      value: selectedYear ? String(selectedYear.yearOf) : "",
+      actualValue: selectedYear?.yearOf,
+      onOpen: () => setShowYearPopup(true),
+    },
 
     monthCode: {
       value: selectedMonth?.monthName ?? "",
@@ -213,16 +212,16 @@ const ReportsEdit: React.FC = () => {
       />
 
       <YearMasterPopup
-  show={showYearPopup}
-  handleClose={() => setShowYearPopup(false)}
-  onSelect={(v: YearMaster) => {
-    setSelectedYear({
-      yearOf: v.yearOf ?? 0,
-      yearName: String(v.yearOf ?? 0),
-    });
-    setShowYearPopup(false);
-  }}
-/>
+        show={showYearPopup}
+        handleClose={() => setShowYearPopup(false)}
+        onSelect={(v: YearMaster) => {
+          setSelectedYear({
+            yearOf: v.yearOf ?? 0,
+            yearName: String(v.yearOf ?? 0),
+          });
+          setShowYearPopup(false);
+        }}
+      />
 
       <MonthPopup
         show={showMonthPopup}
