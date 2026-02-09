@@ -1,4 +1,4 @@
-// KiduServerTable.tsx - Server-side pagination version
+// KiduServerTable.tsx - Integrated with KiduServerTableNavbar
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Button, Row, Col, Container, Pagination } from "react-bootstrap";
 import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
@@ -11,11 +11,11 @@ import {
   type SortingState,
   type ColumnDef,
 } from "@tanstack/react-table";
-import KiduExcelButton from "./KiduExcelButton";
 import KiduLoader from "./KiduLoader";
 import KiduSearchBar from "./KiduSearchBar";
 import KiduButton from "./KiduButton";
 import KiduPopupButton from "./KiduPopupButton";
+import KiduServerTableNavbar from "./KiduServerTableNavbar";
 
 interface Column {
   key: string;
@@ -48,6 +48,13 @@ interface KiduServerTableProps {
     searchTerm: string;
   }) => Promise<{ data: any[]; total: number }>;
   rowsPerPage?: number;
+  
+  // New navbar props
+  showNavbar?: boolean;
+  showNavbarExportButtons?: boolean;
+  showRowsPerPageSelector?: boolean;
+  rowsPerPageOptions?: number[];
+  navbarAdditionalButtons?: React.ReactNode;
 }
 
 const KiduServerTable: React.FC<KiduServerTableProps> = ({
@@ -61,14 +68,18 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   editRoute,
   showAddButton = false,
   showKiduPopupButton = false,
-  showExport = true,
   onRowClick,
   onAddClick,
   showSearch = true,
   showActions = true,
   showTitle = true,
   fetchData,
-  rowsPerPage = 10,
+  rowsPerPage: initialRowsPerPage = 10,
+  showNavbar = true,
+  showNavbarExportButtons = true,
+  showRowsPerPageSelector = true,
+  rowsPerPageOptions = [10, 25, 50, 100],
+  navbarAdditionalButtons,
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -79,6 +90,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
 
   // React Table states - only sorting, no filtering (server handles that)
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -86,18 +98,17 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const totalPages = Math.ceil(total / rowsPerPage);
 
   const loadData = useCallback(
-    async (page: number, search: string) => {
+    async (page: number, search: string, pageSize: number) => {
       try {
         setLoading(true);
         setError(null);
 
         const result = await fetchData({
           pageNumber: page,
-          pageSize: rowsPerPage,
+          pageSize: pageSize,
           searchTerm: search,
         });
 
-        // Set data as-is (don't reverse here - it's done in KiduServerTableList)
         setData(result.data || []);
         setTotal(result.total || 0);
       } catch (err: any) {
@@ -109,23 +120,29 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
         setLoading(false);
       }
     },
-    [fetchData, rowsPerPage]
+    [fetchData]
   );
 
-  // Load data when page changes
+  // Load data when page or rowsPerPage changes
   useEffect(() => {
-    loadData(currentPage, searchTerm);
-  }, [loadData, currentPage]);
+    loadData(currentPage, searchTerm, rowsPerPage);
+  }, [loadData, currentPage, rowsPerPage]);
 
   // Handle search with debounce and reset to page 1
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setCurrentPage(1);
-      loadData(1, searchTerm);
+      loadData(1, searchTerm, rowsPerPage);
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, loadData]);
+  }, [searchTerm, loadData, rowsPerPage]);
+
+  // Handle rows per page change
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setCurrentPage(1); // Reset to first page
+  };
 
   // Define columns for React Table
   const tableColumns = useMemo<ColumnDef<any>[]>(() => {
@@ -256,16 +273,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     if (showActions) {
       cols.push({
         id: "actions",
-        header: () => (
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <span className="ms-4">Action</span>
-            {showExport && total > 0 && (
-              <div>
-                <KiduExcelButton data={data} title={title} />
-              </div>
-            )}
-          </div>
-        ),
+        header: "Action",
         enableSorting: false,
         cell: ({ row }) => (
           <div
@@ -325,9 +333,9 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     }
 
     return cols;
-  }, [columns, showActions, showExport, total, data, title, editRoute, viewRoute, navigate, idKey]);
+  }, [columns, showActions, editRoute, viewRoute, navigate, idKey]);
 
-  // Create React Table instance - NO FILTERING (server handles it)
+  // Create React Table instance
   const table = useReactTable({
     data,
     columns: tableColumns,
@@ -337,8 +345,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    manualPagination: true, // CRITICAL: Tell TanStack we handle pagination
-    manualFiltering: true,  // CRITICAL: Tell TanStack we handle filtering
+    manualPagination: true,
+    manualFiltering: true,
     pageCount: totalPages,
   });
 
@@ -352,7 +360,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   };
 
   const handleRetry = () => {
-    loadData(currentPage, searchTerm);
+    loadData(currentPage, searchTerm, rowsPerPage);
   };
 
   const fieldName = title ? title.replace("Select ", "") : addButtonLabel;
@@ -372,9 +380,9 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
   return (
     <Container fluid className="pb-3">
-      {/* Title always shows regardless of data */}
+      {/* Title */}
       {showTitle !== false && (
-        <Row className="mb-2 align-items-center">
+        <Row className="mb-3 align-items-center">
           <Col>
             <h4 className="mb-0 fw-bold" style={{ fontFamily: "Urbanist", color: "#1B3763" }}>
               {title}
@@ -388,24 +396,23 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
         </Row>
       )}
 
-      {/* Search and Add button always show regardless of data */}
-      {(showSearch || (showAddButton && addRoute)) && (
+      {/* Search bar and Add button - Always at top */}
+      {showSearch && (
         <Row className="mb-3 align-items-center">
-          {showSearch && (
-            <Col>
-              <KiduSearchBar
-                placeholder="Search..."
-                onSearch={(val) => setSearchTerm(val)}
-                width="250px"
-              />
-            </Col>
-          )}
+          <Col>
+            <KiduSearchBar
+              placeholder="Search..."
+              onSearch={(val) => setSearchTerm(val)}
+              width="400px"
+            />
+          </Col>
 
           {showAddButton && addRoute && (
             <Col xs="auto" className="text-end">
               <KiduButton
                 label={`+ ${addButtonLabel}`}
                 to={addRoute}
+                onClick={onAddClick}
                 className="fw-bold d-flex align-items-center text-white"
                 style={{
                   backgroundColor: "#1B3763",
@@ -418,6 +425,23 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
             </Col>
           )}
         </Row>
+      )}
+
+      {/* Navbar with export buttons and rows selector - Below search bar */}
+      {showNavbar && (
+        <KiduServerTableNavbar
+          data={data}
+          columns={columns}
+          title={title}
+          showSearch={false} // Search is handled above
+          showAddButton={false} // Add button is handled above
+          showExportButtons={showNavbarExportButtons}
+          showRowsPerPageSelector={showRowsPerPageSelector}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleRowsPerPageChange}
+          rowsPerPageOptions={rowsPerPageOptions}
+          additionalButtons={navbarAdditionalButtons}
+        />
       )}
 
       <Row>
