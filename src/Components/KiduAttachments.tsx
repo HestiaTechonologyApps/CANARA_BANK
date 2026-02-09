@@ -26,7 +26,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
 
     useEffect(() => {
         if (tableName && recordId) fetchAttachments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableName, recordId]);
 
     const fetchAttachments = async () => {
@@ -60,23 +60,23 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
     });
 
     const formatDate = (dateString: string): string => {
-    // Add 'Z' to force JavaScript to treat it as UTC
-    const date = new Date(dateString + 'Z');
-    
-    const istOffset = 5.5 * 60 * 60 * 1000; // IST offset
-    const istDate = new Date(date.getTime() + istOffset);
-    
-    const day = istDate.getUTCDate().toString().padStart(2, '0');
-    const month = istDate.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' });
-    const year = istDate.getUTCFullYear();
-    
-    let hours = istDate.getUTCHours();
-    const minutes = istDate.getUTCMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    
-    return `${day} ${month} ${year}, ${hours}:${minutes} ${ampm}`;
-};
+        // Add 'Z' to force JavaScript to treat it as UTC
+        const date = new Date(dateString + 'Z');
+
+        const istOffset = 5.5 * 60 * 60 * 1000; // IST offset
+        const istDate = new Date(date.getTime() + istOffset);
+
+        const day = istDate.getUTCDate().toString().padStart(2, '0');
+        const month = istDate.toLocaleString('en-GB', { month: 'long', timeZone: 'UTC' });
+        const year = istDate.getUTCFullYear();
+
+        let hours = istDate.getUTCHours();
+        const minutes = istDate.getUTCMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+
+        return `${day} ${month} ${year}, ${hours}:${minutes} ${ampm}`;
+    };
 
     const handleUpload = async () => {
         if (!selectedFile) {
@@ -195,9 +195,9 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
     return (
         <>
             <Card className="mt-1 shadow-sm border-0" style={{ overflow: "hidden" }}>
-                <Card.Header 
-                     className="d-flex justify-content-between align-items-center py-3 px-4" 
-                    style={{ 
+                <Card.Header
+                    className="d-flex justify-content-between align-items-center py-3 px-4"
+                    style={{
                         backgroundColor: "#173a6a",
                         borderBottom: "2px solid #e9ecef",
                         cursor: "pointer"
@@ -209,10 +209,10 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                         <h6 className="mb-0 fw-semibold text-white" style={{ fontSize: '0.95rem' }}>
                             Attachments
                         </h6>
-                        <span 
-                            className="badge rounded-pill" 
-                            style={{ 
-                                backgroundColor: '#ffffff', 
+                        <span
+                            className="badge rounded-pill"
+                            style={{
+                                backgroundColor: '#ffffff',
                                 color: '#0d6efd',
                                 fontSize: '0.75rem',
                                 padding: '0.25rem 0.5rem'
@@ -222,18 +222,18 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                         </span>
                     </div>
                     <div className="d-flex align-items-center gap-2">
-                        {isOpen ? <ChevronUp size={18} className="text-white"/> : <ChevronDown size={18} className="text-white"/>}
+                        {isOpen ? <ChevronUp size={18} className="text-white" /> : <ChevronDown size={18} className="text-white" />}
                     </div>
                 </Card.Header>
 
                 <Collapse in={isOpen}>
-                
+
                     <Card.Body className="p-3">
-                         <div className="d-flex justify-content-end">
-                             <Button 
-                                size="sm" 
+                        <div className="d-flex justify-content-end">
+                            <Button
+                                size="sm"
                                 className="d-flex align-items-center gap-1"
-                                style={{ fontSize: '0.85rem', padding: '0.375rem 0.75rem' , backgroundColor:"#173a6a" }}
+                                style={{ fontSize: '0.85rem', padding: '0.375rem 0.75rem', backgroundColor: "#173a6a" }}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setShowModal(true);
@@ -241,7 +241,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                             >
                                 <Upload size={12} /> Add
                             </Button>
-                         </div>
+                        </div>
                         {loading ? (
                             <div className="text-center py-4">
                                 <Spinner animation="border" variant="primary" size="sm" />
@@ -280,9 +280,9 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                 <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex align-items-center gap-2">
                                                         {getFileIcon(attachment.fileName)}
-                                                        <span 
-                                                            className="text-truncate" 
-                                                            style={{ maxWidth: "280px" }} 
+                                                        <span
+                                                            className="text-truncate"
+                                                            style={{ maxWidth: "280px" }}
                                                             title={attachment.fileName}
                                                         >
                                                             {attachment.fileName}
@@ -290,9 +290,9 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                     </div>
                                                 </td>
                                                 <td style={{ padding: '0.5rem' }}>
-                                                    <span 
-                                                        className="text-muted text-truncate d-inline-block" 
-                                                        style={{ maxWidth: "200px", fontSize: '0.85rem' }} 
+                                                    <span
+                                                        className="text-muted text-truncate d-inline-block"
+                                                        style={{ maxWidth: "200px", fontSize: '0.85rem' }}
                                                         title={attachment.description || "-"}
                                                     >
                                                         {attachment.description || "-"}
@@ -312,9 +312,9 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                 <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex gap-1 justify-content-center">
                                                         <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
-                                                            <Button 
-                                                                variant="outline-primary" 
-                                                                size="sm" 
+                                                            <Button
+                                                                variant="outline-primary"
+                                                                size="sm"
                                                                 className="d-flex align-items-center justify-content-center"
                                                                 style={{ width: '30px', height: '30px', padding: 0 }}
                                                                 onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}
@@ -324,8 +324,8 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                         </OverlayTrigger>
 
                                                         <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
-                                                            <Button 
-                                                                variant="outline-danger" 
+                                                            <Button
+                                                                variant="outline-danger"
                                                                 size="sm"
                                                                 className="d-flex align-items-center justify-content-center"
                                                                 style={{ width: '30px', height: '30px', padding: 0 }}
@@ -362,10 +362,10 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                         </Alert>
                     )}
 
-                    <div 
-                        {...getRootProps()} 
+                    <div
+                        {...getRootProps()}
                         className="border rounded p-4 text-center"
-                        style={{ 
+                        style={{
                             borderStyle: 'dashed',
                             borderWidth: '2px',
                             borderColor: isDragActive ? '#0d6efd' : '#dee2e6',
@@ -398,9 +398,9 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                         <small className="text-muted">{formatFileSize(selectedFile.size)}</small>
                                     </div>
                                 </div>
-                                <Button 
-                                    variant="outline-danger" 
-                                    size="sm" 
+                                <Button
+                                    variant="outline-danger"
+                                    size="sm"
                                     onClick={() => setSelectedFile(null)}
                                     className="d-flex align-items-center justify-content-center"
                                     style={{ width: '28px', height: '28px', padding: 0 }}
@@ -413,12 +413,12 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
 
                     <Form.Group className="mt-3 mb-0">
                         <Form.Label className="fw-semibold small mb-1">Description (Optional)</Form.Label>
-                        <Form.Control 
-                            as="textarea" 
-                            rows={3} 
-                            placeholder="Enter a description for this file..." 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)} 
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            placeholder="Enter a description for this file..."
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             maxLength={500}
                             style={{ fontSize: '0.9rem' }}
                         />
@@ -429,17 +429,17 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                 </Modal.Body>
 
                 <Modal.Footer className="border-0 pt-0">
-                    <Button 
-                        variant="outline-secondary" 
-                        onClick={handleCloseModal} 
+                    <Button
+                        variant="outline-secondary"
+                        onClick={handleCloseModal}
                         size="sm"
                         style={{ fontSize: '0.875rem' }}
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        variant="primary" 
-                        onClick={handleUpload} 
+                    <Button
+                        variant="primary"
+                        onClick={handleUpload}
                         disabled={!selectedFile || uploading}
                         size="sm"
                         className="d-flex align-items-center gap-2"
@@ -467,17 +467,17 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                     <p className="mb-0 small">Are you sure you want to delete this attachment?</p>
                 </Modal.Body>
                 <Modal.Footer className="border-0 pt-0">
-                    <Button 
-                        variant="outline-secondary" 
-                        onClick={() => setShowDeleteModal(false)} 
+                    <Button
+                        variant="outline-secondary"
+                        onClick={() => setShowDeleteModal(false)}
                         size="sm"
                         style={{ fontSize: '0.875rem' }}
                     >
                         Cancel
                     </Button>
-                    <Button 
-                        variant="danger" 
-                        onClick={handleDeleteConfirmed} 
+                    <Button
+                        variant="danger"
+                        onClick={handleDeleteConfirmed}
                         size="sm"
                         style={{ fontSize: '0.875rem' }}
                     >
