@@ -35,7 +35,6 @@ const formatDateOnly = (value?: string | Date) => {
 
   if (!claim) return response;
 
-  // ✅ Date-only formatting
   claim.deathDate = formatDateOnly(claim.deathDate);
   claim.dddate = formatDateOnly(claim.dddate);
 
