@@ -5,7 +5,7 @@ import "../Style/Navbar.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import LoginModal from "../Auth/LoginModal";
 import SignupModal from "../Auth/SignUp";
-import ResetPasswordModal from "../Auth/ResetPassword";
+import ResetPasswordModal from "../Auth/ForgotPassword";
 import logo from "../Assets/Images/AIBEA_logo.jpg";
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 import PublicPageConfigService from "../Services/Publicpage.services";
