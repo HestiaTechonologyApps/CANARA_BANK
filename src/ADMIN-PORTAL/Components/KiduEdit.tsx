@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Image, Card, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEye, FaEyeSlash} from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsSearch } from "react-icons/bs";
 import Swal from 'sweetalert2';
 import KiduValidation from "../../Components/KiduValidation";
@@ -57,7 +57,7 @@ export interface AuditLogConfig {
   recordIdField: string;
 }
 
-export interface AttachmentConfig  {
+export interface AttachmentConfig {
   tableName: string;
   recordIdField: string;
 }
@@ -79,7 +79,7 @@ export interface KiduEditProps {
   errorMessage?: string;
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
-  attachmentConfig?:AttachmentConfig;
+  attachmentConfig?: AttachmentConfig;
   themeColor?: string;
   paramName?: string;
   navigateBackPath?: string;
@@ -440,12 +440,24 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       });
 
     } catch (err: any) {
-      toast.error(errorMessage || err.message || "An error occurred");
+      // ✅ UPDATED ERROR HANDLING - Show actual error message from API
+      const errorMsg = err.message || errorMessage || "An error occurred";
+
+      // Show error toast
+      toast.error(errorMsg);
+
+      // Also show SweetAlert for better visibility
+      await Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: errorMsg,
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK"
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
-
   const togglePasswordVisibility = (fieldName: string) => {
     setShowPasswords(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
   };

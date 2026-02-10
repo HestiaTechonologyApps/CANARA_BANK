@@ -5,5 +5,6 @@ export interface State {
   name: string;
   abbreviation: string;
   isActive: boolean;
+  isDeleted?: boolean;
   auditLogs?: AuditTrails[];
 }

@@ -19,8 +19,8 @@ export interface FieldRule {
   maxLength?: number;
   pattern?: RegExp;
   placeholder?: string;
-  colWidth?:2| 3 | 4 | 6 | 12;
-   disabled?: boolean;
+  colWidth?: 2 | 3 | 4 | 6 | 12;
+  disabled?: boolean;
 }
 
 export interface Field {
@@ -73,7 +73,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   onSubmit,
   submitButtonText = "Create",
   showResetButton = true,
-  showBackButton=true,
+  showBackButton = true,
   containerStyle = {},
   children,
   options = {},
@@ -150,7 +150,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         return;
       }
 
-     if (typeof previewUrl === "string" && previewUrl.startsWith("blob:")) {
+      if (typeof previewUrl === "string" && previewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(previewUrl);
       }
 
@@ -292,15 +292,10 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     try {
       const submitData = { ...formData };
 
-      // Convert image to base64 if exists
-      // if (imageConfig && selectedFile) {
-      //   const base64Logo = await fileToBase64(selectedFile);
-      //   submitData[imageConfig.fieldName] = base64Logo;
-      // }
+      // Convert image to File if exists
       if (imageConfig && selectedFile) {
-  submitData[imageConfig.fieldName] = selectedFile; // pass File directly
-}
-
+        submitData[imageConfig.fieldName] = selectedFile;
+      }
 
       await onSubmit(submitData);
 
@@ -320,7 +315,21 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         navigate(navigateOnSuccess);
       }
     } catch (err: any) {
-      toast.error(errorMessage || err.message || "An error occurred");
+      // ✅ UPDATED ERROR HANDLING - Show actual error message from API
+      const errorMsg = err.message || errorMessage || "An error occurred";
+
+      // Show error toast
+      toast.error(errorMsg);
+
+      // Also show SweetAlert for better visibility
+      await Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: errorMsg,
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK"
+      });
+
       setIsSubmitting(false);
     }
   };
@@ -348,8 +357,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
               placeholder={`Select ${rules.label}`}
               readOnly
               isInvalid={!!errors[name]}
-               disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+              disabled={rules.disabled}
+              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
             />
             <Button variant="outline-secondary" onClick={popup?.onOpen}>
               <BsSearch />
@@ -371,8 +380,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
               onChange={handleChange}
               onBlur={() => handleBlur(name)}
               isInvalid={!!errors[name]}
-               disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+              disabled={rules.disabled}
+              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
             />
             <Button
               variant="outline-secondary"
@@ -394,7 +403,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
-             disabled={rules.disabled}
+            disabled={rules.disabled}
             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           >
             <option value="">Select {rules.label}</option>
@@ -423,7 +432,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
-             disabled={rules.disabled}
+            disabled={rules.disabled}
             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           />
         );
@@ -507,7 +516,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
-             disabled={rules.disabled}
+            disabled={rules.disabled}
             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           />
         );
@@ -567,89 +576,89 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
           <hr />
 
           <Form onSubmit={handleSubmit}>
-           <Row className="mb-4">
-  {/* Image Upload Section */}
-  {imageConfig && (
-    <Col xs={12}>
-      <div className="card mb-4">
-        <div className="card-body">
-          <h5 className="card-title mb-3">
-            {imageConfig.label || "Profile Picture"}
-          </h5>
+            <Row className="mb-4">
+              {/* Image Upload Section */}
+              {imageConfig && (
+                <Col xs={12}>
+                  <div className="card mb-4">
+                    <div className="card-body">
+                      <h5 className="card-title mb-3">
+                        {imageConfig.label || "Profile Picture"}
+                      </h5>
 
-          <div className="d-flex align-items-center gap-3">
-            {/* Image Preview */}
-            <div>
-              {previewUrl ? (
-                <Image
-                  src={previewUrl}
-                  alt={imageConfig.label || "Preview"}
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                    border: "2px solid #dee2e6",
-                  }}
-                  onError={(e: any) => {
-                    e.target.src = imageConfig.defaultImage;
-                  }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    backgroundColor: "#f8f9fa",
-                    border: "2px dashed #dee2e6",
-                    borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#6c757d",
-                    fontSize: "14px",
-                  }}
-                >
-                  No Image
-                </div>
+                      <div className="d-flex align-items-center gap-3">
+                        {/* Image Preview */}
+                        <div>
+                          {previewUrl ? (
+                            <Image
+                              src={previewUrl}
+                              alt={imageConfig.label || "Preview"}
+                              style={{
+                                width: "120px",
+                                height: "120px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                border: "2px solid #dee2e6",
+                              }}
+                              onError={(e: any) => {
+                                e.target.src = imageConfig.defaultImage;
+                              }}
+                            />
+                          ) : (
+                            <div
+                              style={{
+                                width: "120px",
+                                height: "120px",
+                                backgroundColor: "#f8f9fa",
+                                border: "2px dashed #dee2e6",
+                                borderRadius: "8px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                color: "#6c757d",
+                                fontSize: "14px",
+                              }}
+                            >
+                              No Image
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions */}
+                        <div>
+                          <input
+                            type="file"
+                            id={imageConfig.fieldName}
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            style={{ display: "none" }}
+                          />
+
+                          <label
+                            htmlFor={imageConfig.fieldName}
+                            className="btn btn-primary btn-sm mb-2"
+                            style={{ cursor: "pointer", backgroundColor: themeColor, border: "none" }}
+                          >
+                            Select Image
+                          </label>
+
+                          <div className="text-muted small">
+                            Max size: 5MB. Accepted formats: JPG, PNG, GIF
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
               )}
-            </div>
 
-            {/* Actions */}
-            <div>
-              <input
-                type="file"
-                id={imageConfig.fieldName}
-                accept="image/*"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
-
-              <label
-                htmlFor={imageConfig.fieldName}
-                className="btn btn-primary btn-sm mb-2"
-                style={{ cursor: "pointer", backgroundColor: themeColor, border: "none" }}
-              >
-                Select Image
-              </label>
-
-              <div className="text-muted small">
-                Max size: 5MB. Accepted formats: JPG, PNG, GIF
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Col>
-  )}
-
-  {/* Form Fields Section */}
-  <Col xs={12}>
-    <Row className="g-2">
-      {regularFields.map((field, index) => renderField(field, index))}
-    </Row>
-  </Col>
-</Row>
+              {/* Form Fields Section */}
+              <Col xs={12}>
+                <Row className="g-2">
+                  {regularFields.map((field, index) => renderField(field, index))}
+                </Row>
+              </Col>
+            </Row>
 
 
             {/* Toggle Switches Section */}

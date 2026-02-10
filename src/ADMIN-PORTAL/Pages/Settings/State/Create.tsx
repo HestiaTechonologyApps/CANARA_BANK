@@ -2,23 +2,25 @@ import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import StateService from "../../../Services/Settings/State.services";
 import KiduCreate from "../../../Components/KiduCreate";
-import type { State } from "../../../Types/Settings/States.types";
 
 const StateCreate: React.FC = () => {
-
- const fields: Field[] = [
-  { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, placeholder: "Enter state name", colWidth: 6 } },
-  { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, placeholder: "Enter abbreviation", colWidth: 6 } },
-  { name: "isActive", rules: { type: "toggle", label: "Active", required: false } }
-];
-
+  const fields: Field[] = [
+    { name: "name", rules: { type: "text", label: "State Name", required: true, colWidth: 6, placeholder: "e.g., Kerala"}},
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, colWidth: 6, maxLength: 10, placeholder: "e.g., KL"}},
+    { name: "isActive", rules: { type: "toggle", label: "Active"}},
+  ];
   const handleSubmit = async (formData: Record<string, any>) => {
-    const payload: Omit<State, "stateId" | "auditLogs"> = {
-      name: formData.name.trim(),
-      abbreviation: formData.abbreviation.trim(),
+    // Trim the inputs before sending
+    const payload = {
+      stateId: 0,
+      name: formData.name?.trim() || "",
+      abbreviation: formData.abbreviation?.trim() || "",
       isActive: Boolean(formData.isActive),
+      isDeleted: false
     };
 
+    // ✅ This will now throw an error if duplicate exists
+    // The error will be caught by KiduCreate and displayed to user
     await StateService.createState(payload);
   };
 
@@ -30,7 +32,7 @@ const StateCreate: React.FC = () => {
       submitButtonText="Create State"
       showResetButton
       successMessage="State created successfully!"
-      errorMessage="Failed to create state. Please try again."
+      errorMessage="Failed to create state. Please try again." 
       navigateOnSuccess="/dashboard/settings/state-list"
       navigateDelay={1200}
       themeColor="#1B3763"

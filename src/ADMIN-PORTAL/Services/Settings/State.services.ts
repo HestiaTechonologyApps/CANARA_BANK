@@ -3,9 +3,7 @@ import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { State } from "../../Types/Settings/States.types";
 
-
 const StateService = {
-
   async getAllStates(): Promise<State[]> {
     const response = await HttpService.callApi<CustomResponse<State[]>>(
       API_ENDPOINTS.STATE.GET_ALL,
@@ -30,6 +28,12 @@ const StateService = {
       "POST",
       data
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to create state");
+    }
+    
     return response.value;
   },
 
@@ -42,14 +46,25 @@ const StateService = {
       "PUT",
       data
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to update state");
+    }
+    
     return response.value;
   },
 
   async deleteState(id: number): Promise<void> {
-    await HttpService.callApi<CustomResponse<void>>(
+    const response = await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.STATE.DELETE(id),
       "DELETE"
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to delete state");
+    }
   },
 };
 

@@ -6,9 +6,9 @@ import type { State } from "../../../Types/Settings/States.types";
 
 const StateEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, colWidth: 6 } },
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, colWidth: 6 } },
-    { name: "isActive", rules: { type: "toggle", label: "Active" } },
+    { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, colWidth: 6, placeholder: "e.g., Kerala" }},
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, colWidth: 6, placeholder: "e.g., KL"}},
+    { name: "isActive", rules: { type: "toggle", label: "Active" }},
   ];
 
   const handleFetch = async (stateId: string) => {
@@ -22,19 +22,16 @@ const StateEdit: React.FC = () => {
   };
 
   const handleUpdate = async (stateId: string, formData: Record<string, any>) => {
-    try {
-      const stateData: Omit<State, "auditLogs"> = {
-        stateId: Number(stateId),
-        name: formData.name.trim(),
-        abbreviation: formData.abbreviation.trim(),
-        isActive: Boolean(formData.isActive),
-      };
+    // ✅ Trim inputs before sending
+    const stateData: Omit<State, "auditLogs"> = {
+      stateId: Number(stateId),
+      name: formData.name?.trim() || "",
+      abbreviation: formData.abbreviation?.trim() || "",
+      isActive: Boolean(formData.isActive),
+    };
 
-      await StateService.updateState(Number(stateId), stateData);
-    } catch (error: any) {
-      console.error("Error updating state:", error);
-      throw error;
-    }
+    // ✅ This will throw an error if duplicate exists
+    await StateService.updateState(Number(stateId), stateData);
   };
 
   return (
@@ -46,7 +43,7 @@ const StateEdit: React.FC = () => {
       submitButtonText="Update State"
       showResetButton
       successMessage="State updated successfully!"
-      errorMessage="Failed to update state.Please try again"
+      errorMessage="Failed to update state. Please try again" // ✅ This will be overridden by API error
       paramName="stateId"
       navigateBackPath="/dashboard/settings/state-list"
       loadingText="Loading State..."
