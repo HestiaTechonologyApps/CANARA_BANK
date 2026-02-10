@@ -1,11 +1,9 @@
-// src/ADMIN-PORTAL/Services/Settings/Month.services.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { Month } from "../../Types/Settings/Month.types";
 
 const MonthService = {
- 
   async getAllMonths(): Promise<Month[]> {
     const response = await HttpService.callApi<CustomResponse<Month[]>>(
       API_ENDPOINTS.MONTH.GET_ALL,
@@ -30,6 +28,12 @@ const MonthService = {
       "POST",
       data
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to create month");
+    }
+    
     return response.value;
   },
 
@@ -42,14 +46,25 @@ const MonthService = {
       "PUT",
       data
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to update month");
+    }
+    
     return response.value;
   },
 
   async deleteMonth(id: number): Promise<void> {
-    await HttpService.callApi<CustomResponse<void>>(
+    const response = await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.MONTH.DELETE(id),
       "DELETE"
     );
+    
+    // ✅ CHECK IF API RETURNED ERROR
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to delete month");
+    }
   },
 };
 
