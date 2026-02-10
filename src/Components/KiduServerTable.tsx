@@ -428,13 +428,11 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
       )}
 
       {/* Navbar with export buttons and rows selector - Below search bar */}
-      {showNavbar && (
+       {showNavbar && (
         <KiduServerTableNavbar
           data={data}
           columns={columns}
           title={title}
-          showSearch={false} // Search is handled above
-          showAddButton={false} // Add button is handled above
           showExportButtons={showNavbarExportButtons}
           showRowsPerPageSelector={showRowsPerPageSelector}
           rowsPerPage={rowsPerPage}
