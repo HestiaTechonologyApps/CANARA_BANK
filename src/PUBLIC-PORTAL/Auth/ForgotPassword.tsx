@@ -13,7 +13,7 @@ interface Props {
   onLogin: () => void;
 }
 
-const ResetPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
+const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -138,7 +138,7 @@ const ResetPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
         </div>
 
         <p className="auth-help">
-          Need help? Call <a href="tel:04442035575">044-42035575</a>
+          Need help? Call <a href="tel:04442035575"> 047124721760</a>
         </p>
       </Modal.Body>
 
@@ -148,4 +148,4 @@ const ResetPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   );
 };
 
-export default ResetPasswordModal;
+export default ForgotPasswordModal;

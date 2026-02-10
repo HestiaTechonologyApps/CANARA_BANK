@@ -133,7 +133,7 @@ function KiduPopup<T extends Record<string, any>>({
       <Modal 
         show={show} 
         onHide={handleModalClose} 
-        size="xl" 
+        size="lg" 
         centered 
         className="head-font"
       >
@@ -149,13 +149,13 @@ function KiduPopup<T extends Record<string, any>>({
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ minHeight: "400px", padding: "0" }}>
+        <Modal.Body style={{ height: '350px', overflow: 'hidden', padding: 0 }}>
           {loading && allData.length === 0 ? (
             <div className="text-center py-5">
               <Spinner animation="border" /> <span className="ms-2">Loading...</span>
             </div>
           ) : (
-            <div key={refreshKey} style={{ padding: "1rem" }}>
+            <div key={refreshKey} style={{ height: '100%', overflow: 'auto', padding: '15px' }}>
               <KiduServerTable
                 columns={columns.map(col => ({ 
                   key: String(col.key), 
