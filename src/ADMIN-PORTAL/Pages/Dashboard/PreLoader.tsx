@@ -1,4 +1,3 @@
-// Preloader.tsx
 import React, { useEffect } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +8,10 @@ const Preloader: React.FC = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate("/login"); // redirect after 3 seconds
+            navigate("/login"); 
         }, 3000);
 
-        return () => clearTimeout(timer); // cleanup
+        return () => clearTimeout(timer); 
     }, [navigate]);
 
     return (
@@ -24,8 +23,7 @@ const Preloader: React.FC = () => {
                 style={{
                     backgroundColor: "#f8f9fa",
                     fontFamily: "Plus Jakarta Sans",
-                }}
-            >
+                }} >
                 <Row className="text-center">
                     <Col>
                         {/* Preloader GIF or Spinner */}
@@ -38,8 +36,7 @@ const Preloader: React.FC = () => {
                                     width: "200px",
                                     height: "200px",
                                     borderRadius: "50%",
-                                }}
-                            />
+                                }} />
                         </div>
 
                         {/* Spinner (Bootstrap alternative) */}
@@ -51,8 +48,7 @@ const Preloader: React.FC = () => {
                         {/* App name / message */}
                         <h4
                             className="fw-semibold mt-2"
-                            style={{ color: "#18575A", fontWeight: 700 }}
-                        >
+                            style={{ color: "#18575A", fontWeight: 700 }} >
                             Welcome.....
                         </h4>
                         <p
@@ -61,15 +57,13 @@ const Preloader: React.FC = () => {
                                 fontFamily: "Urbanist",
                                 fontSize: "14px",
                                 fontWeight: 500,
-                            }}
-                        >
+                            }} >
                             Preparing your experience... Please wait
                         </p>
                     </Col>
                 </Row>
             </Container>
         </>
-
     );
 };
 

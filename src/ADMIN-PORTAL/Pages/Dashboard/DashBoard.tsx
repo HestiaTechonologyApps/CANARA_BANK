@@ -6,13 +6,9 @@ import Navbar from "../../Layout/Navbar";
 const DashBoard: React.FC = () => {
   return (
     <div style={{ margin: 0, padding: 0, overflow: "hidden" }}>
-      {/* Sidebar - Fixed position */}
       <Sidebar />
-      
-      {/* Navbar - Fixed position */}
       <Navbar />
       
-      {/* Main Content Area */}
       <div 
         style={{
           marginLeft: "70px",

@@ -6,9 +6,7 @@ import type { ManagingCommittee } from "../../Types/CMS/ManagingCommittee.types"
 import profiledefaultimg from "../../Assets/Images/profile.jpg";
 
 const ManagingCommitteeCreate: React.FC = () => {
-
   const [_isUploading, setIsUploading] = useState(false);
-
   // ================= FORM FIELDS =================
   const fields: Field[] = [
     { name: "managingComitteeName", rules: { type: "text", label: "Name", required: true, placeholder: "Enter committee member name", colWidth: 6 } },
@@ -32,7 +30,6 @@ const ManagingCommitteeCreate: React.FC = () => {
     };
 
     const createdCommittee = await ManagingCommitteeService.createManagingCommittee(payload);
-
     if (formData.profileImage && createdCommittee.managingComiteeId) {
       try {
         setIsUploading(true);
@@ -56,11 +53,7 @@ const ManagingCommitteeCreate: React.FC = () => {
         onSubmit={handleSubmit}
         submitButtonText="Create Managing Committee"
         showResetButton
-        imageConfig={{
-          fieldName: "profileImage",
-          defaultImage: profiledefaultimg,
-          label: "Committee Member Image",
-        }}
+        imageConfig={{ fieldName: "profileImage", defaultImage: profiledefaultimg, label: "Committee Member Image", }}
         successMessage="Managing Committee created successfully!"
         errorMessage="Failed to create managing committee. Please try again."
         navigateOnSuccess="/dashboard/cms/manage-committe-list"

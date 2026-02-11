@@ -11,7 +11,6 @@ import KiduPrevious from "../../../Components/KiduPrevious";
 import KiduReset from "../../../Components/KiduReset";
 
 const themeColor = "#1B3763";
-
 const SECTIONS = [
   { id: "navbar", label: "Navbar", icon: "🧭" },
   { id: "home", label: "Home Page", icon: "🏠" },

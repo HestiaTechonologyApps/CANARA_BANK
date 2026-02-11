@@ -42,14 +42,7 @@ const ReportsCreate: React.FC = () => {
     ];
 
     const handleSubmit = async (formData: Record<string, any>) => {
-        if (
-            !selectedReportType ||
-            !selectedYearMaster ||
-            !selectedMonth ||
-            !selectedCircle ||
-            !selectedBranch ||
-            !selectedMember
-        ) {
+        if ( !selectedReportType || !selectedYearMaster || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember ) {
             throw new Error("Please select all required fields");
         }
 
@@ -78,7 +71,6 @@ const ReportsCreate: React.FC = () => {
 
         await ReportService.createReport(payload);
     };
-
 
     const popupHandlers = {
         reportType: {
@@ -138,48 +130,42 @@ const ReportsCreate: React.FC = () => {
                 onSelect={(y) => {
                     setSelectedReportType(y);
                     setShowReportTypePopup(false);
-                }}
-            />
+                }} />
             <YearMasterPopup
                 show={showYearMasterPopup}
                 handleClose={() => setShowYearMasterPopup(false)}
                 onSelect={(y) => {
                     setSelectedYearMaster(y);
                     setShowYearMasterPopup(false);
-                }}
-            />
+                }}/>
             <MonthPopup
                 show={showMonthPopup}
                 handleClose={() => setShowMonthPopup(false)}
                 onSelect={(m) => {
                     setSelectedMonth(m);
                     setShowMonthPopup(false);
-                }}
-            />
+                }} />
             <CirclePopup
                 show={showCirclePopup}
                 handleClose={() => setShowCirclePopup(false)}
                 onSelect={(c) => {
                     setSelectedCircle(c);
                     setShowCirclePopup(false);
-                }}
-            />
+                }} />
             <BranchPopup
                 show={showBranchPopup}
                 handleClose={() => setShowBranchPopup(false)}
                 onSelect={(b) => {
                     setSelectedBranch(b);
                     setShowBranchPopup(false);
-                }}
-            />
+                }}/>
             <MemberPopup
                 show={showMemberPopup}
                 handleClose={() => setShowMemberPopup(false)}
                 onSelect={(m) => {
                     setSelectedMember(m);
                     setShowMemberPopup(false);
-                }}
-            />
+                }} />
         </>
     );
 };

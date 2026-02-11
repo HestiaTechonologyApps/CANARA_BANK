@@ -1,4 +1,3 @@
-// src/components/CMS/DayQuote/DayQuoteList.tsx
 import React from "react";
 import DayQuoteService from "../../Services/CMS/DayQuote.services";
 import MonthService from "../../Services/Settings/Month.services";

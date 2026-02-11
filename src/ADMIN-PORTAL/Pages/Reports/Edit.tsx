@@ -154,7 +154,6 @@ const ReportsEdit: React.FC = () => {
       actualValue: selectedYear?.yearOf,
       onOpen: () => setShowYearPopup(true),
     },
-
     monthCode: {
       value: selectedMonth?.monthName ?? "",
       actualValue: selectedMonth?.monthCode,
@@ -192,13 +191,9 @@ const ReportsEdit: React.FC = () => {
         loadingText="Loading report details..."
         paramName="reportId"
         navigateBackPath="/dashboard/report-list"
-        auditLogConfig={{
-          tableName: "Reports",
-          recordIdField: "reportId",
-        }}
+        auditLogConfig={{ tableName: "Reports", recordIdField: "reportId", }}
         themeColor="#1B3763"
       />
-
       <ReportTypePopup
         show={showReportTypePopup}
         handleClose={() => setShowReportTypePopup(false)}
@@ -208,9 +203,7 @@ const ReportsEdit: React.FC = () => {
             reportTypeName: v.reportTypeName,
           });
           setShowReportTypePopup(false);
-        }}
-      />
-
+        }} />
       <YearMasterPopup
         show={showYearPopup}
         handleClose={() => setShowYearPopup(false)}
@@ -220,9 +213,7 @@ const ReportsEdit: React.FC = () => {
             yearName: String(v.yearOf ?? 0),
           });
           setShowYearPopup(false);
-        }}
-      />
-
+        }} />
       <MonthPopup
         show={showMonthPopup}
         handleClose={() => setShowMonthPopup(false)}
@@ -232,9 +223,7 @@ const ReportsEdit: React.FC = () => {
             monthName: v.monthName,
           });
           setShowMonthPopup(false);
-        }}
-      />
-
+        }} />
       <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}
@@ -244,9 +233,7 @@ const ReportsEdit: React.FC = () => {
             name: v.name,
           });
           setShowCirclePopup(false);
-        }}
-      />
-
+        }}/>
       <BranchPopup
         show={showBranchPopup}
         handleClose={() => setShowBranchPopup(false)}
@@ -257,9 +244,7 @@ const ReportsEdit: React.FC = () => {
             name: v.name,
           });
           setShowBranchPopup(false);
-        }}
-      />
-
+        }} />
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
@@ -270,8 +255,7 @@ const ReportsEdit: React.FC = () => {
             staffNo: v.staffNo,
           });
           setShowMemberPopup(false);
-        }}
-      />
+        }} />
     </>
   );
 };

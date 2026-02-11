@@ -46,17 +46,8 @@ const MainPageView: React.FC = () => {
       editRoute="/dashboard/cms/mainpage-edit"
       listRoute="/dashboard/cms/mainpage-list"
       paramName="mainPageId"
-      imageConfig={{
-        fieldName: "logoImage1",           
-        defaultImage: "",                   
-        showNameField: "companyName",
-        showIdField: "mainPageId",
-        isCircle: false,
-      }}
-      auditLogConfig={{
-        tableName: "MainPage",
-        recordIdField: "mainPageId",
-      }}
+      imageConfig={{ fieldName: "logoImage1", defaultImage: "", showNameField: "companyName", showIdField: "mainPageId", isCircle: false, }}
+      auditLogConfig={{ tableName: "MainPage", recordIdField: "mainPageId",}}
       themeColor="#1B3763"
       loadingText="Loading main page details..."
       showEditButton={true}

@@ -110,8 +110,7 @@ const payload = {
         onSelect={(company) => {
           setSelectedCompany(company);
           setShowCompanyPopup(false);
-        }}
-      />
+        }} />
     </>
   );
 };

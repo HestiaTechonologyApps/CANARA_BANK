@@ -42,13 +42,7 @@ const ManagingCommitteeView: React.FC = () => {
       editRoute="/dashboard/cms/manage-committe-edit"
       listRoute="/dashboard/cms/manage-committe-list"
       paramName="managingComiteeId"
-      imageConfig={{
-        fieldName: "profileImageSrc",       
-        defaultImage: defaultProfileImage,
-        showNameField: "managingComitteeName",
-        showIdField: "position",
-        isCircle: true,
-      }}
+      imageConfig={{ fieldName: "profileImageSrc", defaultImage: defaultProfileImage, showNameField: "managingComitteeName", showIdField: "position", isCircle: true,}}
       themeColor="#1B3763"
       loadingText="Loading managing committee details..."
       showEditButton={true}

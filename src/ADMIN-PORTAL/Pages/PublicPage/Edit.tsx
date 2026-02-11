@@ -1,4 +1,3 @@
-// src/components/CMS/PublicPage/PublicPageEdit.tsx
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Card, Spinner, ProgressBar, Badge } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +10,6 @@ import PublicPageService from "../../Services/CMS/PublicPage.services";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
 const themeColor = "#1B3763";
-
 const SECTIONS = [
   { id: "navbar", label: "Navbar", icon: "🧭" },
   { id: "home", label: "Home Page", icon: "🏠" },

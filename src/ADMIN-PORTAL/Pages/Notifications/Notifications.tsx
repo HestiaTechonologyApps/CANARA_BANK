@@ -12,7 +12,6 @@ interface Notification {
   type: "info" | "success" | "warning" | "member" | "payment";
   read: boolean;
 }
-
 const NAVY = "#0f2a55";
 const GOLD = "#f5c542";
 
@@ -108,16 +107,14 @@ const Notifications: React.FC = () => {
           <Button
             size="sm"
             variant="outline-secondary"
-            onClick={() => markRead(n.id)}
-          >
+            onClick={() => markRead(n.id)}>
             <Check size={14} />
           </Button>
         )}
         <Button
           size="sm"
           variant="outline-danger"
-          onClick={() => remove(n.id)}
-        >
+          onClick={() => remove(n.id)} >
           <Trash2 size={14} />
         </Button>
       </div>

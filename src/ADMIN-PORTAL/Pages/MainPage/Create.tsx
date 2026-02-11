@@ -1,4 +1,3 @@
-// src/components/MainPage/MainPageCreate.tsx
 import React, { useState } from "react";
 import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
@@ -68,7 +67,6 @@ const MainPageCreate: React.FC = () => {
     dayQuote: (formData.dayQuote || "").trim(),
     dpCode: ""
   };
-
   await MainPageService.createMainPage(payload);
 };
 

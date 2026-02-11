@@ -72,8 +72,7 @@ const DashBoardCards: React.FC<KiduCardProps> = ({
                 borderRadius: "12px",
                 backgroundColor: isPositive ? "#e7f7ee" : "#fdecec",
                 color: isPositive ? "#16a34a" : "#dc2626",
-              }}
-            >
+              }} >
               {isPositive ? (
                 <FaArrowTrendUp size={12} />
               ) : (

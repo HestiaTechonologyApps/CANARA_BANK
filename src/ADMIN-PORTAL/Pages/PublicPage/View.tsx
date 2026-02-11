@@ -1,4 +1,3 @@
-// src/components/CMS/PublicPage/PublicPageView.tsx
 import React from "react";
 import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
@@ -38,10 +37,7 @@ const PublicPageView: React.FC = () => {
       editRoute="/dashboard/cms/publicPage-edit"
       listRoute="/dashboard/cms/publicPage-list"
       paramName="publicPageId"
-      auditLogConfig={{
-        tableName: "PublicPage",
-        recordIdField: "publicPageId",
-      }}
+      auditLogConfig={{ tableName: "PublicPage", recordIdField: "publicPageId",}}
       themeColor="#1B3763"
       loadingText="Loading public page details..."
       showEditButton={true}

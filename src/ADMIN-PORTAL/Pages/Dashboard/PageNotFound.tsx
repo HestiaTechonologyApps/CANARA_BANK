@@ -1,8 +1,7 @@
-// src/pages/PageNotFound.tsx
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import PF from "../../Assets/Images/PF.webp"; // You can also use the external URL instead
+import PF from "../../Assets/Images/PF.webp"; 
 
 const PageNotFound: React.FC = () => {
   const navigate = useNavigate();
@@ -15,16 +14,14 @@ const PageNotFound: React.FC = () => {
         style={{
           backgroundColor: "#f8f9fa",
           fontFamily: "Plus Jakarta Sans",
-        }}
-      >
+        }} >
         <Row className="text-center">
           <Col>
             {/* GIF Section */}
             <div className="mb-3 rounded-3">
               <img
                 src={
-                  PF
-                }
+                  PF }
                 alt="Page Not Found"
                 className="img-fluid"
                 style={{
@@ -35,12 +32,10 @@ const PageNotFound: React.FC = () => {
                 }}
               />
             </div>
-
             {/* Message Section */}
             <h4
               className="fw-semibold mt-3"
-              style={{ color: "#18575A", fontWeight: 700 }}
-            >
+              style={{ color: "#18575A", fontWeight: 700 }} >
               Oops! Page Not Found
             </h4>
 
@@ -51,8 +46,7 @@ const PageNotFound: React.FC = () => {
                 fontSize: "14px",
                 fontWeight: 500,
                 marginBottom: "20px",
-              }}
-            >
+              }}>
               The page you’re looking for doesn’t exist or has been moved.
             </p>
 
@@ -67,8 +61,7 @@ const PageNotFound: React.FC = () => {
                 color: "#FFFFFF",
                 fontWeight: 800,
                 padding: "10px 20px",
-              }}
-            >
+              }} >
               Back to Home
             </button>
           </Col>

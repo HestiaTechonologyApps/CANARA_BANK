@@ -86,8 +86,7 @@ const DayQuoteEdit: React.FC = () => {
         onSelect={(m) => {
           setSelectedMonth(m);
           setShowMonthPopup(false);
-        }}
-      />
+        }}/>
     </>
   );
 };
