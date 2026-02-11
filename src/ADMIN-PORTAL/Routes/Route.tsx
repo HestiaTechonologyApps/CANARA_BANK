@@ -170,18 +170,6 @@ import SupportTicketCreate from '../Pages/SupportTickets/Create';
 import SupportTicketEdit from '../Pages/SupportTickets/Edit';
 import SupportTicketView from '../Pages/SupportTickets/View';
 
-
-//MainPage
-import MainPageList from '../Pages/MainPage/List';
-import MainPageCreate from '../Pages/MainPage/Create';
-import MainPageEdit from '../Pages/MainPage/Edit';
-import MainPageView from '../Pages/MainPage/View';
-//Customer
-import CustomerList from '../Pages/Customer/List';
-import CustomerCreate from '../Pages/Customer/Create';
-import CustomerEdit from '../Pages/Customer/Edit';
-import CustomerView from '../Pages/Customer/View';
-
 // Export route configuration as JSX elements - ALL PROTECTED
 export const adminRoutes = (
   <>
@@ -358,18 +346,6 @@ export const adminRoutes = (
       <Route path="supportTickets-create" element={<SupportTicketCreate />} />
       <Route path="supportTickets-edit/:supportTicketId" element={<SupportTicketEdit />} />
       <Route path="supportTickets-view/:supportTicketId" element={<SupportTicketView />} />
-
-
-     {/* Main Page */}
-      <Route path="cms/mainpage-list" element={<MainPageList />} />
-      <Route path="cms/mainpage-create" element={<MainPageCreate />} />
-      <Route path="cms/mainpage-edit/:mainPageId" element={<MainPageEdit />} />
-      <Route path="cms/mainpage-view/:mainPageId" element={<MainPageView />} />
-      {/* Customer */}
-      <Route path="customer-list" element={<CustomerList />} />
-      <Route path="customer-create" element={<CustomerCreate />} />
-      <Route path="customer-edit/:customerId" element={<CustomerEdit />} />
-      <Route path="customer-view/:customerId" element={<CustomerView />} />
 
       <Route path="notifications" element={<Notifications />} />
 
