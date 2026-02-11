@@ -28,7 +28,6 @@ const CustomerEdit: React.FC = () => {
         }
       };
     }
-    
     return response;
   };
 
@@ -63,10 +62,7 @@ const CustomerEdit: React.FC = () => {
       loadingText="Loading Customer details..."
       paramName="customerId"
       navigateBackPath="/dashboard/customer-list"
-      auditLogConfig={{
-        tableName: "Customer",
-        recordIdField: "customerId",
-      }}
+      auditLogConfig={{ tableName: "Customer", recordIdField: "customerId", }}
       themeColor="#1B3763"
     />
   );

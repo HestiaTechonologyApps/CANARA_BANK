@@ -15,7 +15,6 @@ const DailyNewsCreate: React.FC = () => {
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
-
     const isoDate = new Date(formData.newsDate).toISOString();
 
     const payload: Omit<DailyNews, "dailyNewsId" | "auditLogs"> = {
@@ -29,7 +28,6 @@ const DailyNewsCreate: React.FC = () => {
       createdOn: new Date().toISOString(),
       createdBy: "SYSTEM",
     };
-
     await DailyNewsService.createDailyNews(payload);
   };
 

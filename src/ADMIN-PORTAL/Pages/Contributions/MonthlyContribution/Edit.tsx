@@ -8,7 +8,6 @@ import MonthPopup from "../../Settings/Month/MonthPopup";
 import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services";
 
 const MonthlyContributionEdit: React.FC = () => {
-
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
 
@@ -21,10 +20,8 @@ const MonthlyContributionEdit: React.FC = () => {
     { name: "file", rules: { type: "file", label: "Upload Files", required: true, colWidth: 12 } },
   ];
 
-  // ================= FETCH DATA =================
   const handleFetch = async (id: string) => {
     console.log("FETCHING MONTHLY CONTRIBUTION ✅", id);
-
     const response = await MonthlyContributionService.getMonthlyContributionById(Number(id));
     const data = response.value;
 
@@ -53,7 +50,6 @@ const MonthlyContributionEdit: React.FC = () => {
     };
   };
 
-  // ================= UPDATE DATA =================
   const handleUpdate = async (_id: string, formData: Record<string, any>) => {
     console.log("UPDATE BUTTON CLICKED ✅");
     console.log("FORM DATA:", formData);

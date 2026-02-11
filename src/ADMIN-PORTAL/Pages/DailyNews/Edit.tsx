@@ -7,7 +7,6 @@ import type { DailyNews } from "../../Types/CMS/DailyNews.types";
 const DailyNewsEdit: React.FC = () => {
 
   const originalDataRef = useRef<DailyNews | null>(null);
-
   const fields: Field[] = [
     { name: "title", rules: { type: "text", label: "Title", required: true, colWidth: 6 } },
     { name: "newsDate", rules: { type: "date", label: "News Date", required: true, colWidth: 6 } },
@@ -21,7 +20,6 @@ const handleFetch = async (id: string) => {
 
   if (!news) throw new Error("Daily news not found");
 
-  // ✅ TIMEZONE-SAFE conversion for <input type="date">
   if (news.newsDate) {
     const d = new Date(news.newsDate);
     const yyyy = d.getFullYear();
@@ -38,14 +36,10 @@ const handleFetch = async (id: string) => {
     if (!originalDataRef.current) {
       throw new Error("Original data missing");
     }
-
     const original = originalDataRef.current;
-
     const isoDate = new Date(formData.newsDate).toISOString();
-
     const payload: DailyNews = {
       ...original,
-
       title: formData.title.trim(),
       description: formData.description.trim(),
       newsDate: isoDate,

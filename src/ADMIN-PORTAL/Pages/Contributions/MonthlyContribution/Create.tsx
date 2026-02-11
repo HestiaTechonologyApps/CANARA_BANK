@@ -40,7 +40,6 @@ const MonthlyContributionCreate: React.FC = () => {
     if (!file) throw new Error("Please select file");
 
     try {
-      // ✅ UPLOAD FILE DIRECTLY using the upload-file API
       const response = await MonthlyContributionService.uploadFile(
         file,
         selectedMonth.monthCode,
@@ -90,13 +89,10 @@ const MonthlyContributionCreate: React.FC = () => {
         navigateOnSuccess="/dashboard/contributions/monthlyContribution-list"
       />
 
-      {/* ================= EXTRA UI SECTION (YOUR TABLE) ================= */}
       <div className="card mt-4">
         <div className="card-body p-0">
-
           <table className="table table-bordered mb-0 align-middle kidu-table">
             <tbody>
-
               {/* Summary Header */}
               <tr>
                 <td className="kidu-text">Total Contribution</td>

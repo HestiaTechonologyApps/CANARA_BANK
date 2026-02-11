@@ -46,10 +46,7 @@ const CustomerView: React.FC = () => {
       editRoute="/dashboard/customer-edit"
       listRoute="/dashboard/customer-list"
       paramName="customerId"
-      auditLogConfig={{
-        tableName: "Customer",
-        recordIdField: "customerId",
-      }}
+      auditLogConfig={{ tableName: "Customer", recordIdField: "customerId", }}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton
