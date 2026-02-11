@@ -60,9 +60,7 @@ const NavbarComponent: React.FC = () => {
     }
   }, []);
 
-
   // const handleClose = () => setShowNotifications(false);
-
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
     console.log("Selected Year Updated Globally:", year);
@@ -77,7 +75,6 @@ const NavbarComponent: React.FC = () => {
     AuthService.logout();
     navigate("/");
   };
-
 
   return (
     <>
@@ -126,30 +123,19 @@ const NavbarComponent: React.FC = () => {
               />
             </div>
 
-            {/* Notifications */}
-            {/* <BsBell
-              size={20}
-              className="cursor-pointer"
-              onClick={handleShow}
-            /> */}
-
             <AdminNotificationDropdown />
-
-
             {/* Profile Section */}
             <div
               className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
             >
               <Image
-                src={profilePic? profilePic : profiledefaultImg}
+                src={profilePic ? profilePic : profiledefaultImg}
                 alt="profile"
                 className="rounded-circle me-2 border border-2"
                 style={{ width: "30px", height: "30px", objectFit: "cover" }}
               />
               <div className="text-end">
-                {/* <p className="mb-0" style={{ color: "#787486", fontSize: "12px" }}>
-                  {username}
-                </p> */}
+
               </div>
               <BsChevronDown
                 className="ms-2"

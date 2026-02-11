@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import KiduSearchBar from "../../Components/KiduSearchBar";
 import KiduLoader from "../../Components/KiduLoader";
-
 import { useYear } from "./YearContext";
 import Charts from "./Charts";
 import ProgressBar from "./ProgressBar";
@@ -31,10 +30,6 @@ const HomePage: React.FC = () => {
     const fetchCardData = async () => {
       try {
         setLoading(true);
-
-        // Mock data for Canara Bank Union - Replace with actual API call
-        // Example: const response = await DashboardService.getDashboard(selectedYear);
-
         const mockData: CardData[] = [
           {
             title: "Total Members",
@@ -71,13 +66,6 @@ const HomePage: React.FC = () => {
         ];
 
         setCards(mockData);
-
-        // Uncomment when you have the actual service
-        // if (response?.isSuccess && response?.value) {
-        //   setCards(response.value);
-        // } else {
-        //   toast.error("Failed to load dashboard data.");
-        // }
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
         toast.error("Error fetching dashboard data.");
@@ -96,19 +84,7 @@ const HomePage: React.FC = () => {
     }
 
     try {
-      // TODO: Replace with your actual search service call
-      // Example: const response = await SearchService.search(term);
-
       toast.info(`Searching for: ${term}`);
-
-      // Uncomment and modify when you have the actual service
-      // if (response.isSuccess && response.value) {
-      //   const item = response.value;
-      //   navigate(`/dashboard/details/${item.id}`);
-      //   toast.success(`Item found!`);
-      // } else {
-      //   toast.error("No results found.");
-      // }
     } catch (error) {
       console.error("Error searching:", error);
       toast.error("Error performing search.");

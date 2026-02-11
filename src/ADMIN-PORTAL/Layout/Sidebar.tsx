@@ -49,17 +49,12 @@ const Sidebar: React.FC = () => {
     { label: "Attachments", path: "/dashboard/cms/attachments-list" },
     { label: "Contact Messages", path: "/dashboard/cms/contactmessage-list" },
     { label: "Daily News", path: "/dashboard/cms/dailynews-list" },
-    // { label: "Main Page", path: "/dashboard/cms/mainpage-list" },
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
     { label: "Public Page", path: "/dashboard/cms/publicpage-list" },
     { label: "Quotes", path: "/dashboard/cms/dayquote-list" }
   ];
 
   const navigate = useNavigate();
-  // const handleLogout = () => {
-  //   // AuthService.logout();
-  //   navigate("/");
-  // };
 
   const handleLogout = () => {
     setShowLogoutModal(true);
@@ -98,18 +93,6 @@ const Sidebar: React.FC = () => {
               <span style={{ fontSize: "10px" }}></span>
             </p>
           )}
-          {/* <img
-            src="https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
-            alt="profile"
-            className="rounded-circle mb-2"
-            style={{
-              width: hovered ? "80px" : "45px",
-              height: hovered ? "80px" : "45px",
-              border: "2px solid white",
-              transition: "all 0.3s",
-              objectFit: "cover",
-            }}
-          /> */}
 
         </div>
 
@@ -367,30 +350,6 @@ const Sidebar: React.FC = () => {
                 </>
               )}
             </NavLink>
-
-
-            {/* Customers Menu */}
-            {/* <NavLink
-              to="/dashboard/customer-list"
-              className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
-              }
-              style={{ fontSize: "13px", textDecoration: "none", padding: "8px 0" }}
-            >
-              {({ isActive }) => (
-                <>
-                  <BsPeople
-                    className={isActive ? "text-white" : "text-white"}
-                    style={{ fontSize: "20px", minWidth: "20px" }}
-                  />
-                  {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
-                      Customers
-                    </span>
-                  )}
-                </>
-              )}
-            </NavLink> */}
 
             {/* Approval Menu */}
             <NavLink
