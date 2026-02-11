@@ -1,5 +1,4 @@
 // src/constants/apiEndpoints.ts
-
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.cbeugjfws.co.in/api';
 
 export const API_ENDPOINTS = {
@@ -10,71 +9,67 @@ export const API_ENDPOINTS = {
     FORGOT_PASSWORD: `${API_BASE_URL}/Auth/forgot-password`,
     REGISTER:`${API_BASE_URL}/Auth/register`
   },
-  USER: {
-    GET_ALL: `${API_BASE_URL}/User`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/User/${id}`,
-    CREATE: `${API_BASE_URL}/User`,
-    UPDATE: (id: number) => `${API_BASE_URL}/User/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/User/${id}`,
-    CHANGE_PASSWORD: `${API_BASE_URL}/User/ChangePassWord`,
-    // UPLOAD_PROFILE_PIC: `${API_BASE_URL}/User/upload-profile-pic`,
-  },
-  CUSTOMER: {
-    GET_ALL: `${API_BASE_URL}/Customer`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Customer/${id}`,
-    CREATE: `${API_BASE_URL}/Customer`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
-  },
   AUDIT_LOG: {
     GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
       `${API_BASE_URL}/AuditLog/${tableName}/${recordId}`
   },
-  ATTACHMENT: {
-    GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
-      `${API_BASE_URL}/Attachment/${tableName}/${recordId}`,
-    GET_BY_ID: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
-    UPLOAD: `${API_BASE_URL}/Attachment/upload`,
-    DELETE: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
-    //GET: `${API_BASE_URL}/Attachment`,
-    DOWNLOAD: (attachmentId: number) => `${API_BASE_URL}/Attachment/download/${attachmentId}`,
-    UPDATE:(id:number)=>`${API_BASE_URL}/Attachment/${id}`
-  },
-  DAY_QUOTE: {
-    GET_ALL: `${API_BASE_URL}/DayQuote`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
-    CREATE: `${API_BASE_URL}/DayQuote`,
-    UPDATE: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
-  },
-  MAIN_PAGE: {
-    GET_ALL: `${API_BASE_URL}/MainPage`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-    CREATE: `${API_BASE_URL}/MainPage`,
-    UPDATE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-  },
-  CIRCLE: {
-    GET_ALL: `${API_BASE_URL}/Circle`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Circle/${id}`,
-    CREATE: `${API_BASE_URL}/Circle`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Circle/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Circle/${id}`,
-  },
-  BRANCH: {
+   BRANCH: {
     GET_ALL: `${API_BASE_URL}/Branch`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/Branch/${id}`,
     CREATE: `${API_BASE_URL}/Branch`,
     UPDATE: (id: number) => `${API_BASE_URL}/Branch/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Branch/${id}`,
   },
-  MANAGING_COMMITTEE: {
-    GET_ALL: `${API_BASE_URL}/ManagingComitee`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
-    CREATE: `${API_BASE_URL}/ManagingComitee`,
-    UPDATE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
-    UPLOAD_IMAGE:`${API_BASE_URL}/ManagingComitee/upload-image`,
+   CATEGORY: {
+    GET_ALL: `${API_BASE_URL}/Category`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Category/${id}`,
+    CREATE: `${API_BASE_URL}/Category`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Category/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Category/${id}`,
+  },
+   CIRCLE: {
+    GET_ALL: `${API_BASE_URL}/Circle`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Circle/${id}`,
+    CREATE: `${API_BASE_URL}/Circle`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Circle/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Circle/${id}`,
+  },
+   COMPANY: {
+    GET_ALL: `${API_BASE_URL}/Company/GetAll/admin-getall-company`,
+    GET: `${API_BASE_URL}/Company/GetCompanyLookUp/admin-lookUp-company`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Company/GetById/${id}`,
+    CREATE: `${API_BASE_URL}/Company/Create`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Company/Update/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Company/Delete/${id}`,
+    UPLOAD_FILE:`${API_BASE_URL}/Company/UploadCompanyLogo/upload-company-logo`,
+  },
+   DESIGNATION: {
+    GET_ALL: `${API_BASE_URL}/Designation`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+    CREATE: `${API_BASE_URL}/Designation`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+  },
+  MONTH: {
+    GET_ALL: `${API_BASE_URL}/Month`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Month/${id}`,
+    CREATE: `${API_BASE_URL}/Month`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Month/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Month/${id}`,
+  },
+  REPORT_ENGINE:{
+    GET_ALL:`${API_BASE_URL}/ReportEngine`,
+    CREATE:`${API_BASE_URL}/ReportEngine`,
+    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+    UPDATE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+    DELETE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+  },
+   REPORT_TYPE:{
+    GET_ALL:`${API_BASE_URL}/ReportType`,
+    CREATE:`${API_BASE_URL}/ReportType`,
+    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
+    UPDATE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
+    DELETE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
   },
   STATE: {
     GET_ALL: `${API_BASE_URL}/State`,
@@ -90,28 +85,45 @@ export const API_ENDPOINTS = {
     UPDATE: (id: number) => `${API_BASE_URL}/Status/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Status/${id}`,
   },
-  CATEGORY: {
-    GET_ALL: `${API_BASE_URL}/Category`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Category/${id}`,
-    CREATE: `${API_BASE_URL}/Category`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Category/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Category/${id}`,
+   USER: {
+    GET_ALL: `${API_BASE_URL}/User`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/User/${id}`,
+    CREATE: `${API_BASE_URL}/User`,
+    UPDATE: (id: number) => `${API_BASE_URL}/User/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/User/${id}`,
+    CHANGE_PASSWORD: `${API_BASE_URL}/User/ChangePassWord`,
+    // UPLOAD_PROFILE_PIC: `${API_BASE_URL}/User/upload-profile-pic`,
   },
-  DESIGNATION: {
-    GET_ALL: `${API_BASE_URL}/Designation`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Designation/${id}`,
-    CREATE: `${API_BASE_URL}/Designation`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
-  },
-  USER_TYPE: {
+USER_TYPE: {
     GET_ALL: `${API_BASE_URL}/UserType`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/UserType/${id}`,
     CREATE: `${API_BASE_URL}/UserType`,
     UPDATE: (id: number) => `${API_BASE_URL}/UserType/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/UserType/${id}`,
   },
-  MEMBER: {
+   YEAR_MASTER: {
+    GET_ALL: `${API_BASE_URL}/YearMaster`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
+    CREATE: `${API_BASE_URL}/YearMaster`,
+    UPDATE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
+  },
+   ACCOUNT_DIRECT_ENTRY: {
+    GET_ALL: `${API_BASE_URL}/AccountDirecyEntry`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
+    CREATE: `${API_BASE_URL}/AccountDirecyEntry`,
+    UPDATE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
+    GET_BY_STAFFID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/GetByMemberId${id}`,
+  },
+   DIRECT_PAY: {
+    GET_ALL: `${API_BASE_URL}/DirectPayment`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+    CREATE: `${API_BASE_URL}/DirectPayment`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+  },
+   MEMBER: {
     GET_ALL: `${API_BASE_URL}/Member`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/Member/${id}`,
     CREATE: `${API_BASE_URL}/Member`,
@@ -119,86 +131,6 @@ export const API_ENDPOINTS = {
     DELETE: (id: number) => `${API_BASE_URL}/Member/${id}`,
     UPLOAD_PROFILE_PIC: `${API_BASE_URL}/Member/upload-profile-pic`,
     GET_ALL_PAGINETED: `${API_BASE_URL}/Member/paged`,
-  },
-  DEATH_CLAIMS: {
-    GET_ALL: `${API_BASE_URL}/DeathClaim`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
-    CREATE: `${API_BASE_URL}/DeathClaim`,
-    UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
-  },
-  MONTH: {
-    GET_ALL: `${API_BASE_URL}/Month`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Month/${id}`,
-    CREATE: `${API_BASE_URL}/Month`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Month/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Month/${id}`,
-  },
-  USER_ROLE_RIGHT: {
-    GET_ALL: `${API_BASE_URL}/UserRoleRight`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
-    CREATE: `${API_BASE_URL}/UserRoleRight`,
-    UPDATE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
-  },
-  REFUND_CONTRIBUTION: {
-    GET_ALL: `${API_BASE_URL}/RefundContribution`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
-    CREATE: `${API_BASE_URL}/RefundContribution`,
-    UPDATE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
-  },
-  COMPANY: {
-    GET_ALL: `${API_BASE_URL}/Company/GetAll/admin-getall-company`,
-    GET: `${API_BASE_URL}/Company/GetCompanyLookUp/admin-lookUp-company`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Company/GetById/${id}`,
-    CREATE: `${API_BASE_URL}/Company/Create`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Company/Update/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Company/Delete/${id}`,
-    UPLOAD_FILE:`${API_BASE_URL}/Company/UploadCompanyLogo/upload-company-logo`,
-  },
-  CIRCLE_STATE: {
-    GET_ALL: `${API_BASE_URL}/CircleState`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-    CREATE: `${API_BASE_URL}/CircleState`,
-    UPDATE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-  },
-  SUPPORT_TICKET: {
-    GET_ALL: `${API_BASE_URL}/SupportTicket`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
-    CREATE: `${API_BASE_URL}/SupportTicket`,
-    UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
-  },
-  YEAR_MASTER: {
-    GET_ALL: `${API_BASE_URL}/YearMaster`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
-    CREATE: `${API_BASE_URL}/YearMaster`,
-    UPDATE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
-  },
-  DAILY_NEWS: {
-    GET_ALL: `${API_BASE_URL}/DailyNews`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
-    CREATE: `${API_BASE_URL}/DailyNews`,
-    UPDATE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
-  },
-  DIRECT_PAY: {
-    GET_ALL: `${API_BASE_URL}/DirectPayment`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
-    CREATE: `${API_BASE_URL}/DirectPayment`,
-    UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
-  },
-  ACCOUNT_DIRECT_ENTRY: {
-    GET_ALL: `${API_BASE_URL}/AccountDirecyEntry`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
-    CREATE: `${API_BASE_URL}/AccountDirecyEntry`,
-    UPDATE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
-    GET_BY_STAFFID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/GetByMemberId${id}`,
   },
   MONTHLY_CONTRIBUTION:{
     GET_ALL:`${API_BASE_URL}/MonthlyContribution`,
@@ -208,29 +140,109 @@ export const API_ENDPOINTS = {
     DELETE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
     UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`,
   },
-  REPORTS:{
+    DEATH_CLAIMS: {
+    GET_ALL: `${API_BASE_URL}/DeathClaim`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+    CREATE: `${API_BASE_URL}/DeathClaim`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+  },
+   REFUND_CONTRIBUTION: {
+    GET_ALL: `${API_BASE_URL}/RefundContribution`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
+    CREATE: `${API_BASE_URL}/RefundContribution`,
+    UPDATE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
+  },
+  ATTACHMENT: {
+    GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
+      `${API_BASE_URL}/Attachment/${tableName}/${recordId}`,
+    GET_BY_ID: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
+    UPLOAD: `${API_BASE_URL}/Attachment/upload`,
+    DELETE: (attachmentId: number) => `${API_BASE_URL}/Attachment/${attachmentId}`,
+    //GET: `${API_BASE_URL}/Attachment`,
+    DOWNLOAD: (attachmentId: number) => `${API_BASE_URL}/Attachment/download/${attachmentId}`,
+    UPDATE:(id:number)=>`${API_BASE_URL}/Attachment/${id}`
+  },
+  CONTACT_MESSAGE: {
+  GET_ALL: `${API_BASE_URL}/ContactMessage`,
+  GET_BY_ID: (id: number) => `${API_BASE_URL}/ContactMessage/${id}`,
+  CREATE: `${API_BASE_URL}/ContactMessage/submit`,
+  MARK_AS_READ: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-read`,
+  MARK_AS_REPLIED: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-replied`,
+},
+ DAILY_NEWS: {
+    GET_ALL: `${API_BASE_URL}/DailyNews`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+    CREATE: `${API_BASE_URL}/DailyNews`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DailyNews/${id}`,
+  },
+   MANAGING_COMMITTEE: {
+    GET_ALL: `${API_BASE_URL}/ManagingComitee`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
+    CREATE: `${API_BASE_URL}/ManagingComitee`,
+    UPDATE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/ManagingComitee/${id}`,
+    UPLOAD_IMAGE:`${API_BASE_URL}/ManagingComitee/upload-image`,
+  },
+  PUBLIC_PAGE: {
+    GET_ALL: `${API_BASE_URL}/PublicPage/public/home`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
+    CREATE: `${API_BASE_URL}/PublicPage`,
+    UPDATE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
+  },
+  DAY_QUOTE: {
+    GET_ALL: `${API_BASE_URL}/DayQuote`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
+    CREATE: `${API_BASE_URL}/DayQuote`,
+    UPDATE: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
+  },
+   REPORTS:{
     GET_ALL:`${API_BASE_URL}/Report`,
     CREATE:`${API_BASE_URL}/Report`,
     GET_BY_ID:(id: number) => `${API_BASE_URL}/Report/${id}`,
     UPDATE:(id: number)=> `${API_BASE_URL}/Report/${id}`,
     DELETE:(id: number)=>`${API_BASE_URL}/Report/${id}`,
   },
-  REPORT_TYPE:{
-    GET_ALL:`${API_BASE_URL}/ReportType`,
-    CREATE:`${API_BASE_URL}/ReportType`,
-    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
-    UPDATE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
-    DELETE:(id:number) => `${API_BASE_URL}/ReportType/${id}`,
+    SUPPORT_TICKET: {
+    GET_ALL: `${API_BASE_URL}/SupportTicket`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
+    CREATE: `${API_BASE_URL}/SupportTicket`,
+    UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
-
-  REPORT_ENGINE:{
-    GET_ALL:`${API_BASE_URL}/ReportEngine`,
-    CREATE:`${API_BASE_URL}/ReportEngine`,
-    GET_BY_ID:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
-    UPDATE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
-    DELETE:(id:number) => `${API_BASE_URL}/ReportEngine/${id}`,
+  // May delete later
+  MAIN_PAGE: {
+    GET_ALL: `${API_BASE_URL}/MainPage`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
+    CREATE: `${API_BASE_URL}/MainPage`,
+    UPDATE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
   },
-
+  USER_ROLE_RIGHT: {
+    GET_ALL: `${API_BASE_URL}/UserRoleRight`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
+    CREATE: `${API_BASE_URL}/UserRoleRight`,
+    UPDATE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
+  },
+  CIRCLE_STATE: {
+    GET_ALL: `${API_BASE_URL}/CircleState`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
+    CREATE: `${API_BASE_URL}/CircleState`,
+    UPDATE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
+  },
+    CUSTOMER: {
+    GET_ALL: `${API_BASE_URL}/Customer`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/Customer/${id}`,
+    CREATE: `${API_BASE_URL}/Customer`,
+    UPDATE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
+    DELETE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
+  },
   //------------------------PUBLIC MODULE----------------------------------------
   PUBLIC: {
     GET_ALL_DAYQUOTE: `${API_BASE_URL}/Public/dayquotes`,
@@ -240,25 +252,7 @@ export const API_ENDPOINTS = {
     GET_ALL_ATTACHMENTS: `${API_BASE_URL}/Public/attachment`,
     GET_ATTACHMENTS_BY_ID: (id: number)=> `${API_BASE_URL}/Public/download/${id}`,
   },
-
-  PUBLIC_PAGE: {
-    GET_ALL: `${API_BASE_URL}/PublicPage/public/home`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
-    CREATE: `${API_BASE_URL}/PublicPage`,
-    UPDATE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
-  },
-
-CONTACT_MESSAGE: {
-  GET_ALL: `${API_BASE_URL}/ContactMessage`,
-  GET_BY_ID: (id: number) => `${API_BASE_URL}/ContactMessage/${id}`,
-  CREATE: `${API_BASE_URL}/ContactMessage/submit`,
-  MARK_AS_READ: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-read`,
-  MARK_AS_REPLIED: (id: number) => `${API_BASE_URL}/ContactMessage/${id}/mark-replied`,
-},
-
 };
-
 
 // ✅ Helper function to get full image URL - FIXED VERSION
 export const getFullImageUrl = (imagePath: string | null | undefined): string => {
