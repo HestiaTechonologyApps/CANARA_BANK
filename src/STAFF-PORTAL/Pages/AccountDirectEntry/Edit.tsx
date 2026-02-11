@@ -1,5 +1,3 @@
-// src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryEdit.tsx
-
 import React, { useState } from "react";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
@@ -13,7 +11,6 @@ import type { AccountDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributio
 import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
 
-
 const StaffAccountDirectEntryEdit: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
@@ -24,15 +21,11 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
- // const toIso = (v?: string) => (v ? `${v}T00:00:00` : null);
-
  const toIso = (v?: string) => {
   if (!v) return null;
   
-  // Create date object from input value
   const date = new Date(v + 'T00:00:00');
   
-  // Return ISO string in local timezone (not UTC)
   const offset = date.getTimezoneOffset();
   const localDate = new Date(date.getTime() - (offset * 60 * 1000));
   
@@ -41,7 +34,7 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
 
 const fromIso = (isoString?: string) => {
   if (!isoString) return '';
-  return isoString.split('T')[0]; // Returns YYYY-MM-DD
+  return isoString.split('T')[0]; 
 };
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
@@ -119,7 +112,6 @@ entry.ddIbaDate = fromIso(entry.ddIbaDate);
       approvedBy: formData.approvedBy || "",
       approvedDate: formData.approvedDate || "",
       isApproved: formData.isApproved === true,
-
       ...(formData.isApproved && {
         approvedByUserId: 1,
         approvedDateString: toIso(formData.approvedDate),
@@ -162,22 +154,29 @@ entry.ddIbaDate = fromIso(entry.ddIbaDate);
         onUpdate={handleUpdate}
         paramName="accountsDirectEntryID"
         popupHandlers={popupHandlers}
-        auditLogConfig={{
-          tableName: "ACCOUNT_DIRECT_ENTRY",
-          recordIdField: "accountsDirectEntryID",
-        }}
+        auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID", }}
         themeColor="#1B3763"
       />
-
-      <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} showAddButton={false} />
-      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} showAddButton={false} />
-      <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} showAddButton={false} />
+      <MemberPopup 
+       show={showMemberPopup} 
+       handleClose={() => setShowMemberPopup(false)} 
+       onSelect={setSelectedMember} 
+       showAddButton={false} />
+      <BranchPopup 
+       show={showBranchPopup} 
+       handleClose={() => setShowBranchPopup(false)} 
+       onSelect={setSelectedBranch} 
+       showAddButton={false} />
+      <MonthPopup 
+       show={showMonthPopup} 
+       handleClose={() => setShowMonthPopup(false)} 
+       onSelect={setSelectedMonth} 
+       showAddButton={false} />
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
         onSelect={setSelectedYearMaster}
-        showAddButton={false}
-      />
+        showAddButton={false}/>
     </>
   );
 };

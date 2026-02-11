@@ -1,5 +1,3 @@
-// src/Pages/Settings/AccountSettings.tsx
-// SOLUTION 2: Don't use disabled form fields for display - use regular text/cards instead
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import toast from "react-hot-toast";
@@ -71,7 +69,6 @@ const AccountSettings: React.FC = () => {
     );
   }
 
-  // Only password fields - no user info fields
   const fields: Field[] = [
     { name: "oldPassword", rules: { type: "password", label: "Current Password", required: true, minLength: 6, placeholder: "Enter current password", colWidth: 4 } },
     { name: "newPassword", rules: { type: "password", label: "New Password", required: true, minLength: 6, placeholder: "Enter new password", colWidth: 4 } },

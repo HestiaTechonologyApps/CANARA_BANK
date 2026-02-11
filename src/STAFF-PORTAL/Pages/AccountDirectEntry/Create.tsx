@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryCreate.tsx
 import React, { useEffect, useState } from "react";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
@@ -23,7 +22,6 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
-  // AUTO-POPULATE MEMBER FROM LOCAL STORAGE
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {

@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryList.tsx
 import React from "react";
 import KiduServerTableList from "../../../Components/KiduServerTableList";
 import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributions/AccountDirectEntry.services";
@@ -16,9 +15,7 @@ const columns = [
 
 const StaffAccountDirectEntryList: React.FC = () => {
 
-  // Fetch service - returns all data
   const fetchService = async () => {
-    // Get logged-in memberId from localStorage
     const storedUser = localStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const staffId = parsedUser?.memberId;
@@ -26,13 +23,10 @@ const StaffAccountDirectEntryList: React.FC = () => {
     if (!staffId) {
       return [];
     }
-    
-    // Fetch entries by staffId
     const response = await AccountDirectEntryService.getAccountDirectEntryByStaffId(staffId);
     return response.value ?? [];
   };
 
-  // Transform data - normalize/fallback fields
   const transformData = (entries: any[]) => {
     return entries.map((e: any) => ({
       ...e,

@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Components/Accounts/AccountDirectEntryView.tsx
 import React from "react";
 import type { ViewField } from "../../../ADMIN-PORTAL/Components/KiduView";
 import AccountDirectEntryService from "../../Services/AccountDirectEntry.services";

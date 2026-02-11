@@ -23,10 +23,7 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
 
   const userName = parsedUser?.userName || "—";
   const staffNo = parsedUser?.staffNo ?? "—";
- const profilePic = parsedUser?.profileImageSrc
-  ? getFullImageUrl(parsedUser.profileImageSrc)
-  : profiledefaultImg;
-
+  const profilePic = parsedUser?.profileImageSrc ? getFullImageUrl(parsedUser.profileImageSrc) : profiledefaultImg;
 
   const handleLogout = () => {
     setShowLogoutModal(true);

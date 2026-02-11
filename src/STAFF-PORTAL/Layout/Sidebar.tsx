@@ -13,8 +13,6 @@ const ICON_SIZE = 16;
 const StaffSidebar = ({ open }: Props) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  // GET memberId from localStorage (ADDED)
   const storedUser = localStorage.getItem("user");
   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
   const memberId = parsedUser?.memberId;
