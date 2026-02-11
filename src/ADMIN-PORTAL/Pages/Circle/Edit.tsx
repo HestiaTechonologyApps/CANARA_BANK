@@ -86,10 +86,7 @@ const CircleEdit: React.FC = () => {
         paramName="circleId"
         navigateBackPath="/dashboard/settings/circle-list"
         loadingText="Loading Circle..."
-        auditLogConfig={{
-          tableName: "Circle",
-          recordIdField: "circleId",
-        }}
+        auditLogConfig={{ tableName: "Circle", recordIdField: "circleId", }}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
       />

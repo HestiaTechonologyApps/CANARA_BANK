@@ -24,7 +24,6 @@ const DirectPaymentCreate: React.FC = () => {
   if (!selectedMember) {
     throw new Error("Please select a member");
   }
-
   const payload = {
     memberId: selectedMember.memberId,
     amount: Number(formData.amount),
@@ -73,9 +72,7 @@ const DirectPaymentCreate: React.FC = () => {
         navigateOnSuccess="/dashboard/contributions/directpayment-list"
         themeColor="#1B3763"
          popupHandlers={popupHandlers}
-         options={{
-          paymentMode: paymentModeOptions,
-         }}
+         options={{ paymentMode: paymentModeOptions, }}
       />
       <MemberPopup
         show={showMemberPopup}

@@ -49,7 +49,6 @@ const AccountDirectEntryEdit: React.FC = () => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
     if (!entry) return response;
-
     if (entry.memberId) setSelectedMember((await MemberService.getMemberById(entry.memberId)).value);
     if (entry.branchId) setSelectedBranch((await BranchService.getBranchById(entry.branchId)).value);
     if (entry.monthCode) setSelectedMonth((await MonthService.getMonthById(entry.monthCode)).value);
@@ -85,12 +84,8 @@ const AccountDirectEntryEdit: React.FC = () => {
       ddIbaDateString: `${formData.ddIbaDate}T00:00:00`, 
       amt: Number(formData.amt),
       approvedBy: formData.approvedBy || undefined,
-      approvedDate: formData.approvedDate
-        ? `${formData.approvedDate}T00:00:00`
-        : undefined,
-      approvedDateString: formData.approvedDate
-        ? `${formData.approvedDate}T00:00:00`
-        : undefined,
+      approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
+      approvedDateString: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
       isApproved: Boolean(formData.isApproved),
       enrl: formData.enrl || "",
       fine: formData.fine || "",
@@ -132,7 +127,6 @@ const AccountDirectEntryEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
       />
-
       <MemberPopup 
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 

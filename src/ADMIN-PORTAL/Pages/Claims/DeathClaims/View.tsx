@@ -78,19 +78,13 @@ const formatDateOnly = (value?: string | Date) => {
       editRoute="/dashboard/claims/deathclaims-edit"
       listRoute="/dashboard/claims/deathclaims-list"
       paramName="deathClaimId"
-      auditLogConfig={{
-        tableName: "DeathClaim",
-        recordIdField: "deathClaimId",
-      }}
+      auditLogConfig={{ tableName: "DeathClaim", recordIdField: "deathClaimId", }}
       themeColor="#1B3763"
       loadingText="Loading death claim..."
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this death claim? This action cannot be undone."
-      attachmentConfig={{
-          tableName: "DeathClaim",
-          recordIdField:"deathClaimId"
-        }}
+      attachmentConfig={{ tableName: "DeathClaim", recordIdField:"deathClaimId" }}
     />
   );
 };

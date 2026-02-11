@@ -41,7 +41,6 @@ const RefundContributionEdit: React.FC = () => {
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
     { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
-
   ];
 
   const typeOptions = [
@@ -51,7 +50,6 @@ const RefundContributionEdit: React.FC = () => {
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
-
   const handleFetch = async (id: string) => {
     const response = await RefundContributionService.getRefundContributionById(Number(id));
     const refund = response.value;
@@ -133,7 +131,6 @@ const RefundContributionEdit: React.FC = () => {
     onOpen: () => setShowYearMasterPopup(true),
   },
   };
-
   return (
     <>
       <KiduEdit
@@ -152,10 +149,7 @@ const RefundContributionEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
         themeColor="#1B3763"
-        attachmentConfig={{
-          tableName: "RefundContribution",
-          recordIdField: "refundContributionId"
-        }}
+        attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
       />
       <StatePopup 
        show={showStatePopup} 

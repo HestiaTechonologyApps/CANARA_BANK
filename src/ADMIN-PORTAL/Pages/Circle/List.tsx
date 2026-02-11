@@ -13,7 +13,6 @@ const CircleList: React.FC = () => {
         ]);
 
         const stateMap = new Map(states.map(s => [s.stateId, s.name]));
-
         return circles.map(circle => ({
           ...circle,
           stateName: stateMap.get(circle.stateId) || "N/A",

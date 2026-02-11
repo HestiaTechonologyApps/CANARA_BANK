@@ -46,10 +46,7 @@ const CircleView: React.FC = () => {
       editRoute="/dashboard/settings/circle-edit"
       listRoute="/dashboard/settings/circle-list"
       paramName="circleId"
-      auditLogConfig={{
-        tableName: "Circle",
-        recordIdField: "circleId",
-      }}
+      auditLogConfig={{ tableName: "Circle", recordIdField: "circleId", }}
       themeColor="#1B3763"
       loadingText="Loading circle details..."
       showEditButton={true}

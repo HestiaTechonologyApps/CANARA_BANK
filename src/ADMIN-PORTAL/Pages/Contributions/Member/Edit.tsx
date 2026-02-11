@@ -15,7 +15,6 @@ import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import profiledefaultimg from "../../../Assets/Images/profile.jpg";
 
 const MemberEdit: React.FC = () => {
-
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
@@ -53,13 +52,11 @@ const MemberEdit: React.FC = () => {
     { value: "1", label: "Female" },
     { value: "2", label: "Others" }
   ];
-
   // Union Member options
   const unionMemberOptions = [
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" }
   ];
-
   //nominee Relation options
   const nomineeRelationOptions = [
     {value:"Spouse", label: "Spouse"},
@@ -194,25 +191,15 @@ const MemberEdit: React.FC = () => {
         paramName="memberId"
         submitButtonText="Update Member"
         showResetButton
-        imageConfig={{
-          fieldName: "profileImage",
-          defaultImage: profiledefaultimg,
-          label: "Profile Picture",
-          editable: true,
-        }}
+        imageConfig={{ fieldName: "profileImage", defaultImage: profiledefaultimg, label: "Profile Picture", editable: true,}}
         successMessage="Member updated successfully!"
         errorMessage="Failed to update member. Please try again."
         navigateBackPath="/dashboard/contributions/member-list"
         auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
-        options={{
-          genderId: genderOptions,
-          unionMember: unionMemberOptions,
-          nomineeRelation: nomineeRelationOptions
-        }}
+        options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions }}
       />
-
       <BranchPopup 
         show={showBranchPopup} 
         handleClose={() => setShowBranchPopup(false)} 

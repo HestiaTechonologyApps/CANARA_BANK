@@ -30,13 +30,11 @@ const ContactMessageList: React.FC = () => {
       /* ================= ROUTES ================= */
       viewRoute="/dashboard/cms/ContactMessage-view"
       // No editRoute - only view button will show
-
       /* ================= FEATURES ================= */
       showAddButton={false}
       showExport={true}
       showSearch={true}
       showActions={true}
-
       /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />

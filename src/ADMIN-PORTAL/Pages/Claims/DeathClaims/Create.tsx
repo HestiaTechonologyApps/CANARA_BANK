@@ -50,21 +50,16 @@ const DeathClaimCreate: React.FC = () => {
       stateId: selectedState.stateId,
       memberId: selectedMember.memberId,
       designationId: selectedDesignation.designationId,
-
       deathDate: toIso(formData.deathDate),
       deathDateString: toIso(formData.deathDate),
-
       nominee: String(formData.nominee || "").trim(),
       nomineeRelation: formData.nomineeRelation,
       nomineeIDentity: String(formData.nomineeIDentity || "").trim(),
-
       ddno: String(formData.ddno || "").trim(),
       dddate: toIso(formData.dddate),
       dddateString: toIso(formData.dddate),
-
       amount: Number(formData.amount),
       lastContribution: Number(formData.lastContribution || 0),
-
       yearOF: selectedYearMaster.yearOf,
     };
 
@@ -123,7 +118,6 @@ const DeathClaimCreate: React.FC = () => {
         navigateOnSuccess="/dashboard/claims/deathclaims-list"
         themeColor="#1B3763"
       />
-
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
@@ -132,7 +126,6 @@ const DeathClaimCreate: React.FC = () => {
           setShowStatePopup(false);
         }}
       />
-
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
@@ -141,7 +134,6 @@ const DeathClaimCreate: React.FC = () => {
           setShowMemberPopup(false);
         }}
       />
-
       <DesignationPopup
         show={showDesignationPopup}
         handleClose={() => setShowDesignationPopup(false)}
@@ -150,7 +142,6 @@ const DeathClaimCreate: React.FC = () => {
           setShowDesignationPopup(false);
         }}
       />
-
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}

@@ -88,7 +88,6 @@ const DeathClaimEdit: React.FC = () => {
     }
 
 const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
-  
   deathClaimId: Number(id),
   staffNo: String(selectedMember.staffNo),
   memberId: selectedMember.memberId,
@@ -104,7 +103,6 @@ const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
   lastContribution: Number(formData.lastContribution || 0),
   yearOF: selectedYearMaster.yearOf,
 };
-
     await DeathClaimService.updateDeathClaim(Number(id), payload);
   };
 
@@ -174,35 +172,28 @@ const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
         onSelect={(s) => {
           setSelectedState(s);
           setShowStatePopup(false);
-        }}
-      />
-
+        }}/>
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={(m) => {
           setSelectedMember(m);
           setShowMemberPopup(false);
-        }}
-      />
-
+        }} />
       <DesignationPopup
         show={showDesignationPopup}
         handleClose={() => setShowDesignationPopup(false)}
         onSelect={(d) => {
           setSelectedDesignation(d);
           setShowDesignationPopup(false);
-        }}
-      />
-
+        }} />
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
         onSelect={(y) => {
           setSelectedYearMaster(y);
           setShowYearMasterPopup(false);
-        }}
-      />
+        }}/>
     </>
   );
 };

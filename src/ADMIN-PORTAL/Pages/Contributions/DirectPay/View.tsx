@@ -16,7 +16,6 @@ const DirectPaymentView: React.FC = () => {
 
 const handleFetch = async (id: string) => {
   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
-
   if (response.value?.paymentDatestring) {
     response.value.paymentDatestring =
       new Date(response.value.paymentDatestring).toLocaleDateString("en-IN");
@@ -38,10 +37,7 @@ const handleFetch = async (id: string) => {
       paramName="directPaymentId"
       listRoute="/dashboard/contributions/directpayment-list"
       editRoute="/dashboard/contributions/directpayment-edit"
-      auditLogConfig={{
-        tableName: "DirectPayment",
-        recordIdField: "directPaymentId",
-      }}
+      auditLogConfig={{ tableName: "DirectPayment", recordIdField: "directPaymentId", }}
       themeColor="#1B3763"
       showEditButton={true}
       showDeleteButton={true}

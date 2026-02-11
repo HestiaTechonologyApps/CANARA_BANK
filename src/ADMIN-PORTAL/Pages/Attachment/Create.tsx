@@ -12,7 +12,7 @@ const AttachmentCreate: React.FC = () => {
   const handleSubmit = async (formData: Record<string, any>) => {
     const formDataPayload = new FormData();
 
-    formDataPayload.append("file", formData.file); // File object
+    formDataPayload.append("file", formData.file); 
     formDataPayload.append("tableName", "public");
     formDataPayload.append("recordId", "0");
     formDataPayload.append("description", formData.description);

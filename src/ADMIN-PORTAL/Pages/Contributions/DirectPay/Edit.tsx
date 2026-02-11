@@ -7,7 +7,6 @@ import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberPopup from "../Member/MemberPopup";
 
 const DirectPaymentEdit: React.FC = () => {
-
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
@@ -30,7 +29,6 @@ const handleFetch = async (id: string) => {
     name: payment.memberName || "",
   } as unknown as Member);
  }
-
   return response;
 };
 
@@ -56,7 +54,6 @@ const handleFetch = async (id: string) => {
 
   await DirectPaymentService.updateDirectPayment(Number(id), payload);
 };
-
 
   const popupHandlers = {
     memberId: {
@@ -90,15 +87,10 @@ const handleFetch = async (id: string) => {
         navigateBackPath="/dashboard/contributions/directpayment-list"
         successMessage="Direct Payment updated successfully!"
         errorMessage="Failed to update Direct Payment"
-        auditLogConfig={{
-          tableName: "DirectPayment",
-          recordIdField: "directPaymentId",
-        }}
+        auditLogConfig={{ tableName: "DirectPayment", recordIdField: "directPaymentId", }}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
-         options={{
-          paymentMode: paymentModeOptions,
-         }}
+        options={{ paymentMode: paymentModeOptions, }}
       />
       <MemberPopup
         show={showMemberPopup}
@@ -106,8 +98,7 @@ const handleFetch = async (id: string) => {
         onSelect={(member) => {
           setSelectedMember(member);
           setShowMemberPopup(false);
-        }}
-      />
+        }}/>
     </>
   );
 };

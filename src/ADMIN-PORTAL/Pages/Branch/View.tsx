@@ -37,10 +37,7 @@ const BranchView: React.FC = () => {
       editRoute="/dashboard/settings/branch-edit"
       listRoute="/dashboard/settings/branch-list"
       paramName="branchId"
-      auditLogConfig={{
-        tableName: "Branch",
-        recordIdField: "branchId",
-      }}
+      auditLogConfig={{ tableName: "Branch", recordIdField: "branchId",}}
       themeColor="#1B3763"
       loadingText="Loading branch details..."
       showEditButton={true}

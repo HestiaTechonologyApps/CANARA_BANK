@@ -29,10 +29,7 @@ const AttachmentView: React.FC = () => {
       paramName="attachmentId"
       listRoute="/dashboard/cms/attachments-list"
       editRoute="/dashboard/cms/attachments-edit"
-      auditLogConfig={{
-        tableName: "Attachment",
-        recordIdField: "attachmentId",
-      }}
+      auditLogConfig={{ tableName: "Attachment", recordIdField: "attachmentId", }}
       themeColor="#1B3763"
       loadingText="Loading attachment details..."
       showEditButton={true}

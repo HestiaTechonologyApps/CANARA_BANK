@@ -42,14 +42,8 @@ const RefundContributionView: React.FC = () => {
       paramName="refundContributionId"
       listRoute="/dashboard/claims/refundcontribution-list"
       editRoute="/dashboard/claims/refundcontribution-edit"
-      auditLogConfig={{
-        tableName: "RefundContribution",
-        recordIdField: "refundContributionId",
-      }}
-      attachmentConfig={{
-    tableName: "RefundContribution",
-    recordIdField: "refundContributionId"
-  }}
+      auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId", }}
+      attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
       themeColor="#1B3763"
       loadingText="Loading Refund details..."
       showEditButton={true}

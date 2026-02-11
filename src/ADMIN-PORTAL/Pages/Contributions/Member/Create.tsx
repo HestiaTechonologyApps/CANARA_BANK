@@ -14,7 +14,6 @@ import StatusPopup from "../../Settings/Status/StatusPopup";
 import profiledefaultimg from "../../../Assets/Images/profile.jpg"
 
 const MemberCreate: React.FC = () => {
-
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showCategoryPopup, setShowCategoryPopup] = useState(false);
@@ -117,13 +116,11 @@ const MemberCreate: React.FC = () => {
     { value: 1, label: "Female" },
     { value: 2, label: "Others" }
   ];
-
   // Union Member options
   const unionMemberOptions = [
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" }
   ];
-
   //nominee Relation options
   const nomineeRelationOptions = [
     {value:"Spouse", label: "Spouse"},
@@ -145,24 +142,15 @@ const MemberCreate: React.FC = () => {
         onSubmit={handleSubmit}
         submitButtonText="Create Member"
         showResetButton
-         imageConfig={{
-          fieldName: "profileImage",
-          defaultImage: profiledefaultimg,
-          label: "Profile Picture",
-        }}
+         imageConfig={{ fieldName: "profileImage", defaultImage: profiledefaultimg, label: "Profile Picture", }}
         successMessage="Member created successfully!"
         errorMessage="Failed to create member. Please try again."
         navigateOnSuccess="/dashboard/contributions/member-list"
         navigateDelay={1200}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
-        options={{
-          genderId: genderOptions,
-          unionMember: unionMemberOptions,
-          nomineeRelation: nomineeRelationOptions,
-        }}
+        options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions,}}
       />
-
       <BranchPopup 
         show={showBranchPopup} 
         handleClose={() => setShowBranchPopup(false)} 

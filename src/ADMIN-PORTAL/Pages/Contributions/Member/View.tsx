@@ -37,10 +37,7 @@ const handleFetch = async (memberId: string) => {
   if (response.value) {
     // Profile image
     response.value.profileImageSrc = response.value.profileImageSrc
-      ? getFullImageUrl(response.value.profileImageSrc)
-      : defaultProfileImage;
-
-    // ✅ Date-only formatting
+      ? getFullImageUrl(response.value.profileImageSrc) : defaultProfileImage;
     response.value.dobString = formatDateOnly(response.value.dobString);
     response.value.dojString = formatDateOnly(response.value.dojString);
     response.value.dojtoSchemeString = formatDateOnly(response.value.dojtoSchemeString);
@@ -62,13 +59,7 @@ const handleFetch = async (memberId: string) => {
       editRoute="/dashboard/contributions/member-edit"
       listRoute="/dashboard/contributions/member-list"
       paramName="memberId"
-      imageConfig={{
-        fieldName: "profileImageSrc",
-        defaultImage: defaultProfileImage,
-        showNameField: "name",
-        showIdField: "staffNo",
-        isCircle: true
-      }}
+      imageConfig={{ fieldName: "profileImageSrc", defaultImage: defaultProfileImage, showNameField: "name", showIdField: "staffNo", isCircle: true }}
       auditLogConfig={{ tableName: "Member", recordIdField: "memberId" }}
       themeColor="#1B3763"
       loadingText="Loading member details..."

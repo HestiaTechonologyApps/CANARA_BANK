@@ -18,15 +18,12 @@ const MemberCreateModal: React.FC<MemberCreateModalProps> = ({
     { name: "staffNo", label: "Staff No", type: "number", required: true },
     { name: "name", label: "Name", type: "text", required: true, minLength: 2, maxLength: 150 },
     { name: "genderId", label: "Gender ID", type: "number", required: true },
-
     { name: "designationId", label: "Designation ID", type: "number", required: true },
     { name: "categoryId", label: "Category ID", type: "number", required: true },
     { name: "branchId", label: "Branch ID", type: "number", required: true },
-
     { name: "dob", label: "Date of Birth", type: "date", required: true },
     { name: "doj", label: "Date of Joining", type: "date", required: true },
     { name: "dojtoScheme", label: "DOJ to Scheme", type: "date", required: true },
-
     { name: "statusId", label: "Status ID", type: "number", required: true },
   ];
 

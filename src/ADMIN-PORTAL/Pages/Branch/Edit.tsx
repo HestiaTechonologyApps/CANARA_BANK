@@ -118,7 +118,6 @@ const BranchEdit: React.FC = () => {
         auditLogConfig={{ tableName: "Branch", recordIdField: "branchId" }}
         themeColor="#1B3763"
       />
-
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
@@ -128,7 +127,6 @@ const BranchEdit: React.FC = () => {
           setShowStatePopup(false);
         }}
       />
-
       <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}

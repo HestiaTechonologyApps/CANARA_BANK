@@ -46,7 +46,6 @@ const AccountDirectEntryCreate: React.FC = () => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
-
     await AccountDirectEntryService.createAccountDirectEntry({
       memberId: selectedMember.memberId,
       memberName: selectedMember.name,
@@ -62,12 +61,8 @@ const AccountDirectEntryCreate: React.FC = () => {
       amt: Number(formData.amt),
       status: formData.status,
       approvedBy: formData.approvedBy || undefined,
-      approvedDate: formData.approvedDate
-        ? `${formData.approvedDate}T00:00:00`
-        : undefined,
-      approvedDateString: formData.approvedDate
-        ? `${formData.approvedDate}T00:00:00`
-        : undefined,
+      approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
+      approvedDateString: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
       isApproved: Boolean(formData.isApproved),
       enrl: formData.enrl || "",
       fine: formData.fine || "",
@@ -118,7 +113,6 @@ const AccountDirectEntryCreate: React.FC = () => {
         themeColor="#1B3763"
         options={{ status: statusOptions }}
       />
-
       <MemberPopup 
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 

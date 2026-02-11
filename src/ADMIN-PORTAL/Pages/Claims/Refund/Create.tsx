@@ -124,33 +124,28 @@ const popupHandlers = {
         onSelect={(s) => {
           setSelectedState(s);
           setShowStatePopup(false);
-        }}
-      />
+        }} />
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={(m) => {
           setSelectedMember(m);
           setShowMemberPopup(false);
-        }}
-      />
+        }} />
       <DesignationPopup
         show={showDesignationPopup}
         handleClose={() => setShowDesignationPopup(false)}
         onSelect={(d) => {
           setSelectedDesignation(d);
           setShowDesignationPopup(false);
-        }}
-      />
+        }}/>
      <YearMasterPopup
        show={showYearMasterPopup}
        handleClose={() => setShowYearMasterPopup(false)}
        onSelect={(y) => {
         setSelectedYearMaster(y);
         setShowYearMasterPopup(false);
-     }}
-     />
-
+     }} />
     </>
   );
 };
