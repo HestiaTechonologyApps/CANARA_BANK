@@ -8,8 +8,8 @@ import KiduEdit from "../../../Components/KiduEdit";
 const DesignationEdit: React.FC = () => {
 
   const fields: Field[] = [
-  { name: "name", rules: { type: "text", label: "Designation Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter designation name", colWidth: 12 } },
-  { name: "description", rules: { type: "text", label: "Description", required: false, maxLength: 500, placeholder: "Enter description", colWidth: 12 } }
+  { name: "name", rules: { type: "text", label: "Designation Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter designation name", colWidth: 6 } },
+  { name: "description", rules: { type: "text", label: "Description", required: false, maxLength: 500, placeholder: "Enter description", colWidth: 6 } }
 ];
 
   const handleFetch = async (designationId: string) => {
