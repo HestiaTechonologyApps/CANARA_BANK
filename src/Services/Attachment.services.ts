@@ -59,13 +59,11 @@ class AttachmentService {
     );
   }
 
-  // ✅ CORRECTED UPDATE METHOD
   static async updateAttachment(
     attachmentId: number,
     data: Partial<Attachment>
   ): Promise<Attachment> {
     
-    // Remove undefined, null, and empty values
     const cleanData = Object.fromEntries(
       Object.entries(data).filter(([_, value]) => 
         value !== undefined && 
@@ -83,7 +81,6 @@ class AttachmentService {
       "PUT",
       cleanData
     );
-
     return response.value;
   }
 }

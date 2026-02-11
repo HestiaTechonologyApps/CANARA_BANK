@@ -1,10 +1,8 @@
-
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { AuditLogResponse, AuditTrails } from "../Types/AuditLog.types";
 import HttpService from "./HttpService";
  
 class AuditLogService {
- 
   static async getByTableAndId(
     tableName: string,
     recordId: number | string
@@ -14,7 +12,6 @@ class AuditLogService {
       "GET"
     );
   }
- 
  
   static async getLogsFromModel(
     model: Pick<AuditTrails, "tableName" | "recordID">

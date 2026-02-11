@@ -1,10 +1,6 @@
-// src/services/PublicService.ts
-
 export const PublicService = {
 
-    /* ===========================
-    NAVBAR (PUBLIC)
-    =========================== */
+    /* ============ NAVBAR (PUBLIC) =========== */
     navbar: {
         brand: {
             title: "Canara Bank Employees’ Union",
@@ -22,14 +18,12 @@ export const PublicService = {
             { label: "Claims Settled", route: "/claims" },
             { label: "Contact", route: "/contact-us" },
         ],
-
         auth: {
             loginButton: {
                 label: "Members Login",
                 iconclass: "bi bi-box-arrow-in-right me-2",
             },
         },
-
         contactStrip: {
             phone: {
                 iconclass: "bi bi-telephone-fill me-1",
@@ -41,22 +35,17 @@ export const PublicService = {
             },
         },
     },
-    /* ===========================
-    HOME PAGE 
-    =========================== */
+    /* ========== HOME PAGE ========= */
     home: {
         hero: {
             badge: "✨ Celebrating 50 Years of Service",
-
             title: {
                 line1: "Supporting Our",
                 highlight: "Bank Family",
                 line3: "For 50 Years",
             },
-
             description:
                 "A Unit of Canara Bank Employees' Union, dedicated to the welfare of our members and their families through the Golden Jubilee Family Welfare Scheme.",
-
             buttons: {
                 primary: {
                     label: "Become a Member",
@@ -67,12 +56,10 @@ export const PublicService = {
                     route: "/about-us",
                 },
             },
-
             image: {
                 alt: "Happy retired bank employees celebrating together",
             },
         },
-
         features: {
             heading: {
                 label: "Our Commitment",
@@ -80,7 +67,6 @@ export const PublicService = {
                 subtitle:
                     "For five decades, we have been providing essential support to bank employees and their families.",
             },
-
             items: [
                 {
                     icon: "FaHeart",
@@ -131,13 +117,11 @@ export const PublicService = {
                 { value: "₹1250", label: "Monthly Pension", variant: "secondary" },
             ],
         },
-
         news: {
             heading: {
                 label: "Stay Informed",
                 title: "Latest News & Updates",
             },
-
             items: [
                 {
                     date: "December 2025",
@@ -158,7 +142,6 @@ export const PublicService = {
                         "Over 200 claims successfully processed this quarter, benefiting families across Kerala.",
                 },
             ],
-
             sidebar: {
                 quoteTitle: "Every Day is an AIBEA Day",
                 quoteText:
@@ -175,9 +158,7 @@ export const PublicService = {
             },
         },
     },
-    /* ===========================
-    NEWS PAGE 
-    =========================== */
+    /* ============ NEWS PAGE ============ */
     newsPage: {
         hero: {
             tag: "Stay Informed",
@@ -185,7 +166,6 @@ export const PublicService = {
             subtitle:
                 "Stay updated with the latest news, announcements, and activities from the Golden Jubilee Family Welfare Scheme.",
         },
-
         breadcrumb: {
             homeLabel: "Home",
             currentLabel: "News & Updates",
@@ -197,42 +177,33 @@ export const PublicService = {
         },
     },
 
-    /* ===========================
-    ABOUT PAGE 
-    =========================== */
+    /* =========== ABOUT PAGE =========== */
     about: {
         header: {
             title: "About Us",
             subtitle: "50 years of dedicated service to bank employees and their families",
         },
-
         mission: {
             title: "Our Mission",
             icon: "bi bi-heart-fill",
             description:
                 "To extend a helping hand to the families of our deceased colleagues by providing financial assistance through lumpsum relief and monthly pension, ensuring their welfare and dignity during difficult times.",
         },
-
         vision: {
             title: "Our Vision",
             icon: "bi bi-bullseye",
             description:
                 "To create a strong community of bank employees united in their commitment to support one another, ensuring that no family is left without support in their hour of need.",
         },
-
         history: {
             title: "Our History",
             icon: "bi bi-clock-history",
             paragraphs:
             {
                 paragraph1: "The Scheme was launched at Thiruvananthapuram on December 18, 2002 by the then General Secretary of Canara Bank Employees’ Union Com A N Balasubramanian…",
-
                 paragraph2: " The Rules and Regulations for the Scheme were formulated by the Central Committee held at Goa on 29th and 30th June 2002…",
-
                 paragraph3: " The Scheme was launched with a humble refundable contribution of Rs. 50/- per month…",
-
                 paragraph4: "The Scheme also gives monthly pension of upto Rs. 1250/-…",
-
                 paragraph5: "  We salute all the members of the Scheme who have joined in this noble task…",
             }
             ,
@@ -240,42 +211,30 @@ export const PublicService = {
         },
     },
 
-    /* ===========================
-    RULES & REGULATIONS 
-    =========================== */
+    /* ============ RULES & REGULATIONS ============ */
     rules: {
         header: {
             title: "Rules & Regulations",
             subtitle:
                 "Complete guidelines for the Golden Jubilee Family Welfare Scheme",
         },
-
         preamble: {
             title: "Preamble",
             paragraphs:
             {
-                paragraph1: "WHEREAS the General Body Meeting of Canara Bank Employee’s Union (Regd),(hereinafter referred to as the “Union”), at its 21st Conference held at Chennai from 5th to 8th January 2002 had resolved unanimously to constitute a Scheme, to provide financial assistance to the family of deceased members of Scheme, and",
-
+                paragraph1: "WHEREAS the General Body Meeting of Canara Bank Employee's Union (Regd),(hereinafter referred to as the “Union”), at its 21st Conference held at Chennai from 5th to 8th January 2002 had resolved unanimously to constitute a Scheme, to provide financial assistance to the family of deceased members of Scheme, and",
                 paragraph2: "WHEREAS the said General Body Meeting had approved the salient features of the said Scheme, and",
-
                 paragraph3: " WHEREAS for the proper administration of the scheme, it is necessary to frame Rules and Regulations to govern and regulate the operation of the Scheme and the disbursement of relief to the beneficiaries and matters connected therewith, and",
-
-                paragraph4: "WHEREAS the General Body Meeting of Canara Bank Employee’s Union, at its 22nd Conference held at Hyderabad from 4th to 7th March 2006 had resolved unanimously to improve the existing financial assistance to the family of deceased members of Scheme, by increasing the subscription with effect from January 1, 2007, and",
-
+                paragraph4: "WHEREAS the General Body Meeting of Canara Bank Employee's Union, at its 22nd Conference held at Hyderabad from 4th to 7th March 2006 had resolved unanimously to improve the existing financial assistance to the family of deceased members of Scheme, by increasing the subscription with effect from January 1, 2007, and",
                 paragraph5: "WHEREAS the said General Body Meeting had approved the modifications to the salient features of the said Scheme,",
-
                 paragraph6: "NOW THEREFORE in pursuance of the aforesaid objectives, the following Rules and Regulations are framed:"
-            }
-            ,
+            },
         },
-
         sections: [
             {
                 number: 1,
                 title: "Name of the Scheme",
-                content: [
-                    "Name of the fund shall be “Canara Bank Employees’ Union Golden Jubilee Family Welfare Scheme - a unit of Canara Bank Employees Union”, which in the following Rules and Regulations, is referred to as the “Scheme”.",
-                ],
+                content: [ "Name of the fund shall be “Canara Bank Employees’ Union Golden Jubilee Family Welfare Scheme - a unit of Canara Bank Employees Union”, which in the following Rules and Regulations, is referred to as the “Scheme”.", ],
             },
             {
                 number: 2,
@@ -298,10 +257,10 @@ export const PublicService = {
                 number: 4,
                 title: "Managing Committee",
                 list: {
-                    line1: "President – General Secretary of Union (Ex Officio)",
-                    line2: "Secretary – Nominated by CC",
-                    line3: "Treasurer – Nominated by CC",
-                    line4: "Four other members – Nominated by CC",
+                    line1: "President  General Secretary of Union (Ex Officio)",
+                    line2: "Secretary  Nominated by CC",
+                    line3: "Treasurer  Nominated by CC",
+                    line4: "Four other members  Nominated by CC",
                 },
                 footer:
                     "The Committee shall meet once every six months or more if necessary. Decisions are taken by majority.",
@@ -314,58 +273,42 @@ export const PublicService = {
             {
                 number: 6,
                 title: "President",
-                content: [
-                    "The President will preside over meetings and may take emergency measures subject to reporting to CC.",
-                ],
+                content: [ "The President will preside over meetings and may take emergency measures subject to reporting to CC.",],
             },
             {
                 number: 7,
                 title: "Secretary",
-                content: [
-                    "Responsible for correspondence, meetings, minutes, supervision of affairs, and duties assigned by committee.",
-                ],
+                content: [ "Responsible for correspondence, meetings, minutes, supervision of affairs, and duties assigned by committee.",],
             },
             {
                 number: 8,
                 title: "Treasurer",
-                content: [
-                    "Maintains books, prepares annual balance sheet, and presents accounts for approval.",
-                ],
+                content: [ "Maintains books, prepares annual balance sheet, and presents accounts for approval.", ],
             },
             {
                 number: 9,
                 title: "Administrative Office",
-                content: [
-                    "Located at “Balakrishna Menon Smarakam”, Ambujavilasam Road, Thiruvananthapuram - 695001.",
-                ],
+                content: [ "Located at “Balakrishna Menon Smarakam”, Ambujavilasam Road, Thiruvananthapuram - 695001.", ],
             },
             {
                 number: 10,
                 title: "Funds",
-                content: [
-                    "Administered by the Administrative Office under control of Managing Committee.",
-                ],
+                content: ["Administered by the Administrative Office under control of Managing Committee.",],
             },
             {
                 number: 11,
                 title: "Accounts",
-                content: [
-                    "Scheme shall have its own bank account with Canara Bank.",
-                ],
+                content: ["Scheme shall have its own bank account with Canara Bank.", ],
             },
             {
                 number: 12,
                 title: "Membership",
-                content: [
-                    "Membership open to employees of Canara Bank under age 58 who are Union members.",
-                ],
+                content: ["Membership open to employees of Canara Bank under age 58 who are Union members.", ],
             },
             {
                 number: 13,
                 title: "Subscription",
-                content: [
-                    "Rs. 50/month for old members; Rs. 100/month from 1 Jan 2007.",
-                ],
+                content: [ "Rs. 50/month for old members; Rs. 100/month from 1 Jan 2007.",],
             },
             {
                 number: 14,
@@ -380,93 +323,69 @@ export const PublicService = {
             {
                 number: 15,
                 title: "Readmission",
-                content: [
-                    "Members may be readmitted upon payment of arrears, interest, and readmission fee.",
-                ],
+                content: [ "Members may be readmitted upon payment of arrears, interest, and readmission fee.",],
             },
             {
                 number: 16,
                 title: "Entitlement of Benefits",
-                content: [
-                    "Lump sum relief varies between Rs. 30,000 to Rs. 50,000 depending on subscription.",
-                    "Monthly pension varies from Rs. 500 to Rs. 750 based on criteria.",
-                ],
+                content: [ "Lump sum relief varies between Rs. 30,000 to Rs. 50,000 depending on subscription.",
+                    "Monthly pension varies from Rs. 500 to Rs. 750 based on criteria.", ],
             },
             {
                 number: 17,
                 title: "Nomination",
-                content: [
-                    "Each member nominates up to three beneficiaries in order of precedence.",
-                ],
+                content: [ "Each member nominates up to three beneficiaries in order of precedence.",],
             },
             {
                 number: 18,
                 title: "Distribution of Benefits",
-                content: [
-                    "Claims processed by Administrative Office after verification.",
-                ],
+                content: [ "Claims processed by Administrative Office after verification.",],
             },
             {
                 number: 19,
                 title: "Representation",
-                content: [
-                    "Secretary is authorized to file or face legal proceedings.",
-                ],
+                content: [ "Secretary is authorized to file or face legal proceedings.", ],
             },
             {
                 number: 20,
                 title: "Place of Suing",
-                content: [
-                    "Jurisdiction restricted to courts in Thiruvananthapuram.",
-                ],
+                content: [ "Jurisdiction restricted to courts in Thiruvananthapuram.", ],
             },
             {
                 number: 21,
                 title: "Assets",
-                content: [
-                    "All properties vest with the Scheme under the Managing Committee.",
-                ],
+                content: [ "All properties vest with the Scheme under the Managing Committee." ],
             },
             {
                 number: 22,
                 title: "Accounts (Audit)",
-                content: [
-                    "Accounts audited annually by Chartered Accountants.",
-                ],
+                content: [ "Accounts audited annually by Chartered Accountants.", ],
             },
             {
                 number: 23,
                 title: "Amendments",
-                content: [
-                    "Rules may be amended only by the Central Committee of the Union.",
-                ],
+                content: [ "Rules may be amended only by the Central Committee of the Union.", ],
             },
             {
                 number: 24,
                 title: "Dissolution",
-                content: [
-                    "Upon dissolution, funds are distributed proportionally to members.",
-                ],
+                content: [ "Upon dissolution, funds are distributed proportionally to members.", ],
             },
         ],
     },
 
-    /* ===========================
-    DOWNLOADS
-    =========================== */
+    /* =========== DOWNLOADS ========== */
     downloads: {
         header: {
             title: "Downloads",
             subtitle:
                 "Access all forms and documents related to the Golden Jubilee Family Welfare Scheme",
         },
-
         card: {
             title: "Download Files",
             iconclass: "bi bi-folder2-open icon-header me-2",
             downloadicon:""
         },
-
         files: [
             {
                 title: "APPLICATION FOR MEMBERSHIP",
@@ -489,22 +408,18 @@ export const PublicService = {
                 fileUrl: "/downloads/Claim_form.pdf",
             },
         ],
-
         footer: {
             supportButtonText: "Contact Support",
         },
     },
 
-    /* ===========================
-    MANAGING COMMITTEE 
-    =========================== */
+    /* =========== MANAGING COMMITTEE ============ */
     managingCommittee: {
         header: {
             title: "Managing Committee",
             subtitle:
                 "Meet the dedicated team leading the Golden Jubilee Family Welfare Scheme",
         },
-
         members: [
             {
                 name: "K SRIKRISHNA",
@@ -550,9 +465,7 @@ export const PublicService = {
             },
         ],
     },
-    /* ===========================
-    CLAIMS PAGE
-    =========================== */
+    /* ============ CLAIMS PAGE =========== */
     claimsPage: {
         hero: {
             title: "Claims Settled",
@@ -576,7 +489,6 @@ export const PublicService = {
                 label: "Active Members",
             },
         ],
-
         tables: {
             stateWiseTitle: "CLAIMS - STATE WISE",
             designationWiseTitle: "CLAIMS - DESIGNATION WISE",
@@ -586,7 +498,6 @@ export const PublicService = {
                 total: "Total",
             },
         },
-
         years: [
             "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013",
             "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023",
@@ -594,15 +505,12 @@ export const PublicService = {
         ],
     },
 
-    /* ===========================
-    CONTACT US PAGE
-    =========================== */
+    /* ============  CONTACT US PAGE  ============ */
     contact: {
         header: {
             title: "Contact Us",
             subtitle: "We're here to help. Reach out to us with any questions or concerns.",
         },
-
         form: {
             title: "Send us a Message",
 
@@ -629,16 +537,13 @@ export const PublicService = {
                     rows: 5,
                 },
             },
-
             submitButton: {
                 label: "Send Message",
                 iconclass: "bi bi-send me-2",
             },
         },
-
         officeInfo: {
             title: "Office Address",
-
             address: {
                 label: "Headquarters",
                 iconclass: "bi bi-geo-alt-fill",
@@ -647,23 +552,19 @@ export const PublicService = {
                     line2: "Thiruvananthapuram - 695001, Kerala",
                 },
             },
-
             phone: {
                 label: "Phone",
                 iconclass: "bi bi-telephone-fill",
                 value: "+91 98765 43210",
             },
-
             email: {
                 label: "Email",
                 iconclass: "bi bi-envelope-fill",
                 value: "canarabankemployeesunion@cbfws.org",
             },
         },
-
         officeHours: {
             title: "Office Hours",
-
             timings: [
                 {
                     day: "Monday - Friday",
@@ -681,9 +582,7 @@ export const PublicService = {
         },
     },
 
-    /* ===========================
-    FOOTER
-    =========================== */
+    /* ============= FOOTER ============ */
     footer: {
         brand: {
             shortName: "CBEU",
@@ -692,7 +591,6 @@ export const PublicService = {
                 "A Unit of Canara Bank Employees' Union, serving retired bank employees and their families since 1962.",
             logoAlt: "50 Years Logo",
         },
-
         contact: {
             contacthead: "Contact Us",
             address: {
@@ -716,25 +614,23 @@ export const PublicService = {
             { label: "Claims Settled", route: "/claims" },
             { label: "Managing Committee", route: "/managing-committee" },
         ],
-
         officeHours: {
             officehead: "Office Hours",
             weekdays: {
                 label: "Monday - Friday",
-                time: "10:00 AM – 5:00 PM",
+                time: "10:00 AM - 5:00 PM",
             },
             saturday: {
                 label: "Saturday",
-                time: "10:00 AM – 1:00 PM",
+                time: "10:00 AM - 1:00 PM",
             },
             actionButton: {
                 label: "Schedule a Visit",
             },
         },
-
         bottomBar: {
             copyright:
-                "© 2025 Canara Bank Employees’ Union - Golden Jubilee Family Welfare Scheme. All rights reserved.",
+                "© 2025 Canara Bank Employees' Union - Golden Jubilee Family Welfare Scheme. All rights reserved.",
             links: [
                 { label: "Privacy Policy", route: "/privacy-policy" },
                 { label: "Terms of Service", route: "/terms" },
@@ -742,9 +638,7 @@ export const PublicService = {
         },
     },
 
-    /* ===========================
-      PRIVACY POLICY PAGE
-      =========================== */
+    /* ============== PRIVACY POLICY PAGE =============== */
     privacyPolicy: {
         hero: {
             badge: "Your Privacy Matters",
@@ -779,7 +673,6 @@ export const PublicService = {
                     paragraph1: "The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information. If you contact us directly, we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide. When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number.",
                 }
             },
-
             {
                 heading4:
                     "4.How we use your information",
@@ -793,10 +686,7 @@ export const PublicService = {
                     line6: "Send you emails",
                     line7: "Find and prevent fraud",
                 },
-
             },
-
         ]
     }
-
 };

@@ -1,4 +1,3 @@
-// src/Services/PaginationService.ts
 import type { CustomResponse } from "../Types/ApiTypes";
 import HttpService from "./HttpService";
 

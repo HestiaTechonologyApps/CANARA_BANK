@@ -1,4 +1,3 @@
-// src/services/AuthService.ts
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { CustomResponse } from "../Types/ApiTypes";
 import type { ForgotPasswordRequest, LoginRequest, LoginResponse, RegisterRequest } from "../Types/Auth.types";
@@ -91,14 +90,12 @@ class AuthService {
     console.log('Logging out...');
     console.log('Before logout - jwt_token:', localStorage.getItem('jwt_token') !== null);
     console.log('Before logout - user:', localStorage.getItem('user') !== null);
-
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user');
     localStorage.removeItem('user_role');
     localStorage.removeItem('member_id'); // ✅ Clear memberId
     localStorage.removeItem('staff_no'); // ✅ Clear staffNo
     localStorage.removeItem('token_expires_at');
-
     console.log('After logout - jwt_token:', localStorage.getItem('jwt_token') !== null);
     console.log('After logout - user:', localStorage.getItem('user') !== null);
     console.log('Logout complete');
@@ -123,7 +120,6 @@ class AuthService {
         this.logout();
         return null;
       }
-
       return user;
     } catch (error) {
       console.error('Error parsing user from localStorage:', error);
@@ -166,7 +162,6 @@ class AuthService {
         console.log('No member ID found');
         return null;
       }
-
       const memberId = parseInt(memberIdStr, 10);
       return isNaN(memberId) ? null : memberId;
     } catch (error) {
@@ -174,7 +169,6 @@ class AuthService {
       return null;
     }
   }
-
   // ✅ NEW METHOD - Get staffNo for current user
   static getStaffNo(): number | null {
     try {

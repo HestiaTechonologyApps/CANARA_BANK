@@ -1,4 +1,3 @@
-// src/services/HttpService.ts
 export class HttpService {
   static async callApi<T>(
     endpoint: string,

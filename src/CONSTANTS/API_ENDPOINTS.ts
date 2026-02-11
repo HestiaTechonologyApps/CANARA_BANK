@@ -214,7 +214,7 @@ USER_TYPE: {
     UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
-  // May delete later
+  // Might delete later
   USER_ROLE_RIGHT: {
     GET_ALL: `${API_BASE_URL}/UserRoleRight`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
