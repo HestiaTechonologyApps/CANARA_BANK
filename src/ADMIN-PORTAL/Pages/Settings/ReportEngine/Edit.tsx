@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/ReportEngine/ReportEngineEdit.tsx
 import React from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import ReportEngineService from "../../../Services/Settings/ReportEngine.services";
@@ -58,10 +57,7 @@ const ReportEngineEdit: React.FC = () => {
       paramName="reportEngineId"
       navigateBackPath="/dashboard/settings/reportengine-list"
       loadingText="Loading Report Engine..."
-      auditLogConfig={{
-        tableName: "ReportEngine",
-        recordIdField: "reportEngineId",
-      }}
+      auditLogConfig={{ tableName: "ReportEngine", recordIdField: "reportEngineId", }}
       themeColor="#1B3763"
     />
   );

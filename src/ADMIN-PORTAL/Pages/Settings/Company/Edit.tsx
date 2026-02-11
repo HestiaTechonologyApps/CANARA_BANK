@@ -7,7 +7,6 @@ import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import companyDefaultLogo from "../../../Assets/Images/profile.jpg";
 
 const CompanyEdit: React.FC = () => {
-
   const [_isUploading, setIsUploading] = useState(false);
 
   const fields: Field[] = [
@@ -34,11 +33,10 @@ const CompanyEdit: React.FC = () => {
       ...response,
       value: {
         ...company,
-        // Keep BOTH: the original path AND the display URL
-        companyLogoSrc: company.companyLogo || "",  // ✅ Store original path
+        companyLogoSrc: company.companyLogo || "", 
         companyLogo: company.companyLogo
           ? getFullImageUrl(company.companyLogo)
-          : "",  // ✅ Display URL
+          : "",  
       },
     };
   };
@@ -61,7 +59,7 @@ const CompanyEdit: React.FC = () => {
       country: formData.country,
       zipCode: formData.zipCode,
       invoicePrefix: formData.invoicePrefix,
-      companyLogo: formData.companyLogoSrc || "",  // ✅ Use original path
+      companyLogo: formData.companyLogoSrc || "",  
       isActive: Boolean(formData.isActive),
       isDeleted: false,
     };
@@ -91,12 +89,7 @@ const CompanyEdit: React.FC = () => {
       successMessage="Company updated successfully!"
       errorMessage="Failed to update company. Please try again."
       loadingText="Loading company details..."
-      imageConfig={{
-        fieldName: "companyLogo",
-        defaultImage: companyDefaultLogo,
-        label: "Company Logo",
-        editable: true,
-      }}
+      imageConfig={{ fieldName: "companyLogo", defaultImage: companyDefaultLogo, label: "Company Logo", editable: true,}}
       themeColor="#1B3763"
     />
   );

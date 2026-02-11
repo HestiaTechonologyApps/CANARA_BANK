@@ -1,4 +1,3 @@
-// src/components/User/UserView.tsx
 import React from "react";
 import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
@@ -39,17 +38,8 @@ const UserView: React.FC = () => {
       editRoute="/dashboard/settings/user-edit"
       listRoute="/dashboard/settings/user-list"
       paramName="userId"
-      imageConfig={{
-        fieldName: "profileImage",
-        defaultImage: defaultUserImage,
-        showNameField: "userName",
-        showIdField: "userId",
-        isCircle: true,
-      }}
-      auditLogConfig={{
-        tableName: "User",
-        recordIdField: "userId",
-      }}
+      imageConfig={{ fieldName: "profileImage", defaultImage: defaultUserImage, showNameField: "userName", showIdField: "userId", isCircle: true, }}
+      auditLogConfig={{ tableName: "User", recordIdField: "userId", }}
       themeColor="#1B3763"
       loadingText="Loading user details..."
       showEditButton={true}

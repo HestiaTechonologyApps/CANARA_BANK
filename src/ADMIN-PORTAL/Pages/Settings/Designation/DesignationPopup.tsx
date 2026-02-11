@@ -1,4 +1,3 @@
-// src/components/Designation/DesignationPopup.tsx
 import KiduPopup from "../../../../Components/KiduPopup";
 import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
 import type { Designation } from "../../../Types/Settings/Designation";
@@ -34,7 +33,7 @@ const DesignationPopup: React.FC<DesignationPopupProps> = ({
       AddModalComponent={DesignationCreateModal}
       idKey="designationId"
       rowsPerPage={10}
-      searchKeys={["name", "description"]} // 🔥 ADD THIS LINE
+      searchKeys={["name", "description"]} 
       showAddButton={showAddButton}
     />
   );

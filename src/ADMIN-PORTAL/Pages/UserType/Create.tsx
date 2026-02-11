@@ -4,7 +4,6 @@ import type { Field } from "../../Components/KiduCreate";
 import type { UserType } from "../../Types/Settings/UserType.types";
 import UserTypeService from "../../Services/Settings/UserType.services";
 
-
 const UserTypeCreate: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 

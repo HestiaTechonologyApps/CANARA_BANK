@@ -16,10 +16,7 @@ const CompanyList: React.FC = () => {
         
         const transformed = companies.map(company => {
           const originalLogo = company.companyLogo;
-          const transformedLogo = company.companyLogo
-            ? getFullImageUrl(company.companyLogo)
-            : defaultCompanyLogo;
-          
+          const transformedLogo = company.companyLogo ? getFullImageUrl(company.companyLogo) : defaultCompanyLogo;
           console.log("Company ID:", company.companyId);
           console.log("Original logo:", originalLogo);
           console.log("Transformed logo:", transformedLogo);

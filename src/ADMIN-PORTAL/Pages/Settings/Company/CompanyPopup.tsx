@@ -1,4 +1,3 @@
-// src/components/Company/CompanyPopup.tsx
 import KiduPopup from "../../../../Components/KiduPopup";
 import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
 import type { Company } from "../../../Types/Settings/Company.types";
@@ -36,7 +35,7 @@ const CompanyPopup: React.FC<CompanyPopupProps> = ({
       AddModalComponent={CompanyCreateModal}
       idKey="companyId"
       rowsPerPage={10}
-      searchKeys={["comapanyName", "email", "contactNumber", "city", "state"]} // 🔥 Added searchKeys
+      searchKeys={["comapanyName", "email", "contactNumber", "city", "state"]} 
     />
   );
 };

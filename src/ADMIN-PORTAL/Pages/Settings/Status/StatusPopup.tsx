@@ -35,7 +35,7 @@ const StatusPopup: React.FC<StatusPopupProps> = ({
       AddModalComponent={StatusCreateModal}
       idKey="statusId"
       rowsPerPage={10}
-      searchKeys={["name", "abbreviation", "description"]} // 🔥 Added searchKeys
+      searchKeys={["name", "abbreviation", "description"]} 
       showAddButton={showAddButton}
     />
   );

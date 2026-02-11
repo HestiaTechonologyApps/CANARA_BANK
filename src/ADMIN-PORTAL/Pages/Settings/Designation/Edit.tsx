@@ -1,4 +1,3 @@
-// src/components/Designation/DesignationEdit.tsx
 import React from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import DesignationService from "../../../Services/Settings/Designation.services";
@@ -51,10 +50,7 @@ const DesignationEdit: React.FC = () => {
       paramName="designationId"
       navigateBackPath="/dashboard/settings/designation-list"
       loadingText="Loading Designation..."
-      auditLogConfig={{
-        tableName: "Designation",
-        recordIdField: "designationId"
-      }}
+      auditLogConfig={{ tableName: "Designation", recordIdField: "designationId" }}
       themeColor="#1B3763"
     />
   );

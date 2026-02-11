@@ -1,4 +1,3 @@
-// src/components/Designation/DesignationView.tsx
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import DesignationService from "../../../Services/Settings/Designation.services";
@@ -15,7 +14,6 @@ const DesignationView: React.FC = () => {
     const response = await DesignationService.getDesignationById(Number(designationId));
     return response;
   };
-
   const handleDelete = async (designationId: string) => {
     await DesignationService.deleteDesignation(Number(designationId));
   };
@@ -29,10 +27,7 @@ const DesignationView: React.FC = () => {
       editRoute="/dashboard/settings/designation-edit"
       listRoute="/dashboard/settings/designation-list"
       paramName="designationId"
-      auditLogConfig={{
-        tableName: "Designation",
-        recordIdField: "designationId",
-      }}
+      auditLogConfig={{ tableName: "Designation", recordIdField: "designationId", }}
       themeColor="#1B3763"
       loadingText="Loading designation details..."
       showEditButton={true}

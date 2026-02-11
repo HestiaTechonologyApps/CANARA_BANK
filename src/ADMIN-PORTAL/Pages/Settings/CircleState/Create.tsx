@@ -1,4 +1,3 @@
-// src/components/CircleState/CircleStateCreate.tsx
 import React, { useState } from "react";
 import KiduCreate from "../../../Components/KiduCreate";
 import type { Field } from "../../../Components/KiduCreate";
@@ -6,7 +5,6 @@ import CircleStateService from "../../../Services/Settings/CircleState.services"
 import type { CircleState } from "../../../Types/Settings/CircleState.types";
 
 const CircleStateCreate: React.FC = () => {
-  
   const [isLoading, setIsLoading] = useState(false);
 
   const fields: Field[] = [

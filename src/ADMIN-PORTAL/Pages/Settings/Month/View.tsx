@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/Month/MonthView.tsx
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import MonthService from "../../../Services/Settings/Month.services";
@@ -30,10 +29,7 @@ const MonthView: React.FC = () => {
       paramName="monthId"                        
       editRoute="/dashboard/settings/month-edit"
       listRoute="/dashboard/settings/month-list"
-      auditLogConfig={{
-        tableName: "Month",
-        recordIdField: "monthId",                
-      }}
+      auditLogConfig={{ tableName: "Month", recordIdField: "monthId",}}
       themeColor="#1B3763"
       loadingText="Loading month details..."
       showEditButton={true}

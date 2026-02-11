@@ -53,9 +53,7 @@ const SupportTicketCreate: React.FC = () => {
       errorMessage="Failed to create support ticket."
       navigateOnSuccess="/dashboard/supportTickets-list"
       themeColor="#1B3763"
-      options={{
-        priority: priorityOptions,
-      }}
+      options={{ priority: priorityOptions, }}
     />
   );
 };

@@ -1,4 +1,3 @@
-// src/components/YearMaster/YearMasterCreate.tsx
 import React from "react";
 import type { Field } from "../../Components/KiduCreate";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";
@@ -6,7 +5,6 @@ import YearMasterService from "../../Services/Settings/YearMaster.services";
 import KiduCreate from "../../Components/KiduCreate";
 
 const YearMasterCreate: React.FC = () => {
-
   const fields: Field[] = [
     { name: "yearName", rules: { type: "number", label: "Year", placeholder: "e.g. 2024", required: true, colWidth: 4, },},
   ];
@@ -22,7 +20,6 @@ try{
   throw error;
 }
 };
-
 
   return (
     <KiduCreate

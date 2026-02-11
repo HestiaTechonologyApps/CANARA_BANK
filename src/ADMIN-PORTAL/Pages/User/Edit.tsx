@@ -1,5 +1,3 @@
-// src/components/User/UserEdit.tsx
-
 import React, { useState } from "react";
 import KiduEdit from "../../Components/KiduEdit";
 import type { Field } from "../../Components/KiduEdit";
@@ -41,13 +39,10 @@ const UserEdit: React.FC = () => {
   const response = await UserService.getUserById(Number(id));
   const user = response.value;
 
-  // ✅ hydrate company popup
   if (user.companyId) {
     const companyRes = await CompanyService.getCompanyById(user.companyId);
     setSelectedCompany(companyRes.value);
   }
-
-  // ✅ hydrate staff popup (NO getMemberByStaffNo needed)
   if (user.staffNo) {
     const members = await MemberService.getAllMembers();
     const member = members.find(m => m.staffNo === user.staffNo);
@@ -55,10 +50,8 @@ const UserEdit: React.FC = () => {
       setSelectedMember(member);
     }
   }
-
   return response;
 };
-
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedCompany) throw new Error("Please select a company");
@@ -113,24 +106,20 @@ const UserEdit: React.FC = () => {
         options={{ role: roleOptions }}
         themeColor="#1B3763"
       />
-
       <CompanyPopup
         show={showCompanyPopup}
         handleClose={() => setShowCompanyPopup(false)}
         onSelect={(company) => {
           setSelectedCompany(company);
           setShowCompanyPopup(false);
-        }}
-      />
-
+        }}/>
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={(member) => {
           setSelectedMember(member);
           setShowMemberPopup(false);
-        }}
-      />
+        }} />
     </>
   );
 };

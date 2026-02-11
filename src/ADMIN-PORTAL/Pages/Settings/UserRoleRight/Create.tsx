@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/UserRoleRight/UserRoleRightCreate.tsx
 import React from "react";
 import KiduCreate from "../../../Components/KiduCreate";
 import type { Field } from "../../../Components/KiduCreate";
@@ -13,10 +12,9 @@ const UserRoleRightCreate: React.FC = () => {
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    // Do NOT omit controllerNameString if you're sending it
     const payload: Omit<UserRoleRight, "userRoleRightId" | "auditLogs"> = {
       controllerName: formData.controllerName.trim(),
-      controllerNameString: formData.controllerName.trim(), // keep if your API expects this mirror
+      controllerNameString: formData.controllerName.trim(), 
       actionName: formData.actionName.trim(),
       userTypeID: Number(formData.userTypeID),
     };
@@ -25,15 +23,14 @@ const UserRoleRightCreate: React.FC = () => {
 
   return (
    <KiduCreate
-  title="Create User Role Right"
-  fields={fields}
-  onSubmit={handleSubmit}
-  successMessage="User Role Right created successfully!"
-  errorMessage="Failed to create User Role Right. Please try again."
-  navigateOnSuccess="/dashboard/settings/userroleright-list"
-  themeColor="#1B3763"
-/>
-
+      title="Create User Role Right"
+      fields={fields}
+      onSubmit={handleSubmit}
+      successMessage="User Role Right created successfully!"
+      errorMessage="Failed to create User Role Right. Please try again."
+      navigateOnSuccess="/dashboard/settings/userroleright-list"
+      themeColor="#1B3763"
+      />
   );
 };
 

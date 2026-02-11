@@ -3,7 +3,6 @@ import type { ViewField } from "../../../Components/KiduView";
 import KiduView from "../../../Components/KiduView";
 import StatusService from "../../../Services/Settings/Status.services";
 
-
 const StatusView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "statusId", label: "Status ID", icon: "bi-hash" },
@@ -31,10 +30,7 @@ const StatusView: React.FC = () => {
       editRoute="/dashboard/settings/status-edit"
       listRoute="/dashboard/settings/status-list"
       paramName="statusId"
-      auditLogConfig={{
-        tableName: "Status",
-        recordIdField: "statusId",
-      }}
+      auditLogConfig={{ tableName: "Status", recordIdField: "statusId", }}
       themeColor="#1B3763"
       loadingText="Loading status details..."
       showEditButton={true}

@@ -29,10 +29,7 @@ const StateView: React.FC = () => {
       paramName="stateId"
       editRoute="/dashboard/settings/state-edit"
       listRoute="/dashboard/settings/state-list"
-      auditLogConfig={{ 
-        tableName: "State",
-        recordIdField: "stateId" 
-      }}
+      auditLogConfig={{  tableName: "State", recordIdField: "stateId" }}
       showEditButton={true}
       showDeleteButton={true}
       loadingText="Loading month details..."

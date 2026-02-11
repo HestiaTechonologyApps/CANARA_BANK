@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/UserRoleRight/UserRoleRightEdit.tsx
 import React from "react";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Field } from "../../../Components/KiduEdit";

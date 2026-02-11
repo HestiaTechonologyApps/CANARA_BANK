@@ -46,10 +46,7 @@ const handleFetch = async (id: string) => {
       editRoute="/dashboard/settings/reportType-edit"
       listRoute="/dashboard/settings/reportType-list"
       paramName="reportTypeId"
-      auditLogConfig={{
-        tableName: "ReportType",
-        recordIdField: "reportTypeId",
-      }}
+      auditLogConfig={{ tableName: "ReportType", recordIdField: "reportTypeId",}}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton

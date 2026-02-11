@@ -61,9 +61,7 @@ const groupIdOptions = [
       errorMessage="Failed to create status. Please try again."
       navigateOnSuccess="/dashboard/settings/status-list"
       themeColor="#1B3763"
-      options={{
-        groupId: groupIdOptions
-      }}
+      options={{ groupId: groupIdOptions }}
     />
   );
 };

@@ -1,4 +1,3 @@
-// src/components/YearMaster/YearMasterCreateModal.tsx
 import type { Field } from "../../../Components/KiduCreateModal";
 import KiduCreateModal from "../../../Components/KiduCreateModal";
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";

@@ -18,9 +18,7 @@ const DesignationCreate: React.FC = () => {
         name: formData.name.trim(),
         description: formData.description?.trim() || ""
       };
-
       await DesignationService.createDesignation(designationData);
-
     } catch (error: any) {
       console.error("Error creating designation:", error);
       throw error;

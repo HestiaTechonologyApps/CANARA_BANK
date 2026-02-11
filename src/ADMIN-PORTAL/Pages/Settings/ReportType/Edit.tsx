@@ -40,10 +40,7 @@ const ReportTypeEdit: React.FC = () => {
       loadingText="Loading report type details..."
       paramName="reportTypeId"
       navigateBackPath="/dashboard/settings/reportType-list"
-      auditLogConfig={{
-        tableName: "ReportType",
-        recordIdField: "reportTypeId",
-      }}
+      auditLogConfig={{ tableName: "ReportType", recordIdField: "reportTypeId", }}
       themeColor="#1B3763"
     />
   );

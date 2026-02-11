@@ -1,4 +1,3 @@
-// src/components/Category/CategoryView.tsx
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import CategoryService from "../../../Services/Settings/Category.services";
@@ -29,10 +28,7 @@ const CategoryView: React.FC = () => {
       editRoute="/dashboard/settings/category-edit"
       listRoute="/dashboard/settings/category-list"
       paramName="categoryId"
-      auditLogConfig={{
-        tableName: "Category",
-        recordIdField: "categoryId",
-      }}
+      auditLogConfig={{ tableName: "Category", recordIdField: "categoryId", }}
       themeColor="#1B3763"
       loadingText="Loading category details..."
       showEditButton={true}

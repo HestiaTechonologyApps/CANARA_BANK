@@ -74,11 +74,7 @@ const CompanyCreate: React.FC = () => {
       submitButtonText="Create Company"
       loadingState={isLoading || isUploading}
       showResetButton
-      imageConfig={{
-        fieldName: "companyLogo",
-        defaultImage: companyDefaultLogo,
-        label: "Company Logo",
-      }}
+      imageConfig={{ fieldName: "companyLogo", defaultImage: companyDefaultLogo, label: "Company Logo", }}
       navigateOnSuccess="/dashboard/settings/company-list"
       successMessage="Company created successfully!"
       errorMessage="Failed to create company. Please try again."

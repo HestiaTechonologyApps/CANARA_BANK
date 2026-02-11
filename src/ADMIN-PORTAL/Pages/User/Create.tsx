@@ -1,4 +1,3 @@
-// src/components/User/UserCreate.tsx
 import React, { useState } from "react";
 import KiduCreate from "../../Components/KiduCreate";
 import type { Field } from "../../Components/KiduCreate";
@@ -46,7 +45,7 @@ const UserCreate: React.FC = () => {
       userName: formData.userName.trim(),
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
-      memberId: selectedMember.memberId, // ✅ ADD THIS - Automatically set from selected member
+      memberId: selectedMember.memberId, 
       phoneNumber: formData.phoneNumber.trim(),
       address: formData.address?.trim() || "",
       passwordHash: formData.passwordHash,
@@ -57,7 +56,6 @@ const UserCreate: React.FC = () => {
       role: formData.role.trim(),
       companyId: selectedCompany.companyId,
     };
-    
     await UserService.createUser(userData);
   };
 
@@ -67,7 +65,6 @@ const UserCreate: React.FC = () => {
       onOpen: () => setShowCompanyPopup(true),
     },
     staffNo: {
-      // ✅ UPDATED - Show both staffNo and memberId when selected
       value: selectedMember 
         ? `${selectedMember.staffNo} - ${selectedMember.name} (Member ID: ${selectedMember.memberId})` 
         : "",
@@ -90,21 +87,17 @@ const UserCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{ role: roleOptions }}
       />
-
       <CompanyPopup
         show={showCompanyPopup}
         handleClose={() => setShowCompanyPopup(false)}
         onSelect={(company) => {
           setSelectedCompany(company);
           setShowCompanyPopup(false);
-        }}
-      />
-
+        }} />
       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
         onSelect={(member) => {
-          // ✅ When member is selected, both staffNo and memberId are automatically available
           setSelectedMember(member);
           setShowMemberPopup(false);
           console.log('Selected Member:', {
@@ -112,8 +105,7 @@ const UserCreate: React.FC = () => {
             memberId: member.memberId,
             name: member.name
           });
-        }}
-      />
+        }}/>
     </>
   );
 };

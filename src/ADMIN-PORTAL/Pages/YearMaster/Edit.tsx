@@ -1,4 +1,3 @@
-// src/components/YearMaster/YearMasterEdit.tsx
 import React from "react";
 import type { Field } from "../../Components/KiduEdit";
 import KiduEdit from "../../Components/KiduEdit";
@@ -7,23 +6,20 @@ import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 
 const YearMasterEdit: React.FC = () => {
 
-  /* ================= FIELDS ================= */
   const fields: Field[] = [
     { name: "yearName", rules: { type: "number",  label: "Year Name", required: true, colWidth: 6, }, },
   ];
 
-  /* ================= FETCH ================= */
   const handleFetch = async (yearOf: string) => {
     try {
       const response = await YearMasterService.getYearMasterById(Number(yearOf));
-      return response; // ✅ REQUIRED for KiduEdit
+      return response; 
     } catch (error: any) {
       console.error("Error fetching year master:", error);
       throw error;
     }
   };
 
-  /* ================= UPDATE ================= */
   const handleUpdate = async (yearOf: string, formData: Record<string, any>) => {
     try {
       const yearData: Omit<YearMaster, "auditLogs"> = {
@@ -32,7 +28,7 @@ const YearMasterEdit: React.FC = () => {
       };
 
       await YearMasterService.updateYearMaster(Number(yearOf), yearData);
-      return true; // ✅ REQUIRED
+      return true; 
     } catch (error: any) {
       console.error("Error updating year master:", error);
       throw error;

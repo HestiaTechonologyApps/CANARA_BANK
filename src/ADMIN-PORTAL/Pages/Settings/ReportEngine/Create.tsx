@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/ReportEngine/ReportEngineCreate.tsx
 import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import ReportEngineService from "../../../Services/Settings/ReportEngine.services";

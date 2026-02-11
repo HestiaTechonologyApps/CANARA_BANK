@@ -5,7 +5,6 @@ import CategoryService from "../../../Services/Settings/Category.services";
 import KiduCreate from "../../../Components/KiduCreate";
 
 const CategoryCreate: React.FC = () => {
-
   const fields: Field[] = [
     { name: "name", rules: { type: "text", label: "Category Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter category name", colWidth: 6 } },
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, placeholder: "Enter abbreviation", colWidth: 6 } }

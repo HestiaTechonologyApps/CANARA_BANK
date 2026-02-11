@@ -49,13 +49,7 @@ const CompanyView: React.FC = () => {
       editRoute="/dashboard/settings/company-edit"
       listRoute="/dashboard/settings/company-list"
       paramName="companyId"
-      imageConfig={{
-        fieldName: "companyLogo",
-        defaultImage: defaultCompanyLogo,
-        showNameField: "comapanyName",
-        showIdField: "companyId",
-        isCircle: true,
-      }}
+      imageConfig={{ fieldName: "companyLogo", defaultImage: defaultCompanyLogo, showNameField: "comapanyName", showIdField: "companyId", isCircle: true, }}
       themeColor="#1B3763"
       loadingText="Loading company details..."
       showEditButton={true}

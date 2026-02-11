@@ -22,15 +22,12 @@ const StateEdit: React.FC = () => {
   };
 
   const handleUpdate = async (stateId: string, formData: Record<string, any>) => {
-    // ✅ Trim inputs before sending
     const stateData: Omit<State, "auditLogs"> = {
       stateId: Number(stateId),
       name: formData.name?.trim() || "",
       abbreviation: formData.abbreviation?.trim() || "",
       isActive: Boolean(formData.isActive),
     };
-
-    // ✅ This will throw an error if duplicate exists
     await StateService.updateState(Number(stateId), stateData);
   };
 
@@ -43,7 +40,7 @@ const StateEdit: React.FC = () => {
       submitButtonText="Update State"
       showResetButton
       successMessage="State updated successfully!"
-      errorMessage="Failed to update state. Please try again" // ✅ This will be overridden by API error
+      errorMessage="Failed to update state. Please try again" 
       paramName="stateId"
       navigateBackPath="/dashboard/settings/state-list"
       loadingText="Loading State..."

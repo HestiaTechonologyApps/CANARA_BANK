@@ -5,7 +5,6 @@ import UserTypeService from "../../Services/Settings/UserType.services";
 import type { UserType } from "../../Types/Settings/UserType.types";
 
 const UserTypeEdit: React.FC = () => {
-
   const fields: Field[] = [
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 2, maxLength: 50, colWidth: 6, },},
     { name: "description", rules: { type: "text", label: "Description", required: true, minLength: 2, maxLength: 150, colWidth: 6, },},
@@ -42,10 +41,7 @@ const UserTypeEdit: React.FC = () => {
       paramName="userTypeId"
       navigateBackPath="/dashboard/settings/usertype-list"
       loadingText="Loading User Type..."
-      auditLogConfig={{
-        tableName: "UserType",
-        recordIdField: "userTypeId",
-      }}
+      auditLogConfig={{ tableName: "UserType", recordIdField: "userTypeId",}}
       themeColor="#1B3763"
     />
   );

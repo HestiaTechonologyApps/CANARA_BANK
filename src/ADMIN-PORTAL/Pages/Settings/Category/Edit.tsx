@@ -50,10 +50,7 @@ const CategoryEdit: React.FC = () => {
       paramName="categoryId"
       navigateBackPath="/dashboard/settings/category-list"
       loadingText="Loading Category..."
-      auditLogConfig={{
-        tableName: "Category",
-        recordIdField: "categoryId"
-      }}
+      auditLogConfig={{ tableName: "Category", recordIdField: "categoryId" }}
       themeColor="#1B3763"
     />
   );

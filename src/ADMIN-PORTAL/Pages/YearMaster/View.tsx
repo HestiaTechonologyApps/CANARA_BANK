@@ -1,10 +1,7 @@
-// src/components/YearMaster/YearMasterView.tsx
-
 import React from "react";
 import type { ViewField } from "../../Components/KiduView";
 import YearMasterService from "../../Services/Settings/YearMaster.services";
 import KiduView from "../../Components/KiduView";
-
 
 const fields: ViewField[] = [
   { key: "yearOf", label: "Year", icon: "bi-hash" },

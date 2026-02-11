@@ -10,7 +10,6 @@ const StateCreate: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active"}},
   ];
   const handleSubmit = async (formData: Record<string, any>) => {
-    // Trim the inputs before sending
     const payload = {
       stateId: 0,
       name: formData.name?.trim() || "",
@@ -18,9 +17,6 @@ const StateCreate: React.FC = () => {
       isActive: Boolean(formData.isActive),
       isDeleted: false
     };
-
-    // ✅ This will now throw an error if duplicate exists
-    // The error will be caught by KiduCreate and displayed to user
     await StateService.createState(payload);
   };
 

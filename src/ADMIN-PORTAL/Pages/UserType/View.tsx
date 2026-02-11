@@ -3,7 +3,6 @@ import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
 import UserTypeService from "../../Services/Settings/UserType.services";
 
-
 const UserTypeView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "userTypeId", label: "User Type ID", icon: "bi-hash" },
@@ -29,10 +28,7 @@ const UserTypeView: React.FC = () => {
       editRoute="/dashboard/settings/usertype-edit"
       listRoute="/dashboard/settings/usertype-list"
       paramName="userTypeId"
-      auditLogConfig={{
-        tableName: "UserType",
-        recordIdField: "userTypeId",
-      }}
+      auditLogConfig={{ tableName: "UserType", recordIdField: "userTypeId", }}
       themeColor="#1B3763"
       loadingText="Loading User Type details..."
       showEditButton={true}

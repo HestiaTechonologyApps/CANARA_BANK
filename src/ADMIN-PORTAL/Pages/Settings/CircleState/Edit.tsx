@@ -1,4 +1,3 @@
-// src/components/CircleState/CircleStateEdit.tsx
 import React from "react";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Field } from "../../../Components/KiduEdit";
@@ -38,10 +37,7 @@ const CircleStateEdit: React.FC = () => {
       successMessage="Circle state updated successfully!"
       errorMessage="Failed to update circle state. Please try again."
       loadingText="Loading circle state..."
-      auditLogConfig={{
-        tableName: "CircleState",
-        recordIdField: "id",
-      }}
+      auditLogConfig={{ tableName: "CircleState", recordIdField: "id", }}
       themeColor="#1B3763"
     />
   );

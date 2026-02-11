@@ -1,4 +1,3 @@
-// src/components/YearMaster/YearMasterPopup.tsx
 import KiduPopup from "../../../Components/KiduPopup";
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";

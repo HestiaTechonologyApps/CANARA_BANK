@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/UserRoleRight/UserRoleRightView.tsx
 import React from "react";
 import KiduView from "../../../Components/KiduView";
 import UserRoleRightService from "../../../Services/Settings/UserRoleRight.services";

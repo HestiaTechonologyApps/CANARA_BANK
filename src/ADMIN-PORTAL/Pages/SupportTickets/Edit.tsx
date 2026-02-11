@@ -1,5 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Support/SupportTicketEdit.tsx
-
 import React from "react";
 import type { Field } from "../../Components/KiduEdit";
 import SupportTicketService from "../../Services/SupportTicket/SupportTicket.services";
@@ -11,7 +9,6 @@ const SupportTicketEdit: React.FC = () => {
     { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4 } },
     { name: "priority", rules: { type: "select", label: "Priority", required: true, colWidth: 4 } },
     { name: "duration", rules: { type: "text", label: "Duration", required: true, colWidth: 4 } },
-
     { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
     { name: "developerRemark", rules: { type: "textarea", label: "Developer Remark", colWidth: 6 } },
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
@@ -40,7 +37,6 @@ const SupportTicketEdit: React.FC = () => {
       approvedDate: formData.approvedDate,
       approvedDateSting: formData.approvedDateSting,
     };
-
     await SupportTicketService.updateSupportTicket(Number(id), payload);
   };
 
@@ -58,9 +54,7 @@ const SupportTicketEdit: React.FC = () => {
       navigateBackPath="/dashboard/supportTickets-list"
       auditLogConfig={{ tableName: "SupportTicket", recordIdField: "supportTicketId" }}
       themeColor="#1B3763"
-      options={{
-        priority: priorityOptions,
-      }}
+      options={{ priority: priorityOptions, }}
     />
   );
 };

@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/ReportEngine/ReportEngineList.tsx
 import React from "react";
 import ReportEngineService from "../../../Services/Settings/ReportEngine.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";

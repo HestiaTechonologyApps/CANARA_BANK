@@ -4,7 +4,6 @@ import type { Status } from "../../../Types/Settings/Status.types";
 import KiduEdit from "../../../Components/KiduEdit";
 import StatusService from "../../../Services/Settings/Status.services";
 
-
 const StatusEdit: React.FC = () => {
 
   const fields: Field[] = [
@@ -61,14 +60,9 @@ const groupIdOptions = [
       paramName="statusId"
       navigateBackPath="/dashboard/settings/status-list"
       loadingText="Loading Status..."
-      auditLogConfig={{
-        tableName: "Status",
-        recordIdField: "statusId"
-      }}
+      auditLogConfig={{ tableName: "Status", recordIdField: "statusId" }}
       themeColor="#1B3763"
-      options={{
-        groupId: groupIdOptions
-      }}
+      options={{ groupId: groupIdOptions}}
     />
   );
 };

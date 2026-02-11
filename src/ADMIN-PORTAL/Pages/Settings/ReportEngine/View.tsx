@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Pages/Settings/ReportEngine/ReportEngineView.tsx
 import React from "react";
 import type { ViewField } from "../../../Components/KiduView";
 import ReportEngineService from "../../../Services/Settings/ReportEngine.services";
@@ -33,10 +32,7 @@ const ReportEngineView: React.FC = () => {
       paramName="reportEngineId"
       editRoute="/dashboard/settings/reportengine-edit"
       listRoute="/dashboard/settings/reportengine-list"
-      auditLogConfig={{
-        tableName: "ReportEngine",
-        recordIdField: "reportEngineId",
-      }}
+      auditLogConfig={{ tableName: "ReportEngine", recordIdField: "reportEngineId",}}
       themeColor="#1B3763"
       loadingText="Loading report engine details..."
       showEditButton={true}
