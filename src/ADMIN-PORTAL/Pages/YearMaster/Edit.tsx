@@ -5,15 +5,23 @@ import YearMasterService from "../../Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 
 const YearMasterEdit: React.FC = () => {
-
   const fields: Field[] = [
-    { name: "yearName", rules: { type: "number",  label: "Year Name", required: true, colWidth: 6, }, },
+    { 
+      name: "yearName", 
+      rules: { 
+        type: "number", 
+        label: "Year", 
+        required: true, 
+        colWidth: 6,
+        placeholder: "e.g. 2024"
+      }
+    },
   ];
 
   const handleFetch = async (yearOf: string) => {
     try {
       const response = await YearMasterService.getYearMasterById(Number(yearOf));
-      return response; 
+      return response;
     } catch (error: any) {
       console.error("Error fetching year master:", error);
       throw error;
@@ -21,18 +29,24 @@ const YearMasterEdit: React.FC = () => {
   };
 
   const handleUpdate = async (yearOf: string, formData: Record<string, any>) => {
-    try {
-      const yearData: Omit<YearMaster, "auditLogs"> = {
-        yearOf: Number(yearOf),
-        yearName: Number(formData.yearName),
-      };
-
-      await YearMasterService.updateYearMaster(Number(yearOf), yearData);
-      return true; 
-    } catch (error: any) {
-      console.error("Error updating year master:", error);
-      throw error;
+    // Validate year format
+    const year = Number(formData.yearName);
+    
+    if (isNaN(year)) {
+      throw new Error("Please enter a valid year");
     }
+    
+    if (year < 1900 || year > 2100) {
+      throw new Error("Year must be between 1900 and 2100");
+    }
+
+    const yearData: Omit<YearMaster, "auditLogs"> = {
+      yearOf: Number(yearOf),
+      yearName: year,
+    };
+
+    // ✅ This will throw an error if duplicate or validation fails
+    await YearMasterService.updateYearMaster(Number(yearOf), yearData);
   };
 
   return (
@@ -42,14 +56,17 @@ const YearMasterEdit: React.FC = () => {
       onFetch={handleFetch}
       onUpdate={handleUpdate}
       submitButtonText="Update Year"
-      showResetButton={true}
+      showResetButton
       successMessage="Year updated successfully!"
       errorMessage="Failed to update year. Please try again."
       paramName="yearOf"
       themeColor="#1B3763"
       navigateBackPath="/dashboard/settings/yearMaster-list"
       loadingText="Loading Year..."
-     // auditLogConfig={{ tableName: "YearMaster",recordIdField: "yearOf", }}
+      auditLogConfig={{ 
+        tableName: "YearMaster",
+        recordIdField: "yearOf" 
+      }}
     />
   );
 };

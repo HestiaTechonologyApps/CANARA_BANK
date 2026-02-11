@@ -6,20 +6,39 @@ import KiduCreate from "../../Components/KiduCreate";
 
 const YearMasterCreate: React.FC = () => {
   const fields: Field[] = [
-    { name: "yearName", rules: { type: "number", label: "Year", placeholder: "e.g. 2024", required: true, colWidth: 4, },},
+    { 
+      name: "yearName", 
+      rules: { 
+        type: "number", 
+        label: "Year", 
+        placeholder: "e.g. 2024", 
+        required: true, 
+        colWidth: 6,
+        minLength: 4,
+        maxLength: 4
+      }
+    },
   ];
 
-const handleSubmit = async (formData: Record<string, any>) => {
-try{
-  const yearData: Omit<YearMaster, "yearOf" | "auditLogs"> = {
-    yearName: Number(formData.yearName),
+  const handleSubmit = async (formData: Record<string, any>) => {
+    // Validate year format
+    const year = Number(formData.yearName);
+    
+    if (isNaN(year)) {
+      throw new Error("Please enter a valid year");
+    }
+    
+    if (year < 1900 || year > 2100) {
+      throw new Error("Year must be between 1900 and 2100");
+    }
+
+    const yearData: Omit<YearMaster, "yearOf" | "auditLogs"> = {
+      yearName: year,
+    };
+    
+    // ✅ This will throw an error if duplicate or validation fails
+    await YearMasterService.createYearMaster(yearData);
   };
-  await YearMasterService.createYearMaster(yearData);
-} catch (error:any){
-  console.error("Error creating year master:", error);
-  throw error;
-}
-};
 
   return (
     <KiduCreate
@@ -27,9 +46,9 @@ try{
       fields={fields}
       onSubmit={handleSubmit}
       submitButtonText="Create Year"
-      showResetButton={true}
+      showResetButton
       successMessage="Year created successfully!"
-      errorMessage="Failed to create year"
+      errorMessage="Failed to create year. Please try again."
       navigateOnSuccess="/dashboard/settings/yearMaster-list"
       themeColor="#1B3763"
     />

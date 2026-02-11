@@ -34,6 +34,12 @@ const YearMasterService = {
       "POST",
       data
     );
+    
+    // ✅ CRITICAL: Check if API returned error (duplicate or validation error)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to create year");
+    }
+    
     return response.value;
   },
 
@@ -47,15 +53,26 @@ const YearMasterService = {
       "PUT",
       data
     );
+    
+    // ✅ CRITICAL: Check if API returned error (duplicate or validation error)
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to update year");
+    }
+    
     return response.value;
   },
 
   // Delete Year Master
   async deleteYearMaster(id: number): Promise<void> {
-    await HttpService.callApi<CustomResponse<void>>(
+    const response = await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.YEAR_MASTER.DELETE(id),
       "DELETE"
     );
+    
+    // ✅ CRITICAL: Check if API returned error
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to delete year");
+    }
   },
 };
 
