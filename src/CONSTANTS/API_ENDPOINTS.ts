@@ -215,33 +215,12 @@ USER_TYPE: {
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
   // May delete later
-  MAIN_PAGE: {
-    GET_ALL: `${API_BASE_URL}/MainPage`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-    CREATE: `${API_BASE_URL}/MainPage`,
-    UPDATE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/MainPage/${id}`,
-  },
   USER_ROLE_RIGHT: {
     GET_ALL: `${API_BASE_URL}/UserRoleRight`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
     CREATE: `${API_BASE_URL}/UserRoleRight`,
     UPDATE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/UserRoleRight/${id}`,
-  },
-  CIRCLE_STATE: {
-    GET_ALL: `${API_BASE_URL}/CircleState`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-    CREATE: `${API_BASE_URL}/CircleState`,
-    UPDATE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/CircleState/${id}`,
-  },
-    CUSTOMER: {
-    GET_ALL: `${API_BASE_URL}/Customer`,
-    GET_BY_ID: (id: number) => `${API_BASE_URL}/Customer/${id}`,
-    CREATE: `${API_BASE_URL}/Customer`,
-    UPDATE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
-    DELETE: (id: number) => `${API_BASE_URL}/Customer/${id}`,
   },
   //------------------------PUBLIC MODULE----------------------------------------
   PUBLIC: {
