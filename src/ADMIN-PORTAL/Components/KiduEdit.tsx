@@ -29,18 +29,15 @@ export interface Field {
   name: string;
   rules: FieldRule;
 }
-
 export interface SelectOption {
   value: string | number;
   label: string;
 }
-
 export interface PopupHandler {
   value: string;
   onOpen: () => void;
   actualValue?: any;
 }
-
 export interface ImageConfig {
   fieldName: string;
   defaultImage: string;
@@ -51,17 +48,14 @@ export interface ImageConfig {
   showLastLoginField?: string;
   editable?: boolean;
 }
-
 export interface AuditLogConfig {
   tableName: string;
   recordIdField: string;
 }
-
 export interface AttachmentConfig {
   tableName: string;
   recordIdField: string;
 }
-
 export interface KiduEditProps {
   title: string;
   subtitle?: string;
@@ -112,10 +106,8 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const navigate = useNavigate();
   const params = useParams();
   const recordId = params[paramName];
-
   const regularFields = fields.filter(f => f.rules.type !== "toggle");
   const toggleFields = fields.filter(f => f.rules.type === "toggle");
-
   const initialValues: Record<string, any> = {};
   const initialErrors: Record<string, string> = {};
 
@@ -144,7 +136,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
-
   const [previewUrl, setPreviewUrl] = useState<string>(imageConfig?.defaultImage || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -170,7 +161,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     const fetchData = async () => {
       try {
         setLoading(true);
-
         if (!recordId) {
           toast.error("No record ID provided");
           if (navigateBackPath) navigate(navigateBackPath);
@@ -222,12 +212,10 @@ const KiduEdit: React.FC<KiduEditProps> = ({
             formattedData[key] = data[key];
           }
         });
-
         if (imageConfig && data[imageConfig.fieldName]) {
           formattedData[imageConfig.fieldName] = data[imageConfig.fieldName];
           setPreviewUrl(data[imageConfig.fieldName] || imageConfig.defaultImage);
         }
-
         if (auditLogConfig && data.auditLogs) {
           formattedData.auditLogs = data.auditLogs;
         }
@@ -266,16 +254,13 @@ const KiduEdit: React.FC<KiduEditProps> = ({
         toast.error("Please select an image file");
         return;
       }
-
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
       }
-
       if (previewUrl && previewUrl.startsWith('blob:')) {
         URL.revokeObjectURL(previewUrl);
       }
-
       const objectUrl = URL.createObjectURL(file);
       setSelectedFile(file);
       setPreviewUrl(objectUrl);
@@ -299,7 +284,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
-
     if (touchedFields[name]) {
       validateField(name, updatedValue);
     }
@@ -389,12 +373,10 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       toast.error("Please fill all required fields");
       return;
     }
-
     if (!hasChanges()) {
       toast("No changes to update", { icon: "ℹ️" });
       return;
     }
-
     if (imageConfig?.required && !selectedFile && !formData[imageConfig.fieldName]) {
       toast.error(`Please upload ${imageConfig.label || "an image"}`);
       return;
@@ -408,7 +390,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       if (imageConfig && selectedFile) {
         submitData[imageConfig.fieldName] = selectedFile;
       }
-
       if (auditLogConfig) {
         delete submitData.auditLogs;
       }
@@ -442,7 +423,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     } catch (err: any) {
       // ✅ UPDATED ERROR HANDLING - Show actual error message from API
       const errorMsg = err.message || errorMessage || "An error occurred";
-
       // Show error toast
       toast.error(errorMsg);
 
@@ -481,8 +461,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
               readOnly
               isInvalid={!!errors[name]}
               disabled={rules.disabled}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-            />
+              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
             <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
               <BsSearch />
             </Button>
@@ -669,8 +648,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
             borderRadius: "5px",
             border: "none",
             ...containerStyle
-          }}
-        >
+          }} >
           <div className="d-flex justify-content-between align-items-center ">
             <div className="d-flex align-items-center">
               {showBackButton && <KiduPrevious />}
@@ -708,8 +686,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                                 }}
                                 onError={(e: any) => {
                                   e.target.src = imageConfig.defaultImage;
-                                }}
-                              />
+                                }} />
                             ) : (
                               <div
                                 style={{
@@ -723,8 +700,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                                   justifyContent: "center",
                                   color: "#6c757d",
                                   fontSize: "14px",
-                                }}
-                              >
+                                }}>
                                 No Image
                               </div>
                             )}
@@ -748,8 +724,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                                   cursor: "pointer",
                                   backgroundColor: themeColor,
                                   border: "none",
-                                }}
-                              >
+                                }} >
                                 {selectedFile ? "Change Image" : "Select Image"}
                               </label>
 
@@ -818,8 +793,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
                 <Button
                   type="submit"
                   style={{ backgroundColor: themeColor, border: "none" }}
-                  disabled={isSubmitting || !hasChanges()}
-                >
+                  disabled={isSubmitting || !hasChanges()} >
                   {isSubmitting ? "Updating..." : submitButtonText}
                 </Button>
               </div>

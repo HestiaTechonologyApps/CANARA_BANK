@@ -8,7 +8,6 @@ interface KiduSubmitProps {
   themeColor?: string;
   disabled?: boolean;
 }
-
 const KiduSubmit: React.FC<KiduSubmitProps> = ({
   isSubmitting = false,
   loadingState = false,

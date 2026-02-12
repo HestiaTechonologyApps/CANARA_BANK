@@ -22,17 +22,14 @@ export interface FieldRule {
   colWidth?: 2 | 3 | 4 | 6 | 12;
   disabled?: boolean;
 }
-
 export interface Field {
   name: string;
   rules: FieldRule;
 }
-
 export interface SelectOption {
   value: string | number;
   label: string;
 }
-
 export interface PopupHandler {
   value: string;
   onOpen: () => void;
@@ -44,7 +41,6 @@ export interface ImageConfig {
   label?: string;
   required?: boolean;
 }
-
 export interface KiduCreateProps {
   title: string;
   subtitle?: string;
@@ -65,7 +61,6 @@ export interface KiduCreateProps {
   imageConfig?: ImageConfig;
   themeColor?: string;
 }
-
 // ==================== COMPONENT ====================
 const KiduCreate: React.FC<KiduCreateProps> = ({
   title,
@@ -144,34 +139,18 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         toast.error("Please select an image file");
         return;
       }
-
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
       }
-
       if (typeof previewUrl === "string" && previewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(previewUrl);
       }
-
       const objectUrl = URL.createObjectURL(file);
       setSelectedFile(file);
       setPreviewUrl(objectUrl);
     }
   };
-
-  // const fileToBase64 = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => {
-  //       const base64String = reader.result as string;
-  //       const base64Data = base64String.split(',')[1];
-  //       resolve(base64Data);
-  //     };
-  //     reader.onerror = error => reject(error);
-  //   });
-  // };
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, type, checked } = e.target;
@@ -190,7 +169,6 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
-
     if (touchedFields[name]) {
       validateField(name, updatedValue);
     }
@@ -282,7 +260,6 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
       toast.error("Please fill all required fields");
       return;
     }
-
     if (imageConfig?.required && !selectedFile) {
       toast.error(`Please upload ${imageConfig.label || "an image"}`);
       return;
@@ -385,8 +362,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             />
             <Button
               variant="outline-secondary"
-              onClick={() => togglePasswordVisibility(name)}
-            >
+              onClick={() => togglePasswordVisibility(name)} >
               {showPasswords[name] ? <FaEyeSlash /> : <FaEye />}
             </Button>
           </InputGroup>
@@ -404,8 +380,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-          >
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}>
             <option value="">Select {rules.label}</option>
             {fieldOptions.map((opt: any, idx: number) => {
               const optValue = typeof opt === "object" ? opt.value : opt;
@@ -433,8 +408,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-          />
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
         );
 
       /* ---------- RADIO ---------- */
@@ -454,8 +428,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                   label={optLabel}
                   value={optValue}
                   checked={formData[name] === optValue}
-                  onChange={handleChange}
-                />
+                  onChange={handleChange}/>
               );
             })}
           </div>
@@ -471,8 +444,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             name={name}
             label={rules.label}
             checked={!!formData[name]}
-            onChange={handleChange}
-          />
+            onChange={handleChange}/>
         );
 
       /* ---------- DATE ---------- */
@@ -484,8 +456,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             value={formData[name]}
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
-            isInvalid={!!errors[name]}
-          />
+            isInvalid={!!errors[name]}/>
         );
 
       /* ---------- FILE ---------- */
@@ -498,10 +469,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
               const file = e.target.files?.[0] || null;
               setFormData(prev => ({ ...prev, [name]: file }));
             }}
-            isInvalid={!!errors[name]}
-          />
+            isInvalid={!!errors[name]}/>
         );
-
 
       /* ---------- DEFAULT ---------- */
       default:
@@ -517,8 +486,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-          />
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}} />
         );
     }
   };
@@ -543,7 +511,6 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
         </Form.Label>
 
         {renderFormControl(field)}
-
         {errors[name] && (
           <div className="text-danger small mt-1">{errors[name]}</div>
         )}
@@ -556,15 +523,13 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     <>
       <div
         className="container-fluid px-2 mt-1"
-        style={{ fontFamily: "Urbanist" }}
-      >
+        style={{ fontFamily: "Urbanist" }}>
         <div
           className="shadow-sm rounded p-4"
           style={{
             backgroundColor: "white",
             ...containerStyle
-          }}
-        >
+          }}>
           {/* HEADER */}
           <div className="d-flex align-items-center mb-3">
             {showBackButton && <KiduPrevious />}
@@ -602,8 +567,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                               }}
                               onError={(e: any) => {
                                 e.target.src = imageConfig.defaultImage;
-                              }}
-                            />
+                              }}/>
                           ) : (
                             <div
                               style={{
@@ -617,8 +581,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                                 justifyContent: "center",
                                 color: "#6c757d",
                                 fontSize: "14px",
-                              }}
-                            >
+                              }}>
                               No Image
                             </div>
                           )}
@@ -631,14 +594,12 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
                             id={imageConfig.fieldName}
                             accept="image/*"
                             onChange={handleFileChange}
-                            style={{ display: "none" }}
-                          />
+                            style={{ display: "none" }}/>
 
                           <label
                             htmlFor={imageConfig.fieldName}
                             className="btn btn-primary btn-sm mb-2"
-                            style={{ cursor: "pointer", backgroundColor: themeColor, border: "none" }}
-                          >
+                            style={{ cursor: "pointer", backgroundColor: themeColor, border: "none" }} >
                             Select Image
                           </label>
 

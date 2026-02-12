@@ -10,7 +10,6 @@ interface KiduAccountsettingsModalProps {
   show: boolean;
   onHide: () => void;
 }
-
 interface User {
   userId: number;
   userName: string;
@@ -73,27 +72,22 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
       toast.error("User information not found. Please login again.");
       return;
     }
-
     if (!currentPassword || !newPassword || !confirmPassword) {
       toast.error("Please fill all password fields");
       return;
     }
-
     if (newPassword !== confirmPassword) {
       toast.error("New password and confirm password do not match");
       return;
     }
-
     if (currentPassword === newPassword) {
       toast.error("New password must be different from current password");
       return;
     }
-
     if (newPassword.length < 8) {
       toast.error("Password must be at least 8 characters");
       return;
     }
-
     try {
       setLoading(true);
 
@@ -102,7 +96,6 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
         oldPassword: currentPassword,
         newPassword: newPassword,
       };
-
       await UserService.changePassword(payload);
 
       toast.success("Password changed successfully");
@@ -120,14 +113,12 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setSelectedFile(file);
 
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
     reader.readAsDataURL(file);
   };
-
   // IMAGE UPLOAD API CALL
   const handleSavePhoto = async () => {
     if (!selectedFile) {
@@ -146,11 +137,9 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setCurrentUser(updatedUser);
         setPreview(getFullImageUrl(uploadedPath));
-
         // notify sidebar/navbar
         window.dispatchEvent(new CustomEvent("profile-pic-updated"));
       }
-
       toast.success("Profile photo updated successfully");
       setSelectedFile(null);
     } catch (error: any) {
@@ -166,14 +155,12 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
       onHide={resetForm}
       centered
       backdrop="static"
-      style={{ fontFamily: "Urbanist" }}
-    >
+      style={{ fontFamily: "Urbanist" }}>
       <Modal.Header closeButton className="border-bottom">
         <Modal.Title style={{ color: NAVY, fontWeight: 600, fontSize: "21px" }}>
           Account Settings
         </Modal.Title>
       </Modal.Header>
-
       <Modal.Body className="p-4">
         <Tabs
           activeKey={key}
@@ -184,8 +171,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
             display: "flex",
             flexDirection: "row",
             flexWrap: "nowrap",
-          }}
-        >
+          }}>
           {/* ---------------- PROFILE PHOTO ---------------- */}
           <Tab eventKey="photo" title="Profile Photo">
             <div className="d-flex flex-column align-items-center gap-3 mt-3">
@@ -199,14 +185,12 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     color: "white",
                     fontSize: "33px",
                     fontWeight: 600,
-                  }}
-                >
+                  }}>
                   {preview ? (
                     <img
                       src={preview}
                       alt="profile"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }}
-                    />
+                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
                   ) : (
                     <div
                       className="d-flex h-100 align-items-center justify-content-center text-white"
@@ -228,8 +212,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                   onClick={() => {
                     setPreview(null);
                     setSelectedFile(null);
-                  }}
-                >
+                  }}>
                   <Trash2 size={12} />
                 </button>
               </div>
@@ -245,8 +228,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                   border: "2px dashed #dee2e6",
                   cursor: "pointer",
                 }}
-                onClick={() => fileInputRef.current?.click()}
-              >
+                onClick={() => fileInputRef.current?.click()}>
                 <Upload className="mb-2 text-muted" />
                 <p className="mb-0 fw-medium">Click to upload new photo</p>
                 <small className="text-muted">PNG, JPG up to 5MB</small>
@@ -256,8 +238,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                 type="file"
                 accept="image/*"
                 hidden
-                onChange={handleFileChange}
-              />
+                onChange={handleFileChange}/>
               <div className="d-flex justify-content-end gap-2 w-100">
                 <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
                   Cancel
@@ -288,8 +269,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
                     style={{ cursor: "pointer" }}
-                    onClick={() => setShowCurrent(!showCurrent)}
-                  >
+                    onClick={() => setShowCurrent(!showCurrent)}>
                     {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
                   </span>
                 </div>
@@ -302,13 +282,11 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     type={showNew ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter your new password"
-                  />
+                    placeholder="Enter your new password"/>
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
                     style={{ cursor: "pointer" }}
-                    onClick={() => setShowNew(!showNew)}
-                  >
+                    onClick={() => setShowNew(!showNew)}>
                     {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
                   </span>
                 </div>
@@ -321,21 +299,15 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     type={showConfirm ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                  />
+                    placeholder="Confirm your password"/>
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
                     style={{ cursor: "pointer" }}
-                    onClick={() => setShowConfirm(!showConfirm)}
-                  >
+                    onClick={() => setShowConfirm(!showConfirm)}>
                     {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                   </span>
                 </div>
               </Form.Group>
-
-              {/* <small className="text-muted">
-                Password must be at least 8 characters
-              </small> */}
 
               <div className="d-flex justify-content-end gap-2 mt-4">
                 <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
@@ -344,8 +316,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                 <Button
                   type="submit"
                   disabled={loading}
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}
-                >
+                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}>
                   {loading ? "Updating..." : "Update Password"}
                 </Button>
               </div>

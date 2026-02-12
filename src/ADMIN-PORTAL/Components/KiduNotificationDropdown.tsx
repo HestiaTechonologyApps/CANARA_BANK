@@ -20,46 +20,11 @@ interface Notification {
 }
 
 const notifications: Notification[] = [
-  {
-    id: "1",
-    title: "New Member Registration",
-    message: "John Doe has registered as a new member",
-    time: "5 min ago",
-    type: "member",
-    read: false,
-  },
-  {
-    id: "2",
-    title: "Contribution Received",
-    message: "₹5,000 contribution from Staff #12345",
-    time: "1 hour ago",
-    type: "payment",
-    read: false,
-  },
-  {
-    id: "3",
-    title: "Claim Approved",
-    message: "Claim #CLM-2024-001 has been approved",
-    time: "2 hours ago",
-    type: "success",
-    read: false,
-  },
-  {
-    id: "4",
-    title: "System Update",
-    message: "System maintenance scheduled for tonight",
-    time: "5 hours ago",
-    type: "warning",
-    read: true,
-  },
-  {
-    id: "5",
-    title: "Monthly Report Ready",
-    message: "January 2024 report is now available",
-    time: "1 day ago",
-    type: "info",
-    read: true,
-  },
+  { id: "1", title: "New Member Registration", message: "John Doe has registered as a new member", time: "5 min ago", type: "member", read: false,},
+  { id: "2", title: "Contribution Received", message: "₹5,000 contribution from Staff #12345", time: "1 hour ago", type: "payment", read: false,},
+  { id: "3", title: "Claim Approved", message: "Claim #CLM-2024-001 has been approved", time: "2 hours ago", type: "success", read: false,},
+  { id: "4", title: "System Update", message: "System maintenance scheduled for tonight", time: "5 hours ago", type: "warning", read: true,},
+  { id: "5", title: "Monthly Report Ready", message: "January 2024 report is now available", time: "1 day ago", type: "info", read: true,},
 ];
 
 const getNotificationIcon = (type: Notification["type"]) => {
@@ -109,8 +74,7 @@ const AdminNotificationDropdown: React.FC = () => {
       {/* Menu */}
       <Dropdown.Menu
         className="shadow"
-        style={{ width: "320px", padding: 0 }}
-      >
+        style={{ width: "320px", padding: 0 }} >
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
           <span style={{ fontWeight: 600, color: NAVY }}>Notifications</span>
@@ -122,8 +86,7 @@ const AdminNotificationDropdown: React.FC = () => {
                 color: "#a36a00",
                 fontSize: "12px",
                 fontWeight: 500,
-              }}
-            >
+              }} >
               {unreadCount} new
             </span>
           )}
@@ -155,8 +118,7 @@ const AdminNotificationDropdown: React.FC = () => {
                     </div>
                     <div
                       className="small mt-1"
-                      style={{ color: "#a36a00" }}
-                    >
+                      style={{ color: "#a36a00" }} >
                       {n.time}
                     </div>
                   </div>
@@ -167,8 +129,7 @@ const AdminNotificationDropdown: React.FC = () => {
                       width: 8,
                       height: 8,
                       backgroundColor: GOLD,
-                    }}
-                  />
+                    }}/>
                 </Dropdown.Item>
               ))}
             </>
@@ -212,8 +173,7 @@ const AdminNotificationDropdown: React.FC = () => {
             variant="light"
             className="w-100 fw-medium"
             style={{ color: NAVY }}
-            onClick={() => navigate("/dashboard/notifications")}
-          >
+            onClick={() => navigate("/dashboard/notifications")} >
             View All Notifications
           </Button>
         </div>

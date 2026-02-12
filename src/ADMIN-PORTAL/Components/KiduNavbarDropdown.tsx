@@ -13,8 +13,6 @@ interface KiduNavbarDropdownProps {
   onLogout: () => void;
 }
 
-
-
 const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
   show,
   name,
@@ -38,8 +36,7 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
         style={{
           minWidth: "200px",
           borderRadius: "8px",
-        }}
-      >
+        }}>
         <Dropdown.Header>
           <div className="fw-semibold">{name}</div>
           <small className="text-muted">{email}</small>

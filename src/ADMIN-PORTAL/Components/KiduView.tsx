@@ -9,7 +9,6 @@ import KiduAuditLogs from "../../Components/KiduAuditLogs";
 import { Toaster } from "react-hot-toast";
 import Attachments from "../../Components/KiduAttachments";
 
-
 // ==================== TYPES ====================
 export interface ViewField {
   key: string;
@@ -19,7 +18,6 @@ export interface ViewField {
   isDate?: boolean;
   formatter?: (value: any) => string;
 }
-
 export interface ImageConfig {
   fieldName: string;
   defaultImage: string;
@@ -27,17 +25,14 @@ export interface ImageConfig {
   showIdField?: string;
   isCircle?: boolean;
 }
-
 export interface AuditLogConfig {
   tableName: string;
   recordIdField: string;
 }
-
 export interface AttachmentConfig  {
   tableName: string;
   recordIdField: string;
 }
-
 export interface KiduViewProps {
   title: string;
   fields: ViewField[];
@@ -92,7 +87,6 @@ const KiduView: React.FC<KiduViewProps> = ({
           navigate(listRoute);
           return;
         }
-
         const response = await onFetch(recordId);
 
         if (!response || !response.isSucess) {
@@ -122,7 +116,6 @@ const KiduView: React.FC<KiduViewProps> = ({
 
   const handleDelete = async () => {
     if (!onDelete || !recordId) return;
-
     setLoadingDelete(true);
     try {
       await onDelete(recordId);
@@ -145,12 +138,10 @@ const KiduView: React.FC<KiduViewProps> = ({
     if (field.formatter) {
       return field.formatter(value);
     }
-
     // Boolean
     if (field.isBoolean) {
       return value ? "Yes" : "No";
     }
-
     // Date
     if (field.isDate) {
       try {
@@ -206,16 +197,14 @@ const KiduView: React.FC<KiduViewProps> = ({
   return (
     <div
       className="container-fluid d-flex justify-content-center align-items-center "
-      style={{ fontFamily: "Urbanist" }}
-    >
+      style={{ fontFamily: "Urbanist" }}>
       <Card
         className="shadow-lg px-3 py-3 w-100"
         style={{
           maxWidth: "1450px",
           borderRadius: "5px",
           border: "none",
-        }}
-      >
+        }} >
         {/* HEADER */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div className="d-flex align-items-center">
@@ -320,16 +309,14 @@ const KiduView: React.FC<KiduViewProps> = ({
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor =
                         index % 2 === 1 ? "#ffe8e8" : "";
-                    }}
-                  >
+                    }}>
                     <td
                       style={{
                         width: "40%",
                         padding: "8px 6px",
                         color: themeColor,
                         fontWeight: 600,
-                      }}
-                    >
+                      }} >
                       {field.icon && (
                         <i className={`bi ${field.icon} me-2`}></i>
                       )}

@@ -9,7 +9,6 @@ interface KiduProfileModalProps {
   show: boolean;
   onHide: () => void;
 }
-
 const NAVY = "#0f2a55";
 const GOLD = "#f5c542";
 
@@ -88,8 +87,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
                   fontWeight: 700,
                   border: `4px solid ${GOLD}`,
                   overflow: "hidden",
-                }}
-              >
+                }} >
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -108,8 +106,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
                   color: "#a36a00",
                   fontSize: "10px",
                   fontWeight: 500,
-                }}
-              >
+                }} >
                 <Shield size={11} />
                 {user.role} - <span className="text-danger">Staff Number : {user.staffNo}</span>
               </span>
@@ -132,16 +129,14 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({
                 <div key={index} className="col-12 col-md-4">
                   <div
                     className="d-flex align-items-center gap-3 p-3 rounded h-100"
-                    style={{ backgroundColor: "#f8f9fa" }}
-                  >
+                    style={{ backgroundColor: "#f8f9fa" }} >
                     <div
                       className="d-flex align-items-center justify-content-center rounded-circle"
                       style={{
                         width: 34,
                         height: 34,
                         backgroundColor: "rgba(15,42,85,0.08)",
-                      }}
-                    >
+                      }} >
                       {item.icon}
                     </div>
                     <div>
