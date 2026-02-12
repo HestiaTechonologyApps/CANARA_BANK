@@ -23,11 +23,23 @@ const RefundContributionView: React.FC = () => {
     { key: "yearName", label: "Year", icon: "bi-calendar" },
   ];
 
-  const handleFetch = async (id: string) => {
-    return await RefundContributionService.getRefundContributionById(
-      Number(id)
-    );
-  };
+  const formatDateOnly = (value?: string | Date | null) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
+const handleFetch = async (id: string) => {
+  const response = await RefundContributionService.getRefundContributionById(
+    Number(id)
+  );
+
+  if (response.value) {
+    response.value.deathDateString = formatDateOnly(response.value.deathDateString);
+    response.value.dddateString = formatDateOnly(response.value.dddateString);
+  }
+
+  return response;
+};
 
   const handleDelete = async (id: string) => {
     await RefundContributionService.deleteRefundContribution(Number(id));

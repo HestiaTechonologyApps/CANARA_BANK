@@ -18,8 +18,25 @@ const ReportsView: React.FC = () => {
     { key: "isActive", label: "Active", icon: "bi-check-circle", isBoolean: true },
   ];
 
+  // ✅ Safe Date Formatter
+  const formatDateOnly = (value?: string | Date | null) => {
+    if (!value) return "N/A";
+
+    const date = value instanceof Date ? value : new Date(value);
+
+    if (isNaN(date.getTime())) return "N/A";
+
+    return date.toLocaleDateString("en-IN");
+  };
+
   const handleFetch = async (id: string) => {
     const res = await ReportService.getReportById(Number(id));
+
+    if (res?.value) {
+      res.value.createdDateString = formatDateOnly(res.value.createdDateString);
+      res.value.modifiedDateString = formatDateOnly(res.value.modifiedDateString);
+    }
+
     return res;
   };
 
@@ -36,7 +53,7 @@ const ReportsView: React.FC = () => {
       editRoute="/dashboard/report-edit"
       listRoute="/dashboard/report-list"
       paramName="reportId"
-      auditLogConfig={{ tableName: "Report", recordIdField: "reportId", }}
+      auditLogConfig={{ tableName: "Report", recordIdField: "reportId" }}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton

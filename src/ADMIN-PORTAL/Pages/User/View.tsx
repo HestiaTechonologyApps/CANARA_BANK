@@ -14,16 +14,27 @@ const UserView: React.FC = () => {
     { key: "address", label: "Address", icon: "bi-geo-alt" },
     { key: "comapanyName", label: "Company", icon: "bi-building" },
     { key: "role", label: "Role", icon: "bi-person-badge" },
-    { key: "createAt", label: "Created At", icon: "bi-calendar-plus", isDate: true },
-    { key: "lastlogin", label: "Last Login", icon: "bi-clock-history", isDate: true },
+    { key: "createAt", label: "Created At", icon: "bi-calendar-plus",  },
+    { key: "lastlogin", label: "Last Login", icon: "bi-clock-history",  },
     { key: "isActive", label: "Is Active", icon: "bi-check-circle", isBoolean: true },
     { key: "islocked", label: "Is Locked", icon: "bi-lock", isBoolean: true },
   ];
 
-  const handleFetch = async (userId: string) => {
-    const response = await UserService.getUserById(Number(userId));
-    return response;
-  };
+ const formatDateOnly = (value?: string | Date | null) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
+const handleFetch = async (userId: string) => {
+  const response = await UserService.getUserById(Number(userId));
+
+  if (response.value) {
+    response.value.createAt = formatDateOnly(response.value.createAt);
+    response.value.lastlogin = formatDateOnly(response.value.lastlogin);
+  }
+
+  return response;
+};
 
   const handleDelete = async (userId: string) => {
     await UserService.deleteUser(Number(userId));

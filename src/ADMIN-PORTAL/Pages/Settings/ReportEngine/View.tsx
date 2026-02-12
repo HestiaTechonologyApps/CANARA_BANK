@@ -14,10 +14,21 @@ const ReportEngineView: React.FC = () => {
     { key: "modifiedDateString", label: "Modified Date" },
   ];
 
-  const handleFetch = async (reportEngineId: string) => {
-    const response = await ReportEngineService.getReportEngineById(Number(reportEngineId));
-    return response;
-  };
+ const formatDateOnly = (value?: string) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
+const handleFetch = async (reportEngineId: string) => {
+  const response = await ReportEngineService.getReportEngineById(Number(reportEngineId));
+
+  if (response.value) {
+    response.value.createdDateString = formatDateOnly(response.value.createdDateString);
+    response.value.modifiedDateString = formatDateOnly(response.value.modifiedDateString);
+  }
+
+  return response;
+};
 
   const handleDelete = async (reportEngineId: string) => {
     await ReportEngineService.deleteReportEngine(Number(reportEngineId));

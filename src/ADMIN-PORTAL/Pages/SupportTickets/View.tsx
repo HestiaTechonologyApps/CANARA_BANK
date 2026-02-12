@@ -11,12 +11,30 @@ const SupportTicketView: React.FC = () => {
     { key: "duration", label: "Duration", icon: "bi-clock" },
     { key: "description", label: "Description", icon: "bi-file-text" },
     { key: "developerRemark", label: "Developer Remark", icon: "bi-chat-left-text" },
-    { key: "isApproved", label: "Approved", icon: "bi-check-circle", isBoolean:true },
+    { key: "isApproved", label: "Approved", icon: "bi-check-circle", isBoolean: true },
     { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
   ];
 
-  const handleFetch = async (id: string) =>
-    await SupportTicketService.getSupportTicketById(Number(id));
+  const formatDateOnly = (value?: string | Date | null) => {
+    if (!value) return "N/A";
+
+    const date = value instanceof Date ? value : new Date(value);
+
+    if (isNaN(date.getTime())) return "N/A";
+    return date.toLocaleDateString("en-IN");
+  };
+
+  const handleFetch = async (id: string) => {
+    const response = await SupportTicketService.getSupportTicketById(Number(id));
+
+    if (response?.value) {
+      response.value.approvedDateString = formatDateOnly(
+        response.value.approvedDateString
+      );
+    }
+
+    return response;
+  };
 
   const handleDelete = async (id: string) =>
     await SupportTicketService.deleteSupportTicket(Number(id));

@@ -5,11 +5,11 @@ export interface SupportTicket {
   supportTicketNum: string;
   description: string;
   priority: string;
-  duration: string; 
+  duration: string;
   developerRemark?: string;
   isApproved: boolean;
   approvedByUserId?: number;
   approvedDate?: Date | string;
-  approvedDateSting?: Date | string; 
+  approvedDateString?: Date | string;   // ✅ FIXED
   auditLogs?: AuditTrails[];
 }

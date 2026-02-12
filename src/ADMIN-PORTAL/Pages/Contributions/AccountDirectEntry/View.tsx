@@ -23,9 +23,21 @@ const AccountDirectEntryView: React.FC = () => {
     { key: "isApproved", label: "Approved", isBoolean: true },
   ];
 
-  const handleFetch = async (id: string) => {
-    return await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
-  };
+  const formatDateOnly = (value?: string | Date | null) => {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString("en-IN");
+};
+
+const handleFetch = async (id: string) => {
+  const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
+
+  if (response.value) {
+    response.value.ddIbaDateString = formatDateOnly(response.value.ddIbaDateString);
+    response.value.approvedDateString = formatDateOnly(response.value.approvedDateString);
+  }
+
+  return response;
+};
 
   const handleDelete = async (id: string) => {
     await AccountDirectEntryService.deleteAccountDirectEntry(Number(id));
