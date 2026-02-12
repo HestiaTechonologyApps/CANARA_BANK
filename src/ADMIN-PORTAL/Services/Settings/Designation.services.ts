@@ -3,7 +3,11 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { Designation } from "../../Types/Settings/Designation";
+import type { 
+  Designation, 
+  DesignationPaginationParams, 
+  PagedDesignationResult 
+} from "../../Types/Settings/Designation";
 
 const DesignationService = {
   async getAllDesignations(): Promise<Designation[]> {
@@ -12,6 +16,34 @@ const DesignationService = {
       'GET'
     );
     return response.value;
+  },
+
+  // NEW: Paginated service method
+  async getPagedDesignations(params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  }): Promise<{ data: Designation[]; total: number }> {
+    const paginationParams: DesignationPaginationParams = {
+      pageNumber: params.pageNumber,
+      pageSize: params.pageSize,
+      searchTerm: params.searchTerm || '',
+      sortBy: params.sortBy || 'DesignationId',
+      sortDescending: params.sortOrder === 'desc',
+    };
+
+    const response = await HttpService.callApi<CustomResponse<PagedDesignationResult>>(
+      API_ENDPOINTS.DESIGNATION.GET_PAGINATED,
+      'POST',
+      paginationParams
+    );
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords,
+    };
   },
 
   async getDesignationById(id: number): Promise<CustomResponse<Designation>> {

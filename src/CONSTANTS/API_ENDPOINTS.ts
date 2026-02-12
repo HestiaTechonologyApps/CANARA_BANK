@@ -49,6 +49,7 @@ export const API_ENDPOINTS = {
     CREATE: `${API_BASE_URL}/Designation`,
     UPDATE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Designation/${id}`,
+    GET_PAGINATED: `${API_BASE_URL}/Designation/pagination`,
   },
   MONTH: {
     GET_ALL: `${API_BASE_URL}/Month`,
