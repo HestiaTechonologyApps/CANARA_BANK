@@ -24,7 +24,7 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
   };
 
   return (
-    <div style={{ width, maxWidth: "100%" }}>
+    <div style={{ width, maxWidth: "100%" }} className="mb-3">
       <InputGroup>
         <Form.Control
           type="text"

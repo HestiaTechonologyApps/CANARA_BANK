@@ -15,6 +15,7 @@ const KiduButton: React.FC<KiduButtonProps> = ({
   to,
   onClick,
   className = "",
+  style = {},
   
 }) => {
   const navigate = useNavigate();
@@ -31,9 +32,11 @@ const KiduButton: React.FC<KiduButtonProps> = ({
         backgroundColor: "#173a6a",
         border: "none",
         borderRadius: 6,
-        height: 45,
-        padding: "0 16px",
+        height: 33,
+        fontSize: "12px",
+        // padding: "0 16px",
         textDecoration: "none", 
+        ...style,
       }}
       onClick={handleClick}
     >

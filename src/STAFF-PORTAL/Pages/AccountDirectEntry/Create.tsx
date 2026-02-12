@@ -41,15 +41,16 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     { name: "ddIba", rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4, required: true } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
+       { name: "status", rules: { type: "select", label: "Status", colWidth: 3, required: true, } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
-    { name: "status", rules: { type: "select", label: "Status", colWidth: 3, required: true, } },
+ 
     { name: "f9", rules: { type: "text", label: "F9", colWidth: 2 } },
     { name: "f10", rules: { type: "text", label: "F10", colWidth: 2 } },
     { name: "f11", rules: { type: "text", label: "F11", colWidth: 2 } },
-    { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
-    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
+    // { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
+    // { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
+    // { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
   ];
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
@@ -76,7 +77,8 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       status: formData.status || "Submitted",
       isApproved: Boolean(formData.isApproved),
       approvedBy: formData.approvedBy || "",
-      approvedDate: toIso(formData.approvedDate),
+      // approvedDate: toIso(formData.approvedDate),
+       approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
     };
 
     await AccountDirectEntryService.createAccountDirectEntry(payload);

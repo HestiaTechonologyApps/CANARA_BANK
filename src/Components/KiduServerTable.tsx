@@ -48,7 +48,7 @@ interface KiduServerTableProps {
     searchTerm: string;
   }) => Promise<{ data: any[]; total: number }>;
   rowsPerPage?: number;
-  
+
   // New navbar props
   showNavbar?: boolean;
   showNavbarExportButtons?: boolean;
@@ -152,7 +152,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
       enableSorting: col.enableSorting !== false,
       cell: ({ getValue }) => {
         const rawValue = getValue();
-        
+
         if (rawValue === null || rawValue === undefined || rawValue === '') {
           return '-';
         }
@@ -167,12 +167,12 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
             } else if (typeof rawValue === 'number') {
               boolValue = rawValue !== 0;
             }
-            
+
             return (
-              <input 
-                type="checkbox" 
-                checked={boolValue} 
-                disabled 
+              <input
+                type="checkbox"
+                checked={boolValue}
+                disabled
                 style={{
                   width: '18px',
                   height: '18px',
@@ -188,9 +188,9 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
               <img
                 src={imageSrc}
                 alt="Profile"
-                style={{ 
-                  width: 40, 
-                  height: 40, 
+                style={{
+                  width: 40,
+                  height: 40,
                   borderRadius: "50%",
                   objectFit: "cover",
                   border: "2px solid #1B3763"
@@ -204,26 +204,26 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
           case 'rating':
             let rating: number = 0;
-            
+
             if (typeof rawValue === 'number') {
               rating = rawValue;
             } else if (typeof rawValue === 'string') {
               const match = rawValue.match(/(\d+(\.\d+)?)/);
               rating = match ? parseFloat(match[1]) : 0;
             }
-            
+
             rating = Math.min(Math.max(rating, 0), 5);
-            
+
             const fullStars = Math.floor(rating);
             const hasHalfStar = rating - fullStars >= 0.5;
             const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            
+
             return (
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
                 alignItems: 'center',
-                gap: '2px' 
+                gap: '2px'
               }}>
                 {Array.from({ length: fullStars }).map((_, i) => (
                   <span key={`full-${i}`} style={{ color: '#FFD700', fontSize: '14px' }}>★</span>
@@ -247,7 +247,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
             try {
               const valueStr = String(rawValue);
               const date = new Date(valueStr);
-              
+
               if (!isNaN(date.getTime())) {
                 return date.toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -264,7 +264,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           default:
             return String(rawValue);
         }
-        
+
         return String(rawValue);
       },
     }));
@@ -398,49 +398,50 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
       {/* Search bar and Add button - Always at top */}
       {showSearch && (
-        <Row className="mb-3 align-items-center">
+        <Row className="mb-1 align-items-center">
           <Col>
             <KiduSearchBar
               placeholder="Search..."
               onSearch={(val) => setSearchTerm(val)}
-              width="400px"
+              width="350px"
             />
           </Col>
+          <Col xs="auto" className="ms-auto">
+            <div className="d-flex gap-2">
 
-          {showAddButton && addRoute && (
-            <Col xs="auto" className="text-end">
-              <KiduButton
-                label={`+ ${addButtonLabel}`}
-                to={addRoute}
-                onClick={onAddClick}
-                className="fw-bold d-flex align-items-center text-white"
-                style={{
-                  backgroundColor: "#1B3763",
-                  border: "none",
-                  height: 42,
-                  width: 180,
-                  fontSize: "14px"
-                }}
-              />
-            </Col>
-          )}
+              {/* Navbar with export buttons and rows selector - Below search bar */}
+              {showNavbar && (
+                <KiduServerTableNavbar
+                  data={data}
+                  columns={columns}
+                  title={title}
+                  showExportButtons={showNavbarExportButtons}
+                  showRowsPerPageSelector={showRowsPerPageSelector}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleRowsPerPageChange}
+                  rowsPerPageOptions={rowsPerPageOptions}
+                  additionalButtons={navbarAdditionalButtons}
+                />
+              )}
+              {showAddButton && addRoute && (
+                <KiduButton
+                  label={`+ ${addButtonLabel}`}
+                  to={addRoute}
+                  onClick={onAddClick}
+                  className="fw-bold d-flex text-white"
+                  style={{
+                    backgroundColor: "#1B3763",
+                    border: "none",
+                    width: 120,
+                  }}
+                />
+              )}
+            </div>
+          </Col>
         </Row>
       )}
 
-      {/* Navbar with export buttons and rows selector - Below search bar */}
-       {showNavbar && (
-        <KiduServerTableNavbar
-          data={data}
-          columns={columns}
-          title={title}
-          showExportButtons={showNavbarExportButtons}
-          showRowsPerPageSelector={showRowsPerPageSelector}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleRowsPerPageChange}
-          rowsPerPageOptions={rowsPerPageOptions}
-          additionalButtons={navbarAdditionalButtons}
-        />
-      )}
+
 
       <Row>
         <Col>
@@ -455,8 +456,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        style={{ 
-                          padding: "10px 8px", 
+                        style={{
+                          padding: "10px 8px",
                           cursor: header.column.getCanSort() ? "pointer" : "default",
                           borderBottom: "2px solid #1B3763",
                           verticalAlign: "middle",
@@ -533,7 +534,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
-                          style={{ 
+                          style={{
                             padding: "8px 6px",
                             verticalAlign: "middle"
                           }}
@@ -557,15 +558,15 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           </span>
 
           <Pagination className="m-0" size="sm">
-            <Pagination.First 
-              disabled={currentPage === 1} 
+            <Pagination.First
+              disabled={currentPage === 1}
               onClick={() => handlePageChange(1)}
               style={{
                 color: currentPage === 1 ? "#999" : "#1B3763"
               }}
             />
-            <Pagination.Prev 
-              disabled={currentPage === 1} 
+            <Pagination.Prev
+              disabled={currentPage === 1}
               onClick={() => handlePageChange(currentPage - 1)}
               style={{
                 color: currentPage === 1 ? "#999" : "#1B3763"
@@ -598,15 +599,15 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                 </Pagination.Item>
               );
             })}
-            <Pagination.Next 
-              disabled={currentPage === totalPages} 
+            <Pagination.Next
+              disabled={currentPage === totalPages}
               onClick={() => handlePageChange(currentPage + 1)}
               style={{
                 color: currentPage === totalPages ? "#999" : "#1B3763"
               }}
             />
-            <Pagination.Last 
-              disabled={currentPage === totalPages} 
+            <Pagination.Last
+              disabled={currentPage === totalPages}
               onClick={() => handlePageChange(totalPages)}
               style={{
                 color: currentPage === totalPages ? "#999" : "#1B3763"

@@ -1,7 +1,7 @@
 import React from "react";
-import { Row, Col, Button, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Row, Col, Dropdown, ButtonGroup } from "react-bootstrap";
 import { BsPrinter, BsFiletypeCsv, BsFiletypePdf } from "react-icons/bs";
-import { FaCopy, FaFileExcel } from "react-icons/fa";
+import { FaColumns, FaCopy, FaFileExcel, FaFileExport, FaFilter } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -42,10 +42,10 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
         typeof value === "boolean"
           ? value
           : typeof value === "string"
-          ? value.toLowerCase() === "true" || value === "1"
-          : typeof value === "number"
-          ? value !== 0
-          : false;
+            ? value.toLowerCase() === "true" || value === "1"
+            : typeof value === "number"
+              ? value !== 0
+              : false;
       return boolValue ? "Yes" : "No";
     }
 
@@ -187,16 +187,16 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
             </thead>
             <tbody>
               ${data
-                .map(
-                  (row) =>
-                    `<tr>${cols
-                      .map(
-                        (c) =>
-                          `<td>${cleanCellValue(row[c.key], c.type) || "-"}</td>`
-                      )
-                      .join("")}</tr>`
-                )
-                .join("")}
+        .map(
+          (row) =>
+            `<tr>${cols
+              .map(
+                (c) =>
+                  `<td>${cleanCellValue(row[c.key], c.type) || "-"}</td>`
+              )
+              .join("")}</tr>`
+        )
+        .join("")}
             </tbody>
           </table>
         </body>
@@ -210,10 +210,27 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
       <Row className="mb-3 align-items-center">
         <Col xs="auto">
           <div className="d-flex gap-2 flex-wrap align-items-center">
+
+             <Dropdown as={ButtonGroup}>
+                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
+               <FaFilter/>  Filter
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {rowsPerPageOptions.map((opt) => (
+                    <Dropdown.Item
+                      key={opt}
+                      active={rowsPerPage === opt}
+                      onClick={() => onRowsPerPageChange?.(opt)}
+                    >
+                      {opt} rows
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             {showRowsPerPageSelector && (
               <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle size="sm" variant="secondary">
-                  Show {rowsPerPage} rows
+                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
+                <FaColumns/>  Show {rowsPerPage} rows
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {rowsPerPageOptions.map((opt) => (
@@ -229,7 +246,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
               </Dropdown>
             )}
 
-            {showExportButtons && (
+            {/* {showExportButtons && (
               <>
                 <Button size="sm" variant="secondary" onClick={handleCopy}>
                   <FaCopy /> Copy
@@ -247,7 +264,33 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   <BsPrinter /> Print
                 </Button>
               </>
+            )} */}
+            {showExportButtons && (
+              <Dropdown as={ButtonGroup}>
+                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
+                 <FaFileExport/> Export
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={handleCopy}>
+                    <FaCopy /> Copy
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleCSV}>
+                    <BsFiletypeCsv /> CSV
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleExcel}>
+                    <FaFileExcel /> Excel
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handlePDF}>
+                    <BsFiletypePdf /> PDF
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handlePrint}>
+                    <BsPrinter /> Print
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             )}
+
+            
           </div>
         </Col>
 

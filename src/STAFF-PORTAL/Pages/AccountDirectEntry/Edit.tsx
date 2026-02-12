@@ -50,9 +50,9 @@ const fromIso = (isoString?: string) => {
     { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
     { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
     { name: "status", rules: { type: "text", label: "Status", colWidth: 4, required: true, disabled: true, } },
-    { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
-    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
+    // { name: "isApproved", rules: { type: "toggle", label: "Approved" ,disabled: true} },
+    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 ,disabled: true} },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 ,disabled: true} },
   ];
 
   const handleFetch = async (id: string) => {
