@@ -82,6 +82,7 @@ const AccountDirectEntryEdit: React.FC = () => {
       ddIba: formData.ddIba,
       ddIbaDate: `${formData.ddIbaDate}T00:00:00`,
       ddIbaDateString: `${formData.ddIbaDate}T00:00:00`, 
+      status: formData.status,
       amt: Number(formData.amt),
       approvedBy: formData.approvedBy || undefined,
       approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
