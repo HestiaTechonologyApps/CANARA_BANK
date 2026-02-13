@@ -26,6 +26,15 @@ const DirectPaymentList: React.FC = () => {
         { key: "referenceNo", label: "Reference No", enableSorting: true, type: "text" },
       ]}
 
+      filterColumns={[
+        { key: "directPaymentId", label: "Direct payment ID", type: "text" },
+        { key: "memberName", label: "Member", type: "text" },
+        { key: "amount", label: "Amount", type: "text" },
+        { key: "paymentDatestring", label: "Payment Date", type: "text" },
+        { key: "paymentMode", label: "Mode", type: "text" },
+        { key: "referenceNo", label: "Reference No", type: "text" },
+      ]}
+
       idKey="directPaymentId"
       title="Direct Payment Management"
       subtitle="Manage direct payments with search, filter, and pagination."

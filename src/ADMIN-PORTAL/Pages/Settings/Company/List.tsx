@@ -13,7 +13,7 @@ const CompanyList: React.FC = () => {
       transformData={(companies: Company[]) => {
         console.log("=== TRANSFORM DATA DEBUG ===");
         console.log("Raw companies data:", companies);
-        
+
         const transformed = companies.map(company => {
           const originalLogo = company.companyLogo;
           const transformedLogo = company.companyLogo ? getFullImageUrl(company.companyLogo) : defaultCompanyLogo;
@@ -21,16 +21,16 @@ const CompanyList: React.FC = () => {
           console.log("Original logo:", originalLogo);
           console.log("Transformed logo:", transformedLogo);
           console.log("---");
-          
+
           return {
             ...company,
             companyLogo: transformedLogo,
           };
         });
-        
+
         console.log("Final transformed data:", transformed);
         console.log("=== END DEBUG ===");
-        
+
         return transformed;
       }}
 
@@ -44,7 +44,15 @@ const CompanyList: React.FC = () => {
         { key: "state", label: "State", type: "text" },
         { key: "isActive", label: "Active", type: "checkbox" },
       ]}
-
+      filterColumns={[
+        { key: "companyId", label: "Company ID", type: "text" },
+        { key: "comapanyName", label: "Company Name", type: "text" },
+        { key: "email", label: "Email", type: "text" },
+        { key: "contactNumber", label: "Contact", type: "text" },
+        { key: "city", label: "City", type: "text" },
+        { key: "state", label: "State", type: "text" },
+      ]}
+      
       idKey="companyId"
       title="Company Management"
       subtitle="Manage companies with search, filter, and pagination"

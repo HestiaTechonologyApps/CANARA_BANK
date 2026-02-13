@@ -12,7 +12,12 @@ const CategoryList: React.FC = () => {
         { key: "name", label: "Category Name", enableSorting: true, type: "text" },
         { key: "abbreviation", label: "Abbreviation", enableSorting: true, type: "text" },
       ]}
-
+      filterColumns={[
+        { key: "categoryId", label: "Category ID", type: "text" },
+        { key: "name", label: "Category Name", type: "text" },
+        { key: "abbreviation", label: "Abbreviation", type: "text" },
+      ]}
+      
       idKey="categoryId"
       title="Category Management"
       subtitle="Manage categories with search, filter, and pagination"

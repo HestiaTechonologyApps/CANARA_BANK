@@ -16,6 +16,16 @@ const ReportsList: React.FC = () => {
         { key: "memberName", label: "Member", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "reportId", label: "Report ID", type: "text" },
+        { key: "reportTypeName", label: "Report Type", type: "text" },
+        { key: "yearName", label: "Year", type: "text" },
+        { key: "monthName", label: "Month", type: "text" },
+        { key: "circleName", label: "Circle", type: "text" },
+        { key: "branchName", label: "Branch", type: "text" },
+        { key: "memberName", label: "Member", type: "text" },
+      ]}
+      
       idKey="reportId"
       title="Reports Management"
       subtitle="Manage reports with search, filter, and pagination."

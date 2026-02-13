@@ -11,6 +11,10 @@ const YearMasterList: React.FC = () => {
         { key: "yearOf", label: "Year", type: "text" },
         { key: "yearName", label: "Year Name", type: "text" },
       ]}
+      filterColumns={[
+        { key: "yearOf", label: "Year", type: "text" },
+        { key: "yearName", label: "Year Name", type: "text" },
+      ]}
 
       idKey="yearOf"
       title="Year"

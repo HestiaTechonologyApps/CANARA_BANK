@@ -13,6 +13,11 @@ const StateList: React.FC = () => {
         { key: "abbreviation", label: "Abbreviation", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "stateId", label: "State ID", type: "text" },
+        { key: "name", label: "State Name", type: "text" },
+        { key: "abbreviation", label: "Abbreviation", type: "text" },
+      ]}
 
       idKey="stateId"
       title="State Management"

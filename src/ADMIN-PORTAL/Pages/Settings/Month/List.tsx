@@ -12,6 +12,11 @@ const MonthList: React.FC = () => {
         { key: "monthName", label: "Month Name", enableSorting: true, type: "text" },
         { key: "abbrivation", label: "Abbreviation", enableSorting: true, type: "text" },
       ]}
+      filterColumns={[
+        { key: "monthCode", label: "Month Code", type: "text" },
+        { key: "monthName", label: "Month Name", type: "text" },
+        { key: "abbrivation", label: "Abbreviation", type: "text" },
+      ]}
 
       idKey="monthCode"
       title="Month List"

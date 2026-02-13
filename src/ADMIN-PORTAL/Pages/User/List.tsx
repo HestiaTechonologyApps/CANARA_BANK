@@ -16,6 +16,14 @@ const UserList: React.FC = () => {
         { key: "phoneNumber", label: "Phone", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "userId", label: "User ID", type: "text" },
+        { key: "userName", label: "User Name", type: "text" },
+        { key: "staffNo", label: "Staff No", type: "text" },
+        { key: "role", label: "Role", type: "text" },
+        { key: "userEmail", label: "Email", type: "text" },
+        { key: "phoneNumber", label: "Phone", type: "text" },
+      ]}
 
       idKey="userId"
       title="User Management"

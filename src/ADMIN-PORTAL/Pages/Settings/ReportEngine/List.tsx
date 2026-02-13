@@ -13,6 +13,11 @@ const ReportEngineList: React.FC = () => {
         { key: "description", label: "Description", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "reportEngineId", label: "ID", type: "text" },
+        { key: "name", label: "Report Name", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+      ]}
 
       idKey="reportEngineId"
       title="Report Engine List"

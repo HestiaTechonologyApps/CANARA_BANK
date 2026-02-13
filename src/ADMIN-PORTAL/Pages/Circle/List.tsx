@@ -27,6 +27,13 @@ const CircleList: React.FC = () => {
         { key: "stateName", label: "State", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "circleId", label: "Circle ID", type: "text" },
+        { key: "circleCode", label: "Circle Code", type: "text" },
+        { key: "name", label: "Circle Name", type: "text" },
+        { key: "abbreviation", label: "Abbreviation", type: "text" },
+        { key: "stateName", label: "State", type: "text" },
+      ]}
 
       idKey="circleId"
       title="Circle Management"

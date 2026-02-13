@@ -7,7 +7,6 @@ import type { State } from "../../Types/Settings/States.types";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,7 +46,7 @@ const BranchCreate: React.FC = () => {
       circleId: selectedCircle.circleId,
       status: formData.status ? "Active" : "Inactive",
       isRegCompleted: Boolean(formData.isRegCompleted),
-      stateName: selectedState.name,
+      stateName: selectedState.name, 
       circleName: selectedCircle.name,
     };
 

@@ -18,6 +18,17 @@ const RefundContributionList: React.FC = () => {
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
       ]}
 
+      filterColumns={[
+              { key: "refundContributionId", label: "Refund ID", type: "text" },
+        { key: "staffNo", label: "Staff No", type: "text" },
+        { key: "memberName", label: "Member", type: "text" },
+        { key: "designationName", label: "Designation", type: "text" },
+        { key: "stateName", label: "State", type: "text" },
+        { key: "refundNO", label: "Refund No", type: "text" },
+        { key: "amount", label: "Amount", type: "text" },
+        { key: "yearName", label: "Year", type: "text" }, 
+      ]}
+      
       idKey="refundContributionId"
       title="Refund Contribution Management"
       subtitle="Manage refund contributions with search, filter, and pagination."

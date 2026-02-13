@@ -19,6 +19,12 @@ const AttachmentList: React.FC = () => {
         { key: "description", label: "Description", enableSorting: true, type: "text" },
       ]}
 
+      filterColumns={[
+        { key: "attachmentId", label: "ID", type: "text" },
+        { key: "fileName", label: "File Name", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+      ]}
+      
       idKey="attachmentId"
       title="Attachments"
       subtitle="Manage attachments uploaded"

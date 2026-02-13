@@ -13,6 +13,13 @@ const SupportTicketList: React.FC = () => {
         { key: "duration", label: "Duration", enableSorting: true, type: "text" },
         { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "supportTicketId", label: "Support TicketID", type: "text" },
+        { key: "supportTicketNum", label: "Ticket No", type: "text" },
+        { key: "priority", label: "Priority", type: "text" },
+        { key: "duration", label: "Duration", type: "text" },
+      ]}
+      
       idKey="supportTicketId"
       title="Support Tickets"
       subtitle="Manage support tickets with search, filter, and pagination."

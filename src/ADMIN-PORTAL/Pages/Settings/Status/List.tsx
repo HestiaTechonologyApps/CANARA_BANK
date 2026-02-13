@@ -14,7 +14,13 @@ const StatusList: React.FC = () => {
         { key: "description", label: "Description", enableSorting: false, type: "text" },
         { key: "groupId", label: "Group ID", enableSorting: true, type: "text" },
       ]}
-
+      filterColumns={[
+        { key: "statusId", label: "Status ID", type: "text" },
+        { key: "name", label: "Name", type: "text" },
+        { key: "abbreviation", label: "Abbreviation", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+        { key: "groupId", label: "Group ID", type: "text" },
+      ]}
       idKey="statusId"
       title="Status Management"
       subtitle="Manage system statuses with search, filter, and pagination"

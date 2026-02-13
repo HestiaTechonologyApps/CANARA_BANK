@@ -12,6 +12,12 @@ const UserRoleRightList: React.FC = () => {
         { key: "actionName", label: "Action Name", enableSorting: true, type: "text" },
         { key: "userTypeID", label: "User Type ID", enableSorting: true, type: "text" },
       ]}
+      filterColumns={[
+        { key: "userRoleRightId", label: "Role Right ID", type: "text" },
+        { key: "controllerName", label: "Controller Name", type: "text" },
+        { key: "actionName", label: "Action Name", type: "text" },
+        { key: "userTypeID", label: "User Type ID", type: "text" },
+      ]}
       idKey="userRoleRightId"
       title="User Role Right List"
       subtitle="Manage access control for user roles"

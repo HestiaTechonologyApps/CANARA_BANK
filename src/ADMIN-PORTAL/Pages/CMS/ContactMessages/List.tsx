@@ -5,10 +5,9 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const ContactMessageList: React.FC = () => {
   return (
     <KiduServerTableList
-      /* ================= DATA FETCH ================= */
+
       fetchService={ContactMessageService.getAllContactMessages}
 
-      /* ================= TABLE CONFIG ================= */
       columns={[
         { key: "contactMessageId", label: "ID", enableSorting: true, type: "text" },
         { key: "fullName", label: "Full Name", enableSorting: true, type: "text" },
@@ -20,22 +19,24 @@ const ContactMessageList: React.FC = () => {
         { key: "isReplied", label: "Replied", enableSorting: true, type: "checkbox" },
       ]}
 
-      /* ================= KEYS ================= */
+      filterColumns={[
+        { key: "contactMessageId", label: "ID", type: "text" },
+        { key: "fullName", label: "Full Name", type: "text" },
+        { key: "emailAddress", label: "Email", type: "text" },
+        { key: "phoneNumber", label: "Phone", type: "text" },
+        { key: "subject", label: "Subject", type: "text" },
+        { key: "submittedAt", label: "Submitted At", type: "date" },
+      ]}
+      
       idKey="contactMessageId"
-
-      /* ================= UI ================= */
       title="Contact Messages"
       subtitle="Manage customer contact enquiries with search, filter, and pagination."
-
-      /* ================= ROUTES ================= */
       viewRoute="/dashboard/cms/ContactMessage-view"
       // No editRoute - only view button will show
-      /* ================= FEATURES ================= */
       showAddButton={false}
       showExport={true}
       showSearch={true}
       showActions={true}
-      /* ================= PAGINATION ================= */
       rowsPerPage={10}
     />
   );

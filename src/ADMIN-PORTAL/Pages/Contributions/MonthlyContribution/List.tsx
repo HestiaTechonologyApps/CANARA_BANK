@@ -15,6 +15,15 @@ const MonthlyContributionList: React.FC = () => {
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
       ]}
 
+      filterColumns={[
+        { key: "monthlyContributionId", label: "ID", type: "text" },
+        { key: "fileName", label: "File Name", type: "text" },
+        { key: "fileType", label: "File Type", type: "text" },
+        { key: "fileExtension", label: "Extension", type: "text" },
+        { key: "monthName", label: "Month", type: "text" },
+        { key: "yearName", label: "Year", type: "text" },
+      ]}
+
       idKey="monthlyContributionId"
       title="Monthly Contribution Management"
       addButtonLabel="Add New"

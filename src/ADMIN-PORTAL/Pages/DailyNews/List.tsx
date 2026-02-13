@@ -35,6 +35,13 @@ const DailyNewsList: React.FC = () => {
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
 
+      filterColumns={[
+        { key: "dailyNewsId", label: "Daily News ID", type: "text" },
+        { key: "title", label: "Title", type: "text" },
+        { key: "newsDate", label: "Date", type: "text" },
+        { key: "companyName", label: "Company", type: "text" },
+      ]}
+
       idKey="dailyNewsId"
       title="Daily News Management"
       subtitle="Manage daily news articles with search, filter, and pagination."

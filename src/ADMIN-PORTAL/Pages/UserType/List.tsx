@@ -12,6 +12,11 @@ const UserTypeList: React.FC = () => {
         { key: "abbreviation", label: "Abbreviation", enableSorting: true, type: "text" },
         { key: "description", label: "Description", enableSorting: true, type: "text" },
       ]}
+      filterColumns={[
+        { key: "userTypeId", label: "User Type ID", type: "text" },
+        { key: "abbreviation", label: "Abbreviation", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+      ]}
 
       idKey="userTypeId"
       title="User Type Management"

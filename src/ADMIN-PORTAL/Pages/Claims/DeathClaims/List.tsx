@@ -30,6 +30,16 @@ const DeathClaimList: React.FC = () => {
         { key: "yearName", label: "Year", type: "text" },
       ]}
 
+      filterColumns={[
+        { key: "deathClaimId", label: "Death Claim ID", type: "text" },
+        { key: "memberName", label: "Member", type: "text" },
+        { key: "stateName", label: "State", type: "text" },
+        { key: "designationName", label: "Designation", type: "text" },
+        { key: "deathDate", label: "Death Date", type: "date" },
+        { key: "amount", label: "Amount", type: "number" },
+        { key: "yearName", label: "Year", type: "text" },
+      ]}
+      
       idKey="deathClaimId"
       title="Death Claims"
       subtitle="Manage death claims with search, filter, and pagination."

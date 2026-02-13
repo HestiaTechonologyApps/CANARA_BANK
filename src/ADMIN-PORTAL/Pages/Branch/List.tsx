@@ -36,6 +36,16 @@ const BranchList: React.FC = () => {
         { key:"isRegCompleted", label:"Reg Completed",enableSorting:true, type: "checkbox"}
       ]}
 
+      filterColumns={[
+            { key: "branchId", label: "Branch ID", type: "text" },
+        { key: "dpCode", label: "DP Code", type: "text" },
+        { key: "name", label: "Branch Name", type: "text" },
+        { key: "district", label: "District", type: "text" },
+        { key: "stateName", label: "State", type: "text" },
+        { key: "circleName", label: "Circle", type: "text" },
+        { key: "status", label: "Status", type: "text" },
+      ]}
+      
       idKey="branchId"
       title="Branch Management"
       subtitle="Manage branches with search, filter, and pagination."

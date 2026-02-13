@@ -24,11 +24,19 @@ const DayQuoteList: React.FC = () => {
         }));
       }}
       columns={[
-        { key: "dayQuoteId", label: "Day Quote ID", enableSorting: true, type: "text" },
-        { key: "day", label: "Day", enableSorting: true, type: "text" },
-        { key: "monthName", label: "Month", enableSorting: true, type: "text" },
-        { key: "toDayQuote", label: "Quote", enableSorting: true, type: "text" },
+          { key: "dayQuoteId", label: "Day Quote ID", enableSorting: true, type: "text" },
+          { key: "day", label: "Day", enableSorting: true, type: "text" },
+          { key: "monthName", label: "Month", enableSorting: true, type: "text" },
+          { key: "toDayQuote", label: "Quote", enableSorting: true, type: "text" },
       ]}
+      
+      filterColumns={[
+        { key: "dayQuoteId", label: "Day Quote ID", type: "text" },
+        { key: "day", label: "Day", type: "text" },
+        { key: "monthName", label: "Month", type: "text" },
+        { key: "toDayQuote", label: "Quote", type: "text" },
+      ]}
+
       idKey="dayQuoteId"
       title="Day Quotes Management"
       subtitle="Manage day quotes articles with search, filter, and pagination."

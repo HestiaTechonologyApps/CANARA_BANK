@@ -21,10 +21,16 @@ const ManagingCommitteeList: React.FC = () => {
 
       columns={[
         { key: "managingComiteeId", label: "Committee ID", enableSorting: true, type: "text" },
-        { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" }, 
+        { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" },
         { key: "managingComitteeName", label: "Name", enableSorting: true, type: "text" },
         { key: "position", label: "Position", enableSorting: true, type: "text" },
         { key: "order", label: "Order", enableSorting: true, type: "text" },
+      ]}
+      filterColumns={[
+        { key: "managingComiteeId", label: "Committee ID", type: "text" },
+        { key: "managingComitteeName", label: "Name", type: "text" },
+        { key: "position", label: "Position", type: "text" },
+        { key: "order", label: "Order", type: "text" },
       ]}
 
       idKey="managingComiteeId"

@@ -12,6 +12,12 @@ const PublicPageList: React.FC = () => {
         { key: "homeHeroTitle", label: "Hero Title", enableSorting: true, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "publicPageId", label: "Public Page ID", type: "text" },
+        { key: "navBrandTitle", label: "Brand", type: "text" },
+        { key: "homeHeroTitle", label: "Hero Title", type: "text" },
+      ]}
+
       idKey="publicPageId"
       title="Public Page Management"
       subtitle="Manage public page with search, filter, and pagination"

@@ -12,6 +12,12 @@ const ReportTypeList: React.FC = () => {
         { key: "description", label: "Description", enableSorting: false, type: "text" },
         { key: "isActive", label: "Active", enableSorting: true, type: "checkbox" },
       ]}
+      filterColumns={[
+        { key: "reportTypeId", label: "ID", type: "text" },
+        { key: "reportTypeName", label: "Report Type", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+      ]}
+      
       idKey="reportTypeId"
       title="Report Type Management"
       subtitle="Manage report types with search and pagination."
