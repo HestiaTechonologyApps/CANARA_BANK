@@ -17,7 +17,7 @@ const ReportEngineList: React.FC = () => {
       idKey="reportEngineId"
       title="Report Engine List"
       subtitle="Manage report engines with search, sort, and pagination"
-      addButtonLabel="Add Report Engine"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/reportengine-create"
       editRoute="/dashboard/settings/reportengine-edit"
       viewRoute="/dashboard/settings/reportengine-view"

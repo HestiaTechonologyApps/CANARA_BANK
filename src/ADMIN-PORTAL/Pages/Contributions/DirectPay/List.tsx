@@ -29,7 +29,7 @@ const DirectPaymentList: React.FC = () => {
       idKey="directPaymentId"
       title="Direct Payment Management"
       subtitle="Manage direct payments with search, filter, and pagination."
-      addButtonLabel="Add Direct Payment"
+      addButtonLabel="Add Payment"
       addRoute="/dashboard/contributions/directpayment-create"
       editRoute="/dashboard/contributions/directpayment-edit"
       viewRoute="/dashboard/contributions/directpayment-view"

@@ -18,7 +18,7 @@ const DesignationList: React.FC = () => {
       idKey="designationId"
       title="Designation Management"
       subtitle="Manage designations with search, filter, and pagination"
-      addButtonLabel="Add Designation"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/designation-create"
       editRoute="/dashboard/settings/designation-edit"
       viewRoute="/dashboard/settings/designation-view"

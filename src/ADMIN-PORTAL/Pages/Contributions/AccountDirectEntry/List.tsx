@@ -18,6 +18,17 @@ const AccountsDirectEntryList: React.FC = () => {
         { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
       ]}
 
+      filterColumns={[
+        { key: "accountsDirectEntryID", label: "Account Direct Entry ID", type: "text" },
+        { key: "memberName", label: "Member", type: "text" },
+        { key: "branchName", label: "Branch", type: "text" },
+        { key: "monthName", label: "Month", type: "text" },
+        { key: "yearName", label: "Year", type: "text" },
+        { key: "amt", label: "Amount", type: "text" },
+        { key: "status", label: "Status", type: "text" },
+      ]
+      }
+
       idKey="accountsDirectEntryID"
       title="Accounts Direct Entry"
       subtitle="Manage account direct entries with search, filter, and pagination."

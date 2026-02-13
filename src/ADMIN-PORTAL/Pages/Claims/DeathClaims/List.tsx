@@ -33,7 +33,7 @@ const DeathClaimList: React.FC = () => {
       idKey="deathClaimId"
       title="Death Claims"
       subtitle="Manage death claims with search, filter, and pagination."
-      addButtonLabel="Add Death Claim"
+      addButtonLabel="Add Claims"
       addRoute="/dashboard/claims/deathclaims-create"
       editRoute="/dashboard/claims/deathclaims-edit"
       viewRoute="/dashboard/claims/deathclaims-view"

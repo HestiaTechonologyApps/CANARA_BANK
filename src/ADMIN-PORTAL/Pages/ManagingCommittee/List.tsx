@@ -30,7 +30,7 @@ const ManagingCommitteeList: React.FC = () => {
       idKey="managingComiteeId"
       title="Managing Committee"
       subtitle="Manage managing committee with search and pagination."
-      addButtonLabel="Add Committee"
+      addButtonLabel="Add New"
       addRoute="/dashboard/cms/manage-committe-create"
       editRoute="/dashboard/cms/manage-committe-edit"
       viewRoute="/dashboard/cms/manage-committe-view"

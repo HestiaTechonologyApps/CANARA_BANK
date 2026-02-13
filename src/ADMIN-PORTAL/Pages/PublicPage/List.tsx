@@ -15,7 +15,7 @@ const PublicPageList: React.FC = () => {
       idKey="publicPageId"
       title="Public Page Management"
       subtitle="Manage public page with search, filter, and pagination"
-      addButtonLabel="Add Public Page"
+      addButtonLabel="Add Content"
       addRoute="/dashboard/cms/publicPage-create"
       editRoute="/dashboard/cms/publicPage-edit"
       showAddButton

@@ -16,6 +16,7 @@ import KiduSearchBar from "./KiduSearchBar";
 import KiduButton from "./KiduButton";
 import KiduPopupButton from "./KiduPopupButton";
 import KiduServerTableNavbar from "./KiduServerTableNavbar";
+import type { FilterColumn } from "./KiduTableFilter.";
 
 interface Column {
   key: string;
@@ -46,6 +47,7 @@ interface KiduServerTableProps {
     pageNumber: number;
     pageSize: number;
     searchTerm: string;
+    filters?: Record<string, any>;
   }) => Promise<{ data: any[]; total: number }>;
   rowsPerPage?: number;
 
@@ -55,6 +57,10 @@ interface KiduServerTableProps {
   showRowsPerPageSelector?: boolean;
   rowsPerPageOptions?: number[];
   navbarAdditionalButtons?: React.ReactNode;
+
+  //Filter props
+  showFilter?: boolean;
+  filterColumns?: FilterColumn[];
 }
 
 const KiduServerTable: React.FC<KiduServerTableProps> = ({
@@ -80,6 +86,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   showRowsPerPageSelector = true,
   rowsPerPageOptions = [10, 25, 50, 100],
   navbarAdditionalButtons,
+  showFilter = true,
+  filterColumns = [],
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -91,6 +99,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+  const [filters, setFilters] = useState<Record<string, any>>({});
 
   // React Table states - only sorting, no filtering (server handles that)
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -98,7 +107,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const totalPages = Math.ceil(total / rowsPerPage);
 
   const loadData = useCallback(
-    async (page: number, search: string, pageSize: number) => {
+    async (page: number, search: string, pageSize: number, currentFilters: Record<string, any>) => {
       try {
         setLoading(true);
         setError(null);
@@ -107,6 +116,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           pageNumber: page,
           pageSize: pageSize,
           searchTerm: search,
+          filters: currentFilters,
         });
 
         setData(result.data || []);
@@ -125,24 +135,30 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
   // Load data when page or rowsPerPage changes
   useEffect(() => {
-    loadData(currentPage, searchTerm, rowsPerPage);
-  }, [loadData, currentPage, rowsPerPage]);
+    loadData(currentPage, searchTerm, rowsPerPage, filters);
+  }, [loadData, currentPage, rowsPerPage, filters]);
 
   // Handle search with debounce and reset to page 1
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setCurrentPage(1);
-      loadData(1, searchTerm, rowsPerPage);
+      loadData(1, searchTerm, rowsPerPage, filters);
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, loadData, rowsPerPage]);
+  }, [searchTerm, loadData, rowsPerPage, filters]);
 
   // Handle rows per page change
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setCurrentPage(1); // Reset to first page
   };
+
+  const handleFilterChange = (newFilters: Record<string, any>) => {
+    setFilters(newFilters);
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
 
   // Define columns for React Table
   const tableColumns = useMemo<ColumnDef<any>[]>(() => {
@@ -360,7 +376,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   };
 
   const handleRetry = () => {
-    loadData(currentPage, searchTerm, rowsPerPage);
+    loadData(currentPage, searchTerm, rowsPerPage, filters);
   };
 
   const fieldName = title ? title.replace("Select ", "") : addButtonLabel;
@@ -421,6 +437,11 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                   onRowsPerPageChange={handleRowsPerPageChange}
                   rowsPerPageOptions={rowsPerPageOptions}
                   additionalButtons={navbarAdditionalButtons}
+                  showFilter={showFilter}
+                  filterColumns={filterColumns}
+                  onFilterChange={handleFilterChange}
+                  initialFilters={filters}
+
                 />
               )}
               {showAddButton && addRoute && (

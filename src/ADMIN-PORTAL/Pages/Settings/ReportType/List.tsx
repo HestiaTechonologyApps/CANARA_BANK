@@ -15,7 +15,7 @@ const ReportTypeList: React.FC = () => {
       idKey="reportTypeId"
       title="Report Type Management"
       subtitle="Manage report types with search and pagination."
-      addButtonLabel="Add Report Type"
+      addButtonLabel="Add Type"
       addRoute="/dashboard/settings/reportType-create"
       editRoute="/dashboard/settings/reportType-edit"
       viewRoute="/dashboard/settings/reportType-view"

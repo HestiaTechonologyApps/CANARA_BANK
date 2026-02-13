@@ -17,7 +17,7 @@ const MonthlyContributionList: React.FC = () => {
 
       idKey="monthlyContributionId"
       title="Monthly Contribution Management"
-      addButtonLabel="Add Monthly Contribution"
+      addButtonLabel="Add New"
       addRoute="/dashboard/contributions/monthlyContribution-create"
       editRoute="/dashboard/contributions/monthlyContribution-edit"
       viewRoute="/dashboard/contributions/monthlyContribution-view"

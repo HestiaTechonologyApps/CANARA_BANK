@@ -1,6 +1,7 @@
 // KiduServerTableList.tsx - Updated with paginated service support
 import React from "react";
 import KiduServerTable from "./KiduServerTable";
+import type { FilterColumn } from "./KiduTableFilter.";
 
 interface Column {
   key: string;
@@ -20,11 +21,11 @@ interface KiduServerTableListProps {
     sortOrder?: 'asc' | 'desc';
   }) => Promise<{ data: any[]; total: number }>;
   transformData?: (data: any[]) => any[];
-  
+
   // Table configuration
   columns: Column[];
   idKey?: string;
-  
+
   // UI configuration
   title?: string;
   subtitle?: string;
@@ -32,7 +33,7 @@ interface KiduServerTableListProps {
   addRoute?: string;
   editRoute?: string;
   viewRoute?: string;
-  
+
   // Feature flags
   showAddButton?: boolean;
   showKiduPopupButton?: boolean;
@@ -40,7 +41,12 @@ interface KiduServerTableListProps {
   showSearch?: boolean;
   showActions?: boolean;
   rowsPerPage?: number;
-  
+
+  //Filter props
+  showFilter?: boolean;
+  filterColumns?: FilterColumn[];
+
+
   // Callbacks
   onRowClick?: (item: any) => void;
   onAddClick?: () => void;
@@ -64,13 +70,15 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
   showSearch = true,
   showActions = true,
   rowsPerPage = 10,
+  showFilter = true,
+  filterColumns = [],
   onRowClick,
   onAddClick,
 }) => {
-  
+
   // Cache the full dataset (only for non-paginated services)
   let cachedData: any[] | null = null;
-  
+
   // Adapted to match old KiduServerTable's fetchData signature
   const fetchData = async (params: {
     pageNumber: number;
@@ -78,6 +86,7 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
     searchTerm: string;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
+    filters?: Record<string, any>;
   }): Promise<{ data: any[]; total: number }> => {
     try {
       // If paginated service is provided, use it directly
@@ -89,38 +98,56 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
           sortBy: params.sortBy,
           sortOrder: params.sortOrder,
         });
-        
+
         // Apply transformation if provided
         if (transformData) {
           result.data = transformData(result.data);
         }
-        
+
         return result;
       }
-      
+
       // Otherwise, use the non-paginated service with client-side pagination
       if (!fetchService) {
         throw new Error("Either fetchService or paginatedFetchService must be provided");
       }
-      
+
       // Fetch all data only once (on first call or when cache is empty)
       if (!cachedData) {
         let allData = await fetchService();
-        
+
         // Apply transformation if provided
         if (transformData) {
           allData = transformData(allData);
         }
-        
+
         // Reverse to show latest records first (assuming higher IDs = newer records)
         allData.reverse();
-        
+
         cachedData = allData;
       }
-      
+
       // Work with cached data
       let filteredData = cachedData;
-      
+
+      // Apply filters
+      if (params.filters) {
+        filteredData = filteredData.filter((item) => {
+          return Object.entries(params.filters || {}).every(([key, value]) => {
+            if (value === "" || value === null || value === undefined) return true;
+
+            const itemValue = item[key];
+            if (itemValue === null || itemValue === undefined) return false;
+
+            // Handle different filter types
+            const itemValueStr = String(itemValue).toLowerCase();
+            const filterValueStr = String(value).toLowerCase();
+
+            return itemValueStr.includes(filterValueStr);
+          });
+        });
+      }
+
       // Filter by search term
       if (params.searchTerm) {
         const searchLower = params.searchTerm.toLowerCase();
@@ -132,11 +159,11 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
           })
         );
       }
-      
+
       // Return paginated slice
       const start = (params.pageNumber - 1) * params.pageSize;
       const end = start + params.pageSize;
-      
+
       return {
         data: filteredData.slice(start, end),
         total: filteredData.length
@@ -168,6 +195,8 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
       rowsPerPage={rowsPerPage}
       onRowClick={onRowClick}
       onAddClick={onAddClick}
+      showFilter={showFilter}
+      filterColumns={filterColumns}
     />
   );
 };

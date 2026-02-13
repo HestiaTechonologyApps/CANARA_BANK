@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Dropdown, ButtonGroup } from "react-bootstrap";
 import { BsPrinter, BsFiletypeCsv, BsFiletypePdf } from "react-icons/bs";
-import { FaColumns, FaCopy, FaFileExcel, FaFileExport, FaFilter } from "react-icons/fa";
+import { FaColumns, FaCopy, FaDownload, FaFileExcel} from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -9,6 +9,8 @@ import autoTable from "jspdf-autotable";
 // ✅ Toastify imports
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import type { FilterColumn } from "./KiduTableFilter.";
+import KiduTableFilter from "./KiduTableFilter.";
 
 interface KiduServerTableNavbarProps {
   data?: any[];
@@ -20,6 +22,11 @@ interface KiduServerTableNavbarProps {
   onRowsPerPageChange?: (rows: number) => void;
   rowsPerPageOptions?: number[];
   additionalButtons?: React.ReactNode;
+  //Filter props
+  showFilter?: boolean;
+  filterColumns?: FilterColumn[];
+  onFilterChange?: (filters: Record<string, any>) => void;
+  initialFilters?: Record<string, any>
 }
 
 const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
@@ -32,6 +39,10 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
   onRowsPerPageChange,
   rowsPerPageOptions = [10, 25, 50, 100],
   additionalButtons,
+  showFilter = true,
+  filterColumns = [],
+  onFilterChange,
+  initialFilters = {},
 }) => {
   const cleanCellValue = (value: any, columnType?: string): string => {
     if (value === null || value === undefined || value === "") return "";
@@ -210,7 +221,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
       <Row className="mb-3 align-items-center">
         <Col xs="auto">
           <div className="d-flex gap-2 flex-wrap align-items-center">
-
+            {/* 
              <Dropdown as={ButtonGroup}>
                 <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
                <FaFilter/>  Filter
@@ -226,11 +237,28 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
+
+            {showFilter && filterColumns.length > 0 && onFilterChange && (
+              <KiduTableFilter
+                columns={filterColumns}
+                onFilterChange={onFilterChange}
+                initialFilters={initialFilters}
+              />
+            )}
             {showRowsPerPageSelector && (
               <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
-                <FaColumns/>  Show {rowsPerPage} rows
+                <Dropdown.Toggle size="sm" variant="outline" style={{
+                  color: "#1B3763",
+                  fontFamily: "Urbanist",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  borderColor: "#1B3763",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}>
+                  <FaColumns />  Show {rowsPerPage} rows
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {rowsPerPageOptions.map((opt) => (
@@ -267,21 +295,36 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
             )} */}
             {showExportButtons && (
               <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
-                 <FaFileExport/> Export
+                <Dropdown.Toggle size="sm" variant="outline" style={{
+                  color: "#1B3763",
+                  fontFamily: "Urbanist",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  borderColor: "#1B3763",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}>
+                  <FaDownload /> Export
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu style={{
+                  color: "#1B3763",
+                  fontFamily: "Urbanist",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  borderColor: "#1B3763",
+                }}>
                   <Dropdown.Item onClick={handleCopy}>
-                    <FaCopy /> Copy
+                  <span className="text-primary">  <FaCopy /></span> Copy
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handleCSV}>
-                    <BsFiletypeCsv /> CSV
+                   <span className="text-warning"> <BsFiletypeCsv /> </span>CSV
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handleExcel}>
-                    <FaFileExcel /> Excel
+                   <span className="text-success"> <FaFileExcel /></span> Excel
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handlePDF}>
-                    <BsFiletypePdf /> PDF
+                  <span className="text-danger">  <BsFiletypePdf /></span> PDF
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handlePrint}>
                     <BsPrinter /> Print
@@ -290,7 +333,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
               </Dropdown>
             )}
 
-            
+
           </div>
         </Col>
 
