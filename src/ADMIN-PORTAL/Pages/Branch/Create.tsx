@@ -8,6 +8,9 @@ import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const BranchCreate: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showCirclePopup, setShowCirclePopup] = useState(false);
@@ -19,7 +22,7 @@ const BranchCreate: React.FC = () => {
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4 } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4 } },
     { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4 } },
-    { name: "status", rules: { type: "select", label: "Status", colWidth:4 } },
+    { name: "status", rules: { type: "select", label: "Status", colWidth: 4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
     { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },
     { name: "address3", rules: { type: "text", label: "Address Line 3", colWidth: 4 } },
@@ -60,18 +63,27 @@ const BranchCreate: React.FC = () => {
       value: selectedCircle?.name || "",
       onOpen: () => {
         if (!selectedState) {
-          alert("Please select State first");
+          toast.warning("Please select a State first to continue.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+          });
           return;
         }
         setShowCirclePopup(true);
       },
     },
   };
-//status option
-const statusOptions = [
-  {value:"Active", label:"Active"},
-  {value:"Inactive", label:"Inactive"}
-]
+
+  const statusOptions = [
+    { value: "Active", label: "Active" },
+    { value: "Inactive", label: "Inactive" },
+  ];
+
   return (
     <>
       <KiduCreate
@@ -79,15 +91,14 @@ const statusOptions = [
         fields={fields}
         onSubmit={handleSubmit}
         popupHandlers={popupHandlers}
-        options={{
-          status: statusOptions
-        }}
+        options={{ status: statusOptions }}
         showResetButton
         navigateOnSuccess="/dashboard/settings/branch-list"
         successMessage="Branch created successfully!"
         errorMessage="Failed to create branch. Please try again."
         themeColor="#1B3763"
       />
+
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
@@ -97,6 +108,7 @@ const statusOptions = [
           setShowStatePopup(false);
         }}
       />
+
       <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}
@@ -105,6 +117,9 @@ const statusOptions = [
           setShowCirclePopup(false);
         }}
       />
+
+      {/* Toast Container */}
+      <ToastContainer />
     </>
   );
 };
