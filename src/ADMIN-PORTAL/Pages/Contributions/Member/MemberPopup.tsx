@@ -20,8 +20,8 @@ const MemberPopup: React.FC<MemberPopupProps> = ({
     { key: "memberId" as keyof Member, label: "ID" },
     { key: "staffNo" as keyof Member, label: "Staff No" },
     { key: "name" as keyof Member, label: "Name" },
-    { key: "designationId" as keyof Member, label: "Designation ID" },
-    { key: "branchId" as keyof Member, label: "Branch ID" },
+    { key: "designationName" as keyof Member, label: "Designation" },
+    { key: "branchName" as keyof Member, label: "Branch" },
     { key: "isRegCompleted" as keyof Member, label: "Reg. Completed" },
   ];
 

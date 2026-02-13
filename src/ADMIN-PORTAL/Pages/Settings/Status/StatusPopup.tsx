@@ -20,7 +20,7 @@ const StatusPopup: React.FC<StatusPopupProps> = ({
     { key: "statusId" as keyof Status, label: "ID" },
     { key: "name" as keyof Status, label: "Status Name" },
     { key: "abbreviation" as keyof Status, label: "Abbreviation" },
-    { key: "groupId" as keyof Status, label: "Group ID" },
+    { key: "groupId" as keyof Status, label: "Group" },
     { key: "description" as keyof Status, label: "Description" },
   ];
 
