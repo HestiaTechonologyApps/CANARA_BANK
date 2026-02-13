@@ -9,7 +9,7 @@ const StatusView: React.FC = () => {
     { key: "name", label: "Status Name", icon: "bi-tag" },
     {  key: "abbreviation",  label: "Abbreviation",  icon: "bi-bookmark", formatter: (value) => value?.toUpperCase() || "N/A" },
     { key: "description", label: "Description", icon: "bi-file-text" },
-    { key: "groupId", label: "Group ID", icon: "bi-folder" },
+    { key: "groupId", label: "Group ID", icon: "bi-folder",formatter: (value) => value ? `Group ${value}` : "N/A" },
   ];
 
   const handleFetch = async (statusId: string) => {

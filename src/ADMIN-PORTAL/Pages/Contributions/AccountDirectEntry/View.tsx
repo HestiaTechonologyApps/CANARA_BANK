@@ -3,25 +3,25 @@ import KiduView from "../../../Components/KiduView";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
 
 const AccountDirectEntryView: React.FC = () => {
-  const fields = [
-    { key: "accountsDirectEntryID", label: "Account Direct Entry ID" },
-    { key: "memberName", label: "Member" },
-    { key: "branchName", label: "Branch" },
-    { key: "monthName", label: "Month" },
-    { key: "yearName", label: "Year" },
-    { key: "ddIba", label: "DD / IBA" },
-    { key: "ddIbaDateString", label: "DD / IBA Date" },
-    { key: "amt", label: "Amount" },
-    { key: "status", label: "Status" },
-    { key: "enrl", label: "ENRL", icon: "bi-file-text" },
-    { key: "fine", label: "Fine", icon: "bi-exclamation-circle" },
-    { key: "f9", label: "F9", icon: "bi-list-check" },
-    { key: "f10", label: "F10", icon: "bi-list-check" },
-    { key: "f11", label: "F11", icon: "bi-list-check" },
-    { key: "approvedBy", label: "Approved By", icon: "bi-person-check" },
-    { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
-    { key: "isApproved", label: "Approved", isBoolean: true },
-  ];
+ const fields = [
+  { key: "accountsDirectEntryID", label: "Account Direct Entry ID", icon: "bi-hash" },
+  { key: "memberName", label: "Member", icon: "bi-person" },
+  { key: "branchName", label: "Branch", icon: "bi-building" },
+  { key: "monthName", label: "Month", icon: "bi-calendar-month" },
+  { key: "yearName", label: "Year", icon: "bi-calendar3" },
+  { key: "ddIba", label: "DD / IBA", icon: "bi-receipt" },
+  { key: "ddIbaDateString", label: "DD / IBA Date", icon: "bi-calendar-event" },
+  { key: "amt", label: "Amount", icon: "bi-currency-rupee" },
+  { key: "status", label: "Status", icon: "bi-info-circle" },
+  { key: "enrl", label: "ENRL", icon: "bi-file-text" },
+  { key: "fine", label: "Fine", icon: "bi-exclamation-circle" },
+  { key: "f9", label: "F9", icon: "bi-list-check" },
+  { key: "f10", label: "F10", icon: "bi-list-check" },
+  { key: "f11", label: "F11", icon: "bi-list-check" },
+  { key: "approvedBy", label: "Approved By", icon: "bi-person-check" },
+  { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
+  { key: "isApproved", label: "Approved", icon: "bi-patch-check", isBoolean: true },
+];
 
   const formatDateOnly = (value?: string | Date | null) => {
   if (!value) return "";
