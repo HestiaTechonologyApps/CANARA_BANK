@@ -123,32 +123,32 @@ const validateForm = () => {
               <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
                   <Col md={6}>
-                    <Form.Label>{config?.contactFullNameLabel}</Form.Label>
+                    <Form.Label>{config?.contactFullNameLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control placeholder={config?.contactFullNamePlaceholder} name="fullName"
                       value={formData.fullName}
                       onChange={handleChange} />
                   </Col>
                   <Col md={6}>
-                    <Form.Label>{config?.contactPhoneLabel}</Form.Label>
+                    <Form.Label>{config?.contactPhoneLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control placeholder={config?.contactPhoneNumberPlaceholder} name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleChange} />
                   </Col>
                 </Row>
                 <Form.Group className="mb-3">
-                  <Form.Label>{config?.contactEmailLabel}</Form.Label>
+                  <Form.Label>{config?.contactEmailLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control placeholder={config?.contactEmailPlaceholder} name="emailAddress"
                     value={formData.emailAddress}
                     onChange={handleChange} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>{config?.contactSubjectLabel}</Form.Label>
+                  <Form.Label>{config?.contactSubjectLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control placeholder={config?.contactSubjectPlaceholder} name="subject"
                     value={formData.subject}
                     onChange={handleChange} />
                 </Form.Group>
                 <Form.Group className="mb-4">
-                  <Form.Label>{config?.contactMessageLabel}</Form.Label>
+                  <Form.Label>{config?.contactMessageLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control as="textarea" rows={config?.contactMessageRowNo || 3} placeholder={config?.contactMessagePlaceholder} name="message"
                     value={formData.message}
                     onChange={handleChange} />

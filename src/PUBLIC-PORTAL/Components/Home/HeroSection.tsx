@@ -60,7 +60,7 @@ const HeroSection: React.FC = () => {
           </p>
 
           <div className="d-flex flex-wrap gap-3 mt-4">
-            <Button onClick={() => navigate(config?.homePrimaryBtnRoute || "/contact-us")} className="hero-btn-gold d-flex align-items-center gap-2">
+            <Button onClick={() => navigate(config?.homePrimaryBtnRoute || "/managing-committee")} className="hero-btn-gold d-flex align-items-center gap-2">
               {config?.homePrimaryBtnLabel || "Become a Member"}
               <HiArrowRight size={18} className="arrow-move" />
             </Button>
