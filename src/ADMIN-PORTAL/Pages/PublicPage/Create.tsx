@@ -26,6 +26,64 @@ const SECTIONS = [
   { id: "status", label: "Status", icon: "✅" },
 ];
 
+// List of phone number fields
+const PHONE_FIELDS = [
+  'navPhoneValue',
+  'footerPhoneValue',
+  'officePhone',
+  'contactPhoneNumberPlaceholder'
+];
+
+// List of name fields (should only contain letters, spaces, hyphens, apostrophes, periods)
+const NAME_FIELDS = [
+  'contactFullNameLabel',
+  'contactFullNamePlaceholder',
+  'navBrandTitle',
+  'navBrandSubTitle',
+  'navHomeLabel',
+  'navAboutLabel',
+  'navRulesLabel',
+  'navDownloadsLabel',
+  'navCommitteeLabel',
+  'navClaimsLabel',
+  'navContactLabel',
+  'navLoginLabel',
+  'homeHeroBadge',
+  'homeHeroTitle',
+  'homeAboutLabel',
+  'homeAboutTitle',
+  'aboutHeaderTitle',
+  'aboutMissionTitle',
+  'aboutVisionTitle',
+  'aboutHistoryTitle',
+  'rulesHeaderTitle',
+  'rulesPreambleTitle',
+  'downloadsHeaderTitle',
+  'committeeHeaderTitle',
+  'managingcommitteheadertitle',
+  'claimsHeroTitle',
+  'contactHeaderTitle',
+  'footerBrandShortName',
+  'footerBrandSubTitle',
+  'privacyHeroBadge',
+  'privacyHeroTitle',
+  'privacyHeading1',
+  'privacyHeading2',
+  'privacyHeading3',
+  'privacyHeading4',
+  'privacySubHeading4',
+  'privacyHeading5',
+  'privacyHeading6',
+  'privacyHeading7',
+  'privacyHeading8',
+  'privacySubHeading8',
+  'privacyHeading9',
+  'privacySubHeading9',
+  'privacyHeading10',
+  'privacyHeading11',
+  'privacyHeading12'
+];
+
 const PublicPageCreate: React.FC = () => {
   const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState(0);
@@ -37,20 +95,180 @@ const PublicPageCreate: React.FC = () => {
 
   const [formData, setFormData] = useState<Partial<PublicPage>>(initialValues);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  /* ===================== VALIDATION FUNCTIONS ===================== */
+  const validatePhoneNumber = (name: string, value: string): string => {
+    if (PHONE_FIELDS.includes(name) && value) {
+      const digitsOnly = value.replace(/\D/g, '');
+      if (digitsOnly.length > 0 && digitsOnly.length !== 10) {
+        return 'Phone number must be exactly 10 digits';
+      }
+    }
+    return '';
+  };
+
+  const validateNameField = (name: string, value: string, label: string): string => {
+    if (NAME_FIELDS.includes(name) && value) {
+      // Check for numbers
+      if (/\d/.test(value)) {
+        return `${label} cannot contain numbers`;
+      }
+      // Check for special characters (allowing letters, spaces, hyphens, apostrophes, periods)
+      if (!/^[a-zA-Z\s\-'.]+$/.test(value)) {
+        return `${label} can only contain letters, spaces, hyphens, apostrophes, and periods`;
+      }
+    }
+    return '';
+  };
+
+  const formatPhoneNumber = (value: string): string => {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6,10)}`;
+  };
+
+  const filterNameField = (value: string): string => {
+    // Allow only letters, spaces, hyphens, apostrophes, and periods
+    return value.replace(/[^a-zA-Z\s\-'.]/g, '');
+  };
 
   /* ===================== HANDLERS ===================== */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
+    
+    let processedValue = value;
+    let error = '';
+
+    // Handle phone fields
+    if (PHONE_FIELDS.includes(name)) {
+      const digitsOnly = value.replace(/\D/g, '');
+      if (digitsOnly.length > 10) {
+        toast.error('Phone number cannot exceed 10 digits');
+        return;
+      }
+      processedValue = formatPhoneNumber(digitsOnly);
+      error = validatePhoneNumber(name, digitsOnly);
+    }
+    
+    // Handle name fields
+    if (NAME_FIELDS.includes(name)) {
+      processedValue = filterNameField(value);
+      const label = getFieldLabel(name);
+      error = validateNameField(name, processedValue, label);
+    }
+
+    // Update field errors
+    setFieldErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : 
+              name === 'contactMessageRowNo' ? Number(processedValue) : 
+              processedValue,
     }));
+  };
+
+  const getFieldLabel = (fieldName: string): string => {
+    const labelMap: Record<string, string> = {
+      contactFullNameLabel: 'Full Name Label',
+      contactFullNamePlaceholder: 'Full Name Placeholder',
+      navBrandTitle: 'Brand Title',
+      navBrandSubTitle: 'Brand Subtitle',
+      navHomeLabel: 'Home Label',
+      navAboutLabel: 'About Label',
+      navRulesLabel: 'Rules Label',
+      navDownloadsLabel: 'Downloads Label',
+      navCommitteeLabel: 'Committee Label',
+      navClaimsLabel: 'Claims Label',
+      navContactLabel: 'Contact Label',
+      navLoginLabel: 'Login Label',
+      homeHeroBadge: 'Hero Badge',
+      homeHeroTitle: 'Hero Title',
+      homeAboutLabel: 'About Label',
+      homeAboutTitle: 'About Title',
+      aboutHeaderTitle: 'Header Title',
+      aboutMissionTitle: 'Mission Title',
+      aboutVisionTitle: 'Vision Title',
+      aboutHistoryTitle: 'History Title',
+      rulesHeaderTitle: 'Rules Header Title',
+      rulesPreambleTitle: 'Preamble Title',
+      downloadsHeaderTitle: 'Downloads Header Title',
+      committeeHeaderTitle: 'Committee Header Title',
+      managingcommitteheadertitle: 'Managing Committee Title',
+      claimsHeroTitle: 'Claims Hero Title',
+      contactHeaderTitle: 'Contact Header Title',
+      footerBrandShortName: 'Brand Short Name',
+      footerBrandSubTitle: 'Brand Subtitle',
+      privacyHeroBadge: 'Privacy Hero Badge',
+      privacyHeroTitle: 'Privacy Hero Title',
+      privacyHeading1: 'Privacy Heading 1',
+      privacyHeading2: 'Privacy Heading 2',
+      privacyHeading3: 'Privacy Heading 3',
+      navPhoneValue: 'Navbar Phone',
+      footerPhoneValue: 'Footer Phone',
+      officePhone: 'Office Phone',
+      contactPhoneNumberPlaceholder: 'Phone Number Placeholder'
+    };
+    return labelMap[fieldName] || fieldName;
+  };
+
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+    
+    // Validate all phone fields
+    PHONE_FIELDS.forEach(field => {
+      const value = formData[field as keyof PublicPage] as string || '';
+      if (value) {
+        const digitsOnly = value.replace(/\D/g, '');
+        if (digitsOnly.length > 0 && digitsOnly.length !== 10) {
+          errors[field] = `${getFieldLabel(field)} must be exactly 10 digits`;
+        }
+      }
+    });
+
+    // Validate all name fields
+    NAME_FIELDS.forEach(field => {
+      const value = formData[field as keyof PublicPage] as string || '';
+      if (value) {
+        const label = getFieldLabel(field);
+        // Check for numbers
+        if (/\d/.test(value)) {
+          errors[field] = `${label} cannot contain numbers`;
+        }
+        // Check for special characters
+        else if (!/^[a-zA-Z\s\-'.]+$/.test(value)) {
+          errors[field] = `${label} can only contain letters, spaces, hyphens, apostrophes, and periods`;
+        }
+      }
+    });
+
+    setFieldErrors(errors);
+
+    // Show first error as toast
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      toast.error(firstError);
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      return;
+    }
+    
     try {
       setIsSubmitting(true);
 
@@ -98,26 +316,45 @@ const PublicPageCreate: React.FC = () => {
   };
 
   /* ===================== FIELD HELPERS ===================== */
-  const input = (name: keyof PublicPage, label: string, md = 4) => (
-    <Col md={md} className="mb-2">
-      <Form.Label className="fw-semibold mb-1" style={{ fontSize: "0.85rem" }}>
-        {label}
-      </Form.Label>
-      <Form.Control
-        name={name}
-        value={(formData[name] as any) || ""}
-        onChange={handleChange}
-        size="sm"
-        style={{ 
-          borderRadius: "6px",
-          border: "1px solid #e0e0e0",
-          transition: "all 0.3s ease"
-        }}
-        onFocus={(e) => e.target.style.borderColor = themeColor}
-        onBlur={(e) => e.target.style.borderColor = "#e0e0e0"}
-      />
-    </Col>
-  );
+  const input = (name: keyof PublicPage, label: string, md = 4) => {
+    const error = fieldErrors[name as string];
+    const isPhoneField = PHONE_FIELDS.includes(name as string);
+    const isNameField = NAME_FIELDS.includes(name as string);
+    
+    return (
+      <Col md={md} className="mb-2">
+        <Form.Label className="fw-semibold mb-1" style={{ fontSize: "0.85rem" }}>
+          {label}
+          {isPhoneField && <span className="text-muted ms-1">(10 digits)</span>}
+          {isNameField && <span className="text-muted ms-1">(letters only)</span>}
+        </Form.Label>
+        <Form.Control
+          name={name}
+          value={(formData[name] as any) || ""}
+          onChange={handleChange}
+          size="sm"
+          type={isPhoneField ? "tel" : "text"}
+          placeholder={isPhoneField ? "(123) 456-7890" : ""}
+          style={{ 
+            borderRadius: "6px",
+            border: `1px solid ${error ? '#dc3545' : '#e0e0e0'}`,
+            transition: "all 0.3s ease"
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = themeColor;
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = error ? '#dc3545' : '#e0e0e0';
+          }}
+        />
+        {error && (
+          <small className="text-danger d-block mt-1" style={{ fontSize: "0.75rem" }}>
+            {error}
+          </small>
+        )}
+      </Col>
+    );
+  };
 
   const textarea = (name: keyof PublicPage, label: string, rows = 3) => (
     <Col md={4} className="mb-2">

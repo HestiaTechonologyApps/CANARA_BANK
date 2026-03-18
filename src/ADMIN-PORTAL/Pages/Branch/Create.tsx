@@ -19,8 +19,8 @@ const BranchCreate: React.FC = () => {
 
   const fields: Field[] = [
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4 } },
-    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4 } },
-    { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4 } },
+    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4,pattern: /^[a-zA-Z\s.\-']+$/ } },
+    { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4, pattern:/^[a-zA-Z]+$/  } },
     { name: "status", rules: { type: "select", label: "Status", colWidth: 4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
     { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },

@@ -52,7 +52,7 @@ const PageNotFound: React.FC = () => {
 
             {/* Back Button */}
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
               className="rounded-3 p-2 border-0"
               style={{
                 backgroundColor: "#18575A",

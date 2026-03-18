@@ -80,12 +80,14 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       newErrors.userName = "Username must be at least 3 characters";
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.userName)) {
       newErrors.userName = "Username can only contain letters, numbers, and underscores";
+    } else if (!/[a-zA-Z]/.test(formData.userName)) {
+      newErrors.userName = "Username must contain at least one letter";
     }
 
     // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } 
+    }
     // else if (formData.password.length < 6) {
     //   newErrors.password = "Password must be at least 6 characters";
     // } else if (!/(?=.*[a-z])/.test(formData.password)) {
@@ -103,6 +105,8 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       newErrors.userEmail = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail)) {
       newErrors.userEmail = "Please enter a valid email address";
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|in|io|co)$/.test(formData.userEmail)) {
+      newErrors.userEmail = "Please enter a valid email address (e.g. name@example.com)";
     }
 
     // Phone Number validation
@@ -142,7 +146,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
 
       if (response.isSucess) {
         toast.success(response.customMessage || "Registration successful! Please login.");
-        
+
         // Reset form
         setFormData({
           staffNo: "",
@@ -153,7 +157,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
           address: "",
         });
         setErrors({});
-        
+
         // Close modal and redirect to login
         setTimeout(() => {
           onClose();
@@ -282,18 +286,18 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                 </Form.Label>
                 {/* <div className="input-icon-wrapper">
                   <Mail className="input-icon" /> */}
-                  <Form.Control
-                    type="email"
-                    name="userEmail"
-                    value={formData.userEmail}
-                    onChange={handleInputChange}
-                    placeholder="Enter your email"
-                    isInvalid={!!errors.userEmail}
-                    disabled={isSubmitting}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.userEmail}
-                  </Form.Control.Feedback>
+                <Form.Control
+                  type="text"
+                  name="userEmail"
+                  value={formData.userEmail}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  isInvalid={!!errors.userEmail}
+                  disabled={isSubmitting}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.userEmail}
+                </Form.Control.Feedback>
                 {/* </div> */}
               </Form.Group>
             </Col>

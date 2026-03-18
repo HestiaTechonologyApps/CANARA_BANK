@@ -18,9 +18,9 @@ const BranchEdit: React.FC = () => {
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
   const fields: Field[] = [
-    { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 3 } },
-    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 6 } },
-    { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4 } },
+    { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 3, } },
+    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 6 ,pattern: /^[a-zA-Z\s.\-']+$/  } },
+    { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4, pattern:/^[a-zA-Z]+$/ } },
     { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
     { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },

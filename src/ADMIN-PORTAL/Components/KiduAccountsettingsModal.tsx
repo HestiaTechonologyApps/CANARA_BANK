@@ -65,49 +65,108 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   };
 
   // PASSWORD CHANGE LOGIC (CONNECTED TO API)
+  // const handlePasswordSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!currentUser) {
+  //     toast.error("User information not found. Please login again.");
+  //     return;
+  //   }
+  //   if (!currentPassword || !newPassword || !confirmPassword) {
+  //     toast.error("Please fill all password fields");
+  //     return;
+  //   }
+  //   if (newPassword !== confirmPassword) {
+  //     toast.error("New password and confirm password do not match");
+  //     return;
+  //   }
+  //   if (currentPassword === newPassword) {
+  //     toast.error("New password must be different from current password");
+  //     return;
+  //   }
+  //   if (newPassword.length < 8) {
+  //     toast.error("Password must be at least 8 characters");
+  //     return;
+  //   }
+  //   try {
+  //     setLoading(true);
+
+  //     const payload = {
+  //       userId: currentUser.userId,
+  //       oldPassword: currentPassword,
+  //       newPassword: newPassword,
+  //     };
+  //     await UserService.changePassword(payload);
+
+  //     toast.success("Password changed successfully");
+  //     resetForm();
+  //   } catch (error: any) {
+  //     toast.error(
+  //       error?.message || "Failed to change password. Please check your current password."
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!currentUser) {
-      toast.error("User information not found. Please login again.");
-      return;
-    }
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      toast.error("Please fill all password fields");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      toast.error("New password and confirm password do not match");
-      return;
-    }
-    if (currentPassword === newPassword) {
-      toast.error("New password must be different from current password");
-      return;
-    }
-    if (newPassword.length < 8) {
-      toast.error("Password must be at least 8 characters");
-      return;
-    }
-    try {
-      setLoading(true);
+  if (!currentUser) {
+    toast.error("User information not found. Please login again.");
+    return;
+  }
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    toast.error("Please fill all password fields");
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    toast.error("New password and confirm password do not match");
+    return;
+  }
+  if (currentPassword === newPassword) {
+    toast.error("New password must be different from current password");
+    return;
+  }
+  if (newPassword.length < 8) {
+    toast.error("Password must be at least 8 characters");
+    return;
+  }
+  if (!/[A-Z]/.test(newPassword)) {
+    toast.error("New password must contain at least one uppercase letter");
+    return;
+  }
+  if (!/[a-z]/.test(newPassword)) {
+    toast.error("New password must contain at least one lowercase letter");
+    return;
+  }
+  if (!/[0-9]/.test(newPassword)) {
+    toast.error("New password must contain at least one number");
+    return;
+  }
+  if (!/[@$!%*?&#^()_\-+=]/.test(newPassword)) {
+    toast.error("New password must contain at least one special character (@$!%*?&#)");
+    return;
+  }
+  try {
+    setLoading(true);
 
-      const payload = {
-        userId: currentUser.userId,
-        oldPassword: currentPassword,
-        newPassword: newPassword,
-      };
-      await UserService.changePassword(payload);
+    const payload = {
+      userId: currentUser.userId,
+      oldPassword: currentPassword,
+      newPassword: newPassword,
+    };
+    await UserService.changePassword(payload);
 
-      toast.success("Password changed successfully");
-      resetForm();
-    } catch (error: any) {
-      toast.error(
-        error?.message || "Failed to change password. Please check your current password."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    toast.success("Password changed successfully");
+    resetForm();
+  } catch (error: any) {
+    toast.error(
+      error?.message || "Failed to change password. Please check your current password."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   // IMAGE SELECT
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,7 +307,8 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                   onClick={handleSavePhoto}
                   disabled={loading}
                 >
-                  {loading ? "Saving..." : "Save Photo"}
+                  Save Photo
+                  {/* {loading ? "Saving..." : "Save Photo"} */}
                 </Button>
               </div>
             </div>
