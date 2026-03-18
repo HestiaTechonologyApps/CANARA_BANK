@@ -6,8 +6,8 @@ import KiduEdit from "../../../Components/KiduEdit";
 
 const MonthEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "monthName", rules: { type: "text", label: "Month Name", required: true, minLength: 2, maxLength: 10, colWidth: 6, placeholder: "e.g., January" } },
-    { name: "abbrivation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, colWidth: 6, placeholder: "e.g., Jan" } },
+    { name: "monthName", rules: { type: "text", label: "Month Name", required: true, minLength: 2, maxLength: 10, colWidth: 6, placeholder: "e.g., January" ,pattern: /^[A-Za-z]+$/} },
+    { name: "abbrivation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 50, colWidth: 6, placeholder: "e.g., Jan", pattern: /^[A-Za-z]+$/ } },
   ];
 
   const handleFetch = async (monthId: string) => {

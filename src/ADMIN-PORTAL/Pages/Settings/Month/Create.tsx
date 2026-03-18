@@ -6,8 +6,8 @@ import type { Month } from "../../../Types/Settings/Month.types";
 
 const MonthCreate: React.FC = () => {
   const fields: Field[] = [
-    { name: "monthName", rules: { type: "text",  label: "Month Name",  required: true,  colWidth: 6, placeholder: "e.g., January" } },
-    { name: "abbrivation", rules: { type: "text", label: "Abbreviation", required: true, colWidth: 6, maxLength: 10, placeholder: "e.g., Jan" } },
+    { name: "monthName", rules: { type: "text",  label: "Month Name",  required: true,  colWidth: 6, placeholder: "e.g., January", pattern: /^[A-Za-z]+$/, } },
+    { name: "abbrivation", rules: { type: "text", label: "Abbreviation", required: true, colWidth: 6, maxLength: 10, placeholder: "e.g., Jan",pattern: /^[A-Za-z]+$/, } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
