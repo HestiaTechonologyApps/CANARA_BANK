@@ -1,4 +1,3 @@
-// KiduServerTable.tsx - Integrated with KiduServerTableNavbar
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Button, Row, Col, Container, Pagination } from "react-bootstrap";
 import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
@@ -50,15 +49,11 @@ interface KiduServerTableProps {
     filters?: Record<string, any>;
   }) => Promise<{ data: any[]; total: number }>;
   rowsPerPage?: number;
-
-  // New navbar props
   showNavbar?: boolean;
   showNavbarExportButtons?: boolean;
   showRowsPerPageSelector?: boolean;
   rowsPerPageOptions?: number[];
   navbarAdditionalButtons?: React.ReactNode;
-
-  //Filter props
   showFilter?: boolean;
   filterColumns?: FilterColumn[];
 }
@@ -94,73 +89,114 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
   const [data, setData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
-  const [filters, setFilters] = useState<Record<string, any>>({});
-
-  // React Table states - only sorting, no filtering (server handles that)
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  // ✅ Keep all "query state" in refs so loadData can always read current values
+  // without needing to be recreated when they change.
+  const currentPageRef = useRef(1);
+  const rowsPerPageRef = useRef(initialRowsPerPage);
+  const searchTermRef = useRef("");
+  const filtersRef = useRef<Record<string, any>>({});
+  const fetchDataRef = useRef(fetchData);
+
+  // ✅ Mirror ref values in state purely for UI rendering
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState<Record<string, any>>({});
 
   const totalPages = Math.ceil(total / rowsPerPage);
 
-  const loadData = useCallback(
-    async (page: number, search: string, pageSize: number, currentFilters: Record<string, any>) => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const result = await fetchData({
-          pageNumber: page,
-          pageSize: pageSize,
-          searchTerm: search,
-          filters: currentFilters,
-        });
-
-        setData(result.data || []);
-        setTotal(result.total || 0);
-      } catch (err: any) {
-        console.error("❌ KiduServerTable - Error:", err);
-        setError(err.message || "Failed to load data");
-        setData([]);
-        setTotal(0);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchData]
-  );
-
-  // Load data when page or rowsPerPage changes
+  // ✅ Keep fetchDataRef in sync when fetchData prop changes
   useEffect(() => {
-    loadData(currentPage, searchTerm, rowsPerPage, filters);
-  }, [loadData, currentPage, rowsPerPage, filters]);
+    fetchDataRef.current = fetchData;
+  }, [fetchData]);
 
-  // Handle search with debounce and reset to page 1
+  // ✅ loadData reads everything from refs — stable reference, zero deps
+  const loadData = useCallback(async () => {
+    const page = currentPageRef.current;
+    const pageSize = rowsPerPageRef.current;
+    const search = searchTermRef.current;
+    const currentFilters = filtersRef.current;
+
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await fetchDataRef.current({
+        pageNumber: page,
+        pageSize,
+        searchTerm: search,
+        filters: currentFilters,
+      });
+      setData(result.data || []);
+      setTotal(result.total || 0);
+    } catch (err: any) {
+      setError(err.message || "Failed to load data");
+      setData([]);
+      setTotal(0);
+    } finally {
+      setLoading(false);
+    }
+  }, []); // ✅ No deps — loadData never recreates, useEffect never re-runs unexpectedly
+
+  // ✅ Initial load only once on mount
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // ✅ Page or rowsPerPage changed — fetch immediately
+  const goToPage = useCallback((page: number) => {
+    currentPageRef.current = page;
+    setCurrentPage(page);
+    loadData();
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [loadData]);
+
+  const changeRowsPerPage = useCallback((newSize: number) => {
+    rowsPerPageRef.current = newSize;
+    currentPageRef.current = 1;
+    setRowsPerPage(newSize);
+    setCurrentPage(1);
+    loadData();
+  }, [loadData]);
+
+  // ✅ Search: debounced, resets to page 1
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      searchTermRef.current = searchTerm;
+      currentPageRef.current = 1;
       setCurrentPage(1);
-      loadData(1, searchTerm, rowsPerPage, filters);
+      loadData();
     }, 500);
-
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, loadData, rowsPerPage, filters]);
+  }, [searchTerm, loadData]);
 
-  // Handle rows per page change
+  // ✅ Filters changed — fetch immediately
+  useEffect(() => {
+    filtersRef.current = filters;
+    currentPageRef.current = 1;
+    setCurrentPage(1);
+    loadData();
+  }, [filters, loadData]);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      goToPage(page);
+    }
+  };
+
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
-    setRowsPerPage(newRowsPerPage);
-    setCurrentPage(1); // Reset to first page
+    changeRowsPerPage(newRowsPerPage);
   };
 
   const handleFilterChange = (newFilters: Record<string, any>) => {
     setFilters(newFilters);
-    setCurrentPage(1); // Reset to first page when filters change
   };
 
-
-  // Define columns for React Table
   const tableColumns = useMemo<ColumnDef<any>[]>(() => {
     const cols: ColumnDef<any>[] = columns.map((col) => ({
       accessorKey: col.key,
@@ -168,178 +204,87 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
       enableSorting: col.enableSorting !== false,
       cell: ({ getValue }) => {
         const rawValue = getValue();
-
-        if (rawValue === null || rawValue === undefined || rawValue === '') {
-          return '-';
-        }
+        if (rawValue === null || rawValue === undefined || rawValue === '') return '-';
 
         switch (col.type) {
-          case 'checkbox':
+          case 'checkbox': {
             let boolValue = false;
-            if (typeof rawValue === 'boolean') {
-              boolValue = rawValue;
-            } else if (typeof rawValue === 'string') {
-              boolValue = rawValue.toLowerCase() === 'true' || rawValue === '1';
-            } else if (typeof rawValue === 'number') {
-              boolValue = rawValue !== 0;
-            }
-
+            if (typeof rawValue === 'boolean') boolValue = rawValue;
+            else if (typeof rawValue === 'string') boolValue = rawValue.toLowerCase() === 'true' || rawValue === '1';
+            else if (typeof rawValue === 'number') boolValue = rawValue !== 0;
             return (
-              <input
-                type="checkbox"
-                checked={boolValue}
-                disabled
-                style={{
-                  width: '18px',
-                  height: '18px',
-                  cursor: 'not-allowed',
-                  accentColor: '#1B3763'
-                }}
-              />
+              <input type="checkbox" checked={boolValue} disabled
+                style={{ width: '18px', height: '18px', cursor: 'not-allowed', accentColor: '#1B3763' }} />
             );
-
-          case 'image':
+          }
+          case 'image': {
             const imageSrc = typeof rawValue === 'string' ? rawValue : "/assets/Images/profile.jpeg";
             return (
-              <img
-                src={imageSrc}
-                alt="Profile"
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  border: "2px solid #1B3763"
-                }}
-                onError={(e: any) => {
-                  e.target.src = "/assets/Images/profile.jpeg";
-                  e.target.onerror = null;
-                }}
-              />
+              <img src={imageSrc} alt="Profile"
+                style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: "2px solid #1B3763" }}
+                onError={(e: any) => { e.target.src = "/assets/Images/profile.jpeg"; e.target.onerror = null; }} />
             );
-
-          case 'rating':
-            let rating: number = 0;
-
-            if (typeof rawValue === 'number') {
-              rating = rawValue;
-            } else if (typeof rawValue === 'string') {
+          }
+          case 'rating': {
+            let rating = 0;
+            if (typeof rawValue === 'number') rating = rawValue;
+            else if (typeof rawValue === 'string') {
               const match = rawValue.match(/(\d+(\.\d+)?)/);
               rating = match ? parseFloat(match[1]) : 0;
             }
-
             rating = Math.min(Math.max(rating, 0), 5);
-
             const fullStars = Math.floor(rating);
             const hasHalfStar = rating - fullStars >= 0.5;
             const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
             return (
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '2px'
-              }}>
-                {Array.from({ length: fullStars }).map((_, i) => (
-                  <span key={`full-${i}`} style={{ color: '#FFD700', fontSize: '14px' }}>★</span>
-                ))}
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2px' }}>
+                {Array.from({ length: fullStars }).map((_, i) => <span key={`full-${i}`} style={{ color: '#FFD700', fontSize: '14px' }}>★</span>)}
                 {hasHalfStar && (
                   <span style={{ position: 'relative', display: 'inline-block', width: '14px', height: '14px' }}>
                     <span style={{ position: 'absolute', color: '#e0e0e0', fontSize: '14px', zIndex: 1 }}>★</span>
                     <span style={{ position: 'absolute', color: '#FFD700', fontSize: '14px', width: '50%', overflow: 'hidden', zIndex: 2 }}>★</span>
                   </span>
                 )}
-                {Array.from({ length: emptyStars }).map((_, i) => (
-                  <span key={`empty-${i}`} style={{ color: '#e0e0e0', fontSize: '14px' }}>★</span>
-                ))}
-                <span style={{ marginLeft: '4px', fontSize: '11px', color: '#666', fontWeight: 500 }}>
-                  ({rating.toFixed(1)})
-                </span>
+                {Array.from({ length: emptyStars }).map((_, i) => <span key={`empty-${i}`} style={{ color: '#e0e0e0', fontSize: '14px' }}>★</span>)}
+                <span style={{ marginLeft: '4px', fontSize: '11px', color: '#666', fontWeight: 500 }}>({rating.toFixed(1)})</span>
               </div>
             );
-
-          case 'date':
+          }
+          case 'date': {
             try {
-              const valueStr = String(rawValue);
-              const date = new Date(valueStr);
-
-              if (!isNaN(date.getTime())) {
-                return date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                });
-              }
-            } catch (e) {
-              // If date parsing fails, return original value
-            }
+              const date = new Date(String(rawValue));
+              if (!isNaN(date.getTime())) return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) { /* fall through */ }
             break;
-
+          }
           case 'text':
           default:
             return String(rawValue);
         }
-
         return String(rawValue);
       },
     }));
 
-    // Add actions column
     if (showActions) {
       cols.push({
         id: "actions",
         header: "Action",
         enableSorting: false,
         cell: ({ row }) => (
-          <div
-            className="d-flex justify-content-center gap-2"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
             {editRoute && (
-              <Button
-                size="sm"
-                style={{
-                  backgroundColor: "transparent",
-                  border: "1px solid #1B3763",
-                  color: "#1B3763",
-                  fontSize: "12px",
-                  padding: "4px 10px",
-                  fontWeight: 500,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1B3763";
-                  e.currentTarget.style.color = "white";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                  e.currentTarget.style.color = "#1B3763";
-                }}
-                onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}
-              >
+              <Button size="sm"
+                style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; }}
+                onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
                 <FaEdit className="me-1" /> Edit
               </Button>
             )}
-
             {viewRoute && (
-              <Button
-                size="sm"
-                style={{
-                  backgroundColor: "#1B3763",
-                  border: "none",
-                  color: "white",
-                  fontSize: "12px",
-                  padding: "4px 10px",
-                  fontWeight: 500,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1B3763";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1B3763";
-                }}
-                onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}
-              >
+              <Button size="sm"
+                style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
                 <FaEye className="me-1" /> View
               </Button>
             )}
@@ -347,17 +292,13 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
         ),
       });
     }
-
     return cols;
   }, [columns, showActions, editRoute, viewRoute, navigate, idKey]);
 
-  // Create React Table instance
   const table = useReactTable({
     data,
     columns: tableColumns,
-    state: {
-      sorting,
-    },
+    state: { sorting },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -366,138 +307,78 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     pageCount: totalPages,
   });
 
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-      if (tableRef.current) {
-        tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  };
-
-  const handleRetry = () => {
-    loadData(currentPage, searchTerm, rowsPerPage, filters);
-  };
-
+  const handleRetry = () => loadData();
   const fieldName = title ? title.replace("Select ", "") : addButtonLabel;
 
   if (loading && data.length === 0) return <KiduLoader type="..." />;
-
   if (error && data.length === 0) {
     return (
       <Container fluid className="py-3 mt-5">
         <div className="alert alert-danger">{error}</div>
-        <Button onClick={handleRetry} style={{ backgroundColor: "#1B3763", border: "none" }}>
-          Retry
-        </Button>
+        <Button onClick={handleRetry} style={{ backgroundColor: "#1B3763", border: "none" }}>Retry</Button>
       </Container>
     );
   }
 
   return (
     <Container fluid className="pb-3">
-      {/* Title */}
       {showTitle !== false && (
         <Row className="mb-3 align-items-center">
           <Col>
-            <h4 className="mb-0 fw-bold" style={{ fontFamily: "Urbanist", color: "#1B3763" }}>
-              {title}
-            </h4>
-            {subtitle && (
-              <p className="text-muted mb-0" style={{ fontFamily: "Urbanist", fontSize: "14px" }}>
-                {subtitle}
-              </p>
-            )}
+            <h4 className="mb-0 fw-bold" style={{ fontFamily: "Urbanist", color: "#1B3763" }}>{title}</h4>
+            {subtitle && <p className="text-muted mb-0" style={{ fontFamily: "Urbanist", fontSize: "14px" }}>{subtitle}</p>}
           </Col>
         </Row>
       )}
 
-      {/* Search bar and Add button - Always at top */}
       {showSearch && (
         <Row className="mb-1 align-items-center">
           <Col>
-            <KiduSearchBar
-              placeholder="Search..."
-              onSearch={(val) => setSearchTerm(val)}
-              width="350px"
-            />
+            <KiduSearchBar placeholder="Search..." onSearch={(val) => setSearchTerm(val)} width="350px" />
           </Col>
           <Col xs="auto" className="ms-auto">
             <div className="d-flex gap-2">
-
-              {/* Navbar with export buttons and rows selector - Below search bar */}
               {showNavbar && (
                 <KiduServerTableNavbar
-                  data={data}
-                  columns={columns}
-                  title={title}
+                  data={data} columns={columns} title={title}
                   showExportButtons={showNavbarExportButtons}
                   showRowsPerPageSelector={showRowsPerPageSelector}
                   rowsPerPage={rowsPerPage}
                   onRowsPerPageChange={handleRowsPerPageChange}
                   rowsPerPageOptions={rowsPerPageOptions}
                   additionalButtons={navbarAdditionalButtons}
-                  showFilter={showFilter}
-                  filterColumns={filterColumns}
-                  onFilterChange={handleFilterChange}
-                  initialFilters={filters}
-
+                  showFilter={showFilter} filterColumns={filterColumns}
+                  onFilterChange={handleFilterChange} initialFilters={filters}
                 />
               )}
               {showAddButton && addRoute && (
-                <KiduButton
-                  label={`+ ${addButtonLabel}`}
-                  to={addRoute}
-                  onClick={onAddClick}
+                <KiduButton label={`+ ${addButtonLabel}`} to={addRoute} onClick={onAddClick}
                   className="fw-bold d-flex text-white"
-                  style={{
-                    backgroundColor: "#1B3763",
-                    border: "none",
-                    width: 120,
-                  }}
-                />
+                  style={{ backgroundColor: "#1B3763", border: "none", width: 120 }} />
               )}
             </div>
           </Col>
         </Row>
       )}
 
-
-
       <Row>
         <Col>
           <div ref={tableRef} className="table-responsive">
-            <table
-              className="table table-striped table-bordered table-hover align-middle mb-0"
-              style={{ fontSize: "13px" }}
-            >
+            <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "13px" }}>
               <thead className="text-center" style={{ fontFamily: "Urbanist" }}>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        style={{
-                          padding: "10px 8px",
-                          cursor: header.column.getCanSort() ? "pointer" : "default",
-                          borderBottom: "2px solid #1B3763",
-                          verticalAlign: "middle",
-                          fontSize: "13px",
-                          fontWeight: 600
-                        }}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
+                      <th key={header.id}
+                        style={{ padding: "10px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "13px", fontWeight: 600 }}
+                        onClick={header.column.getToggleSortingHandler()}>
                         <div className="d-flex align-items-center justify-content-center gap-1">
                           {flexRender(header.column.columnDef.header, header.getContext())}
                           {header.column.getCanSort() && (
                             <span className="ms-1">
-                              {header.column.getIsSorted() === "asc" ? (
-                                <FaSortUp />
-                              ) : header.column.getIsSorted() === "desc" ? (
-                                <FaSortDown />
-                              ) : (
-                                <FaSort style={{ opacity: 0.5 }} />
-                              )}
+                              {header.column.getIsSorted() === "asc" ? <FaSortUp /> :
+                                header.column.getIsSorted() === "desc" ? <FaSortDown /> :
+                                  <FaSort style={{ opacity: 0.5 }} />}
                             </span>
                           )}
                         </div>
@@ -506,60 +387,29 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                   </tr>
                 ))}
               </thead>
-
               <tbody className="text-center" style={{ fontFamily: "Urbanist" }}>
                 {loading ? (
-                  <tr>
-                    <td colSpan={tableColumns.length} className="text-center py-4">
-                      <KiduLoader type="talky..." />
-                    </td>
-                  </tr>
+                  <tr><td colSpan={tableColumns.length} className="text-center py-4"><KiduLoader type="talky..." /></td></tr>
                 ) : table.getRowModel().rows.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan={tableColumns.length}
-                      className="text-center py-4"
-                      style={{ border: "2px solid #dee2e6" }}
-                    >
+                    <td colSpan={tableColumns.length} className="text-center py-4" style={{ border: "2px solid #dee2e6" }}>
                       <div className="d-flex flex-column justify-content-center align-items-center">
                         <p className="text-muted mb-2">No matching records found</p>
                         {showKiduPopupButton && addRoute && (
-                          <KiduPopupButton
-                            label={`Add ${fieldName}`}
-                            onClick={() => {
-                              if (onAddClick) onAddClick();
-                              else if (addRoute) navigate(addRoute);
-                            }}
-                          />
+                          <KiduPopupButton label={`Add ${fieldName}`}
+                            onClick={() => { if (onAddClick) onAddClick(); else if (addRoute) navigate(addRoute); }} />
                         )}
                       </div>
                     </td>
                   </tr>
                 ) : (
                   table.getRowModel().rows.map((row, index) => (
-                    <tr
-                      key={row.id}
-                      onClick={() => onRowClick?.(row.original)}
-                      style={{
-                        cursor: onRowClick ? "pointer" : "default",
-                        lineHeight: "1.2",
-                        backgroundColor: index % 2 === 1 ? "#ffe8e8" : ""
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "#ffe6e6";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = index % 2 === 1 ? "#ffe8e8" : "";
-                      }}
-                    >
+                    <tr key={row.id} onClick={() => onRowClick?.(row.original)}
+                      style={{ cursor: onRowClick ? "pointer" : "default", lineHeight: "1.2", backgroundColor: index % 2 === 1 ? "#ffe8e8" : "" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#ffe6e6"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = index % 2 === 1 ? "#ffe8e8" : ""; }}>
                       {row.getVisibleCells().map((cell) => (
-                        <td
-                          key={cell.id}
-                          style={{
-                            padding: "8px 6px",
-                            verticalAlign: "middle"
-                          }}
-                        >
+                        <td key={cell.id} style={{ padding: "8px 6px", verticalAlign: "middle" }}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </td>
                       ))}
@@ -577,63 +427,25 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "13px" }}>
             Page {currentPage} of {totalPages} (Total: {total} records)
           </span>
-
           <Pagination className="m-0" size="sm">
-            <Pagination.First
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(1)}
-              style={{
-                color: currentPage === 1 ? "#999" : "#1B3763"
-              }}
-            />
-            <Pagination.Prev
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-              style={{
-                color: currentPage === 1 ? "#999" : "#1B3763"
-              }}
-            />
+            <Pagination.First disabled={currentPage === 1} onClick={() => handlePageChange(1)} />
+            <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-              let pageNum;
-              if (totalPages <= 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
-
+              let pageNum: number;
+              if (totalPages <= 5) pageNum = i + 1;
+              else if (currentPage <= 3) pageNum = i + 1;
+              else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
+              else pageNum = currentPage - 2 + i;
               return (
-                <Pagination.Item
-                  key={pageNum}
-                  active={pageNum === currentPage}
+                <Pagination.Item key={pageNum} active={pageNum === currentPage}
                   onClick={() => handlePageChange(pageNum)}
-                  style={{
-                    backgroundColor: pageNum === currentPage ? "#1B3763" : "transparent",
-                    borderColor: "#1B3763",
-                    color: pageNum === currentPage ? "white" : "#1B3763",
-                  }}
-                >
+                  style={{ backgroundColor: pageNum === currentPage ? "#1B3763" : "transparent", borderColor: "#1B3763", color: pageNum === currentPage ? "white" : "#1B3763" }}>
                   {pageNum}
                 </Pagination.Item>
               );
             })}
-            <Pagination.Next
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(currentPage + 1)}
-              style={{
-                color: currentPage === totalPages ? "#999" : "#1B3763"
-              }}
-            />
-            <Pagination.Last
-              disabled={currentPage === totalPages}
-              onClick={() => handlePageChange(totalPages)}
-              style={{
-                color: currentPage === totalPages ? "#999" : "#1B3763"
-              }}
-            />
+            <Pagination.Next disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)} />
+            <Pagination.Last disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)} />
           </Pagination>
         </div>
       )}

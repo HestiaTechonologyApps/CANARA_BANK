@@ -10,7 +10,7 @@ const CompanyEdit: React.FC = () => {
   const [_isUploading, setIsUploading] = useState(false);
 
   const fields: Field[] = [
-    { name: "comapanyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 4,pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/, }, },
+    { name: "comapanyName", rules: { type: "text", label: "Company Name", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[a-zA-Z0-9\s]+$/, }, },
     { name: "website", rules: { type: "text", label: "Website", required: true, colWidth: 4 }, },
     { name: "contactNumber", rules: { type: "text", label: "Contact Number", required: true, colWidth: 4,pattern: /^\d{10}$/ }, },
     { name: "email", rules: { type: "email", label: "Email", required: true, colWidth: 4 }, },
