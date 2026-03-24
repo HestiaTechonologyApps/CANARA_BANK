@@ -6,12 +6,16 @@ import KiduCreate from "../../../Components/KiduCreate";
 
 const CategoryCreate: React.FC = () => {
   const fields: Field[] = [
-    { name: "name", rules: { type: "text", label: "Category Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter category name", colWidth: 6 } },
+    { name: "name", rules: { type: "text", label: "Category Name", required: true, minLength: 2, maxLength: 100, placeholder: "Enter category name", colWidth: 6, pattern: /^[a-zA-Z\s\-\/]+$/ } },
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, placeholder: "Enter abbreviation", colWidth: 6 } }
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
     try {
+      if (!/^[a-zA-Z\s\-\/]+$/.test(formData.name.trim())) {
+        throw new Error("Category Name must contain only letters, hyphens or slashes");
+      }
+
       const categoryData: Omit<Category, "categoryId" | "auditLogs"> = {
         name: formData.name.trim(),
         abbreviation: formData.abbreviation.trim()

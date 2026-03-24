@@ -5,11 +5,16 @@ import KiduCreate from "../../../Components/KiduCreate";
 
 const StateCreate: React.FC = () => {
   const fields: Field[] = [
-    { name: "name", rules: { type: "text", label: "State Name", required: true, colWidth: 6, placeholder: "e.g., Kerala"}},
+    { name: "name", rules: { type: "text", label: "State Name", required: true, colWidth: 6, placeholder: "e.g., Kerala", pattern: /^[a-zA-Z\s]+$/ }},
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, colWidth: 6, maxLength: 10, placeholder: "e.g., KL"}},
     { name: "isActive", rules: { type: "toggle", label: "Active"}},
   ];
+
   const handleSubmit = async (formData: Record<string, any>) => {
+    if (!/^[a-zA-Z\s]+$/.test(formData.name?.trim() || "")) {
+      throw new Error("State Name must contain only letters");
+    }
+
     const payload = {
       stateId: 0,
       name: formData.name?.trim() || "",
@@ -28,7 +33,7 @@ const StateCreate: React.FC = () => {
       submitButtonText="Create State"
       showResetButton
       successMessage="State created successfully!"
-      errorMessage="Failed to create state. Please try again." 
+      errorMessage="Failed to create state. Please try again."
       navigateOnSuccess="/dashboard/settings/state-list"
       navigateDelay={1200}
       themeColor="#1B3763"

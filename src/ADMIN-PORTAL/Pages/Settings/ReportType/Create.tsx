@@ -5,12 +5,16 @@ import KiduCreate from "../../../Components/KiduCreate";
 
 const ReportTypeCreate: React.FC = () => {
   const fields: Field[] = [
-    { name: "reportTypeName", rules: { type: "text", label: "Report Type Name", required: true, colWidth: 6 }, },
-    { name: "description", rules: { type: "textarea", label: "Description", required: false, colWidth: 6 },},
-    { name: "isActive", rules: { type: "toggle", label: "Active" },},
+    { name: "reportTypeName", rules: { type: "text", label: "Report Type Name", required: true, colWidth: 6, pattern: /^[a-zA-Z\s\-\/]+$/ } },
+    { name: "description", rules: { type: "textarea", label: "Description", required: false, colWidth: 6 } },
+    { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
+    if (!/^[a-zA-Z\s\-\/]+$/.test(formData.reportTypeName?.trim() || "")) {
+      throw new Error("Report Type Name must contain only letters, hyphens or slashes");
+    }
+
     const payload = {
       reportTypeId: 0,
       reportTypeName: formData.reportTypeName?.trim(),

@@ -5,9 +5,9 @@ import KiduEdit from "../../../Components/KiduEdit";
 
 const ReportTypeEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "reportTypeName", rules: { type: "text", label: "Report Type Name", required: true, colWidth: 6 }, },
-    { name: "description", rules: { type: "textarea", label: "Description", required: false, colWidth: 6 },},
-    { name: "isActive", rules: { type: "toggle", label: "Active" }, },
+    { name: "reportTypeName", rules: { type: "text", label: "Report Type Name", required: true, colWidth: 6, pattern: /^[a-zA-Z\s\-\/]+$/ } },
+    { name: "description", rules: { type: "textarea", label: "Description", required: false, colWidth: 6 } },
+    { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -15,6 +15,10 @@ const ReportTypeEdit: React.FC = () => {
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
+    if (!/^[a-zA-Z\s\-\/]+$/.test(formData.reportTypeName?.trim() || "")) {
+      throw new Error("Report Type Name must contain only letters, hyphens or slashes");
+    }
+
     const payload = {
       reportTypeId: Number(id),
       reportTypeName: formData.reportTypeName?.trim(),
@@ -40,7 +44,7 @@ const ReportTypeEdit: React.FC = () => {
       loadingText="Loading report type details..."
       paramName="reportTypeId"
       navigateBackPath="/dashboard/settings/reportType-list"
-      auditLogConfig={{ tableName: "ReportType", recordIdField: "reportTypeId", }}
+      auditLogConfig={{ tableName: "ReportType", recordIdField: "reportTypeId" }}
       themeColor="#1B3763"
     />
   );

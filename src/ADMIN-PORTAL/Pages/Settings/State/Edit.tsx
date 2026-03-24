@@ -6,7 +6,7 @@ import type { State } from "../../../Types/Settings/States.types";
 
 const StateEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, colWidth: 6, placeholder: "e.g., Kerala" }},
+    { name: "name", rules: { type: "text", label: "State Name", required: true, minLength: 2, maxLength: 50, colWidth: 6, placeholder: "e.g., Kerala", pattern: /^[a-zA-Z\s]+$/ }},
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 10, colWidth: 6, placeholder: "e.g., KL"}},
     { name: "isActive", rules: { type: "toggle", label: "Active" }},
   ];
@@ -22,6 +22,10 @@ const StateEdit: React.FC = () => {
   };
 
   const handleUpdate = async (stateId: string, formData: Record<string, any>) => {
+    if (!/^[a-zA-Z\s]+$/.test(formData.name?.trim() || "")) {
+      throw new Error("State Name must contain only letters");
+    }
+
     const stateData: Omit<State, "auditLogs"> = {
       stateId: Number(stateId),
       name: formData.name?.trim() || "",
@@ -40,7 +44,7 @@ const StateEdit: React.FC = () => {
       submitButtonText="Update State"
       showResetButton
       successMessage="State updated successfully!"
-      errorMessage="Failed to update state. Please try again" 
+      errorMessage="Failed to update state. Please try again"
       paramName="stateId"
       navigateBackPath="/dashboard/settings/state-list"
       loadingText="Loading State..."

@@ -8,9 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const ContactUs: React.FC = () => {
-  // const contact = PublicService.contact
   const [config, setConfig] = useState<PublicPage | null>(null);
-  //  Form State
   const [formData, setFormData] = useState<ContactMessage>({
     fullName: "",
     phoneNumber: "",
@@ -18,49 +16,55 @@ const ContactUs: React.FC = () => {
     subject: "",
     message: "",
   });
-const validateForm = () => {
-  if (!formData.fullName.trim()) {
-    toast.error("Full Name is required");
-    return false;
-  }
 
-  if (!formData.phoneNumber.trim()) {
-    toast.error("Phone Number is required");
-    return false;
-  }
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      toast.error("Full Name is required");
+      return false;
+    }
 
-  if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
-    toast.error("Phone Number must be 10 digits");
-    return false;
-  }
+    if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
+      toast.error("Full Name must contain only letters");
+      return false;
+    }
 
-  if (!formData.emailAddress.trim()) {
-    toast.error("Email is required");
-    return false;
-  }
+    if (!formData.phoneNumber.trim()) {
+      toast.error("Phone Number is required");
+      return false;
+    }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
-    toast.error("Enter a valid email address");
-    return false;
-  }
+    if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
+      toast.error("Phone Number must be 10 digits");
+      return false;
+    }
 
-  if (!formData.subject.trim()) {
-    toast.error("Subject is required");
-    return false;
-  }
+    if (!formData.emailAddress.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
 
-  if (!formData.message.trim()) {
-    toast.error("Message is required");
-    return false;
-  }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
+      toast.error("Enter a valid email address");
+      return false;
+    }
 
-  return true;
-};
+    if (!formData.subject.trim()) {
+      toast.error("Subject is required");
+      return false;
+    }
+
+    if (!formData.message.trim()) {
+      toast.error("Message is required");
+      return false;
+    }
+
+    return true;
+  };
+
   useEffect(() => {
     const loadContactConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-        // pick active config instead of data[0]
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
@@ -73,7 +77,6 @@ const validateForm = () => {
     loadContactConfig();
   }, []);
 
-  // Handle input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -81,33 +84,30 @@ const validateForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Submit handler
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // 🔒 Stop submission if invalid
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  try {
-    const response = await ContactMessageService.submitMessage(formData);
-    toast.success(response.message);
+    try {
+      const response = await ContactMessageService.submitMessage(formData);
+      toast.success(response.message);
 
-    setFormData({
-      fullName: "",
-      phoneNumber: "",
-      emailAddress: "",
-      subject: "",
-      message: "",
-    });
-  } catch (error) {
-    console.error("Contact message submit failed:", error);
-    toast.error("Failed to submit message");
-  }
-};
+      setFormData({
+        fullName: "",
+        phoneNumber: "",
+        emailAddress: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Contact message submit failed:", error);
+      toast.error("Failed to submit message");
+    }
+  };
 
   return (
     <div className="contact-page-wrapper">
-      {/* Header Section */}
       <div className="contact-header text-center py-4">
         <h2 className="contact-title">{config?.contactHeaderTitle}</h2>
         <p className="contact-subtitle">
@@ -116,7 +116,6 @@ const validateForm = () => {
       </div>
       <Container className="my-5">
         <Row className="g-4">
-          {/* LEFT FORM CARD */}
           <Col lg={7} md={12}>
             <Card className="contact-card p-4">
               <h5 className="fw-bold mb-4">{config?.contactHeaderTitle}</h5>
@@ -159,7 +158,6 @@ const validateForm = () => {
               </Form>
             </Card>
           </Col>
-          {/* RIGHT INFO COLUMN */}
           <Col lg={5} md={12}>
             <Card className="contact-card p-4 mb-4">
               <h5 className="fw-bold mb-4">{config?.contactOfficeTitleLabel}</h5>
@@ -194,7 +192,6 @@ const validateForm = () => {
                 </div>
               </div>
             </Card>
-            {/* OFFICE HOURS */}
             <Card className="office-hours-card p-4">
               <h5 className="fw-bold mb-4 text-white">{config?.officeTitle}</h5>
               <Row className="mb-3">
@@ -226,7 +223,6 @@ const validateForm = () => {
         </Row>
       </Container>
       <Toaster position="top-right" />
-
     </div>
   );
 };
