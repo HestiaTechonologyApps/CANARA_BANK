@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     CREATE: `${API_BASE_URL}/Branch`,
     UPDATE: (id: number) => `${API_BASE_URL}/Branch/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/Branch/${id}`,
+    GET_BY_STATE_ID: (stateId: number) => `${API_BASE_URL}/Branch/circles-by-state/${stateId}`,
   },
    CATEGORY: {
     GET_ALL: `${API_BASE_URL}/Category`,

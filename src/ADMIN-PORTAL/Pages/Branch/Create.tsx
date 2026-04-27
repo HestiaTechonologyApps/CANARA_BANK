@@ -6,9 +6,10 @@ import BranchService from "../../Services/Settings/Branch.services";
 import type { State } from "../../Types/Settings/States.types";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
-import CirclePopup from "../Circle/CirclePopup";
+//import CirclePopup from "../Circle/CirclePopup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Circle_StatePopup from "./Circle-StatePopup";
 
 const BranchCreate: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -114,9 +115,10 @@ const BranchCreate: React.FC = () => {
         }}
       />
 
-      <CirclePopup
+      <Circle_StatePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}
+        stateId={selectedState?.stateId}
         onSelect={(circle) => {
           setSelectedCircle(circle);
           setShowCirclePopup(false);

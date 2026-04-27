@@ -16,3 +16,8 @@ export interface Branch {
   stateName?: string;
   auditLogs?: AuditTrails[];
 }
+export interface CircleByState {
+  circleId: number;
+  name: string;
+  stateId: number;
+}

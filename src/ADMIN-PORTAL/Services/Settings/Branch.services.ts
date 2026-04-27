@@ -3,7 +3,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { Branch } from "../../Types/Settings/Branch.types";
+import type { Branch, CircleByState } from "../../Types/Settings/Branch.types";
 
 const BranchService = {
   async getAllBranches(): Promise<Branch[]> {
@@ -50,6 +50,14 @@ const BranchService = {
       API_ENDPOINTS.BRANCH.DELETE(id),
       "DELETE"
     );
+  },
+
+   async getCirclesByStateId(stateId: number): Promise<CircleByState[]> {
+    const response = await HttpService.callApi<CustomResponse<CircleByState[]>>(
+      API_ENDPOINTS.BRANCH.GET_BY_STATE_ID(stateId),
+      "GET"
+    );
+    return response.value;
   },
 };
 
