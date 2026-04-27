@@ -21,6 +21,7 @@ export interface FieldRule {
   placeholder?: string;
   colWidth?: 2 | 3 | 4 | 6 | 12;
   disabled?: boolean;
+  min?: string;
 }
 export interface Field {
   name: string;
@@ -60,6 +61,7 @@ export interface KiduCreateProps {
   navigateDelay?: number;
   imageConfig?: ImageConfig;
   themeColor?: string;
+  fieldChangeHandlers?: Record<string, (value: string) => void>;
 }
 // ==================== COMPONENT ====================
 const KiduCreate: React.FC<KiduCreateProps> = ({
@@ -79,6 +81,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   navigateOnSuccess,
   imageConfig,
   themeColor = "#882626ff",
+  fieldChangeHandlers = {},
 }) => {
   const navigate = useNavigate();
 
@@ -165,7 +168,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-
+fieldChangeHandlers?.[name]?.(updatedValue);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -456,7 +459,9 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
             value={formData[name]}
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
-            isInvalid={!!errors[name]}/>
+            isInvalid={!!errors[name]}
+            min={rules.min}
+            />
         );
 
       /* ---------- FILE ---------- */

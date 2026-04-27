@@ -9,6 +9,7 @@ import StatePopup from "../Settings/State/StatePopup";
 const CircleEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [selectedState, setSelectedState] = useState<State | null>(null);
+  const [dateFrom, setDateFrom] = useState<string>("");
 
   const fields: Field[] = [
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 4 } },
@@ -16,7 +17,7 @@ const CircleEdit: React.FC = () => {
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 4, pattern: /^[a-zA-Z\s\-\/]+$/ } }, 
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 4 } },
-    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 4 } },
+    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 4, min: dateFrom || undefined } },
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } },
   ];
 
@@ -31,9 +32,17 @@ const CircleEdit: React.FC = () => {
         abbreviation: "",
         isActive: true,
       });
+      if (circle.dateFrom) {
+        const date = new Date(circle.dateFrom);
+        setDateFrom(date.toISOString().split("T")[0]); 
+      }
     }
 
     return response;
+  };
+
+  const fieldChangeHandlers = {
+    dateFrom: (value: string) => setDateFrom(value), // 👈 Add this
   };
 
   const handleUpdate = async (
@@ -89,6 +98,7 @@ const CircleEdit: React.FC = () => {
         auditLogConfig={{ tableName: "Circle", recordIdField: "circleId", }}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
+        fieldChangeHandlers={fieldChangeHandlers}
       />
 
       <StatePopup

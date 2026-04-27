@@ -23,6 +23,7 @@ export interface FieldRule {
   placeholder?: string;
   colWidth?: 2 | 3 | 4 | 5 | 6 | 12;
   disabled?: boolean;
+  min?: string;
 }
 
 export interface Field {
@@ -78,6 +79,7 @@ export interface KiduEditProps {
   paramName?: string;
   navigateBackPath?: string;
   loadingText?: string;
+  fieldChangeHandlers?: Record<string, (value: string) => void>;
 }
 
 // ==================== COMPONENT ====================
@@ -102,6 +104,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   paramName = "id",
   navigateBackPath,
   loadingText = "Loading...",
+  fieldChangeHandlers = {},
 }) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -173,7 +176,12 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
 
-        const data = response.value;
+       // const data = response.value;
+       const data = response.value;
+console.log("RAW DATE VALUES:", {
+  dateFrom: data.dateFrom,
+  dateTo: data.dateTo,
+});
 
         const formattedData: Record<string, any> = {};
         fields.forEach(f => {
@@ -193,8 +201,13 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           } else if (f.rules.type === "date") {
             const dateValue = data[f.name];
             if (dateValue) {
-              const date = new Date(dateValue);
-              formattedData[f.name] = date.toISOString().split('T')[0];
+              formattedData[f.name] = String(dateValue).split('T')[0];
+    //           const date = new Date(dateValue);
+    //            const year = date.getUTCFullYear();
+    // const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    // const day = String(date.getUTCDate()).padStart(2, "0");
+    // formattedData[f.name] = `${year}-${month}-${day}`;
+    //           // formattedData[f.name] = date.toISOString().split('T')[0];
             } else {
               formattedData[f.name] = "";
             }
@@ -280,7 +293,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-
+fieldChangeHandlers?.[name]?.(updatedValue);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -580,6 +593,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
+            min={rules.min}
             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           />
         );

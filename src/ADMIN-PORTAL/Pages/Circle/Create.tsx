@@ -8,7 +8,8 @@ import StatePopup from "../Settings/State/StatePopup";
  
 const CircleCreate: React.FC = () => { 
   const [showStatePopup, setShowStatePopup] = useState(false); 
-  const [selectedState, setSelectedState] = useState<State | null>(null); 
+  const [selectedState, setSelectedState] = useState<State | null>(null);
+  const [dateFrom, setDateFrom] = useState<string>("");
  
   const fields: Field[] = [ 
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 4 } }, 
@@ -16,7 +17,7 @@ const CircleCreate: React.FC = () => {
     { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 1, maxLength: 100, colWidth: 4, pattern: /^[a-zA-Z\s\-\/]+$/ } }, 
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } }, 
     { name: "dateFrom", rules: { type: "date", label: "Date From", required: true, colWidth: 4 } }, 
-    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 4 } }, 
+    { name: "dateTo", rules: { type: "date", label: "Date To", required: true, colWidth: 4, min: dateFrom || undefined } }, 
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } }, 
   ]; 
  
@@ -59,7 +60,11 @@ const CircleCreate: React.FC = () => {
       actualValue: selectedState?.stateId, 
       onOpen: () => setShowStatePopup(true), 
     }, 
-  }; 
+  };
+
+  const fieldChangeHandlers = {
+    dateFrom: (value: string) => setDateFrom(value),
+  };
  
   return ( 
     <> 
@@ -72,7 +77,8 @@ const CircleCreate: React.FC = () => {
         successMessage="Circle created successfully!" 
         errorMessage="Failed to create circle.Please try again." 
         navigateOnSuccess="/dashboard/settings/circle-list" 
-        popupHandlers={popupHandlers} 
+        popupHandlers={popupHandlers}
+        fieldChangeHandlers={fieldChangeHandlers}
         themeColor="#1B3763" 
       /> 
       <StatePopup 
