@@ -54,14 +54,20 @@ const ReportsEdit: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState<BranchSelection | null>(null);
   const [selectedMember, setSelectedMember] = useState<MemberSelection | null>(null);
 
+  const [initialReportType, setInitialReportType] = useState<ReportTypeSelection | null>(null);
+  const [initialYear, setInitialYear] = useState<YearSelection | null>(null);
+  const [initialMonth, setInitialMonth] = useState<MonthSelection | null>(null);
+  const [initialCircle, setInitialCircle] = useState<CircleSelection | null>(null);
+  const [initialBranch, setInitialBranch] = useState<BranchSelection | null>(null);
+  const [initialMember, setInitialMember] = useState<MemberSelection | null>(null);
 
   const fields: Field[] = [
-    { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 6 } },
-    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
-    { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 6 } },
-    { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 6 } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 6 } },
-    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 6 } },
+    { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 4 } },
+    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+    { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
+    { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
@@ -71,45 +77,37 @@ const ReportsEdit: React.FC = () => {
     const data = res.value;
     if (!data) return res;
 
-    setSelectedReportType({
-      reportTypeId: data.reportTypeId,
-      reportTypeName: data.reportTypeName,
-    });
+    const reportType = { reportTypeId: data.reportTypeId, reportTypeName: data.reportTypeName };
+    const year = { yearOf: data.yearOf!, yearName: String(data.yearOf) };
+    const month = { monthCode: data.monthCode, monthName: data.monthName };
+    const circle = { circleId: data.circleId, name: data.circleName };
+    const branch = { branchId: data.branchId, dpCode: data.dpCode, name: data.branchName };
+    const member = { memberId: data.memberId, name: data.memberName, staffNo: data.staffNo };
 
-    setSelectedYear({
-      yearOf: data.yearOf!,
-      yearName: String(data.yearOf),
-    });
+    setSelectedReportType(reportType);
+    setSelectedYear(year);
+    setSelectedMonth(month);
+    setSelectedCircle(circle);
+    setSelectedBranch(branch);
+    setSelectedMember(member);
 
-    setSelectedMonth({
-      monthCode: data.monthCode,
-      monthName: data.monthName,
-    });
+    setInitialReportType(reportType);
+    setInitialYear(year);
+    setInitialMonth(month);
+    setInitialCircle(circle);
+    setInitialBranch(branch);
+    setInitialMember(member);
 
-    setSelectedCircle({
-      circleId: data.circleId,
-      name: data.circleName,
-    });
+    return { ...res, value: { ...data } };
+  };
 
-    setSelectedBranch({
-      branchId: data.branchId,
-      dpCode: data.dpCode,
-      name: data.branchName,
-    });
-
-    setSelectedMember({
-      memberId: data.memberId,
-      name: data.memberName,
-      staffNo: data.staffNo,
-    });
-
-    return {
-      ...res,
-      value: {
-        ...data,
-        yearOf: data.yearOf,
-      },
-    };
+  const handleReset = () => {
+    setSelectedReportType(initialReportType);
+    setSelectedYear(initialYear);
+    setSelectedMonth(initialMonth);
+    setSelectedCircle(initialCircle);
+    setSelectedBranch(initialBranch);
+    setSelectedMember(initialMember);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -150,7 +148,7 @@ const ReportsEdit: React.FC = () => {
       onOpen: () => setShowReportTypePopup(true),
     },
     yearOf: {
-      value: selectedYear ? String(selectedYear.yearOf) : "",
+      value: selectedYear ? String(selectedYear.yearName) : "",
       actualValue: selectedYear?.yearOf,
       onOpen: () => setShowYearPopup(true),
     },
@@ -191,8 +189,9 @@ const ReportsEdit: React.FC = () => {
         loadingText="Loading report details..."
         paramName="reportId"
         navigateBackPath="/dashboard/report-list"
-        auditLogConfig={{ tableName: "Reports", recordIdField: "reportId", }}
+        auditLogConfig={{ tableName: "REPORT", recordIdField: "reportId", }}
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <ReportTypePopup
         show={showReportTypePopup}
@@ -233,7 +232,7 @@ const ReportsEdit: React.FC = () => {
             name: v.name,
           });
           setShowCirclePopup(false);
-        }}/>
+        }} />
       <BranchPopup
         show={showBranchPopup}
         handleClose={() => setShowBranchPopup(false)}

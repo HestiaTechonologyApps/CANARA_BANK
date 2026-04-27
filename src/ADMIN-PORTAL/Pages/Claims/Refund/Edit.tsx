@@ -27,6 +27,11 @@ const RefundContributionEdit: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const [initialState, setInitialState] = useState<State | null>(null);
+  const [initialMember, setInitialMember] = useState<Member | null>(null);
+  const [initialDesignation, setInitialDesignation] = useState<Designation | null>(null);
+  const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -50,32 +55,49 @@ const RefundContributionEdit: React.FC = () => {
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
-  const handleFetch = async (id: string) => {
-    const response = await RefundContributionService.getRefundContributionById(Number(id));
-    const refund = response.value;
-    if (!refund) return response;
+ const handleFetch = async (id: string) => {
+  const response = await RefundContributionService.getRefundContributionById(Number(id));
+  const refund = response.value;
+  if (!refund) return response;
 
-    if (refund.stateId) {
-      const state = await StateService.getStateById(refund.stateId);
-      setSelectedState(state.value);
-    }
+  if (refund.stateId) {
+    const state = (await StateService.getStateById(refund.stateId)).value;
+    setSelectedState(state);
+    setInitialState(state); 
+  }
 
-    if (refund.staffNo) {
-      const members = await MemberService.getAllMembers();
-      const member = members.find(m => m.staffNo === refund.staffNo);
-      if (member) setSelectedMember(member);
-    }
+  if (refund.staffNo) {
+    const members = await MemberService.getAllMembers();
+    const member = members.find(m => m.staffNo === refund.staffNo) || null;
+    setSelectedMember(member);
+    setInitialMember(member); 
+  }
 
-    if (refund.designationId) {
-      const designation = await DesignationService.getDesignationById(refund.designationId);
-      setSelectedDesignation(designation.value);
-    }
+  if (refund.designationId) {
+    const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
+    setSelectedDesignation(designation);
+    setInitialDesignation(designation); 
+  }
 
-    if(refund.yearOF) {
-       const year = await YearMasterService.getYearMasterById(refund.yearOF);
-       setSelectedYearMaster(year.value);
-    }
-    return response;
+  if (refund.yearOF) {
+    const year = (await YearMasterService.getYearMasterById(refund.yearOF)).value;
+    setSelectedYearMaster(year);
+    setInitialYearMaster(year); 
+  }
+
+  return {
+    ...response,
+    value: {
+      ...refund,
+      dddate: refund.dddate ? String(refund.dddate).split("T")[0] : "", 
+    },
+  };
+};
+ const handleReset = () => {    
+    setSelectedState(initialState);
+    setSelectedMember(initialMember);
+    setSelectedDesignation(initialDesignation);
+    setSelectedYearMaster(initialYearMaster);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -150,6 +172,7 @@ const RefundContributionEdit: React.FC = () => {
         options={{ type: typeOptions }}
         themeColor="#1B3763"
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
+        onReset={handleReset}
       />
       <StatePopup 
        show={showStatePopup} 

@@ -27,12 +27,19 @@ const DeathClaimEdit: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const [initialState, setInitialState] = useState<State | null>(null);
+  const [initialMember, setInitialMember] = useState<Member | null>(null);
+  const [initialDesignation, setInitialDesignation] = useState<Designation | null>(null);
+  const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
+
+  const today = new Date().toISOString().split("T")[0]; 
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-    { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4 } },
-    { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4 } },
+    { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4, max: today } },
+    { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", required: true, colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
     { name: "ddno", rules: { type: "text", label: "DD Number", required: true, colWidth: 4 } },
@@ -46,41 +53,51 @@ const DeathClaimEdit: React.FC = () => {
   const toDateOnly = (v?: string) => (v ? v.split("T")[0] : "");
 
   // ================= FETCH =================
-  const handleFetch = async (id: string) => {
-    const response = await DeathClaimService.getDeathClaimById(Number(id));
-    const claim = response.value;
-    if (!claim) return response;
+ const handleFetch = async (id: string) => {
+  const response = await DeathClaimService.getDeathClaimById(Number(id));
+  const claim = response.value;
+  if (!claim) return response;
 
-    if (claim.stateId) {
-      const state = await StateService.getStateById(claim.stateId);
-      setSelectedState(state.value);
-    }
+  if (claim.stateId) {
+    const state = (await StateService.getStateById(claim.stateId)).value;
+    setSelectedState(state);
+    setInitialState(state); 
+  }
 
-    if (claim.memberId) {
-      const members = await MemberService.getAllMembers();
-      const member = members.find(m => m.memberId === claim.memberId);
-      if (member) setSelectedMember(member);
-    }
+  if (claim.memberId) {
+    const members = await MemberService.getAllMembers();
+    const member = members.find(m => m.memberId === claim.memberId) || null;
+    setSelectedMember(member);
+    setInitialMember(member); 
+  }
 
-    if (claim.designationId) {
-      const desig = await DesignationService.getDesignationById(claim.designationId);
-      setSelectedDesignation(desig.value);
-    }
+  if (claim.designationId) {
+    const designation = (await DesignationService.getDesignationById(claim.designationId)).value;
+    setSelectedDesignation(designation);
+    setInitialDesignation(designation); 
+  }
 
-    if (claim.yearOF) {
-      const year = await YearMasterService.getYearMasterById(claim.yearOF);
-      setSelectedYearMaster(year.value);
-    }
+  if (claim.yearOF) {
+    const year = (await YearMasterService.getYearMasterById(claim.yearOF)).value;
+    setSelectedYearMaster(year);
+    setInitialYearMaster(year); 
+  }
 
-    return {
-      ...response,
-      value: {
-        ...claim,
-        deathDate: toDateOnly(claim.deathDate as string),
-        dddate: toDateOnly(claim.dddate as string),
-      },
-    };
+  return {
+    ...response,
+    value: {
+      ...claim,
+      deathDate: toDateOnly(claim.deathDate as string),
+      dddate: toDateOnly(claim.dddate as string),
+    },
   };
+};
+ const handleReset = () => {    
+    setSelectedState(initialState);
+    setSelectedMember(initialMember);
+    setSelectedDesignation(initialDesignation);
+    setSelectedYearMaster(initialYearMaster);
+  }
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedState || !selectedMember || !selectedDesignation || !selectedYearMaster) {
@@ -164,6 +181,7 @@ const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
           tableName: "DeathClaim",
           recordIdField:"deathClaimId"
         }}
+        onReset={handleReset}
       />
 
       <StatePopup

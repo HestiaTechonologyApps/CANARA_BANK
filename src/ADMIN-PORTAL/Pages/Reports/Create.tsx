@@ -31,18 +31,27 @@ const ReportsCreate: React.FC = () => {
     const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
+    const handleReset = () => {
+        setSelectedReportType(null);
+        setSelectedYearMaster(null);
+        setSelectedMonth(null);
+        setSelectedCircle(null);
+        setSelectedBranch(null);
+        setSelectedMember(null);
+    };
+
     const fields: Field[] = [
-        { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 6 } },
-        { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
-        { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 6 } },
-        { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 6 } },
-        { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 6 } },
-        { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 6 } },
+        { name: "reportType", rules: { type: "popup", label: "Report Type", required: true, colWidth: 4 } },
+        { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+        { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
+        { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
+        { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+        { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
         { name: "isActive", rules: { type: "toggle", label: "Active" } },
     ];
 
     const handleSubmit = async (formData: Record<string, any>) => {
-        if ( !selectedReportType || !selectedYearMaster || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember ) {
+        if (!selectedReportType || !selectedYearMaster || !selectedMonth || !selectedCircle || !selectedBranch || !selectedMember) {
             throw new Error("Please select all required fields");
         }
 
@@ -79,7 +88,7 @@ const ReportsCreate: React.FC = () => {
             onOpen: () => setShowReportTypePopup(true),
         },
         yearOf: {
-            value: selectedYearMaster ? String(selectedYearMaster.yearOf) : "",
+            value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
             actualValue: selectedYearMaster?.yearOf,
             onOpen: () => setShowYearMasterPopup(true),
         },
@@ -123,6 +132,7 @@ const ReportsCreate: React.FC = () => {
                 navigateOnSuccess="/dashboard/report-list"
                 navigateDelay={1200}
                 themeColor="#1B3763"
+                onReset={handleReset}
             />
             <ReportTypePopup
                 show={showReportTypePopup}
@@ -137,7 +147,7 @@ const ReportsCreate: React.FC = () => {
                 onSelect={(y) => {
                     setSelectedYearMaster(y);
                     setShowYearMasterPopup(false);
-                }}/>
+                }} />
             <MonthPopup
                 show={showMonthPopup}
                 handleClose={() => setShowMonthPopup(false)}
@@ -158,7 +168,7 @@ const ReportsCreate: React.FC = () => {
                 onSelect={(b) => {
                     setSelectedBranch(b);
                     setShowBranchPopup(false);
-                }}/>
+                }} />
             <MemberPopup
                 show={showMemberPopup}
                 handleClose={() => setShowMemberPopup(false)}

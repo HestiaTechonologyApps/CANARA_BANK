@@ -11,6 +11,7 @@ const DayQuoteEdit: React.FC = () => {
   const [showMonthPopup, setShowMonthPopup] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
+  const [initialMonth, setInitialMonth] = useState<Month | null>(null);
   const fields: Field[] = [
     { name: "day", rules: { type: "number", label: "Day", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
@@ -18,24 +19,30 @@ const DayQuoteEdit: React.FC = () => {
     { name: "unformatedContent", rules: { type: "textarea", label: "Unformatted Content", colWidth: 4 } },
   ];
 
-  const handleFetch = async (id: string) => {
-    const response = await DayQuoteService.getDayQuoteById(Number(id));
-    const quote = response.value;
+ const handleFetch = async (id: string) => {
+  const response = await DayQuoteService.getDayQuoteById(Number(id));
+  const quote = response.value;
 
-    if (!quote) return response;
-    if (quote.monthCode) {
-      const months = await MonthService.getAllMonths();
-      const month = months.find(m => m.monthCode === quote.monthCode);
-      if (month) setSelectedMonth(month);
-    }
+  if (!quote) return response;
 
-    return {
-      ...response,
-      value: {
-        ...quote,
-        monthCode: quote.monthCode, 
-      },
-    };
+  if (quote.monthCode) {
+    const months = await MonthService.getAllMonths();
+    const month = months.find(m => m.monthCode === quote.monthCode) || null;
+    setSelectedMonth(month);
+    setInitialMonth(month); 
+  }
+
+  return {
+    ...response,
+    value: {
+      ...quote,
+      monthCode: quote.monthCode,
+    },
+  };
+};
+
+ const handleReset = () => {   
+   setSelectedMonth(initialMonth);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -79,6 +86,7 @@ const DayQuoteEdit: React.FC = () => {
         auditLogConfig={{ tableName: "DayQuote", recordIdField: "dayQuoteId" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <MonthPopup
         show={showMonthPopup}

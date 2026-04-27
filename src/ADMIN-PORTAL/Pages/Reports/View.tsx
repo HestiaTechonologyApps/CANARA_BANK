@@ -53,7 +53,7 @@ const ReportsView: React.FC = () => {
       editRoute="/dashboard/report-edit"
       listRoute="/dashboard/report-list"
       paramName="reportId"
-      auditLogConfig={{ tableName: "Report", recordIdField: "reportId" }}
+      auditLogConfig={{ tableName: "REPORT", recordIdField: "reportId" }}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton

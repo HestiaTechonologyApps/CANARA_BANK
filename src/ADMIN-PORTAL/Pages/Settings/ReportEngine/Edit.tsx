@@ -9,7 +9,7 @@ const ReportEngineEdit: React.FC = () => {
     { name: "name", rules: { type: "text", label: "Report Name", required: true, minLength: 2, maxLength: 100, colWidth: 6 } },
     { name: "description", rules: { type: "text", label: "Description", required: true, minLength: 2, maxLength: 500, colWidth: 6 } },
     { name: "sqlString", rules: { type: "textarea", label: "SQL Query", required: true, colWidth: 12 } },
-    { name: "isActive", rules: { type: "checkbox", label: "Is Active", colWidth: 6 } },
+    { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
 
   const handleFetch = async (reportEngineId: string) => {

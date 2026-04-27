@@ -22,6 +22,13 @@ const RefundContributionCreate: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const handleReset = () => {
+    setSelectedState(null);
+    setSelectedMember(null);
+    setSelectedDesignation(null);
+    setSelectedYearMaster(null);
+  };
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -117,6 +124,7 @@ const popupHandlers = {
         options={{ type: typeOptions }}
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <StatePopup
         show={showStatePopup}

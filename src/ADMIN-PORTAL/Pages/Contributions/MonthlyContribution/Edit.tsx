@@ -14,6 +14,9 @@ const MonthlyContributionEdit: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
+const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
+const [initialMonth, setInitialMonth] = useState<Month | null>(null);
+
   const fields: Field[] = [
     { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
     { name: "monthId", rules: { type: "popup", label: "Select", required: true, colWidth: 6 } },
@@ -21,34 +24,40 @@ const MonthlyContributionEdit: React.FC = () => {
   ];
 
   const handleFetch = async (id: string) => {
-    console.log("FETCHING MONTHLY CONTRIBUTION ✅", id);
-    const response = await MonthlyContributionService.getMonthlyContributionById(Number(id));
-    const data = response.value;
+  const response = await MonthlyContributionService.getMonthlyContributionById(Number(id));
+  const data = response.value;
 
-    console.log("FETCHED DATA:", data);
+  if (data) {
+    const year = {
+      yearOf: data.yearOF,
+      yearName: Number(data.yearName) || data.yearOF,
+    } as YearMaster;
 
-    if (data) {
-      setSelectedYearMaster({
-        yearOf: data.yearOF,
-        yearName: Number(data.yearName) || data.yearOF,
-      } as YearMaster);
+    const month = {
+      monthCode: data.monthId,
+      monthName: data.monthName || `Month ${data.monthId}`,
+    } as Month;
 
-      setSelectedMonth({
-        monthCode: data.monthId, 
-        monthName: data.monthName || `Month ${data.monthId}`, 
-      } as Month);
-    }
+    setSelectedYearMaster(year);
+    setSelectedMonth(month);
+    setInitialYearMaster(year); 
+    setInitialMonth(month);     
+  }
 
-    return {
-      ...response,
-      value: {
-        ...data,
-        yearOF: String(data.yearOF), 
-        monthId: String(data.monthId), 
-
-      },
-    };
+  return {
+    ...response,
+    value: {
+      ...data,
+      yearOF: String(data.yearOF),
+      monthId: String(data.monthId),
+    },
   };
+};
+
+const handleReset = () => {
+  setSelectedYearMaster(initialYearMaster);
+  setSelectedMonth(initialMonth);
+};
 
   const handleUpdate = async (_id: string, formData: Record<string, any>) => {
     console.log("UPDATE BUTTON CLICKED ✅");
@@ -126,6 +135,7 @@ const MonthlyContributionEdit: React.FC = () => {
         successMessage="Monthly contribution updated successfully!"
         errorMessage="Failed to update contribution!"
         navigateBackPath="/dashboard/contributions/monthlyContribution-list"
+        onReset={handleReset}
       />
 
       {/* ===== SAME UI TABLE AS CREATE PAGE ===== */}

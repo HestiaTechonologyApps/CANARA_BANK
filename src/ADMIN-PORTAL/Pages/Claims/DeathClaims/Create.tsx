@@ -22,15 +22,23 @@ const DeathClaimCreate: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const handleReset = () => {
+    setSelectedState(null);
+    setSelectedMember(null);
+    setSelectedDesignation(null);
+    setSelectedYearMaster(null);
+  };
+const today = new Date().toISOString().split("T")[0]; 
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-    { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4 } },
-    { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4 } },
+    { name: "deathDate", rules: { type: "date", label: "Death Date", required: true, colWidth: 4, max: today} },
+    { name: "nominee", rules: { type: "text", label: "Nominee Name", required: true, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", required: true, colWidth: 4 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
-    { name: "ddno", rules: { type: "text", label: "DD Number", required: true, colWidth: 4 } },
+    { name: "ddno", rules: { type: "number", label: "DD Number", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
@@ -117,6 +125,7 @@ const DeathClaimCreate: React.FC = () => {
         options={{ nomineeRelation: nomineeRelationOptions }}
         navigateOnSuccess="/dashboard/claims/deathclaims-list"
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <StatePopup
         show={showStatePopup}

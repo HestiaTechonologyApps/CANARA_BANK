@@ -15,9 +15,14 @@ const MonthlyContributionCreate: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
+  const handleReset = () => {
+    setSelectedYearMaster(null);
+    setSelectedMonth(null);
+  };
+
   const fields: Field[] = [
     { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 6 } },
-    { name: "monthId", rules: { type: "popup", label: "Select", required: true, colWidth: 6 } },
+    { name: "monthId", rules: { type: "popup", label: "Month", required: true, colWidth: 6 } },
     { name: "file", rules: { type: "file", label: "Upload Files", required: true, colWidth: 12 } },
   ];
 
@@ -87,6 +92,7 @@ const MonthlyContributionCreate: React.FC = () => {
         successMessage="Monthly contribution created successfully!"
         errorMessage="Failed to create contribution!"
         navigateOnSuccess="/dashboard/contributions/monthlyContribution-list"
+        onReset={handleReset}
       />
 
       <div className="card mt-4">

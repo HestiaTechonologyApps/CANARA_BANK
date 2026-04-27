@@ -10,6 +10,10 @@ const DayQuoteCreate: React.FC = () => {
   const [showMonthPopup, setShowMonthPopup] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
 
+  const handleReset = () => {   
+    setSelectedMonth(null);
+  };
+
   const fields: Field[] = [
     { name: "day", rules: { type: "number", label: "Day", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
@@ -51,6 +55,7 @@ const DayQuoteCreate: React.FC = () => {
          navigateDelay={1500}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
+        onReset={handleReset}
       />
       <MonthPopup
         show={showMonthPopup}
