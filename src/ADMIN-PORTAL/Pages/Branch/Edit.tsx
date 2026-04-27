@@ -6,10 +6,10 @@ import BranchService from "../../Services/Settings/Branch.services";
 import type { State } from "../../Types/Settings/States.types";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
-//import CirclePopup from "../Circle/CirclePopup";
+import CirclePopup from "../Circle/CirclePopup";
 import StateService from "../../Services/Settings/State.services";
 import CircleService from "../../Services/Settings/Circle.services";
-import Circle_StatePopup from "./Circle-StatePopup";
+//import Circle_StatePopup from "./Circle-StatePopup";
 
 const BranchEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -139,10 +139,10 @@ const BranchEdit: React.FC = () => {
           setShowStatePopup(false);
         }}
       />
-      <Circle_StatePopup
+      <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}
-        stateId={selectedState?.stateId}
+       // stateId={selectedState?.stateId}
         onSelect={(circle) => {
           setSelectedCircle(circle);
           setShowCirclePopup(false);

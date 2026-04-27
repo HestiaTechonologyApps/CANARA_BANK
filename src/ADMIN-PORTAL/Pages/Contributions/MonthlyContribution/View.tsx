@@ -33,7 +33,7 @@ const MonthlyContributionView: React.FC = () => {
       editRoute="/dashboard/contributions/monthly-contribution-edit"
       listRoute="/dashboard/contributions/monthly-contribution-list"
       paramName="monthlyContributionId"
-      auditLogConfig={{ tableName: "MonthlyContribution", recordIdField: "monthlyContributionId" }}
+      //auditLogConfig={{ tableName: "MONTHLY_CONTRIBUTION", recordIdField: "monthlyContributionId" }}
       themeColor="#1B3763"
       showEditButton
       showDeleteButton

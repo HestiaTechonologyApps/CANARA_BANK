@@ -78,7 +78,7 @@ const formatDateOnly = (value?: string | Date) => {
       editRoute="/dashboard/claims/deathclaims-edit"
       listRoute="/dashboard/claims/deathclaims-list"
       paramName="deathClaimId"
-      auditLogConfig={{ tableName: "DeathClaim", recordIdField: "deathClaimId", }}
+      auditLogConfig={{ tableName: "DEATH_CLAIM", recordIdField: "deathClaimId", }}
       themeColor="#1B3763"
       loadingText="Loading death claim..."
       showEditButton={true}

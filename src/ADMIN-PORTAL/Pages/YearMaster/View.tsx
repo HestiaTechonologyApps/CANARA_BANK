@@ -24,7 +24,7 @@ const YearMasterView: React.FC = () => {
       editRoute="/dashboard/settings/yearMaster-edit"
       listRoute="/dashboard/settings/yearMaster-list"
       paramName="yearOf"
-      //auditLogConfig={{ tableName: "YearMaster", recordIdField: "yearOf", }}
+      auditLogConfig={{ tableName: "YearMaster", recordIdField: "yearOf", }}
       themeColor="#1B3763"
       deleteConfirmMessage="Are you sure you want to delete this year master? This action cannot be undone."
       showDeleteButton={true}
