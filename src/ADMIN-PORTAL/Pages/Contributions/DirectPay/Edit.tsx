@@ -10,6 +10,8 @@ const DirectPaymentEdit: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
+  const [initialMember, setInitialMember] = useState<Member | null>(null);
+
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
@@ -23,13 +25,27 @@ const handleFetch = async (id: string) => {
   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
   const payment = response.value;
 
- if (payment) {
-  setSelectedMember({
-    memberId: payment.memberId,
-    name: payment.memberName || "",
-  } as unknown as Member);
- }
-  return response;
+  if (payment) {
+    const member = {
+      memberId: payment.memberId,
+      name: payment.memberName || "",
+    } as unknown as Member;
+
+    setSelectedMember(member);
+    setInitialMember(member);
+  }
+
+  return {
+    ...response,
+    value: {
+      ...payment,
+      paymentDate: payment.paymentDate ? String(payment.paymentDate).split("T")[0] : "", // 👈 fix date format
+    },
+  };
+};
+
+const handleReset = () => {
+  setSelectedMember(initialMember);
 };
 
  const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -91,6 +107,7 @@ const handleFetch = async (id: string) => {
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
         options={{ paymentMode: paymentModeOptions, }}
+        onReset={handleReset}
       />
       <MemberPopup
         show={showMemberPopup}

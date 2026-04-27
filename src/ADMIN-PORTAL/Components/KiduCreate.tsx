@@ -22,6 +22,7 @@ export interface FieldRule {
   colWidth?: 2 | 3 | 4 | 6 | 12;
   disabled?: boolean;
   min?: string;
+  max?: string;
 }
 export interface Field {
   name: string;
@@ -463,6 +464,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             min={rules.min}
+            max={rules.max}
             />
         );
 

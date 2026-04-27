@@ -22,6 +22,13 @@ const AccountDirectEntryCreate: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+   const handleReset = () => {
+    setSelectedMember(null);
+    setSelectedBranch(null);
+    setSelectedMonth(null);
+    setSelectedYearMaster(null);
+  };
+
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
@@ -112,6 +119,7 @@ const AccountDirectEntryCreate: React.FC = () => {
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
         themeColor="#1B3763"
         options={{ status: statusOptions }}
+        onReset={handleReset}
       />
       <MemberPopup 
        show={showMemberPopup} 

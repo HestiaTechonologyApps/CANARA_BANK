@@ -27,24 +27,31 @@ const MemberEdit: React.FC = () => {
 
   const [_isUploading, setIsUploading] = useState(false);
 
-  const fields: Field[] = [
-    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4, disabled :true} },
-    { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4 } },
-    { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
-    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
-    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4 } },
-    { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4 } },
-    { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
-    { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
-    { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4 } },
-    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
-    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
-    { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
-    { name: "totalRefund", rules: { type: "text", label: "Total Refund", placeholder: "0", colWidth: 4 } },
-  ];
+const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+const [initialDesignation, setInitialDesignation] = useState<Designation | null>(null);
+const [initialCategory, setInitialCategory] = useState<Category | null>(null);
+const [initialStatus, setInitialStatus] = useState<Status | null>(null);
+
+ const today = new Date().toISOString().split("T")[0]; 
+
+const fields: Field[] = [
+  { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4, disabled: true } },
+  { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } }, 
+  { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
+  { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+  { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
+  { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+  { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
+  { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4, max: today } },        
+  { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4, max: today } },      
+  { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
+  { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
+  { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },    
+  { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
+  { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
+  { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
+  { name: "totalRefund", rules: { type: "number", label: "Total Refund", placeholder: "0", colWidth: 4 } },
+];
 
   // Gender options
   const genderOptions = [
@@ -72,43 +79,61 @@ const MemberEdit: React.FC = () => {
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-  const handleFetch = async (id: string) => {
-    const response = await MemberService.getMemberById(Number(id));
-    const member = response.value;
+ const handleFetch = async (id: string) => {
+  const response = await MemberService.getMemberById(Number(id));
+  const member = response.value;
 
-    if (member) {
-      // Set branch data - using type assertion to handle partial Branch data
-      setSelectedBranch({
-        branchId: member.branchId,
-        name: member.branchName || "",
-        dpCode: member.dpCode || "",
-      } as any as Branch);
+  if (member) {
+    const branch = {
+      branchId: member.branchId,
+      name: member.branchName || "",
+      dpCode: member.dpCode || "",
+    } as any as Branch;
 
-      setSelectedDesignation({
-        designationId: member.designationId,
-        name: member.designationName || ""
-      } as Designation);
+    const designation = {
+      designationId: member.designationId,
+      name: member.designationName || "",
+    } as Designation;
 
-      setSelectedCategory({
-        categoryId: member.categoryId,
-        name: member.categoryname || ""
-      } as Category);
+    const category = {
+      categoryId: member.categoryId,
+      name: member.categoryname || "",
+    } as Category;
 
-      setSelectedStatus({
-        statusId: member.statusId,
-        name: member.status || ""
-      } as Status);
-    }
+    const status = {
+      statusId: member.statusId,
+      name: member.status || "",
+    } as Status;
 
-    // Convert genderId to string for select field and set profile image
-    return {
-      ...response,
-      value: {
-        ...member,
-        genderId: String(member.genderId),
-        profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
-      },
-    };
+    setSelectedBranch(branch);
+    setSelectedDesignation(designation);
+    setSelectedCategory(category);
+    setSelectedStatus(status);
+
+    setInitialBranch(branch);
+    setInitialDesignation(designation);
+    setInitialCategory(category);
+    setInitialStatus(status);
+  }
+
+  return {
+    ...response,
+    value: {
+      ...member,
+      genderId: String(member.genderId),
+      dob: member.dob ? String(member.dob).split("T")[0] : "",         
+      doj: member.doj ? String(member.doj).split("T")[0] : "",           
+      dojtoScheme: member.dojtoScheme ? String(member.dojtoScheme).split("T")[0] : "", 
+      profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
+    },
+  };
+};
+
+  const handleReset = () => {
+    setSelectedBranch(initialBranch);
+    setSelectedDesignation(initialDesignation);
+    setSelectedCategory(initialCategory);
+    setSelectedStatus(initialStatus);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -199,6 +224,7 @@ const MemberEdit: React.FC = () => {
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
         options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions }}
+        onReset={handleReset}
       />
       <BranchPopup 
         show={showBranchPopup} 

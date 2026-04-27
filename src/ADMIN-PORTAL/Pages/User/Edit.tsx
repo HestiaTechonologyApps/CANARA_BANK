@@ -17,11 +17,14 @@ const UserEdit: React.FC = () => {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
+  const [initialCompany, setInitialCompany] = useState<Company | null>(null); 
+  const [initialMember, setInitialMember] = useState<Member | null>(null); 
+
   const fields: Field[] = [
     { name: "userName", rules: { type: "text", label: "User Name", required: true, colWidth: 4 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, colWidth: 4 } },
     { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
-    { name: "phoneNumber", rules: { type: "text", label: "Phone Number", required: true, colWidth: 4 } },
+    { name: "phoneNumber", rules: { type: "number", label: "Phone Number", required: true, colWidth: 4 , minLength:10, maxLength:10} },
     { name: "role", rules: { type: "select", label: "Role", required: true, colWidth: 4 } },
     { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 4 } },
     { name: "address", rules: { type: "textarea", label: "Address", colWidth: 6 } },
@@ -42,16 +45,23 @@ const UserEdit: React.FC = () => {
   if (user.companyId) {
     const companyRes = await CompanyService.getCompanyById(user.companyId);
     setSelectedCompany(companyRes.value);
+    setInitialCompany(companyRes.value);
   }
   if (user.staffNo) {
     const members = await MemberService.getAllMembers();
     const member = members.find(m => m.staffNo === user.staffNo);
     if (member) {
       setSelectedMember(member);
+      setInitialMember(member);
     }
   }
   return response;
 };
+
+const handleReset = () => {
+    setSelectedCompany(initialCompany);
+    setSelectedMember(initialMember);
+  };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedCompany) throw new Error("Please select a company");
@@ -105,6 +115,7 @@ const UserEdit: React.FC = () => {
         loadingText="Loading user details..."
         options={{ role: roleOptions }}
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <CompanyPopup
         show={showCompanyPopup}

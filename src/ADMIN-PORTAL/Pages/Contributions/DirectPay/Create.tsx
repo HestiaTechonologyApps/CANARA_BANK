@@ -11,6 +11,10 @@ const DirectPaymentCreate: React.FC = () => {
   const[showMemberPopup,setShowMemberPopup]=useState(false);
   const[selectedMember,setSelectedMember]=useState<Member|null>(null);
  
+   const handleReset = () => {
+    setSelectedMember(null);
+  };
+
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
@@ -73,6 +77,7 @@ const DirectPaymentCreate: React.FC = () => {
         themeColor="#1B3763"
          popupHandlers={popupHandlers}
          options={{ paymentMode: paymentModeOptions, }}
+         onReset={handleReset}
       />
       <MemberPopup
         show={showMemberPopup}

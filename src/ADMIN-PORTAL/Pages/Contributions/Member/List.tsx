@@ -7,30 +7,20 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 const MemberList: React.FC = () => {
   return (
     <KiduServerTableList
-      paginatedFetchService={async (params) => {
+      fetchService={async () => {  
         const response = await MemberService.getMembersPaginated({
-          pageNumber: params.pageNumber,
-          pageSize: params.pageSize,
-          searchTerm: params.searchTerm,
-          sortBy: params.sortBy,
-          sortOrder: params.sortOrder,
+          pageNumber: 1,
+          pageSize: 99999, 
+          searchTerm: "",
         });
-        
-        return {
-          data: response.data,
-          total: response.total
-        };
-      }}
-      
-      transformData={(data) => 
-        data.map(member => ({
+        return response.data.map(member => ({
           ...member,
           profileImageSrc: member.profileImageSrc
             ? getFullImageUrl(member.profileImageSrc)
-            : defaultProfileImage
-        }))
-      }
-    
+            : defaultProfileImage,
+        }));
+      }}
+
       columns={[
         { key: "memberId", label: "Member ID", enableSorting: true, type: "text" },
         { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" },
@@ -40,9 +30,19 @@ const MemberList: React.FC = () => {
         { key: "categoryname", label: "Category", enableSorting: true, type: "text" },
         { key: "branchName", label: "Branch", enableSorting: true, type: "text" },
         { key: "status", label: "Status", enableSorting: true, type: "text" },
-        { key: "isRegCompleted", label: "Reg. Completed", enableSorting: true, type: "checkbox" }
+        { key: "isRegCompleted", label: "Reg. Completed", enableSorting: true, type: "checkbox" },
       ]}
-      
+
+      filterColumns={[  
+        { key: "memberId", label: "Member ID", type: "text" },
+        { key: "staffNo", label: "Staff No", type: "text" },
+        { key: "name", label: "Name", type: "text" },
+        { key: "designationName", label: "Designation", type: "text" },
+        { key: "categoryname", label: "Category", type: "text" },
+        { key: "branchName", label: "Branch", type: "text" },
+        { key: "status", label: "Status", type: "text" },
+      ]}
+
       idKey="memberId"
       title="Member Management"
       subtitle="Manage members with search, filter, and pagination."
@@ -55,6 +55,7 @@ const MemberList: React.FC = () => {
       showExport={true}
       showSearch={true}
       showActions={true}
+      showFilter={true}  
       rowsPerPage={10}
     />
   );

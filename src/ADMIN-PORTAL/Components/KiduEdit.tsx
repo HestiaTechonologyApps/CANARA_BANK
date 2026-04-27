@@ -24,6 +24,7 @@ export interface FieldRule {
   colWidth?: 2 | 3 | 4 | 5 | 6 | 12;
   disabled?: boolean;
   min?: string;
+  max?: string;
 }
 
 export interface Field {
@@ -596,6 +597,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
             min={rules.min}
+            max={rules.max}
             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           />
         );

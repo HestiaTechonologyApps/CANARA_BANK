@@ -17,9 +17,12 @@ const BranchEdit: React.FC = () => {
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
+  const [initialState, setInitialState] = useState<State | null>(null);   
+  const [initialCircle, setInitialCircle] = useState<Circle | null>(null);
+
   const fields: Field[] = [
-    { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 3, } },
-    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 6 ,pattern: /^[a-zA-Z\s.\-']+$/  } },
+    { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4, } },
+    { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4 ,pattern: /^[a-zA-Z\s.\-']+$/  } },
     { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4, pattern:/^[a-zA-Z]+$/ } },
     { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
     { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
@@ -49,6 +52,8 @@ const BranchEdit: React.FC = () => {
 
     setSelectedState(state);
     setSelectedCircle(circle);
+    setInitialState(state);   
+    setInitialCircle(circle);
 
     return {
       ...response,
@@ -57,6 +62,11 @@ const BranchEdit: React.FC = () => {
         status: branch.status, 
       },
     };
+  };
+
+    const handleReset = () => {
+    setSelectedState(initialState);
+    setSelectedCircle(initialCircle);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -117,6 +127,7 @@ const BranchEdit: React.FC = () => {
         navigateBackPath="/dashboard/settings/branch-list"
         auditLogConfig={{ tableName: "Branch", recordIdField: "branchId" }}
         themeColor="#1B3763"
+        onReset={handleReset}
       />
       <StatePopup
         show={showStatePopup}

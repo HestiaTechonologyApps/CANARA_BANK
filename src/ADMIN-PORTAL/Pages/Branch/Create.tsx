@@ -17,6 +17,11 @@ const BranchCreate: React.FC = () => {
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
+  const handleReset = () => {
+    setSelectedState(null);
+    setSelectedCircle(null);
+  };
+
   const fields: Field[] = [
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4 } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4,pattern: /^[a-zA-Z\s.\-']+$/ } },
@@ -96,6 +101,7 @@ const BranchCreate: React.FC = () => {
         successMessage="Branch created successfully!"
         errorMessage="Failed to create branch. Please try again."
         themeColor="#1B3763"
+        onReset={handleReset}
       />
 
       <StatePopup

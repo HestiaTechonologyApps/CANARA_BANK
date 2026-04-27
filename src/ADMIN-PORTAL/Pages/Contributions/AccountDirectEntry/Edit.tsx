@@ -26,6 +26,11 @@ const AccountDirectEntryEdit: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const [initialMember, setInitialMember] = useState<Member | null>(null);
+  const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+  const [initialMonth, setInitialMonth] = useState<Month | null>(null);
+  const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
+
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
@@ -45,56 +50,112 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
-  const handleFetch = async (id: string) => {
+  // const handleFetch = async (id: string) => {
+  //   const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
+  //   const entry = response.value;
+  //   if (!entry) return response;
+  //   if (entry.memberId) 
+  //     setSelectedMember((await MemberService.getMemberById(entry.memberId)).value);
+  //   if (entry.branchId) setSelectedBranch((await BranchService.getBranchById(entry.branchId)).value);
+  //   if (entry.monthCode) setSelectedMonth((await MonthService.getMonthById(entry.monthCode)).value);
+  //   if (entry.yearOf) setSelectedYearMaster((await YearMasterService.getYearMasterById(entry.yearOf)).value);
+
+  //   return {
+  //     ...response,
+  //     value: {
+  //       ...entry,
+  //       ddIbaDate: entry.ddIbaDateString?.split("T")[0],
+  //       approvedDate: entry.approvedDateString?.split("T")[0],
+  //     },
+  //   };
+  // };
+const handleFetch = async (id: string) => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
     if (!entry) return response;
-    if (entry.memberId) setSelectedMember((await MemberService.getMemberById(entry.memberId)).value);
-    if (entry.branchId) setSelectedBranch((await BranchService.getBranchById(entry.branchId)).value);
-    if (entry.monthCode) setSelectedMonth((await MonthService.getMonthById(entry.monthCode)).value);
-    if (entry.yearOf) setSelectedYearMaster((await YearMasterService.getYearMasterById(entry.yearOf)).value);
 
-    return {
-      ...response,
-      value: {
-        ...entry,
-        ddIbaDate: entry.ddIbaDateString?.split("T")[0],
-        approvedDate: entry.approvedDateString?.split("T")[0],
-      },
-    };
-  };
-
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
-      throw new Error("Please select all required values");
+    if (entry.memberId) {
+      const member = (await MemberService.getMemberById(entry.memberId)).value;
+      setSelectedMember(member);
+      setInitialMember(member); // 👈 Add this
+    }
+    if (entry.branchId) {
+      const branch = (await BranchService.getBranchById(entry.branchId)).value;
+      setSelectedBranch(branch);
+      setInitialBranch(branch); // 👈 Add this
+    }
+    if (entry.monthCode) {
+      const month = (await MonthService.getMonthById(entry.monthCode)).value;
+      setSelectedMonth(month);
+      setInitialMonth(month); // 👈 Add this
+    }
+    if (entry.yearOf) {
+      const year = (await YearMasterService.getYearMasterById(entry.yearOf)).value;
+      setSelectedYearMaster(year);
+      setInitialYearMaster(year); // 👈 Add this
     }
 
-    await AccountDirectEntryService.updateAccountDirectEntry(Number(id), {
-      accountsDirectEntryID: Number(id), 
-      memberId: selectedMember.memberId,
-      memberName: selectedMember.name,
-      branchId: selectedBranch.branchId,
-      branchName: selectedBranch.name,
-      monthCode: selectedMonth.monthCode,
-      monthName: selectedMonth.monthName,
-      yearOf: selectedYearMaster.yearOf,
-      yearName: Number(selectedYearMaster.yearName),
-      ddIba: formData.ddIba,
-      ddIbaDate: `${formData.ddIbaDate}T00:00:00`,
-      ddIbaDateString: `${formData.ddIbaDate}T00:00:00`, 
-      status: formData.status,
-      amt: Number(formData.amt),
-      approvedBy: formData.approvedBy || undefined,
-      approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
-      approvedDateString: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
-      isApproved: Boolean(formData.isApproved),
-      enrl: formData.enrl || "",
-      fine: formData.fine || "",
-      f9: formData.f9 || "",
-      f10: formData.f10 || "",
-      f11: formData.f11 || "",
-    });
+    // return {
+    //   ...response,
+    //   value: {
+    //     ...entry,
+    //     ddIbaDate: entry.ddIbaDateString?.split("T")[0],
+    //     approvedDate: entry.approvedDateString?.split("T")[0],
+    //   },
+    // };
+    return {
+  ...response,
+  value: {
+    ...entry,
+    ddIbaDate: entry.ddIbaDate ? String(entry.ddIbaDate).split("T")[0] : "",       // 👈 use ddIbaDate not ddIbaDateString
+    approvedDate: entry.approvedDate ? String(entry.approvedDate).split("T")[0] : "", // 👈 same here
+  },
+};
   };
+
+  const handleReset = () => {
+  setSelectedMember(initialMember);
+  setSelectedBranch(initialBranch);
+  setSelectedMonth(initialMonth);
+  setSelectedYearMaster(initialYearMaster);
+};
+
+const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
+    throw new Error("Please select all required values");
+  }
+
+  const payload = {
+    accountsDirectEntryID: Number(id),
+    memberId: selectedMember.memberId,
+    memberName: selectedMember.name,
+    branchId: selectedBranch.branchId,
+    branchName: selectedBranch.name,
+    monthCode: selectedMonth.monthCode,
+    monthName: selectedMonth.monthName,
+    yearOf: selectedYearMaster.yearOf,
+    yearName: Number(selectedYearMaster.yearName),
+    ddIba: formData.ddIba,
+    ddIbaDate: `${formData.ddIbaDate}T00:00:00`,
+    ddIbaDateString: `${formData.ddIbaDate}T00:00:00`,
+    status: formData.status,
+    amt: Number(formData.amt),
+    approvedBy: formData.approvedBy || undefined,
+    approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
+    approvedDateString: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
+    isApproved: Boolean(formData.isApproved),
+    enrl: formData.enrl || "",
+    fine: formData.fine || "",
+    f9: formData.f9 || "",
+    f10: formData.f10 || "",
+    f11: formData.f11 || "",
+  };
+
+  console.log("PAYLOAD BEING SENT:", JSON.stringify(payload, null, 2)); 
+  console.log("WRAPPED PAYLOAD:", JSON.stringify({ accountsDirectEntry: payload }, null, 2)); 
+
+await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload); 
+};
 
   const popupHandlers = {
     memberId: { 
@@ -127,6 +188,8 @@ const AccountDirectEntryEdit: React.FC = () => {
         auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
+        showResetButton 
+        onReset={handleReset}
       />
       <MemberPopup 
        show={showMemberPopup} 
