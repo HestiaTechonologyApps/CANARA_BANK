@@ -9,7 +9,9 @@ import StatePopup from "../Settings/State/StatePopup";
 const CircleEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [selectedState, setSelectedState] = useState<State | null>(null);
+  const [initialState, setInitialState] = useState<State | null>(null);
   const [dateFrom, setDateFrom] = useState<string>("");
+  const [initialDateFrom, setInitialDateFrom] = useState<string>("");
 
   const fields: Field[] = [
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 4 } },
@@ -21,20 +23,24 @@ const CircleEdit: React.FC = () => {
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 12 } },
   ];
 
-  const handleFetch = async (circleId: string) => {
+ const handleFetch = async (circleId: string) => {
     const response = await CircleService.getCircleById(Number(circleId));
 
     const circle = response.value;
     if (circle) {
-      setSelectedState({
+      const state: State = {       
         stateId: circle.stateId,
         name: circle.stateName,
         abbreviation: "",
         isActive: true,
-      });
+      };
+      setSelectedState(state);        
+      setInitialState(state);      
+
       if (circle.dateFrom) {
-        const date = new Date(circle.dateFrom);
-        setDateFrom(date.toISOString().split("T")[0]); 
+        const dateStr = String(circle.dateFrom).split("T")[0]; 
+        setDateFrom(dateStr);
+        setInitialDateFrom(dateStr);  
       }
     }
 
@@ -42,7 +48,11 @@ const CircleEdit: React.FC = () => {
   };
 
   const fieldChangeHandlers = {
-    dateFrom: (value: string) => setDateFrom(value), // 👈 Add this
+    dateFrom: (value: string) => setDateFrom(value),
+  };
+  const handleReset = () => {
+    setSelectedState(initialState);
+    setDateFrom(initialDateFrom);
   };
 
   const handleUpdate = async (
@@ -99,6 +109,7 @@ const CircleEdit: React.FC = () => {
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
         fieldChangeHandlers={fieldChangeHandlers}
+        onReset={handleReset}
       />
 
       <StatePopup

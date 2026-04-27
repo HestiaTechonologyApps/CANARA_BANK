@@ -80,6 +80,7 @@ export interface KiduEditProps {
   navigateBackPath?: string;
   loadingText?: string;
   fieldChangeHandlers?: Record<string, (value: string) => void>;
+  onReset?: () => void;
 }
 
 // ==================== COMPONENT ====================
@@ -105,6 +106,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   navigateBackPath,
   loadingText = "Loading...",
   fieldChangeHandlers = {},
+  onReset,
 }) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -802,6 +804,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
                     initialValues={initialData}
                     setFormData={setFormData}
                     setErrors={setErrors}
+                    onReset={onReset}
                   />
                 )}
                 <Button

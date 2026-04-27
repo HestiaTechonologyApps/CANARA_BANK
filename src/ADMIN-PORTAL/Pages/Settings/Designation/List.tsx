@@ -7,14 +7,21 @@ const DesignationList: React.FC = () => {
   return (
     <KiduServerTableList
       // Use the paginated service instead of fetchService
-      paginatedFetchService={DesignationService.getPagedDesignations}
-
+      //paginatedFetchService={DesignationService.getPagedDesignations}
+fetchService={async () => {   
+        const data = await DesignationService.getAllDesignations();
+        return data;
+      }}
       columns={[
         { key: "designationId", label: "Designation ID", enableSorting: true, type: "text" },
         { key: "name", label: "Designation Name", enableSorting: true, type: "text" },
         { key: "description", label: "Description", enableSorting: true, type: "text" },
       ]}
-
+filterColumns={[  
+        { key: "designationId", label: "Designation ID", type: "text" },
+        { key: "name", label: "Designation Name", type: "text" },
+        { key: "description", label: "Description", type: "text" },
+      ]}
       idKey="designationId"
       title="Designation Management"
       subtitle="Manage designations with search, filter, and pagination"
@@ -26,6 +33,7 @@ const DesignationList: React.FC = () => {
       showExport={true}
       showSearch={true}
       showActions={true}
+      showFilter={true}
       rowsPerPage={10}
     />
   );

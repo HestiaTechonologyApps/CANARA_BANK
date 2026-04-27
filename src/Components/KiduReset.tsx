@@ -5,12 +5,14 @@ interface Props {
   initialValues: any;
   setFormData: (data: any) => void;
   setErrors?: (errors: any) => void;
+  onReset?: () => void;
 }
 
-const KiduReset: React.FC<Props> = ({ initialValues, setFormData, setErrors }) => {
+const KiduReset: React.FC<Props> = ({ initialValues, setFormData, setErrors, onReset }) => {
   const handleReset = () => {
     setFormData(initialValues);
-    if (setErrors) setErrors({}); // Reset validation errors if provided
+    if (setErrors) setErrors({});
+    if (onReset) onReset(); 
   };
 
   return (

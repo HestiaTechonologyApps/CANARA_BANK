@@ -62,6 +62,7 @@ export interface KiduCreateProps {
   imageConfig?: ImageConfig;
   themeColor?: string;
   fieldChangeHandlers?: Record<string, (value: string) => void>;
+  onReset?: () => void;
 }
 // ==================== COMPONENT ====================
 const KiduCreate: React.FC<KiduCreateProps> = ({
@@ -82,6 +83,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   imageConfig,
   themeColor = "#882626ff",
   fieldChangeHandlers = {},
+  onReset,
 }) => {
   const navigate = useNavigate();
 
@@ -659,6 +661,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
                   initialValues={initialValues}
                   setFormData={setFormData}
                   setErrors={setErrors}
+                  onReset={onReset}
                 />
               )}
               <KiduSubmit

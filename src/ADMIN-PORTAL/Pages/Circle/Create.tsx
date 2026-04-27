@@ -11,6 +11,11 @@ const CircleCreate: React.FC = () => {
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [dateFrom, setDateFrom] = useState<string>("");
  
+const handleReset = () => {
+    setSelectedState(null);
+    setDateFrom("");
+  };
+
   const fields: Field[] = [ 
     { name: "circleCode", rules: { type: "number", label: "Circle Code", required: true, colWidth: 4 } }, 
     { name: "name", rules: { type: "text", label: "Circle Name", required: true, minLength: 2, maxLength: 100, colWidth: 4, pattern: /^[a-zA-Z\s\-\/]+$/ } }, 
@@ -80,6 +85,7 @@ const CircleCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         fieldChangeHandlers={fieldChangeHandlers}
         themeColor="#1B3763" 
+        onReset={handleReset}
       /> 
       <StatePopup 
         show={showStatePopup} 
