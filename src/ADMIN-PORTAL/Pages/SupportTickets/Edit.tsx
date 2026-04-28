@@ -35,7 +35,7 @@ const SupportTicketEdit: React.FC = () => {
       isApproved: Boolean(formData.isApproved),
       approvedByUserId: formData.approvedByUserId,
       approvedDate: formData.approvedDate,
-      approvedDateSting: formData.approvedDateSting,
+      approvedDateString: formData.approvedDateString,
     };
     await SupportTicketService.updateSupportTicket(Number(id), payload);
   };
