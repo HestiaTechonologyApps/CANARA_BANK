@@ -16,6 +16,10 @@ const ReportTypeList: React.FC = () => {
         { key: "reportTypeId", label: "ID", type: "text" },
         { key: "reportTypeName", label: "Report Type", type: "text" },
         { key: "description", label: "Description", type: "text" },
+        {key: "isActive", label: "Status", type: "select", options: [
+          { value: "true", label: "Active" },
+          { value: "false", label: "Inactive" }
+        ]},
       ]}
       
       idKey="reportTypeId"

@@ -25,6 +25,10 @@ const COMPANY_FILTER_COLUMNS: FilterColumn[] = [
   { key: "contactNumber", label: "Contact",      type: "text" },
   { key: "city",          label: "City",         type: "text" },
   { key: "state",         label: "State",        type: "text" },
+  { key: "isActive",      label: "Active",       type: "select", options: [
+    { value: "true", label: "Active" },
+    { value: "false", label: "Inactive" }
+  ] },
 ];
 
 const transformCompanyData = (companies: Company[]) =>

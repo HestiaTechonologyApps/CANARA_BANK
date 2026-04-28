@@ -33,6 +33,15 @@ const CircleList: React.FC = () => {
         { key: "name", label: "Circle Name", type: "text" },
         { key: "abbreviation", label: "Abbreviation", type: "text" },
         { key: "stateName", label: "State", type: "text" },
+         { 
+    key: "isActive", 
+    label: "Status", 
+    type: "select",                         
+    options: [
+      {value: "true", label: "Active"},
+      {value: "false", label: "Inactive"},
+    ]      
+  },
       ]}
 
       idKey="circleId"

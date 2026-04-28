@@ -17,6 +17,10 @@ const StateList: React.FC = () => {
         { key: "stateId", label: "State ID", type: "text" },
         { key: "name", label: "State Name", type: "text" },
         { key: "abbreviation", label: "Abbreviation", type: "text" },
+        {key: "isActive", label: "Status", type: "select", options: [
+          { value: "true", label: "Active" },
+          { value: "false", label: "Inactive" }
+        ]},
       ]}
 
       idKey="stateId"

@@ -23,6 +23,10 @@ const UserList: React.FC = () => {
         { key: "role", label: "Role", type: "text" },
         { key: "userEmail", label: "Email", type: "text" },
         { key: "phoneNumber", label: "Phone", type: "text" },
+        {key: "isActive", label: "Status", type: "select", options: [
+          { value: "true", label: "Active" },
+          { value: "false", label: "Inactive" }
+        ]}, 
       ]}
 
       idKey="userId"
