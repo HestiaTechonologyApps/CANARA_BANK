@@ -16,17 +16,16 @@ interface QuickLink {
 }
 
 const NewsSection: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [dayQuote, setDayQuote] = useState<DayQuote | null>(null);
   const [latestNews, setLatestNews] = useState<DailyNews[]>([]);
   const [config, setConfig] = useState<PublicPage | null>(null);
   const [quickLinks, setQuickLinks] = useState<QuickLink[]>([]);
-  //  Load quote ONCE when this section mounts
+
   useEffect(() => {
     const loadHomeData = async () => {
       try {
-
-        // 🔹 CMS config
+        // CMS config
         const data = await PublicPageConfigService.getPublicPageConfig();
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
@@ -37,13 +36,17 @@ const NewsSection: React.FC = () => {
           setQuickLinks(JSON.parse(activeConfig.newsQuickLinksJson));
         }
 
-        const quote = await DayQuotePublicService.getLastQuote();
-        setDayQuote(quote);
+        // Try to get today's DayQuote
+        try {
+          const quote = await DayQuotePublicService.getLastQuote();
+          setDayQuote(quote || null);
+        } catch {
+          setDayQuote(null);
+        }
 
-        // Get last 3 added news (filtered and sorted by createdOn)
+        // Get last 3 news
         const latestThree = await DailyNewsPublicService.getLatestThreeNews();
         setLatestNews(latestThree);
-
       } catch (error) {
         console.error("Error loading home page data:", error);
       }
@@ -52,6 +55,10 @@ const NewsSection: React.FC = () => {
     loadHomeData();
   }, []);
 
+  // Quote title: DayQuote first, then CMS fallback
+  const quoteTitle = dayQuote?.toDayQuote || config?.newsSidebarQuoteTitle || "Every Day is an AIBEA Day";
+  const quoteBody = dayQuote?.unformatedContent || config?.newsSidebarQuoteText || "We salute all the members of the Scheme who have joined in the noble task of extending a helping hand to fellow members and their families";
+
   return (
     <section className="py-5 news-section">
       <Container>
@@ -59,8 +66,12 @@ const NewsSection: React.FC = () => {
           {/* LEFT SIDE - NEWS LIST */}
           <Col lg={8}>
             <div className="mb-4">
-              <span className="news-label"> {config?.newsSectionHeadingLabel || "Stay Informed"}</span>
-              <h2 className="news-heading fs-3"> {config?.newsSectionHeadingTitle || "Latest News & Updates"}</h2>
+              <span className="news-label">
+                {config?.newsSectionHeadingLabel || "Stay Informed"}
+              </span>
+              <h2 className="news-heading fs-3">
+                {config?.newsSectionHeadingTitle || "Latest News & Updates"}
+              </h2>
             </div>
 
             <Row className="gy-3">
@@ -72,16 +83,23 @@ const NewsSection: React.FC = () => {
                       <span className="news-date">
                         {item.newsDateString?.split(" ").slice(0, 3).join(" ")}
                       </span>
-
                     </div>
                     <h6 className="news-title fs-5">{item.title}</h6>
-                    <p className="news-text"> {item.description?.length > 150 ? item.description.slice(0, 150) + "..." : item.description}</p>
+                    <p className="news-text">
+                      {item.description?.length > 150
+                        ? item.description.slice(0, 150) + "..."
+                        : item.description}
+                    </p>
                   </Card>
                 </Col>
               ))}
             </Row>
 
-            <Button variant="warning" onClick={() => navigate("/news")} className="mt-4 d-flex align-items-center gap-2 text-white">
+            <Button
+              variant="warning"
+              onClick={() => navigate("/news")}
+              className="mt-4 d-flex align-items-center gap-2 text-white"
+            >
               {config?.newsTag || "View All News"}
               <HiOutlineArrowRight />
             </Button>
@@ -90,16 +108,24 @@ const NewsSection: React.FC = () => {
           {/* RIGHT SIDE - SIDEBAR */}
           <Col lg={4} className="sidebar-wrapper">
             {/* Gold Box */}
-            <Card className="p-4 border-0 sidebar-gold shadow-sm">
-              <h4 className="mb-3 fw-bold fs-5 text-center bg-white px-1 py-2 rounded border-start border-primary border-5"> {dayQuote?.toDayQuote || "Every Day is an AIBEA Day"}</h4>
-              <p className="mb-4">
-                {dayQuote?.unformatedContent || "We salute all the members of the Scheme who have joined in a noble task of extending a helping hand to the families of our deceased colleagues."}
-              </p>
-            </Card>
+            {(quoteTitle || quoteBody) && (
+              <Card className="p-4 border-0 sidebar-gold shadow-sm">
+                {quoteTitle && (
+                  <h4 className="mb-3 fw-bold fs-5 text-center bg-white px-1 py-2 rounded border-start border-primary border-5">
+                    {quoteTitle}
+                  </h4>
+                )}
+                {quoteBody && (
+                  <p className="mb-4">{quoteBody}</p>
+                )}
+              </Card>
+            )}
 
             {/* Blue Quick Links */}
             <Card className="p-4 border-0 sidebar-blue text-white mt-4 shadow-sm">
-              <h4 className="mb-3 fw-bold">{config?.newsSectionQuickLinksHead}</h4>
+              <h4 className="mb-3 fw-bold">
+                {config?.newsSectionQuickLinksHead}
+              </h4>
               <ul className="list-unstyled sidebar-links">
                 {quickLinks.map((link, index) => (
                   <li key={index}>
