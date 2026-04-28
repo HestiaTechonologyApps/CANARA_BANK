@@ -110,17 +110,22 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
 
         let filteredData = [...cachedDataRef.current];
 
-        if (params.filters && Object.keys(params.filters).length > 0) {
-          filteredData = filteredData.filter((item) =>
-            Object.entries(params.filters!).every(([key, value]) => {
-              if (value === "" || value === null || value === undefined) return true;
-              const itemValue = item[key];
-              if (itemValue === null || itemValue === undefined) return false;
-              return String(itemValue).toLowerCase().includes(String(value).toLowerCase());
-            })
-          );
-          console.log(`🔍 [${title}] After filters: ${filteredData.length} records`);
-        }
+       if (params.filters && Object.keys(params.filters).length > 0) {
+  filteredData = filteredData.filter((item) =>
+    Object.entries(params.filters!).every(([key, value]) => {
+      if (value === "" || value === null || value === undefined) return true;
+      const itemValue = item[key];
+      if (itemValue === null || itemValue === undefined) return false;
+
+      // Use exact match for select filters, partial match for text filters
+      const filterCol = filterColumns.find(f => f.key === key);
+      if (filterCol?.type === "select") {
+        return String(itemValue).toLowerCase() === String(value).toLowerCase(); // 👈 exact
+      }
+      return String(itemValue).toLowerCase().includes(String(value).toLowerCase()); // 👈 partial
+    })
+  );
+}
 
         if (params.searchTerm) {
           const searchLower = params.searchTerm.toLowerCase();

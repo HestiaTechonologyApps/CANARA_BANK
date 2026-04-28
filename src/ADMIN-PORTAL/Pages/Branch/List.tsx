@@ -43,7 +43,16 @@ const BranchList: React.FC = () => {
         { key: "district", label: "District", type: "text" },
         { key: "stateName", label: "State", type: "text" },
         { key: "circleName", label: "Circle", type: "text" },
-        { key: "status", label: "Status", type: "text" },
+       { 
+    key: "status", 
+    label: "Status", 
+    type: "select",                          // 👈 changed from "text"
+    options: [
+      {value: "Active", label: "Active"},
+      {value: "Inactive", label: "Inactive"},
+    ]       // 👈 exact values to match
+  },
+   
       ]}
       
       idKey="branchId"
