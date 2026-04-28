@@ -216,6 +216,17 @@ USER_TYPE: {
     UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
+  DASHBOARD:{
+   GET_ALL:`${API_BASE_URL}/Dashboard`,
+   GET_OVERVIEW:`${API_BASE_URL}/Dashboard/overview`,
+   GET_MONTHLY_CONTRIBUTION:`${API_BASE_URL}/Dashboard/monthly-contributions-vs-claims`,
+   GET_CLAIM:`${API_BASE_URL}/Dashboard/claim-type-distribution`,
+   GET_STATE:`${API_BASE_URL}/Dashboard/state-wise-membership`,
+   GET_TOP_PERFORMING:`${API_BASE_URL}/Dashboard/top-performing-states`,
+   GET_RECENT_ACTIVITIES:`${API_BASE_URL}/Dashboard/recent-activities`,
+   GET_FINANCIAL:`${API_BASE_URL}/Dashboard/monthly-financial-comparison`,
+   GET_CONTRIBUTION:`${API_BASE_URL}/Dashboard/contribution-trends`,
+  },
   // Might delete later
   USER_ROLE_RIGHT: {
     GET_ALL: `${API_BASE_URL}/UserRoleRight`,
