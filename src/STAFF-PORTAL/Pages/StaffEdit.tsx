@@ -27,6 +27,10 @@ const StaffEdit: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
   const [_isUploading, setIsUploading] = useState(false);
 
+  const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+  const [initialDesignation, setInitialDesignation] = useState<Designation | null>(null);
+  const [initialCategory, setInitialCategory] = useState<Category | null>(null);
+  const [initialStatus, setInitialStatus] = useState<Status | null>(null);
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 3, disabled: true } },
@@ -74,52 +78,92 @@ const StaffEdit: React.FC = () => {
   ]
 
   //const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
-// Helper to convert ISO string to date input format (YYYY-MM-DD)
-const fromIso = (isoString?: string | Date) => {
-  if (!isoString) return "";
-  const dateString = isoString instanceof Date ? isoString.toISOString() : isoString;
-  return dateString.split('T')[0]; // Returns YYYY-MM-DD
-};
+  // Helper to convert ISO string to date input format (YYYY-MM-DD)
+  const fromIso = (isoString?: string | Date) => {
+    if (!isoString) return "";
+    const dateString = isoString instanceof Date ? isoString.toISOString() : isoString;
+    return dateString.split('T')[0]; // Returns YYYY-MM-DD
+  };
 
-// Helper to convert date input format to ISO string without timezone shift
-const toIsoMidnight = (val?: string) => {
-  if (!val) return "";
-  
-  // Ensure we're working with YYYY-MM-DD format
-  const dateParts = val.split('-');
-  if (dateParts.length !== 3) return val; // Return as-is if not in expected format
-  
-  // Construct ISO string with explicit midnight time
-  return `${val}T00:00:00`;
-};
+  // Helper to convert date input format to ISO string without timezone shift
+  const toIsoMidnight = (val?: string) => {
+    if (!val) return "";
 
+    // Ensure we're working with YYYY-MM-DD format
+    const dateParts = val.split('-');
+    if (dateParts.length !== 3) return val; // Return as-is if not in expected format
+
+    // Construct ISO string with explicit midnight time
+    return `${val}T00:00:00`;
+  };
+
+  // const handleFetch = async (id: string) => {
+  //   const response = await MemberService.getMemberById(Number(id));
+  //   const member = response.value;
+
+  //   if (member) {
+  //     setSelectedBranch({ branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch);
+  //     setSelectedDesignation({ designationId: member.designationId, name: member.designationName } as unknown as Designation);
+  //     setSelectedCategory({ categoryId: member.categoryId, name: member.categoryname } as unknown as Category);
+  //     setSelectedStatus({ statusId: member.statusId, name: member.status } as unknown as Status);
+
+  //     return {
+  //       ...response,
+  //       value: {
+  //         ...member,
+  //         dob: fromIso(member.dob),
+  //         doj: fromIso(member.doj),
+  //         dojtoScheme: fromIso(member.dojtoScheme),
+  //         genderId: member.genderId,// Explicitly ensure genderId is included
+  //         profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
+  //       }
+  //     };
+
+  //   }
+
+  //   return response;
+  // };
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
 
     if (member) {
-      setSelectedBranch({ branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch);
-      setSelectedDesignation({ designationId: member.designationId, name: member.designationName } as unknown as Designation);
-      setSelectedCategory({ categoryId: member.categoryId, name: member.categoryname } as unknown as Category);
-      setSelectedStatus({ statusId: member.statusId, name: member.status } as unknown as Status);
+      const branch = { branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch;
+      const designation = { designationId: member.designationId, name: member.designationName } as unknown as Designation;
+      const category = { categoryId: member.categoryId, name: member.categoryname } as unknown as Category;
+      const status = { statusId: member.statusId, name: member.status } as unknown as Status;
 
-      // Ensure genderId is properly returned as part of the response
-      // The KiduEdit component should handle this, but make sure the value exists
+      setSelectedBranch(branch);
+      setSelectedDesignation(designation);
+      setSelectedCategory(category);
+      setSelectedStatus(status);
+
+      setInitialBranch(branch);
+      setInitialDesignation(designation);
+      setInitialCategory(category);
+      setInitialStatus(status);
+
       return {
         ...response,
         value: {
           ...member,
-           dob: fromIso(member.dob),
+          dob: fromIso(member.dob),
           doj: fromIso(member.doj),
           dojtoScheme: fromIso(member.dojtoScheme),
-          genderId: member.genderId,// Explicitly ensure genderId is included
+          genderId: member.genderId,
           profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
         }
       };
-
     }
 
     return response;
+  };
+
+  const handleReset = () => {
+    setSelectedBranch(initialBranch);
+    setSelectedDesignation(initialDesignation);
+    setSelectedCategory(initialCategory);
+    setSelectedStatus(initialStatus);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -143,7 +187,7 @@ const toIsoMidnight = (val?: string) => {
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
-       profileImageSrc: formData.profileImageSrc || "",
+      profileImageSrc: formData.profileImageSrc || "",
       // profileImageSrc: "", // Will be set by image upload
       nominee: formData.nominee || "",
       nomineeRelation: formData.nomineeRelation || "",
@@ -218,6 +262,7 @@ const toIsoMidnight = (val?: string) => {
           unionMember: unionMemberOptions,
           nomineeRelation: nomineeRelationOptions
         }}
+        onReset={handleReset}
       />
 
       <BranchPopup

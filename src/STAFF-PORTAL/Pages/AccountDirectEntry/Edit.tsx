@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
 import type { Month } from "../../../ADMIN-PORTAL/Types/Settings/Month.types";
@@ -15,44 +15,67 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
+  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
+
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
- const toIso = (v?: string) => {
-  if (!v) return null;
-  
-  const date = new Date(v + 'T00:00:00');
-  
-  const offset = date.getTimezoneOffset();
-  const localDate = new Date(date.getTime() - (offset * 60 * 1000));
-  
-  return localDate.toISOString().slice(0, 19);
-};
+  // ✅ Store initial fetched popup values for reset
+  const [initialMember, setInitialMember] = useState<Member | null>(null);
+  const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+  const [initialMonth, setInitialMonth] = useState<Month | null>(null);
+  const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
 
-const fromIso = (isoString?: string) => {
-  if (!isoString) return '';
-  return isoString.split('T')[0]; 
-};
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Hide Member field search button via DOM
+  useEffect(() => {
+    const hideButton = () => {
+      if (!wrapperRef.current) return;
+      const inputGroups = wrapperRef.current.querySelectorAll(".input-group");
+      inputGroups.forEach((group) => {
+        const input = group.querySelector("input");
+        if (input && input.readOnly && input.disabled) {
+          const btn = group.querySelector("button");
+          if (btn) btn.style.display = "none";
+          input.style.borderRadius = "4px";
+        }
+      });
+    };
+    hideButton();
+    const timer = setTimeout(hideButton, 300);
+    return () => clearTimeout(timer);
+  }, [selectedMember]);
+
+  // ✅ Returns ISO string or null — never returns ""
+  const toIso = (v?: string): string | null => {
+    if (!v || v.trim() === "") return null;
+    return `${v}T00:00:00`;
+  };
+
+  const fromIso = (isoString?: string): string => {
+    if (!isoString) return "";
+    return isoString.split("T")[0];
+  };
+
   const fields: Field[] = [
-    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
-    { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
-    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
-    { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
-    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
-    { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
-    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
-    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
-    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
-    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
-    { name: "status", rules: { type: "text", label: "Status", colWidth: 4, required: true, disabled: true, } },
-    // { name: "isApproved", rules: { type: "toggle", label: "Approved" ,disabled: true} },
-    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 ,disabled: true} },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 ,disabled: true} },
+    { name: "memberId",    rules: { type: "popup", label: "Member",        required: true,  colWidth: 4, disabled: true } },
+    { name: "branchId",    rules: { type: "popup", label: "Branch",        required: true,  colWidth: 4 } },
+    { name: "monthCode",   rules: { type: "popup", label: "Month",         required: true,  colWidth: 4 } },
+    { name: "yearOf",      rules: { type: "popup", label: "Year",          required: true,  colWidth: 4 } },
+    { name: "ddIba",       rules: { type: "text",  label: "DD / IBA",      required: true,  colWidth: 4 } },
+    { name: "ddIbaDate",   rules: { type: "date",  label: "DD / IBA Date", required: true,  colWidth: 4 } },
+    { name: "amt",         rules: { type: "number",label: "Amount",        required: true,  colWidth: 4 } },
+    { name: "enrl",        rules: { type: "text",  label: "ENRL",                           colWidth: 3 } },
+    { name: "fine",        rules: { type: "text",  label: "Fine",                           colWidth: 3 } },
+    { name: "f9",          rules: { type: "text",  label: "F9",                             colWidth: 4 } },
+    { name: "f10",         rules: { type: "text",  label: "F10",                            colWidth: 4 } },
+    { name: "f11",         rules: { type: "text",  label: "F11",                            colWidth: 4 } },
+    { name: "status",      rules: { type: "text",  label: "Status",        required: true,  colWidth: 4, disabled: true } },
+    { name: "approvedBy",  rules: { type: "text",  label: "Approved By",                    colWidth: 3, disabled: true } },
+    { name: "approvedDate",rules: { type: "date",  label: "Approved Date",                  colWidth: 3, disabled: true } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -60,63 +83,85 @@ const fromIso = (isoString?: string) => {
     const entry = response.value;
 
     if (entry) {
-      setSelectedMember({
+      const member: Member = {
         memberId: entry.memberId,
-        name: entry.memberName || entry.name,
-      } as Member);
+        name: entry.memberName || (entry as any).name,
+      } as Member;
 
-      setSelectedBranch({
+      const branch: Branch = {
         branchId: entry.branchId,
         name: entry.branchName,
-      } as Branch);
+      } as Branch;
 
-      setSelectedMonth({
+      const month: Month = {
         monthCode: entry.monthCode,
         monthName: entry.monthName,
-      } as Month);
+      } as Month;
 
-      setSelectedYearMaster({ yearOf: entry.yearOf, yearName: entry.yearName } as YearMaster);
-entry.ddIbaDate = fromIso(entry.ddIbaDate);
-    entry.approvedDate = fromIso(entry.approvedDate);
+      const year: YearMaster = {
+        yearOf: entry.yearOf,
+        yearName: entry.yearName,
+      } as YearMaster;
+
+      // Set live state
+      setSelectedMember(member);
+      setSelectedBranch(branch);
+      setSelectedMonth(month);
+      setSelectedYearMaster(year);
+
+      // ✅ Save initial snapshots for reset
+      setInitialMember(member);
+      setInitialBranch(branch);
+      setInitialMonth(month);
+      setInitialYearMaster(year);
+
+      entry.ddIbaDate    = fromIso(entry.ddIbaDate as string);
+      entry.approvedDate = fromIso(entry.approvedDate as string);
     }
 
     return response;
+  };
+
+  // ✅ Restore initial popup values on reset
+  const handleReset = () => {
+    setSelectedMember(initialMember);
+    setSelectedBranch(initialBranch);
+    setSelectedMonth(initialMonth);
+    setSelectedYearMaster(initialYearMaster);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
-
     if (!formData.ddIbaDate) {
       throw new Error("DD / IBA Date is required");
     }
 
     const payload: Omit<AccountDirectEntry, "auditLogs"> = {
       accountsDirectEntryID: Number(id),
-      memberId: selectedMember.memberId,
-      name: selectedMember.name,
-      branchId: selectedBranch.branchId,
-      monthCode: selectedMonth.monthCode,
-      // yearOf: Number(formData.yearOf),
-      yearOf: selectedYearMaster?.yearOf || "",
-      ddIba: formData.ddIba || "",
-      ddIbaDate: toIso(formData.ddIbaDate),
-      amt: Number(formData.amt),
-      enrl: formData.enrl || "",
-      fine: formData.fine || "",
-      f9: formData.f9 || "",
-      f10: formData.f10 || "",
-      f11: formData.f11 || "",
-      status: formData.status || "",
+      memberId:   selectedMember.memberId,
+      memberName: selectedMember.name,
+      branchId:   selectedBranch.branchId,
+      monthCode:  selectedMonth.monthCode,
+      yearOf:     selectedYearMaster.yearOf,
+      ddIba:      formData.ddIba    || "",
+      ddIbaDate:  toIso(formData.ddIbaDate) as string,
+      amt:        Number(formData.amt),
+      enrl:       formData.enrl     || "",
+      fine:       formData.fine     || "",
+      f9:         formData.f9       || "",
+      f10:        formData.f10      || "",
+      f11:        formData.f11      || "",
+      status:     formData.status   || "",
+      isApproved: Boolean(formData.isApproved),
       approvedBy: formData.approvedBy || "",
-      approvedDate: formData.approvedDate || "",
-      isApproved: formData.isApproved === true,
-      ...(formData.isApproved && {
-        approvedByUserId: 1,
-        approvedDateString: toIso(formData.approvedDate),
-      }),
+      // ✅ undefined omits the field from JSON entirely — avoids C# DateTime? parse error
+      approvedDate: toIso(formData.approvedDate) ?? undefined,
     };
+
+    // 🔍 Debug — remove once confirmed working
+    console.log("UPDATE PAYLOAD →", JSON.stringify(payload, null, 2));
 
     await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
     return true;
@@ -147,36 +192,44 @@ entry.ddIbaDate = fromIso(entry.ddIbaDate);
 
   return (
     <>
-      <KiduEdit
-        title="Edit Account Direct Entry"
-        fields={fields}
-        onFetch={handleFetch}
-        onUpdate={handleUpdate}
-        paramName="accountsDirectEntryID"
-        popupHandlers={popupHandlers}
-        auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID", }}
-        themeColor="#1B3763"
+      <div ref={wrapperRef}>
+        <KiduEdit
+          title="Edit Account Direct Entry"
+          fields={fields}
+          onFetch={handleFetch}
+          onUpdate={handleUpdate}
+          onReset={handleReset}
+          paramName="accountsDirectEntryID"
+          popupHandlers={popupHandlers}
+          auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
+          themeColor="#1B3763"
+        />
+      </div>
+
+      <MemberPopup
+        show={showMemberPopup}
+        handleClose={() => setShowMemberPopup(false)}
+        onSelect={setSelectedMember}
+        showAddButton={false}
       />
-      <MemberPopup 
-       show={showMemberPopup} 
-       handleClose={() => setShowMemberPopup(false)} 
-       onSelect={setSelectedMember} 
-       showAddButton={false} />
-      <BranchPopup 
-       show={showBranchPopup} 
-       handleClose={() => setShowBranchPopup(false)} 
-       onSelect={setSelectedBranch} 
-       showAddButton={false} />
-      <MonthPopup 
-       show={showMonthPopup} 
-       handleClose={() => setShowMonthPopup(false)} 
-       onSelect={setSelectedMonth} 
-       showAddButton={false} />
+      <BranchPopup
+        show={showBranchPopup}
+        handleClose={() => setShowBranchPopup(false)}
+        onSelect={setSelectedBranch}
+        showAddButton={false}
+      />
+      <MonthPopup
+        show={showMonthPopup}
+        handleClose={() => setShowMonthPopup(false)}
+        onSelect={setSelectedMonth}
+        showAddButton={false}
+      />
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
         onSelect={setSelectedYearMaster}
-        showAddButton={false}/>
+        showAddButton={false}
+      />
     </>
   );
 };

@@ -15,10 +15,10 @@ import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPo
 const StaffAccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
-  const [showMonthPopup, setShowMonthPopup] = useState(false)
+  const [showMonthPopup, setShowMonthPopup] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<Month | null>(null)
+  const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
@@ -33,24 +33,26 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     }
   }, []);
 
+  const handleReset = () => {
+    setSelectedBranch(null);
+    setSelectedMonth(null);
+    setSelectedYearMaster(null);
+  };
+
   const fields: Field[] = [
-    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
-    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "memberId",  rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
+    { name: "branchId",  rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month Code", required: true, colWidth: 4 } },
-    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
-    { name: "ddIba", rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
+    { name: "yearOf",    rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+    { name: "ddIba",     rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4, required: true } },
-    { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
-       { name: "status", rules: { type: "select", label: "Status", colWidth: 3, required: true, } },
-    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
-    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
- 
-    { name: "f9", rules: { type: "text", label: "F9", colWidth: 2 } },
-    { name: "f10", rules: { type: "text", label: "F10", colWidth: 2 } },
-    { name: "f11", rules: { type: "text", label: "F11", colWidth: 2 } },
-    // { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
-    // { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3 } },
-    // { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3 } },
+    { name: "amt",       rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
+    { name: "status",    rules: { type: "select", label: "Status", colWidth: 3, required: true } },
+    { name: "enrl",      rules: { type: "text", label: "ENRL", colWidth: 3 } },
+    { name: "fine",      rules: { type: "text", label: "Fine", colWidth: 3 } },
+    { name: "f9",        rules: { type: "text", label: "F9", colWidth: 2 } },
+    { name: "f10",       rules: { type: "text", label: "F10", colWidth: 2 } },
+    { name: "f11",       rules: { type: "text", label: "F11", colWidth: 2 } },
   ];
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
@@ -60,11 +62,11 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     if (!selectedBranch) throw new Error("Select branch");
     if (!selectedMonth) throw new Error("Select month");
     if (!selectedYearMaster) throw new Error("Please select Year");
+
     const payload: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs"> = {
       memberId: selectedMember.memberId,
       branchId: selectedBranch.branchId,
       monthCode: selectedMonth.monthCode,
-      // yearOf: Number(formData.yearOf),
       yearOf: selectedYearMaster.yearOf,
       ddIba: formData.ddIba || "",
       ddIbaDate: toIso(formData.ddIbaDate),
@@ -77,8 +79,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       status: formData.status || "Submitted",
       isApproved: Boolean(formData.isApproved),
       approvedBy: formData.approvedBy || "",
-      // approvedDate: toIso(formData.approvedDate),
-       approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
+      approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
     };
 
     await AccountDirectEntryService.createAccountDirectEntry(payload);
@@ -88,8 +89,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(false),
-
+      onOpen: () => setShowMemberPopup(false), // no-op, field is disabled
     },
     branchId: {
       value: selectedBranch?.name || "",
@@ -101,32 +101,56 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       actualValue: selectedMonth?.monthCode,
       onOpen: () => setShowMonthPopup(true),
     },
-    yearOf: { value: selectedYearMaster?.yearName?.toString() || "", onOpen: () => setShowYearMasterPopup(true) },
+    yearOf: {
+      value: selectedYearMaster?.yearName?.toString() || "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
+    },
   };
 
-  //status option
   const statusOptions = [
-    { value: "Submitted", label: "Submitted" }
-  ]
+    { value: "Submitted", label: "Submitted" },
+  ];
 
   return (
     <>
-      <KiduCreate
-        title="Create Account Direct Entry"
-        fields={fields}
-        onSubmit={handleSubmit}
-        popupHandlers={popupHandlers}
-        submitButtonText="Create Account Direcy Entry"
-        showResetButton
-        navigateOnSuccess="/staff-portal/contribution-list"
-        successMessage="Entry created successfully"
-        errorMessage="Failed to create entry. Please try again."
-        themeColor="#1B3763"
-        navigateDelay={1200}
-        options={{
-          status: statusOptions
-        }}
-      />
+      {/*
+        ✅ Target only the Member field's input-group button using the
+           data-field attribute we inject via the wrapper + CSS :has() selector.
+           Since memberId is always the first .input-group in the form,
+           we use nth-of-type to scope it without affecting Branch/Month/Year.
+      */}
+      <style>{`
+        .hide-member-search-btn [name="memberId"] ~ button,
+        .hide-member-search-btn input[value="${selectedMember?.name || ''}"][readonly] ~ button {
+          display: none !important;
+        }
+        .hide-member-search-btn input[value="${selectedMember?.name || ''}"][readonly] {
+          border-radius: 4px !important;
+          background-color: #f5f5f5 !important;
+          cursor: not-allowed;
+        }
+      `}</style>
+
+      <div className="hide-member-search-btn">
+        <KiduCreate
+          title="Create Account Direct Entry"
+          fields={fields}
+          onSubmit={handleSubmit}
+          popupHandlers={popupHandlers}
+          submitButtonText="Create Account Direct Entry"
+          showResetButton
+          navigateOnSuccess="/staff-portal/contribution-list"
+          successMessage="Entry created successfully"
+          errorMessage="Failed to create entry. Please try again."
+          themeColor="#1B3763"
+          navigateDelay={1200}
+          options={{
+            status: statusOptions,
+          }}
+          onReset={handleReset}
+        />
+      </div>
 
       <MemberPopup
         show={showMemberPopup}
@@ -134,21 +158,18 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
         onSelect={setSelectedMember}
         showAddButton={false}
       />
-
       <BranchPopup
         show={showBranchPopup}
         handleClose={() => setShowBranchPopup(false)}
         onSelect={setSelectedBranch}
         showAddButton={false}
       />
-
       <MonthPopup
         show={showMonthPopup}
         handleClose={() => setShowMonthPopup(false)}
         onSelect={setSelectedMonth}
         showAddButton={false}
       />
-
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
