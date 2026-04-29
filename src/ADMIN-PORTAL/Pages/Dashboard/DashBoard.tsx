@@ -8,31 +8,35 @@ const DashBoard: React.FC = () => {
     <div style={{ margin: 0, padding: 0, overflow: "hidden" }}>
       <Sidebar />
       <Navbar />
-      
-      <div 
+
+      <div
         style={{
           marginLeft: "70px",
           marginTop: "60px",
           minHeight: "calc(100vh - 60px)",
           backgroundColor: "#f8f9fa",
           padding: "20px",
-          transition: "margin-left 0.3s ease-in-out"
+          transition: "margin-left 0.3s ease-in-out",
         }}
         className="main-content-area"
       >
+        {/* Outlet renders the matched child route:
+            - index ("/dashboard")        → DashboardHome
+            - "/dashboard/settings/..."  → the settings page
+            - "/dashboard/claims/..."    → the claims page
+            - etc.
+        */}
         <Outlet />
       </div>
 
-      <style>
-        {`
-          @media (max-width: 768px) {
-            .main-content-area {
-              margin-left: 0 !important;
-              margin-bottom: 60px !important;
-            }
+      <style>{`
+        @media (max-width: 768px) {
+          .main-content-area {
+            margin-left: 0 !important;
+            margin-bottom: 60px !important;
           }
-        `}
-      </style>
+        }
+      `}</style>
     </div>
   );
 };

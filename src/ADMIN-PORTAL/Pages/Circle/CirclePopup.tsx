@@ -19,7 +19,7 @@ const CirclePopup: React.FC<CirclePopupProps> = ({
     { key: "circleCode" as keyof Circle, label: "Code" },
     { key: "name" as keyof Circle, label: "Circle Name" },
     { key: "abbreviation" as keyof Circle, label: "Abbreviation" },
-    { key: "state" as keyof Circle, label: "State" },
+    { key: "stateName" as keyof Circle, label: "State" },
     { key: "isActive" as keyof Circle, label: "Active" }
   ];
 
