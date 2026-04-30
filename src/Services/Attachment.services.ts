@@ -59,30 +59,17 @@ class AttachmentService {
     );
   }
 
-  static async updateAttachment(
-    attachmentId: number,
-    data: Partial<Attachment>
-  ): Promise<Attachment> {
-    
-    const cleanData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => 
-        value !== undefined && 
-        value !== null && 
-        value !== ''
-      )
-    );
-
-    console.log('🔍 Update Attachment ID:', attachmentId);
-    console.log('🔍 Cleaned Update Data:', cleanData);
-    console.log('🔍 Endpoint:', API_ENDPOINTS.ATTACHMENT.UPDATE(attachmentId));
-
-    const response: CustomResponse<Attachment> = await HttpService.callApi(
-      API_ENDPOINTS.ATTACHMENT.UPDATE(attachmentId),
-      "PUT",
-      cleanData
-    );
-    return response.value;
-  }
+static async updateAttachment(
+  attachmentId: number,
+  data: Record<string, any>   
+): Promise<any> {
+  const response: CustomResponse<Attachment> = await HttpService.callApi(
+    API_ENDPOINTS.ATTACHMENT.UPDATE(attachmentId),
+    "PUT",
+    data
+  );
+  return response.value;
+}
 }
 
 export default AttachmentService;
