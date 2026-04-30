@@ -101,10 +101,10 @@ import MemberCreate from '../Pages/Contributions/Member/Create';
 import MemberEdit from '../Pages/Contributions/Member/Edit';
 import MemberView from '../Pages/Contributions/Member/View';
 
-import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/List';
-import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
+//import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/List';
+//import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
 import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
-import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
+//import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
 
 //Claims
 import DeathClaimList from '../Pages/Claims/DeathClaims/List';
@@ -157,6 +157,9 @@ import SupportTicketList from '../Pages/SupportTickets/List';
 import SupportTicketCreate from '../Pages/SupportTickets/Create';
 import SupportTicketEdit from '../Pages/SupportTickets/Edit';
 import SupportTicketView from '../Pages/SupportTickets/View';
+import ContributionMasterCreate from '../Pages/Contributions/MonthlyContribution/Create';
+import ContributionMasterList from '../Pages/Contributions/MonthlyContribution/List';
+import ContributionMasterView from '../Pages/Contributions/MonthlyContribution/View';
 
 export const adminRoutes = (
   <>
@@ -253,10 +256,10 @@ export const adminRoutes = (
       <Route path="contributions/member-edit/:memberId" element={<MemberEdit />} />
       <Route path="contributions/member-view/:memberId" element={<MemberView />} />
 
-      <Route path="contributions/monthlyContribution-list" element={<MonthlyContributionList />} />
-      <Route path="contributions/monthlyContribution-create" element={<MonthlyContributionCreate />} />
-      <Route path="contributions/monthlyContribution-edit/:monthlyContributionId" element={<MonthlyContributionEdit />} />
-      <Route path="contributions/monthlyContribution-view/:monthlyContributionId" element={<MonthlyContributionView />} />
+      <Route path="contributions/monthlyContribution-list" element={<ContributionMasterList />} />
+      <Route path="contributions/monthlyContribution-create" element={<ContributionMasterCreate />} />
+      <Route path="contributions/monthlyContribution-edit/:contributionMasterId" element={<MonthlyContributionEdit />} />
+      <Route path="contributions/monthlyContribution-view/:contributionMasterId" element={<ContributionMasterView />} />
 
       {/* Claims */}
       <Route path="claims/deathclaims-list" element={<DeathClaimList />} />

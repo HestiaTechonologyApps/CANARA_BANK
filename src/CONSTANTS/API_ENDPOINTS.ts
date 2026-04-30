@@ -142,6 +142,11 @@ USER_TYPE: {
     DELETE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
     UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`,
   },
+  CONTRIBUTION_MASTERS:{
+   CREATE:`${API_BASE_URL}/MonthlyContribution/upload-and-save`,
+   GET_BY_ID:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}/details`,
+   GET_ALL:`${API_BASE_URL}/MonthlyContribution/ContributionMasters`,
+  },
     DEATH_CLAIMS: {
     GET_ALL: `${API_BASE_URL}/DeathClaim`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,

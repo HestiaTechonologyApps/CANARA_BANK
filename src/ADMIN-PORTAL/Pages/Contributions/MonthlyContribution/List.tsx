@@ -1,36 +1,43 @@
-import React from "react";
-import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services";
-import KiduServerTableList from "../../../../Components/KiduServerTableList";
+// src/Pages/ContributionMaster/ContributionMasterList.tsx
 
-const MonthlyContributionList: React.FC = () => {
+import React from "react";
+import KiduServerTableList from "../../../../Components/KiduServerTableList";
+import ContributionMasterService from "../../../Services/Contributions/ContributionMasters.services";
+// import KiduServerTableList from "../../../Components/KiduServerTableList";
+// import ContributionMasterService from "../../Services/ContributionMaster.services";
+
+const ContributionMasterList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={MonthlyContributionService.getAllMonthlyContributions}
+      fetchService={ContributionMasterService.getAll}
       columns={[
-        { key: "monthlyContributionId", label: "ID", enableSorting: true, type: "text" },
-        { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
-        { key: "fileType", label: "File Type", enableSorting: true, type: "text" },
-        { key: "fileExtension", label: "Extension", enableSorting: true, type: "text" },
-        { key: "monthName", label: "Month", enableSorting: true, type: "text" },
-        { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+        { key: "contributionMasterId", label: "ID",             type: "text" },
+        { key: "fileName",             label: "File Name",      type: "text" },
+        { key: "month",                label: "Month",          type: "text" },
+        { key: "year",                 label: "Year",           type: "text" },
+        { key: "circle",               label: "Circle",         type: "text" },
+        { key: "totalEntry",           label: "Total Entries",  type: "text" },
+        { key: "totalAmount",          label: "Total Amount",   type: "text" },
+        { key: "contributionStatus",   label: "Status",         type: "text" },
+        { key: "isApproved",           label: "Approved",       type: "checkbox" },
       ]}
-
       filterColumns={[
-        { key: "monthlyContributionId", label: "ID", type: "text" },
-        { key: "fileName", label: "File Name", type: "text" },
-        { key: "fileType", label: "File Type", type: "text" },
-        { key: "fileExtension", label: "Extension", type: "text" },
-        { key: "monthName", label: "Month", type: "text" },
-        { key: "yearName", label: "Year", type: "text" },
+        { key: "fileName",           label: "File Name", type: "text"   },
+        { key: "monthName",              label: "Month",     type: "text"   },
+        { key: "year",               label: "Year",      type: "text"   },
+        { key: "contributionStatus", label: "Status",    type: "select",
+         // options: ["Uploaded", "Approved", "Pending"]    
+                       },
       ]}
-
-      idKey="monthlyContributionId"
-      title="Monthly Contribution Management"
-      addButtonLabel="Add New"
+      idKey="contributionMasterId"
+      title="Monthly Contribution"
+      subtitle="Manage monthly contribution files with search, filter, and pagination."
+      addButtonLabel="Upload File"
       addRoute="/dashboard/contributions/monthlyContribution-create"
       editRoute="/dashboard/contributions/monthlyContribution-edit"
       viewRoute="/dashboard/contributions/monthlyContribution-view"
       showAddButton={true}
+      showExport={true}
       showSearch={true}
       showActions={true}
       rowsPerPage={10}
@@ -38,4 +45,4 @@ const MonthlyContributionList: React.FC = () => {
   );
 };
 
-export default MonthlyContributionList;
+export default ContributionMasterList;
