@@ -146,6 +146,12 @@ USER_TYPE: {
    CREATE:`${API_BASE_URL}/MonthlyContribution/upload-and-save`,
    GET_BY_ID:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}/details`,
    GET_ALL:`${API_BASE_URL}/MonthlyContribution/ContributionMasters`,
+   GET_BY_REPORT:(id: number) => `${API_BASE_URL}/MonthlyContribution/${id}/report`,
+  },
+ CONTRIBUTION_DETAIL: {
+ GET_BY_DETAIL_ID: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}`,
+ CREATE_PARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/park`,
+ CREATE_UNPARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/unpark`,
   },
     DEATH_CLAIMS: {
     GET_ALL: `${API_BASE_URL}/DeathClaim`,

@@ -2,7 +2,13 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { ContributionDetail, ContributionDetailPaginatedResponse, ContributionDetailParams, ContributionMaster, ContributionUploadPayload, ContributionUploadResponse } from "../../Types/Contributions/ContributionMasters.types";
+import type { ContributionDetail, 
+  ContributionDetailPaginatedResponse, 
+  ContributionDetailParams, 
+  ContributionMaster, 
+  ContributionReportParams, 
+  ContributionUploadPayload, 
+  ContributionUploadResponse } from "../../Types/Contributions/ContributionMasters.types";
 
 export default class ContributionMasterService {
 
@@ -98,4 +104,41 @@ export default class ContributionMasterService {
     });
     return result.data;
   }
+
+   // ── Get Report by Master ID ──────────────────────────────────────
+  static async getReport(
+    params: ContributionReportParams
+  ): Promise<ContributionDetailPaginatedResponse> {
+    const {
+      id,
+      reportType,
+      pageNumber = 1,
+      pageSize   = 10,
+    } = params;
+
+    const query = new URLSearchParams();
+    query.append("reportType", reportType);
+    query.append("pageNumber", String(pageNumber));
+    query.append("pageSize",   String(pageSize));
+
+    const url = `${API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_BY_REPORT(id)}?${query.toString()}`;
+
+    const response = await HttpService.callApi<CustomResponse<ContributionDetailPaginatedResponse>>(
+      url,
+            "GET"
+    );
+
+    const result = response?.value ?? response;
+
+    return {
+      data:         result?.data         ?? [],
+      totalRecords: result?.totalRecords ?? 0,
+      pageNumber:   result?.pageNumber   ?? pageNumber,
+      pageSize:     result?.pageSize     ?? pageSize,
+      totalPages:   result?.totalPages   ?? 1,
+      hasPrevious:  result?.hasPrevious  ?? false,
+      hasNext:      result?.hasNext      ?? false,
+    };
+  }
+
 }

@@ -81,3 +81,25 @@ export interface ContributionDetailParams {
   SortBy?:        string;
   SortDescending?: boolean;
 }
+
+// ── Report type enum ──────────────────────────────────────────────
+export type ContributionReportType =
+  | "NEWMEMBERS"
+  | "WRONGBRANCH"
+  | "WRONGCIRCLE"
+  | "PARKEDITEMS"
+  | "ALL"
+  | "DEFAULTER";
+
+// ── Query params for GET_BY_REPORT ────────────────────────────────
+export interface ContributionReportParams {
+  id:          number;
+  reportType:  ContributionReportType;
+  pageNumber?: number;
+  pageSize?:   number;
+}
+
+// ── Report response reuses the same paginated wrapper ─────────────
+// ContributionDetailPaginatedResponse already covers this — no new type needed.
+// Re-export as alias for clarity if desired:
+export type ContributionReportResponse = ContributionDetailPaginatedResponse;
