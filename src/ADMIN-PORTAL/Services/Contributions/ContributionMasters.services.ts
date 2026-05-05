@@ -105,40 +105,40 @@ export default class ContributionMasterService {
     return result.data;
   }
 
-   // ── Get Report by Master ID ──────────────────────────────────────
-  static async getReport(
-    params: ContributionReportParams
-  ): Promise<ContributionDetailPaginatedResponse> {
-    const {
-      id,
-      reportType,
-      pageNumber = 1,
-      pageSize   = 10,
-    } = params;
+  // ── Get Report by Master ID ──────────────────────────────────────
+static async getReport(
+  params: ContributionReportParams
+): Promise<ContributionDetailPaginatedResponse> {
+  const {
+    id,
+    reportType,
+    pageNumber = 1,
+    pageSize   = 10,
+  } = params;
 
-    const query = new URLSearchParams();
-    query.append("reportType", reportType);
-    query.append("pageNumber", String(pageNumber));
-    query.append("pageSize",   String(pageSize));
+  const query = new URLSearchParams();
+  query.append("type",       reportType);   // ✅ was "reportType", now "type"
+  query.append("pageNumber", String(pageNumber));
+  query.append("pageSize",   String(pageSize));
 
-    const url = `${API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_BY_REPORT(id)}?${query.toString()}`;
+  const url = `${API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_BY_REPORT(id)}?${query.toString()}`;
 
-    const response = await HttpService.callApi<CustomResponse<ContributionDetailPaginatedResponse>>(
-      url,
-            "GET"
-    );
+  const response = await HttpService.callApi<CustomResponse<ContributionDetailPaginatedResponse>>(
+    url,
+    "GET"
+  );
 
-    const result = response?.value ?? response;
+  const result = response?.value ?? response;
 
-    return {
-      data:         result?.data         ?? [],
-      totalRecords: result?.totalRecords ?? 0,
-      pageNumber:   result?.pageNumber   ?? pageNumber,
-      pageSize:     result?.pageSize     ?? pageSize,
-      totalPages:   result?.totalPages   ?? 1,
-      hasPrevious:  result?.hasPrevious  ?? false,
-      hasNext:      result?.hasNext      ?? false,
-    };
-  }
+  return {
+    data:         result?.data         ?? [],
+    totalRecords: result?.totalRecords ?? 0,
+    pageNumber:   result?.pageNumber   ?? pageNumber,
+    pageSize:     result?.pageSize     ?? pageSize,
+    totalPages:   result?.totalPages   ?? 1,
+    hasPrevious:  result?.hasPrevious  ?? false,
+    hasNext:      result?.hasNext      ?? false,
+  };
+}
 
 }
