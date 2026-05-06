@@ -5,7 +5,7 @@ import KiduCreate from "../../../Components/KiduCreate";
 import type { Field, PopupHandler } from "../../../Components/KiduCreate";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import type { Month } from "../../../Types/Settings/Month.types";
-import ContributionMasterService from "../../../Services/Contributions/ContributionMasters.services";
+import ContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
 import MonthPopup from "../../Settings/Month/MonthPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 

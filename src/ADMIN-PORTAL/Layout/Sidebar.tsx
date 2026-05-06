@@ -353,7 +353,7 @@ const Sidebar: React.FC = () => {
 
             {/* Approval Menu */}
             <NavLink
-              to="/dashboard/approval"
+              to="/dashboard/approval-list"
               className={({ isActive }) =>
                 `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
               }

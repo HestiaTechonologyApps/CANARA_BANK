@@ -2,15 +2,9 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ContributionMasterService from "../../../Services/Contributions/ContributionMasters.services";
 import MemberService from "../../../Services/Contributions/Member.services";
 import BranchService from "../../../Services/Settings/Branch.services";
 import CircleService from "../../../Services/Settings/Circle.services";
-import type {
-  ContributionDetail,
-  ContributionMaster,
-  ContributionReportType,
-} from "../../../Types/Contributions/ContributionMasters.types";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Circle } from "../../../Types/Settings/Circle.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
@@ -24,6 +18,9 @@ import type { State } from "../../../Types/Settings/States.types";
 import type { Designation } from "../../../Types/Settings/Designation";
 import type { Category } from "../../../Types/Settings/Category.types";
 import type { Status } from "../../../Types/Settings/Status.types";
+import type { ContributionDetail, ContributionMaster, ContributionReportType } from "../../../Types/Contributions/MonthlyContributionMasters.types";
+import MonthlyContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
+import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
 
 /* ─── Helpers ─────────────────────────────────────────────────────── */
 const fmt = (n: number | string) => {
@@ -75,6 +72,9 @@ const STYLE_TAG = `
   .modal-close-btn:hover { background:#fee2e2!important;color:#dc2626!important; }
   .modal-submit-btn:hover { opacity:0.9!important;transform:translateY(-1px)!important; }
   .modal-cancel-btn:hover { background:#f1f5f9!important; }
+  .fwd-btn:hover:not(:disabled) { background:#0f5a8e!important;transform:translateY(-2px)!important;box-shadow:0 6px 20px rgba(27,55,99,.35)!important; }
+  .fwd-confirm-yes:hover { background:#dc2626!important;transform:translateY(-1px)!important; }
+  .fwd-confirm-no:hover  { background:#334155!important;transform:translateY(-1px)!important; }
 `;
 
 /* ─── Report Tab Config ───────────────────────────────────────────── */
@@ -107,7 +107,7 @@ const ModalShell: React.FC<{
   submitLabel: string;
   successMsg?: string;
   errorMsg?: string;
-}> = ({ title, accent, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => (
+}> = ({ title,  icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => (
   <div
     style={{
       position: "fixed", inset: 0, zIndex: 1000,
@@ -330,7 +330,7 @@ const MemberCreateModal: React.FC<{
   onClose: () => void;
   onSuccess: () => void;
 }> = ({ prefill, onClose, onSuccess }) => {
-  const today = new Date().toISOString().split("T")[0];
+  //const today = new Date().toISOString().split("T")[0];
 
   const [staffNo,          setStaffNo]          = useState(prefill.staffNo  || "");
   const [name,             setName]             = useState(prefill.name     || "");
@@ -719,12 +719,20 @@ const StatBrick: React.FC<{label:string;value:string|number;accent?:string;icon:
 );
 
 /* ─── Master Panel ────────────────────────────────────────────────── */
-const MasterPanel: React.FC<{master:ContributionMaster}> = ({master}) => {
+const MasterPanel: React.FC<{
+  master: ContributionMaster;
+  onForward: () => void;
+  forwarding: boolean;
+  forwardDone: boolean;
+  forwardError: string;
+}> = ({master, onForward, forwarding, forwardDone, forwardError}) => {
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const totalAmount    = parseFloat(master.totalAmount) || 0;
   const totalEntry     = parseInt(master.totalEntry, 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount, 10) || 0;
+  const isAlreadyForwarded = master.contributionStatus === "FORWARD";
   const fields = [
-    { label:"File Name",     value:master.fileName,                                                     full:true },
+    { label:"File Name",     value:master.fileName,  full:true },
     { label:"File Type",     value:master.fileType },
     { label:"Extension",     value:master.fileExtension },
     { label:"File Size",     value:master.fileSize?`${(master.fileSize/1024).toFixed(2)} KB`:"N/A" },
@@ -750,9 +758,80 @@ const MasterPanel: React.FC<{master:ContributionMaster}> = ({master}) => {
           <h1 style={{margin:0,fontSize:26,fontWeight:800,color:"#fff",letterSpacing:"-0.5px",fontFamily:"'Sora',sans-serif"}}>Monthly Contribution</h1>
           <p style={{margin:"4px 0 0",fontSize:13,color:"rgba(255,255,255,0.6)"}}>ID #{master.contributionMasterId} · {toMonthName(master.month)} {toFullYear(master.year)} · {master.circle}</p>
         </div>
-        <div style={{background:"rgba(255,255,255,0.1)",borderRadius:14,padding:"14px 22px",backdropFilter:"blur(8px)",border:"1px solid rgba(255,255,255,0.15)",textAlign:"right"}}>
-          <p style={{margin:0,fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"0.08em"}}>Total Amount</p>
-          <p style={{margin:"4px 0 0",fontSize:28,fontWeight:800,color:"#fff",fontFamily:"'JetBrains Mono',monospace",letterSpacing:"-0.5px"}}>{fmt(totalAmount)}</p>
+
+        {/* Right side: amount box + forward button */}
+        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:12}}>
+          <div style={{background:"rgba(255,255,255,0.1)",borderRadius:14,padding:"14px 22px",backdropFilter:"blur(8px)",border:"1px solid rgba(255,255,255,0.15)",textAlign:"right"}}>
+            <p style={{margin:0,fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.6)",textTransform:"uppercase",letterSpacing:"0.08em"}}>Total Amount</p>
+            <p style={{margin:"4px 0 0",fontSize:28,fontWeight:800,color:"#fff",fontFamily:"'JetBrains Mono',monospace",letterSpacing:"-0.5px"}}>{fmt(totalAmount)}</p>
+          </div>
+
+          {/* Forward button */}
+          {!confirmOpen ? (
+            <button
+              className="fwd-btn"
+              disabled={isAlreadyForwarded || forwarding || forwardDone}
+              onClick={() => setConfirmOpen(true)}
+              style={{
+                display:"flex", alignItems:"center", gap:10,
+                padding:"14px 28px", borderRadius:12, border:"none",
+                background: isAlreadyForwarded || forwardDone
+                  ? "rgba(255,255,255,0.15)"
+                  : "rgba(255,255,255,0.95)",
+                color: isAlreadyForwarded || forwardDone ? "rgba(255,255,255,0.5)" : "#1B3763",
+                fontSize:15, fontWeight:800,
+                cursor: isAlreadyForwarded || forwardDone ? "not-allowed" : "pointer",
+                transition:"all 0.2s", fontFamily:"'Sora',sans-serif",
+                boxShadow: isAlreadyForwarded || forwardDone ? "none" : "0 4px 16px rgba(0,0,0,0.2)",
+                minWidth:180, justifyContent:"center",
+              }}
+            >
+              {isAlreadyForwarded || forwardDone ? (
+                <><span style={{fontSize:18}}>✅</span> Already Forwarded</>
+              ) : (
+                <><span style={{fontSize:18}}>📤</span> Forward</>
+              )}
+            </button>
+          ) : (
+            /* Inline confirmation — big and clear for older users */
+            <div style={{
+              background:"rgba(255,255,255,0.97)", borderRadius:14,
+              padding:"18px 22px", minWidth:280,
+              boxShadow:"0 8px 32px rgba(0,0,0,0.25)",
+            }}>
+              <p style={{margin:"0 0 6px",fontSize:14,fontWeight:800,color:"#0f172a"}}>Confirm Forward</p>
+              <p style={{margin:"0 0 14px",fontSize:13,color:"#475569",lineHeight:1.5}}>
+                This will forward the contribution for <strong>{toMonthName(master.month)} {toFullYear(master.year)}</strong>.<br/>Are you sure?
+              </p>
+              <div style={{display:"flex",gap:10}}>
+                <button
+                  className="fwd-confirm-no"
+                  onClick={() => setConfirmOpen(false)}
+                  style={{flex:1,padding:"11px 0",borderRadius:10,border:"none",background:"#e2e8f0",color:"#334155",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s",fontFamily:"'Sora',sans-serif"}}
+                >
+                  ✕ Cancel
+                </button>
+                <button
+                  className="fwd-confirm-yes"
+                  onClick={() => { setConfirmOpen(false); onForward(); }}
+                  disabled={forwarding}
+                  style={{flex:1,padding:"11px 0",borderRadius:10,border:"none",background:"#1B3763",color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s",fontFamily:"'Sora',sans-serif",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}
+                >
+                  {forwarding
+                    ? <><div style={{width:14,height:14,border:"2px solid rgba(255,255,255,0.4)",borderTop:"2px solid #fff",borderRadius:"50%",animation:"spin 0.7s linear infinite"}} /> Forwarding…</>
+                    : "📤 Yes, Forward"
+                  }
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Feedback messages */}
+          {forwardError && (
+            <div style={{background:"#fee2e2",border:"1.5px solid #fca5a5",borderRadius:10,padding:"10px 16px",fontSize:13,fontWeight:600,color:"#991b1b",maxWidth:280,textAlign:"center"}}>
+              ❌ {forwardError}
+            </div>
+          )}
         </div>
       </div>
       <div style={{padding:"24px 32px",display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"18px 28px"}}>
@@ -878,6 +957,32 @@ const ReportPanel: React.FC<{masterId:number}> = ({masterId}) => {
   const [loading,       setLoading]       = useState(false);
   const [totalPages,    setTotalPages]    = useState(1);
 
+  // ── NEW: per-tab counts ──────────────────────────────────────────
+const [tabCounts,     setTabCounts]     = useState<Partial<Record<ContributionReportType,number>>>({});
+  const [countsLoading, setCountsLoading] = useState(true);
+
+  const loadTabCounts = useCallback(async () => {
+    setCountsLoading(true);
+    try {
+      const results = await Promise.all(
+        REPORT_TABS.map(tab =>
+          MonthlyContributionMasterService.getReport({
+            id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1,
+          }).then(r => ({ type: tab.type, count: r.totalRecords }))
+           .catch(() => ({ type: tab.type, count: 0 }))
+        )
+      );
+      const counts: Partial<Record<ContributionReportType,number>> = {};
+      results.forEach(r => { counts[r.type] = r.count; });
+      setTabCounts(counts);
+    } finally {
+      setCountsLoading(false);
+    }
+  }, [masterId]);
+
+  useEffect(() => { loadTabCounts(); }, [loadTabCounts]);
+  // ────────────────────────────────────────────────────────────────
+
   // Modal state
   const [modalType,     setModalType]     = useState<"member"|"branch"|"circle"|null>(null);
   const [modalPrefill,  setModalPrefill]  = useState<Partial<ContributionDetail>>({});
@@ -888,7 +993,7 @@ const ReportPanel: React.FC<{masterId:number}> = ({masterId}) => {
   const loadReport = useCallback(async () => {
     setLoading(true);
     try {
-      const result = await ContributionMasterService.getReport({
+      const result = await MonthlyContributionMasterService.getReport({
         id: masterId, reportType: activeReport, pageNumber: page, pageSize: PAGE_SIZE,
       });
       setRows(result.data);
@@ -917,19 +1022,40 @@ const ReportPanel: React.FC<{masterId:number}> = ({masterId}) => {
         <div style={{padding:"22px 28px 0",borderBottom:"1.5px solid #f1f5f9"}}>
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}}>
             <div>
-              <h2 style={{margin:0,fontSize:18,fontWeight:800,color:"#0f172a",letterSpacing:"-0.4px"}}>Contribution Reports</h2>
+              <h2 style={{margin:0,fontSize:18,fontWeight:800,color:"#0f172a",letterSpacing:"-0.4px"}}>Discrepancy Reports</h2>
               <p style={{margin:"3px 0 0",fontSize:13,color:"#64748b"}}>{currentTab.description}</p>
             </div>
             {total>0&&<span style={{background:`${currentTab.accent}14`,color:currentTab.accent,fontWeight:700,fontSize:13,padding:"6px 16px",borderRadius:99}}>{total.toLocaleString()} records</span>}
           </div>
           {/* Tabs */}
           <div style={{display:"flex",gap:4,overflowX:"auto"}}>
-            {REPORT_TABS.map(tab=>(
-              <button key={tab.type} className="rpt-tab" onClick={()=>setActiveReport(tab.type)}
-                style={{display:"flex",alignItems:"center",gap:6,padding:"10px 14px",border:"none",borderRadius:"10px 10px 0 0",fontSize:12,fontWeight:activeReport===tab.type?700:500,cursor:"pointer",transition:"all 0.15s",whiteSpace:"nowrap",fontFamily:"'Sora',sans-serif",background:activeReport===tab.type?"#f8fafc":"transparent",color:activeReport===tab.type?tab.accent:"#64748b",borderBottom:activeReport===tab.type?`2.5px solid ${tab.accent}`:"2.5px solid transparent"}}>
-                <span>{tab.icon}</span>{tab.label}
-              </button>
-            ))}
+            {REPORT_TABS.map(tab=>{
+              const count = tabCounts[tab.type];
+              const hasCount = count !== undefined && !countsLoading;
+              return (
+                <button key={tab.type} className="rpt-tab" onClick={()=>setActiveReport(tab.type)}
+                  style={{display:"flex",alignItems:"center",gap:6,padding:"10px 14px",border:"none",borderRadius:"10px 10px 0 0",fontSize:12,fontWeight:activeReport===tab.type?700:500,cursor:"pointer",transition:"all 0.15s",whiteSpace:"nowrap",fontFamily:"'Sora',sans-serif",background:activeReport===tab.type?"#f8fafc":"transparent",color:activeReport===tab.type?tab.accent:"#64748b",borderBottom:activeReport===tab.type?`2.5px solid ${tab.accent}`:"2.5px solid transparent"}}>
+                  <span>{tab.icon}</span>
+                  {tab.label}
+                  {hasCount && count! > 0 && (
+                    <span style={{
+                      background: activeReport===tab.type ? tab.accent : "#e2e8f0",
+                      color: activeReport===tab.type ? "#fff" : "#64748b",
+                      fontSize: 10, fontWeight: 700,
+                      padding: "1px 7px", borderRadius: 99,
+                      minWidth: 20, textAlign: "center",
+                      transition: "all 0.2s",
+                      fontFamily: "'JetBrains Mono',monospace",
+                    }}>
+                      {count!.toLocaleString()}
+                    </span>
+                  )}
+                  {countsLoading && (
+                    <span style={{width:14,height:14,border:"2px solid #e2e8f0",borderTop:`2px solid ${tab.accent}`,borderRadius:"50%",animation:"spin 0.7s linear infinite",display:"inline-block"}} />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -970,14 +1096,14 @@ const ReportPanel: React.FC<{masterId:number}> = ({masterId}) => {
       </div>
 
       {/* Modals */}
-      {modalType==="member" && (
-        <MemberCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={loadReport} />
+     {modalType==="member" && (
+        <MemberCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={()=>{ loadReport(); loadTabCounts(); }} />
       )}
       {modalType==="branch" && (
-        <BranchCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={loadReport} />
+        <BranchCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={()=>{ loadReport(); loadTabCounts(); }} />
       )}
       {modalType==="circle" && (
-        <CircleCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={loadReport} />
+        <CircleCreateModal prefill={modalPrefill} onClose={()=>setModalType(null)} onSuccess={()=>{ loadReport(); loadTabCounts(); }} />
       )}
     </>
   );
@@ -1001,7 +1127,25 @@ const ContributionMasterView: React.FC = () => {
   const [sortDesc,      setSortDesc]      = useState(true);
   const [activeTab,     setActiveTab]     = useState<"grid"|"list">("grid");
   const [mainSection,   setMainSection]   = useState<"entries"|"reports">("entries");
+  const [forwarding,    setForwarding]    = useState(false);
+  const [forwardDone,   setForwardDone]   = useState(false);
+  const [forwardError,  setForwardError]  = useState("");
   const PAGE_SIZE = 12;
+
+  const handleForward = async () => {
+    if (!masterId) return;
+    setForwarding(true);
+    setForwardError("");
+    try {
+      const updated = await ContributionMasterService.forward(masterId);
+      setMaster(updated);
+      setForwardDone(true);
+    } catch (err: any) {
+      setForwardError(err?.message || "Failed to forward. Please try again.");
+    } finally {
+      setForwarding(false);
+    }
+  };
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 400);
@@ -1015,7 +1159,7 @@ const ContributionMasterView: React.FC = () => {
     (async () => {
       try {
         setMasterLoading(true);
-        const all = await ContributionMasterService.getAll();
+        const all = await MonthlyContributionMasterService.getAll();
         const found = all.find(item => String(item.contributionMasterId) === String(id));
         if (found) setMaster(found);
       } catch (err) { console.error(err); }
@@ -1027,7 +1171,7 @@ const ContributionMasterView: React.FC = () => {
     if (!masterId) return;
     setLoading(true);
     try {
-      const result = await ContributionMasterService.getById({
+      const result = await MonthlyContributionMasterService.getById({
         id: masterId, PageNumber: page, PageSize: PAGE_SIZE,
         SearchTerm: debouncedSearch || undefined,
         IsParked: filterParked==="true"?true:filterParked==="false"?false:undefined,
@@ -1073,7 +1217,15 @@ const ContributionMasterView: React.FC = () => {
               <p style={{color:"#94a3b8",fontSize:13}}>Loading…</p>
             </div>
           </div>
-        ) : master ? <MasterPanel master={master} /> : (
+       ) : master ? (
+          <MasterPanel
+            master={master}
+            onForward={handleForward}
+            forwarding={forwarding}
+            forwardDone={forwardDone}
+            forwardError={forwardError}
+          />
+        ) : (
           <div style={{background:"#fff",borderRadius:18,padding:"32px",textAlign:"center",marginBottom:28,border:"1.5px solid #e8edf5"}}>
             <p style={{color:"#94a3b8",fontSize:14}}>Master record not found.</p>
           </div>
@@ -1087,7 +1239,7 @@ const ContributionMasterView: React.FC = () => {
               {(["entries","reports"] as const).map(s=>(
                 <button key={s} onClick={()=>setMainSection(s)}
                   style={{padding:"9px 22px",borderRadius:10,border:"1.5px solid",fontSize:13,fontWeight:700,cursor:"pointer",transition:"all 0.15s",fontFamily:"'Sora',sans-serif",borderColor:mainSection===s?"#1B3763":"#e2e8f0",background:mainSection===s?"#1B3763":"#fff",color:mainSection===s?"#fff":"#64748b"}}>
-                  {s==="entries"?"📄 Entries":"📊 Reports"}
+               {s==="entries"?"📄 Entries":"⚠️ Discrepancies"}
                 </button>
               ))}
             </div>

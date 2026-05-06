@@ -8,9 +8,9 @@ import type { ContributionDetail,
   ContributionMaster, 
   ContributionReportParams, 
   ContributionUploadPayload, 
-  ContributionUploadResponse } from "../../Types/Contributions/ContributionMasters.types";
+  ContributionUploadResponse } from "../../Types/Contributions/MonthlyContributionMasters.types";
 
-export default class ContributionMasterService {
+export default class MonthlyContributionMasterService {
 
   // ── Upload and Save ──────────────────────────────────────────────
   static async uploadAndSave(
@@ -22,7 +22,7 @@ export default class ContributionMasterService {
     formData.append("ContributionFile", payload.ContributionFile);
 
     const response = await HttpService.callApi<CustomResponse<ContributionUploadResponse>>(
-      API_ENDPOINTS.CONTRIBUTION_MASTERS.CREATE,
+      API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.CREATE,
       "POST",
       formData,
       false,
@@ -35,7 +35,7 @@ export default class ContributionMasterService {
   // ── Get All Masters ──────────────────────────────────────────────
   static async getAll(): Promise<ContributionMaster[]> {
     const response = await HttpService.callApi<CustomResponse<ContributionMaster[]>>(
-      API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_ALL,
+      API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_ALL,
       "GET"
     );
 
@@ -74,7 +74,7 @@ export default class ContributionMasterService {
     if (SortBy        !== undefined) query.append("SortBy",        SortBy);
     if (SortDescending !== undefined) query.append("SortDescending", String(SortDescending));
 
-    const url = `${API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_BY_ID(id)}?${query.toString()}`;
+    const url = `${API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_BY_ID(id)}?${query.toString()}`;
 
     const response = await HttpService.callApi<CustomResponse<ContributionDetailPaginatedResponse>>(
       url,
@@ -96,7 +96,7 @@ export default class ContributionMasterService {
 
   // ── Get All Details (no pagination) ─────────────────────────────
   static async getAllDetails(id: number): Promise<ContributionDetail[]> {
-    const result = await ContributionMasterService.getById({
+    const result = await MonthlyContributionMasterService.getById({
       id,
       GetAll:    true,
       PageNumber: 1,
@@ -121,7 +121,7 @@ static async getReport(
   query.append("pageNumber", String(pageNumber));
   query.append("pageSize",   String(pageSize));
 
-  const url = `${API_ENDPOINTS.CONTRIBUTION_MASTERS.GET_BY_REPORT(id)}?${query.toString()}`;
+  const url = `${API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_BY_REPORT(id)}?${query.toString()}`;
 
   const response = await HttpService.callApi<CustomResponse<ContributionDetailPaginatedResponse>>(
     url,

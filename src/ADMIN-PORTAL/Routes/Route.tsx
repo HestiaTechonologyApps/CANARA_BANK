@@ -157,9 +157,12 @@ import SupportTicketList from '../Pages/SupportTickets/List';
 import SupportTicketCreate from '../Pages/SupportTickets/Create';
 import SupportTicketEdit from '../Pages/SupportTickets/Edit';
 import SupportTicketView from '../Pages/SupportTickets/View';
+
 import ContributionMasterCreate from '../Pages/Contributions/MonthlyContribution/Create';
 import ContributionMasterList from '../Pages/Contributions/MonthlyContribution/List';
 import ContributionMasterView from '../Pages/Contributions/MonthlyContribution/View';
+
+import ContributionMasterApprovalList from '../Pages/Approval/List';
 
 export const adminRoutes = (
   <>
@@ -312,6 +315,10 @@ export const adminRoutes = (
       <Route path="supportTickets-create" element={<SupportTicketCreate />} />
       <Route path="supportTickets-edit/:supportTicketId" element={<SupportTicketEdit />} />
       <Route path="supportTickets-view/:supportTicketId" element={<SupportTicketView />} />
+
+      {/* Approval */}
+      <Route path="approval-list" element={<ContributionMasterApprovalList />} />
+
 
       <Route path="notifications" element={<Notifications />} />
     </Route>

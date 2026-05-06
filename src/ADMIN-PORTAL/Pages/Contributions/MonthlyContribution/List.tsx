@@ -2,7 +2,7 @@
 
 import React from "react";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
-import ContributionMasterService from "../../../Services/Contributions/ContributionMasters.services";
+import ContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
 // import KiduServerTableList from "../../../Components/KiduServerTableList";
 // import ContributionMasterService from "../../Services/ContributionMaster.services";
 

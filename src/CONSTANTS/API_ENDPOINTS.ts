@@ -142,11 +142,19 @@ USER_TYPE: {
     DELETE:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}`,
     UPLOAD_FILE:`${API_BASE_URL}/MonthlyContribution/upload-file`,
   },
-  CONTRIBUTION_MASTERS:{
+  //MONTHLY CONTRIBUTION
+  MONTHLY_CONTRIBUTION_MASTERS:{
    CREATE:`${API_BASE_URL}/MonthlyContribution/upload-and-save`,
    GET_BY_ID:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}/details`,
    GET_ALL:`${API_BASE_URL}/MonthlyContribution/ContributionMasters`,
    GET_BY_REPORT:(id: number) => `${API_BASE_URL}/MonthlyContribution/${id}/report`,
+  },
+  CONTRIBUTION_MASTER:{
+   GET_ALL:`${API_BASE_URL}/ContributionMaster`,
+   GET_MASTER_ID: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
+   DELETE:(masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
+   FORWARD: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/forward`,
+   //APPROVE: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/approve`,
   },
  CONTRIBUTION_DETAIL: {
  GET_BY_DETAIL_ID: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}`,
