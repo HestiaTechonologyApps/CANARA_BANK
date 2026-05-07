@@ -2,7 +2,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { ContributionMaster } from "../../Types/Contributions/MonthlyContributionMasters.types";
+import type { ContributionMaster, ParkedItemsParams, ParkedItemsResponse } from "../../Types/Contributions/ContributionMaster.types";
 
 export default class ContributionMasterService {
 
@@ -44,5 +44,19 @@ export default class ContributionMasterService {
 
     return response?.value ?? response;
   }
+ // ── Get Parked Items ─────────────────────────────────────────────
+  static async getParked({
+    masterId,
+    pageNumber = 1,
+    pageSize = 10,
+  }: ParkedItemsParams): Promise<ParkedItemsResponse> {
+    const url = `${API_ENDPOINTS.CONTRIBUTION_MASTER.GET_PARKED(masterId)}?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
+    const response = await HttpService.callApi<CustomResponse<ParkedItemsResponse>>(
+      url,
+      "GET"
+    );
+
+    return response?.value ?? response;
+  }
 }

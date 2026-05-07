@@ -17,3 +17,37 @@ export interface ContributionMaster {
   approvedDate:         string;
   contributionDetails:  null;
 }
+
+// ── Single parked detail item (from GET_PARKED items array) ──────────
+export interface ParkedDetailItem {
+  contributionDetailId: number;
+  contributionMasterId: number;
+  fullString:           string;
+  circle:               number;
+  month:                string;
+  year:                 string;
+  dpCode:               string;
+  staffNo:              string;
+  name:                 string;
+  designation:          string;
+  amount:               number;
+  total:                string;
+  parkReason:           string;
+}
+ 
+// ── Paginated response for GET_PARKED ────────────────────────────────
+export interface ParkedItemsResponse {
+  masterId:    number;
+  totalCount:  number;
+  totalPages:  number;
+  pageNumber:  number;
+  pageSize:    number;
+  items:       ParkedDetailItem[];
+}
+ 
+// ── Query params for GET_PARKED ──────────────────────────────────────
+export interface ParkedItemsParams {
+  masterId:    number;
+  pageNumber?: number;
+  pageSize?:   number;
+}
