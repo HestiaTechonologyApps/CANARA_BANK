@@ -574,7 +574,7 @@ const ModalShell: React.FC<{
 }> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => (
   <div
    // style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeIn 0.2s ease", backdropFilter: "blur(4px)", padding: "16px" }}
-   style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "flex-start", justifyContent: "center", animation: "fadeIn 0.2s ease", backdropFilter: "blur(4px)", padding: "24px 16px", overflowY: "auto" }}
+   style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "flex-start", justifyContent: "center", animation: "fadeIn 0.2s ease", padding: "24px 16px", overflowY: "auto" }}
    onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
   >
     {/* <div style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 620, maxHeight: "90vh", display: "flex", flexDirection: "column", animation: "slideUp 0.25s ease", boxShadow: "0 25px 60px rgba(0,0,0,0.2)", fontFamily: "'Sora',sans-serif", overflow: "hidden" }}> */}
