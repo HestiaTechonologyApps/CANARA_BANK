@@ -51,3 +51,16 @@ export interface ParkedItemsParams {
   pageNumber?: number;
   pageSize?:   number;
 }
+
+// ── Approve params ───────────────────────────────────────────────────
+export interface ApproveParams {
+  masterId:      number;   // path param (int64)
+  approve?:      boolean;  // query param
+  currentUserId?: number;  // query param (int32)
+}
+
+// ── Approve response ─────────────────────────────────────────────────
+export interface ApproveResponse {
+  message:       string;
+  approvedCount: number;
+}

@@ -2,7 +2,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/HttpService";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { ContributionMaster, ParkedItemsParams, ParkedItemsResponse } from "../../Types/Contributions/ContributionMaster.types";
+import type { ApproveParams, ApproveResponse, ContributionMaster, ParkedItemsParams, ParkedItemsResponse } from "../../Types/Contributions/ContributionMaster.types";
 
 export default class ContributionMasterService {
 
@@ -55,6 +55,28 @@ export default class ContributionMasterService {
     const response = await HttpService.callApi<CustomResponse<ParkedItemsResponse>>(
       url,
       "GET"
+    );
+
+    return response?.value ?? response;
+  }
+
+  // ── Approve Master ───────────────────────────────────────────────
+  static async approve({
+    masterId,
+    approve = true,
+    currentUserId,
+  }: ApproveParams): Promise<ApproveResponse> {
+    const params = new URLSearchParams();
+    params.append("approve", String(approve));
+    if (currentUserId !== undefined) {
+      params.append("currentUserId", String(currentUserId));
+    }
+
+    const url = `${API_ENDPOINTS.CONTRIBUTION_MASTER.APPROVE(masterId)}?${params.toString()}`;
+
+    const response = await HttpService.callApi<CustomResponse<ApproveResponse>>(
+      url,
+      "POST"
     );
 
     return response?.value ?? response;

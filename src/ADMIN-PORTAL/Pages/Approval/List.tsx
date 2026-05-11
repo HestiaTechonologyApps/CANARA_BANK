@@ -43,7 +43,7 @@ const ContributionMasterApprovalList: React.FC = () => {
             idKey="contributionMasterId"
             title="Approval List"
             subtitle="Pending items awaiting admin approval. Review details and take action."
-            viewRoute="/dashboard/contributions/monthlyContribution-view"
+            viewRoute="/dashboard/contributions/approval-view"
             showAddButton={false}
             showExport={true}
             showSearch={true}

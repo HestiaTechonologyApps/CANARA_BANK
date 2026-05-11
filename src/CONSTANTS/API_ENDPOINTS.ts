@@ -154,8 +154,8 @@ USER_TYPE: {
    GET_MASTER_ID: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
    DELETE:(masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
    FORWARD: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/forward`,
-   GET_PARKED:(masterId:number)=>`${API_BASE_URL}/ContributionMaster/${masterId}/parked`
-   //APPROVE: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/approve`,
+   GET_PARKED:(masterId:number)=>`${API_BASE_URL}/ContributionMaster/${masterId}/parked`,
+   APPROVE: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/approve`,
   },
  CONTRIBUTION_DETAIL: {
  GET_BY_DETAIL_ID: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}`,

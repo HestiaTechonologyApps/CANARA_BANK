@@ -1,6 +1,4 @@
-
 // src/Pages/ContributionMaster/ContributionMasterView.tsx
-
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MemberService from "../../../Services/Contributions/Member.services";
@@ -27,6 +25,7 @@ import type {
 } from "../../../Types/Contributions/MonthlyContributionMasters.types";
 import MonthlyContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
+import UserService from "../../../Services/Settings/User.services";
 
 /* ─── Helpers ─────────────────────────────────────────────────────── */
 const fmt = (n: number | string) => {
@@ -272,16 +271,6 @@ const ParkReasonModal: React.FC<{
 };
 
 /* ─── Unpark Confirm Modal ────────────────────────────────────────── */
-/**
- * NEW BEHAVIOUR:
- * 1. On open, check if this row still has unresolved issues by looking it up in
- *    NEWMEMBERS / WRONGBRANCH / WRONGCIRCLE reports.
- * 2. If issues remain → show a blocker screen listing which issues exist with
- *    links to fix them.  Unpark is NOT allowed until resolved.
- * 3. If no issues remain → show a simple "Are you sure?" confirmation with
- *    Yes / No buttons.
- */
-
 const UnparkConfirmModal: React.FC<{
   row: ContributionDetail;
   masterId: number;
@@ -571,39 +560,115 @@ const ModalShell: React.FC<{
   submitLabel: string;
   successMsg?: string;
   errorMsg?: string;
-}> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => (
-  <div
-   // style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeIn 0.2s ease", backdropFilter: "blur(4px)", padding: "16px" }}
-   style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(15,23,42,0.55)", display: "flex", alignItems: "flex-start", justifyContent: "center", animation: "fadeIn 0.2s ease", padding: "24px 16px", overflowY: "auto" }}
-   onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-  >
-    {/* <div style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 620, maxHeight: "90vh", display: "flex", flexDirection: "column", animation: "slideUp 0.25s ease", boxShadow: "0 25px 60px rgba(0,0,0,0.2)", fontFamily: "'Sora',sans-serif", overflow: "hidden" }}> */}
-     <div style={{ background: "#fff", borderRadius: 20, width: "100%", maxWidth: 620, maxHeight: "calc(100vh - 48px)", display: "flex", flexDirection: "column", animation: "slideUp 0.25s ease", boxShadow: "0 25px 60px rgba(0,0,0,0.2)", fontFamily: "'Sora',sans-serif", overflow: "hidden" }}> 
-      <div style={{ background: "#1B3763", borderRadius: "20px 20px 0 0", padding: "22px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{icon}</div>
-          <div>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff" }}>{title}</h2>
-            <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Fill in the details below</p>
+}> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => {
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 1000,
+        background: "rgba(15,23,42,0.6)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        animation: "fadeIn 0.2s ease",
+        backdropFilter: "blur(4px)",
+        padding: "20px 16px",
+        boxSizing: "border-box",
+        overflowY: "auto",          // allows the backdrop itself to scroll on very small screens
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 20,
+          width: "100%", maxWidth: 680,
+          // No fixed maxHeight — let content breathe; inner body scrolls if needed
+          display: "flex", flexDirection: "column",
+          animation: "slideUp 0.25s ease",
+          boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
+          fontFamily: "'Sora',sans-serif",
+          overflow: "hidden",
+          margin: "auto",           // centres vertically when content is shorter than viewport
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div style={{
+          background: "#1B3763",
+          borderRadius: "20px 20px 0 0",
+          padding: "22px 28px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexShrink: 0,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{icon}</div>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff" }}>{title}</h2>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Fill in the details below</p>
+            </div>
           </div>
+          <button
+            className="modal-close-btn"
+            onClick={onClose}
+            style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", fontWeight: 700 }}>
+            ✕
+          </button>
         </div>
-        <button className="modal-close-btn" onClick={onClose} style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", fontWeight: 700 }}>✕</button>
-      </div>
-      <div style={{ padding: "24px 28px", overflowY: "auto", flex: "1 1 auto", minHeight:0 }}>
-        {successMsg && <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>✅ {successMsg}</div>}
-        {errorMsg   && <div style={{ background: "#fee2e2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#991b1b", fontSize: 13, fontWeight: 600 }}>❌ {errorMsg}</div>}
-        {children}
-      </div>
-      <div style={{ padding: "16px 28px 24px", display: "flex", gap: 10, justifyContent: "flex-end", borderTop: "1.5px solid #f1f5f9", flexShrink: 0, background: "#fff" }}>
-        <button className="modal-cancel-btn" onClick={onClose} disabled={submitting} style={{ padding: "10px 22px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>Cancel</button>
-        <button className="modal-submit-btn" onClick={onSubmit} disabled={submitting} style={{ padding: "10px 24px", borderRadius: 10, border: "none", background: "#1B3763", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
-          {submitting && <div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />}
-          {submitting ? "Saving…" : submitLabel}
-        </button>
+
+        {/* Scrollable body */}
+        <div style={{
+          padding: "24px 28px",
+          overflowY: "auto",
+          maxHeight: "calc(100vh - 200px)",   // leaves room for header + footer
+        }}>
+          {successMsg && (
+            <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
+              ✅ {successMsg}
+            </div>
+          )}
+          {errorMsg && (
+            <div style={{ background: "#fee2e2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#991b1b", fontSize: 13, fontWeight: 600 }}>
+              ❌ {errorMsg}
+            </div>
+          )}
+          {children}
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          padding: "16px 28px 24px",
+          display: "flex", gap: 10, justifyContent: "flex-end",
+          borderTop: "1.5px solid #f1f5f9",
+          flexShrink: 0,
+          background: "#fff",
+        }}>
+          <button
+            className="modal-cancel-btn"
+            onClick={onClose}
+            disabled={submitting}
+            style={{ padding: "10px 22px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
+            Cancel
+          </button>
+          <button
+            className="modal-submit-btn"
+            onClick={onSubmit}
+            disabled={submitting}
+            style={{ padding: "10px 24px", borderRadius: 10, border: "none", background: "#1B3763", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+            {submitting && (
+              <div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+            )}
+            {submitting ? "Saving…" : submitLabel}
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ─── Form Field Helpers ──────────────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
@@ -863,6 +928,19 @@ const MasterPanel: React.FC<{
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+   // ── Resolve approvedBy ID → name ──────────────────────────────────
+  const [approvedByName, setApprovedByName] = useState<string>("—");
+  useEffect(() => {
+    if (!master?.approvedBy) { setApprovedByName("—"); return; }
+    const parsed = parseInt(master.approvedBy, 10);
+    if (isNaN(parsed)) { setApprovedByName(master.approvedBy); return; }
+    UserService.getUserById(parsed)
+      .then((res) => setApprovedByName(res?.value?.userName || `User #${parsed}`))
+      .catch(() => setApprovedByName(`User #${parsed}`));
+  }, [master?.approvedBy]);
+  
+// ─────────────────────────────────────────────────────────────────
+
   const totalAmount    = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
   const totalEntry     = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
@@ -912,7 +990,7 @@ const MasterPanel: React.FC<{
     { label: "Total Entries", value: String(totalEntry) },
     { label: "New Members",   value: String(newMemberCount) },
     { label: "Status",        value: master.contributionStatus, isStatus: true },
-    { label: "Approved By",   value: master.approvedBy || "—" },
+    { label: "Approved By",   value: approvedByName }, 
     { label: "Approved Date", value: fmtDate(master.approvedDate) },
   ] as any[];
 
@@ -1720,6 +1798,3 @@ const ContributionMasterView: React.FC = () => {
 };
 
 export default ContributionMasterView;
-
-
-
