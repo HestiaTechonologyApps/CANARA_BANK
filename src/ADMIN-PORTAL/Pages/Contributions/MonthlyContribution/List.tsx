@@ -32,7 +32,16 @@ const ContributionMasterList: React.FC = () => {
         { key: "fileName",           label: "File Name", type: "text"   },
         { key: "monthName",          label: "Month",     type: "text"   },
         { key: "year",               label: "Year",      type: "text"   },
-        { key: "contributionStatus", label: "Status",    type: "select" },
+        { 
+  key: "contributionStatus", 
+  label: "Status", 
+  type: "select",
+  options: [
+    { value: "Uploaded",  label: "Uploaded"  },
+    { value: "Forwarded", label: "Forwarded" },
+    { value: "Approved",  label: "Approved"  },
+  ]
+},
       ]}
       idKey="contributionMasterId"
       title="Monthly Contribution"

@@ -38,7 +38,7 @@ const ContributionMasterEdit: React.FC = () => {
 
  const handleFetch = async (id: string) => {
   const [master, allMonths] = await Promise.all([
-    ContributionMasterService.getById(Number(id)),  // ← direct call, no filter
+    ContributionMasterService.getById(Number(id)),  
     MonthService.getAllMonths(),
   ]);
 
@@ -72,28 +72,7 @@ const ContributionMasterEdit: React.FC = () => {
     setSelectedYear(initialYear);
   };
 
-  // const handleUpdate = async (id: string, formData: Record<string, any>) => {
-  //   if (!selectedMonth) throw new Error("Please select a month");
-  //   if (!selectedYear)  throw new Error("Please select a year");
-  //   if (!(formData.ContributionFile instanceof File))
-  //     throw new Error("Please select a contribution file");
-
-  //   await ContributionMasterService.update({
-  //     id:               Number(id),
-  //     MonthCode:        selectedMonth.monthCode,
-  //     YearOf:           Number(selectedYear.yearOf),
-  //     ContributionFile: formData.ContributionFile as File,
-  //   });
-  // };
-// const handleUpdate = async (id: string, formData: Record<string, any>) => {
-//   if (!selectedMonth) throw new Error("Please select a month");
-//   if (!selectedYear)  throw new Error("Please select a year");
-
-//   // ← add this debug line temporarily
-//   console.log("ContributionFile:", formData.ContributionFile);
-//   console.log("type:", typeof formData.ContributionFile);
-// };
-const handleUpdate = async (id: string, formData: Record<string, any>) => {
+const handleUpdate = async (id: string, _formData: Record<string, any>) => {
   if (!selectedMonth) throw new Error("Please select a month");
   if (!selectedYear)  throw new Error("Please select a year");
 
