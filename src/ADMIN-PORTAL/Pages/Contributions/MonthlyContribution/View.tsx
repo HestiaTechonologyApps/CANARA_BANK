@@ -944,8 +944,12 @@ const MasterPanel: React.FC<{
   const totalAmount    = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
   const totalEntry     = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
-  const isAlreadyForwarded = master.contributionStatus === "FORWARD";
+  //const isAlreadyForwarded = master.contributionStatus === "FORWARD";
   //const isApproved = master.isApproved === true;
+  const isAlreadyForwarded = 
+  master.contributionStatus === "FORWARD" ||
+  master.contributionStatus === "Forwarded" ||
+  master.contributionStatus === "forwarded";
 
   const blockers = REPORT_TABS
     .filter(t => t.blocksForward)
@@ -1480,23 +1484,40 @@ const ContributionMasterView: React.FC = () => {
 
   useEffect(() => { loadInitialCounts(); }, [loadInitialCounts]);
 
-  const handleForward = async () => {
-    if (!masterId) return;
-    setForwarding(true);
-    setForwardError("");
-    try {
-      await ContributionMasterService.forward(masterId);
-      const all = await MonthlyContributionMasterService.getAll();
-      const found = all.find(item => String(item.contributionMasterId) === String(masterId));
-      if (found) setMaster(found as unknown as MonthlyContributionMaster);
-      setForwardDone(true);
-    } catch (err: any) {
-      setForwardError(err?.message || "Failed to forward. Please try again.");
-    } finally {
-      setForwarding(false);
-    }
-  };
-
+  // const handleForward = async () => {
+  //   if (!masterId) return;
+  //   setForwarding(true);
+  //   setForwardError("");
+  //   try {
+  //     await ContributionMasterService.forward(masterId);
+  //     const all = await MonthlyContributionMasterService.getAll();
+  //     const found = all.find(item => String(item.contributionMasterId) === String(masterId));
+  //     if (found) setMaster(found as unknown as MonthlyContributionMaster);
+  //     setForwardDone(true);
+  //   } catch (err: any) {
+  //     setForwardError(err?.message || "Failed to forward. Please try again.");
+  //   } finally {
+  //     setForwarding(false);
+  //   }
+  // };
+const handleForward = async () => {
+  if (!masterId) return;
+  setForwarding(true);
+  setForwardError("");
+  try {
+    await ContributionMasterService.forward(masterId);
+    
+    // ← use getById to get fresh status instead of getAll + find
+    const updated = await ContributionMasterService.getById(masterId);
+    if (updated) setMaster(updated as unknown as MonthlyContributionMaster);
+    
+    setForwardDone(true);
+  } catch (err: any) {
+    setForwardError(err?.message || "Failed to forward. Please try again.");
+  } finally {
+    setForwarding(false);
+  }
+};
   const handleDelete = async () => {
     if (!masterId) return;
     await ContributionMasterService.delete(masterId);
