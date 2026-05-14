@@ -103,7 +103,7 @@ import MemberView from '../Pages/Contributions/Member/View';
 
 //import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/List';
 //import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
-import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
+//import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 //import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
 
 //Claims
@@ -158,12 +158,16 @@ import SupportTicketCreate from '../Pages/SupportTickets/Create';
 import SupportTicketEdit from '../Pages/SupportTickets/Edit';
 import SupportTicketView from '../Pages/SupportTickets/View';
 
+//Monthly Contribution
 import ContributionMasterCreate from '../Pages/Contributions/MonthlyContribution/Create';
 import ContributionMasterList from '../Pages/Contributions/MonthlyContribution/List';
 import ContributionMasterView from '../Pages/Contributions/MonthlyContribution/View';
+import ContributionMasterEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 
+//Approval
 import ContributionMasterApprovalList from '../Pages/Approval/List';
 import ContributionMasterApprovalView from '../Pages/Approval/View';
+
 
 export const adminRoutes = (
   <>
@@ -262,7 +266,7 @@ export const adminRoutes = (
 
       <Route path="contributions/monthlyContribution-list" element={<ContributionMasterList />} />
       <Route path="contributions/monthlyContribution-create" element={<ContributionMasterCreate />} />
-      <Route path="contributions/monthlyContribution-edit/:contributionMasterId" element={<MonthlyContributionEdit />} />
+      <Route path="contributions/monthlyContribution-edit/:contributionMasterId" element={<ContributionMasterEdit />} />
       <Route path="contributions/monthlyContribution-view/:contributionMasterId" element={<ContributionMasterView />} />
 
       {/* Claims */}

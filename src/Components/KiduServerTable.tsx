@@ -274,6 +274,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
           <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
             {editRoute && (
               <Button size="sm"
+              //added to diable the edit button in list page of monthly contribution only
+              disabled={!!row.original._disableEdit}
                 style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; }}

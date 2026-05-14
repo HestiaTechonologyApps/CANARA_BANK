@@ -16,6 +16,7 @@ export interface ContributionMaster {
   approvedBy:           string;
   approvedDate:         string;
   contributionDetails:  null;
+  yearOf:               number;
 }
 
 // ── Single parked detail item (from GET_PARKED items array) ──────────

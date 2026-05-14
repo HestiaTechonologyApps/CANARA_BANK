@@ -5,10 +5,12 @@ import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ContributionDetail, 
   ContributionDetailPaginatedResponse, 
   ContributionDetailParams, 
-  ContributionMaster, 
   ContributionReportParams, 
+  ContributionUpdatePayload, 
+  ContributionUpdateResponse, 
   ContributionUploadPayload, 
-  ContributionUploadResponse } from "../../Types/Contributions/MonthlyContributionMasters.types";
+  ContributionUploadResponse, 
+  MonthlyContributionMaster} from "../../Types/Contributions/MonthlyContributionMasters.types";
 
 export default class MonthlyContributionMasterService {
 
@@ -33,8 +35,8 @@ export default class MonthlyContributionMasterService {
   }
 
   // ── Get All Masters ──────────────────────────────────────────────
-  static async getAll(): Promise<ContributionMaster[]> {
-    const response = await HttpService.callApi<CustomResponse<ContributionMaster[]>>(
+  static async getAll(): Promise<MonthlyContributionMaster[]> {
+    const response = await HttpService.callApi<CustomResponse<MonthlyContributionMaster[]>>(
       API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_ALL,
       "GET"
     );
@@ -117,7 +119,7 @@ static async getReport(
   } = params;
 
   const query = new URLSearchParams();
-  query.append("type",       reportType);   // ✅ was "reportType", now "type"
+  query.append("type",       reportType);   
   query.append("pageNumber", String(pageNumber));
   query.append("pageSize",   String(pageSize));
 
@@ -139,6 +141,27 @@ static async getReport(
     hasPrevious:  result?.hasPrevious  ?? false,
     hasNext:      result?.hasNext      ?? false,
   };
+}
+
+// ── Update Contribution ──────────────────────────────────────────
+
+static async update(
+  payload: ContributionUpdatePayload
+): Promise<ContributionUpdateResponse> {
+  const formData = new FormData();
+  formData.append("MonthCode",        String(payload.MonthCode));
+  formData.append("YearOf",           String(payload.YearOf));
+  formData.append("ContributionFile", payload.ContributionFile);
+
+  const response = await HttpService.callApi<CustomResponse<ContributionUpdateResponse>>(
+    API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.UPDATE(payload.id),
+    "PUT",
+    formData,
+    false,
+    true
+  );
+
+  return response.value;  
 }
 
 }

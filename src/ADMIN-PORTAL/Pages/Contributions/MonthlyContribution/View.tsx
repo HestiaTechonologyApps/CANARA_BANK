@@ -20,8 +20,8 @@ import type { Category } from "../../../Types/Settings/Category.types";
 import type { Status } from "../../../Types/Settings/Status.types";
 import type {
   ContributionDetail,
-  ContributionMaster,
   ContributionReportType,
+  MonthlyContributionMaster,
 } from "../../../Types/Contributions/MonthlyContributionMasters.types";
 import MonthlyContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
@@ -501,7 +501,7 @@ const UnparkConfirmModal: React.FC<{
 
 /* ─── Delete Confirm Modal ────────────────────────────────────────── */
 const DeleteConfirmModal: React.FC<{
-  master: ContributionMaster;
+  master: MonthlyContributionMaster;
   onClose: () => void;
   onConfirm: () => void;
   deleting: boolean;
@@ -914,7 +914,7 @@ const ForwardGateBanner: React.FC<{
 
 /* ─── Master Panel ────────────────────────────────────────────────── */
 const MasterPanel: React.FC<{
-  master: ContributionMaster;
+  master: MonthlyContributionMaster;
   onForward: () => void;
   forwarding: boolean;
   forwardDone: boolean;
@@ -923,7 +923,7 @@ const MasterPanel: React.FC<{
   countsLoading: boolean;
   onGoToReport: (type: ContributionReportType) => void;
   onDelete: () => void;
-}> = ({ master, onForward, forwarding, forwardDone, forwardError, tabCounts, countsLoading, onGoToReport, onDelete }) => {
+}> = ({ master, onForward, forwarding, forwardDone, forwardError, tabCounts, countsLoading, onDelete }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -945,6 +945,7 @@ const MasterPanel: React.FC<{
   const totalEntry     = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
   const isAlreadyForwarded = master.contributionStatus === "FORWARD";
+  //const isApproved = master.isApproved === true;
 
   const blockers = REPORT_TABS
     .filter(t => t.blocksForward)
@@ -1011,30 +1012,32 @@ const MasterPanel: React.FC<{
               <p style={{ margin: 0, fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Total Amount</p>
               <p style={{ margin: "4px 0 0", fontSize: 28, fontWeight: 800, color: "#fff", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "-0.5px" }}>{fmt(totalAmount)}</p>
             </div>
-            {!confirmOpen ? (
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <button
-                  className="delete-master-btn"
-                  onClick={() => setDeleteModalOpen(true)}
-                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
-                  🗑️ Delete
-                </button>
-                <button
-                  className="fwd-btn"
-                  onClick={handleForwardButtonClick}
-                  disabled={forwarding}
-                  {...(!canForward && !isAlreadyForwarded && !forwardDone ? { "data-blocked": "true" } : {})}
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 26px", borderRadius: 10, border: "none", background: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.15)" : canForward ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)", color: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.5)" : canForward ? "#1B3763" : "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: 800, cursor: (isAlreadyForwarded || forwardDone || forwarding) ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif", boxShadow: canForward ? "0 4px 16px rgba(0,0,0,0.2)" : "none", minWidth: 160, justifyContent: "center" }}>
-                  {countsLoading
-                    ? <><div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid currentColor", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} /> Checking…</>
-                    : isAlreadyForwarded || forwardDone
-                      ? <><span style={{ fontSize: 16 }}>✅</span> Forwarded</>
-                      : !canForward
-                        ? <><span style={{ fontSize: 16 }}>🔒</span> Forward Blocked</>
-                        : <><span style={{ fontSize: 16 }}>📤</span> Forward</>
-                  }
-                </button>
-              </div>
+           {!confirmOpen ? (
+  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+    <button
+      className="delete-master-btn"
+      onClick={() => setDeleteModalOpen(true)}
+      style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
+      🗑️ Delete
+    </button>
+    {!master.isApproved && (
+      <button
+        className="fwd-btn"
+        onClick={handleForwardButtonClick}
+        disabled={forwarding}
+        {...(!canForward && !isAlreadyForwarded && !forwardDone ? { "data-blocked": "true" } : {})}
+        style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 26px", borderRadius: 10, border: "none", background: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.15)" : canForward ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)", color: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.5)" : canForward ? "#1B3763" : "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: 800, cursor: (isAlreadyForwarded || forwardDone || forwarding) ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif", boxShadow: canForward ? "0 4px 16px rgba(0,0,0,0.2)" : "none", minWidth: 160, justifyContent: "center" }}>
+        {countsLoading
+          ? <><div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid currentColor", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} /> Checking…</>
+          : isAlreadyForwarded || forwardDone
+            ? <><span style={{ fontSize: 16 }}>✅</span> Forwarded</>
+            : !canForward
+              ? <><span style={{ fontSize: 16 }}>🔒</span> Forward Blocked</>
+              : <><span style={{ fontSize: 16 }}>📤</span> Forward</>
+        }
+      </button>
+    )}
+  </div>
             ) : (
               <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "18px 22px", minWidth: 280, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                 <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Confirm Forward</p>
@@ -1411,7 +1414,7 @@ const ContributionMasterView: React.FC = () => {
 
   const masterId = contributionMasterId ? Number(contributionMasterId) : null;
 
-  const [master,          setMaster]          = useState<ContributionMaster | null>(null);
+  const [master,          setMaster]          = useState<MonthlyContributionMaster | null>(null);
   const [masterLoading,   setMasterLoading]   = useState(true);
   const [rows,            setRows]            = useState<ContributionDetail[]>([]);
   const [total,           setTotal]           = useState(0);
@@ -1485,7 +1488,7 @@ const ContributionMasterView: React.FC = () => {
       await ContributionMasterService.forward(masterId);
       const all = await MonthlyContributionMasterService.getAll();
       const found = all.find(item => String(item.contributionMasterId) === String(masterId));
-      if (found) setMaster(found as unknown as ContributionMaster);
+      if (found) setMaster(found as unknown as MonthlyContributionMaster);
       setForwardDone(true);
     } catch (err: any) {
       setForwardError(err?.message || "Failed to forward. Please try again.");
@@ -1512,7 +1515,7 @@ const ContributionMasterView: React.FC = () => {
         setMasterLoading(true);
         const all = await MonthlyContributionMasterService.getAll();
         const found = all.find(item => String(item.contributionMasterId) === String(masterId));
-        if (found) setMaster(found as unknown as ContributionMaster);
+        if (found) setMaster(found as unknown as MonthlyContributionMaster);
       } catch (err) { console.error(err); }
       finally { setMasterLoading(false); }
     })();

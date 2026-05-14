@@ -17,7 +17,7 @@ export interface ContributionUploadResponse {
 }
 
 // ── Contribution master list item (GET_ALL) ───────────────────────
-export interface ContributionMaster {
+export interface MonthlyContributionMaster {
   contributionMasterId:  number;
   fileName:              string;
   fileLocation:          string;
@@ -25,6 +25,7 @@ export interface ContributionMaster {
   fileExtension:         string;
   fileSize:              number;
   month:                 string;
+  monthName:             string;
   year:                  string;
   circle:                string;
   totalAmount:           string;
@@ -97,6 +98,25 @@ export interface ContributionReportParams {
   reportType:  ContributionReportType;
   pageNumber?: number;
   pageSize?:   number;
+}
+
+// ── Update payload (multipart/form-data) ─────────────────────────
+export interface ContributionUpdatePayload {
+  id:               number;   // path param
+  MonthCode:        number;
+  YearOf:           number;
+  ContributionFile: File;
+}
+
+// ── Update response ───────────────────────────────────────────────
+export interface ContributionUpdateResponse {
+  contributionMasterId: number;
+  totalEntry:           number;
+  totalAmount:          number;
+  savedDetails:         number;
+  newMemberCount:       number;
+  errorCount:           number;
+  errorLines:           string[];
 }
 
 // ── Report response reuses the same paginated wrapper ─────────────

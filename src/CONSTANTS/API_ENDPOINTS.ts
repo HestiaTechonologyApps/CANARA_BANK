@@ -145,12 +145,13 @@ USER_TYPE: {
   //MONTHLY CONTRIBUTION
   MONTHLY_CONTRIBUTION_MASTERS:{
    CREATE:`${API_BASE_URL}/MonthlyContribution/upload-and-save`,
+   UPDATE:(id: number)=>`${API_BASE_URL}/MonthlyContribution/${id}/update-contribution`,
    GET_BY_ID:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}/details`,
    GET_ALL:`${API_BASE_URL}/MonthlyContribution/ContributionMasters`,
    GET_BY_REPORT:(id: number) => `${API_BASE_URL}/MonthlyContribution/${id}/report`,
   },
   CONTRIBUTION_MASTER:{
-   GET_ALL:`${API_BASE_URL}/ContributionMaster`,
+   GET_ALL:`${API_BASE_URL}/ContributionMaster/getall-forwarded-contributions`,
    GET_MASTER_ID: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
    DELETE:(masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}`,
    FORWARD: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/forward`,
