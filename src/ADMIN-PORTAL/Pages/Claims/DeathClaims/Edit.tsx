@@ -9,7 +9,7 @@ import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import type { DeathClaim } from "../../../Types/Claims/DeathClaims.type";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import type { State } from "../../../Types/Settings/States.types";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import MemberPopup from "../../Contributions/Member/MemberPopup";
 import StatePopup from "../../Settings/State/StatePopup";

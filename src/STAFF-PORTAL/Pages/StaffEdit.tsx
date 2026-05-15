@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Branch } from "../../ADMIN-PORTAL/Types/Settings/Branch.types";
-import type { Designation } from "../../ADMIN-PORTAL/Types/Settings/Designation";
+import type { Designation } from "../../ADMIN-PORTAL/Types/Settings/Designation.types";
 import type { Category } from "../../ADMIN-PORTAL/Types/Settings/Category.types";
 import type { Status } from "../../ADMIN-PORTAL/Types/Settings/Status.types";
 import type { Field } from "../../ADMIN-PORTAL/Components/KiduEdit";

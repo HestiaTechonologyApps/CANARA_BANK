@@ -7,7 +7,7 @@ import type {
   Designation, 
   DesignationPaginationParams, 
   PagedDesignationResult 
-} from "../../Types/Settings/Designation";
+} from "../../Types/Settings/Designation.types";
 
 const DesignationService = {
   async getAllDesignations(): Promise<Designation[]> {

@@ -1,7 +1,7 @@
 import React from "react";
 import type { Field } from "../../../Components/KiduEdit";
 import DesignationService from "../../../Services/Settings/Designation.services";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import KiduEdit from "../../../Components/KiduEdit";
 
 const DesignationEdit: React.FC = () => {

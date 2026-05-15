@@ -1,6 +1,6 @@
 import KiduPopup from "../../../../Components/KiduPopup";
 import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import DesignationCreateModal from "./DesignationCreateModal";
 
 interface DesignationPopupProps {

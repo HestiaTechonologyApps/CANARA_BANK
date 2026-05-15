@@ -3,7 +3,7 @@ import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
 import type { State } from "../../../Types/Settings/States.types";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import StatePopup from "../../Settings/State/StatePopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";

@@ -4,7 +4,7 @@ import KiduEdit from "../../../Components/KiduEdit";
 import MemberService from "../../../Services/Contributions/Member.services";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import type { Branch } from "../../../Types/Settings/Branch.types";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { Category } from "../../../Types/Settings/Category.types";
 import type { Status } from "../../../Types/Settings/Status.types";
 import BranchPopup from "../../Branch/BranchPopup";

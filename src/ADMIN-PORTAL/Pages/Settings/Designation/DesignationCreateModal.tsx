@@ -1,7 +1,7 @@
 import KiduCreateModal from "../../../../Components/KiduCreateModal";
 import { API_ENDPOINTS } from "../../../../CONSTANTS/API_ENDPOINTS";
 import type { Field } from "../../../../Components/KiduCreateModal";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 
 interface DesignationCreateModalProps {
   show: boolean;

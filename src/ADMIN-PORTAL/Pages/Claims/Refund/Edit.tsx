@@ -4,7 +4,7 @@ import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
 import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import type { State } from "../../../Types/Settings/States.types";
-import type { Designation } from "../../../Types/Settings/Designation";
+import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
 import StatePopup from "../../Settings/State/StatePopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";

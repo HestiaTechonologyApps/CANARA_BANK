@@ -6,7 +6,7 @@ import StateService from "../../ADMIN-PORTAL/Services/Settings/State.services";
 import DesignationService from "../../ADMIN-PORTAL/Services/Settings/Designation.services";
 import type { DeathClaim } from "../../ADMIN-PORTAL/Types/Claims/DeathClaims.type";
 import type { State } from "../../ADMIN-PORTAL/Types/Settings/States.types";
-import type { Designation } from "../../ADMIN-PORTAL/Types/Settings/Designation";
+import type { Designation } from "../../ADMIN-PORTAL/Types/Settings/Designation.types";
 import DeathClaimService from "../../ADMIN-PORTAL/Services/Claims/DeathClaims.services";
 import ClaimsTable from "../Components/Claims/KiduClaimsTable";
 import YearMasterService from "../../ADMIN-PORTAL/Services/Settings/YearMaster.services";
