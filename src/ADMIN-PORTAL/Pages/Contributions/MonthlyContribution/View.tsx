@@ -549,6 +549,127 @@ const DeleteConfirmModal: React.FC<{
 );
 
 /* ─── Shared Modal Shell ──────────────────────────────────────────── */
+// const ModalShell: React.FC<{
+//   title: string;
+//   accent: string;
+//   icon: string;
+//   onClose: () => void;
+//   children: React.ReactNode;
+//   submitting?: boolean;
+//   onSubmit: () => void;
+//   submitLabel: string;
+//   successMsg?: string;
+//   errorMsg?: string;
+// }> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => {
+//   // Lock body scroll when modal is open
+//   useEffect(() => {
+//     const prev = document.body.style.overflow;
+//     document.body.style.overflow = "hidden";
+//     return () => { document.body.style.overflow = prev; };
+//   }, []);
+
+//   return (
+//     <div
+//       style={{
+//         position: "fixed", inset: 0, zIndex: 1000,
+//         background: "rgba(15,23,42,0.6)",
+//         display: "flex", alignItems: "center", justifyContent: "center",
+//         animation: "fadeIn 0.2s ease",
+//         backdropFilter: "blur(4px)",
+//         padding: "20px 16px",
+//         boxSizing: "border-box",
+//         overflowY: "auto",          // allows the backdrop itself to scroll on very small screens
+//       }}
+//       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+//     >
+//       <div
+//         style={{
+//           background: "#fff",
+//           borderRadius: 20,
+//           width: "100%", maxWidth: 680,
+//           // No fixed maxHeight — let content breathe; inner body scrolls if needed
+//           display: "flex", flexDirection: "column",
+//           animation: "slideUp 0.25s ease",
+//           boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
+//           fontFamily: "'Sora',sans-serif",
+//           overflow: "hidden",
+//           margin: "auto",           // centres vertically when content is shorter than viewport
+//         }}
+//         onClick={(e) => e.stopPropagation()}
+//       >
+//         {/* Header */}
+//         <div style={{
+//           background: "#1B3763",
+//           borderRadius: "20px 20px 0 0",
+//           padding: "22px 28px",
+//           display: "flex", alignItems: "center", justifyContent: "space-between",
+//           flexShrink: 0,
+//         }}>
+//           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+//             <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{icon}</div>
+//             <div>
+//               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff" }}>{title}</h2>
+//               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Fill in the details below</p>
+//             </div>
+//           </div>
+//           <button
+//             className="modal-close-btn"
+//             onClick={onClose}
+//             style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", fontWeight: 700 }}>
+//             ✕
+//           </button>
+//         </div>
+
+//         {/* Scrollable body */}
+//         <div style={{
+//           padding: "24px 28px",
+//           overflowY: "auto",
+//           maxHeight: "calc(100vh - 200px)",   // leaves room for header + footer
+//         }}>
+//           {successMsg && (
+//             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
+//               ✅ {successMsg}
+//             </div>
+//           )}
+//           {errorMsg && (
+//             <div style={{ background: "#fee2e2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#991b1b", fontSize: 13, fontWeight: 600 }}>
+//               ❌ {errorMsg}
+//             </div>
+//           )}
+//           {children}
+//         </div>
+
+//         {/* Footer */}
+//         <div style={{
+//           padding: "16px 28px 24px",
+//           display: "flex", gap: 10, justifyContent: "flex-end",
+//           borderTop: "1.5px solid #f1f5f9",
+//           flexShrink: 0,
+//           background: "#fff",
+//         }}>
+//           <button
+//             className="modal-cancel-btn"
+//             onClick={onClose}
+//             disabled={submitting}
+//             style={{ padding: "10px 22px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
+//             Cancel
+//           </button>
+//           <button
+//             className="modal-submit-btn"
+//             onClick={onSubmit}
+//             disabled={submitting}
+//             style={{ padding: "10px 24px", borderRadius: 10, border: "none", background: "#1B3763", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+//             {submitting && (
+//               <div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+//             )}
+//             {submitting ? "Saving…" : submitLabel}
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
 const ModalShell: React.FC<{
   title: string;
   accent: string;
@@ -561,7 +682,6 @@ const ModalShell: React.FC<{
   successMsg?: string;
   errorMsg?: string;
 }> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => {
-  // Lock body scroll when modal is open
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -573,12 +693,14 @@ const ModalShell: React.FC<{
       style={{
         position: "fixed", inset: 0, zIndex: 1000,
         background: "rgba(15,23,42,0.6)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        animation: "fadeIn 0.2s ease",
         backdropFilter: "blur(4px)",
-        padding: "20px 16px",
+        animation: "fadeIn 0.2s ease",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        overflowY: "scroll",   /* always show scroll — never hidden */
+        padding: "40px 16px 60px",
         boxSizing: "border-box",
-        overflowY: "auto",          // allows the backdrop itself to scroll on very small screens
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
@@ -587,13 +709,12 @@ const ModalShell: React.FC<{
           background: "#fff",
           borderRadius: 20,
           width: "100%", maxWidth: 680,
-          // No fixed maxHeight — let content breathe; inner body scrolls if needed
           display: "flex", flexDirection: "column",
           animation: "slideUp 0.25s ease",
           boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
           fontFamily: "'Sora',sans-serif",
-          overflow: "hidden",
-          margin: "auto",           // centres vertically when content is shorter than viewport
+          overflow: "visible",
+          flexShrink: 0,
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -620,12 +741,8 @@ const ModalShell: React.FC<{
           </button>
         </div>
 
-        {/* Scrollable body */}
-        <div style={{
-          padding: "24px 28px",
-          overflowY: "auto",
-          maxHeight: "calc(100vh - 200px)",   // leaves room for header + footer
-        }}>
+        {/* Body */}
+        <div style={{ padding: "24px 28px" }}>
           {successMsg && (
             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
               ✅ {successMsg}
@@ -646,6 +763,7 @@ const ModalShell: React.FC<{
           borderTop: "1.5px solid #f1f5f9",
           flexShrink: 0,
           background: "#fff",
+          borderRadius: "0 0 20px 20px",
         }}>
           <button
             className="modal-cancel-btn"
@@ -669,7 +787,6 @@ const ModalShell: React.FC<{
     </div>
   );
 };
-
 /* ─── Form Field Helpers ──────────────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
   <p style={{ margin: "0 0 5px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
