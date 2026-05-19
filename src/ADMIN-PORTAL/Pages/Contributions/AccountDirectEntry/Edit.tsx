@@ -77,22 +77,22 @@ const handleFetch = async (id: string) => {
     if (entry.memberId) {
       const member = (await MemberService.getMemberById(entry.memberId)).value;
       setSelectedMember(member);
-      setInitialMember(member); // 👈 Add this
+      setInitialMember(member); 
     }
     if (entry.branchId) {
       const branch = (await BranchService.getBranchById(entry.branchId)).value;
       setSelectedBranch(branch);
-      setInitialBranch(branch); // 👈 Add this
+      setInitialBranch(branch); 
     }
     if (entry.monthCode) {
       const month = (await MonthService.getMonthById(entry.monthCode)).value;
       setSelectedMonth(month);
-      setInitialMonth(month); // 👈 Add this
+      setInitialMonth(month); 
     }
     if (entry.yearOf) {
       const year = (await YearMasterService.getYearMasterById(entry.yearOf)).value;
       setSelectedYearMaster(year);
-      setInitialYearMaster(year); // 👈 Add this
+      setInitialYearMaster(year); 
     }
 
     // return {
@@ -189,6 +189,10 @@ await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
         showResetButton 
+        attachmentConfig={{
+          tableName: "AccountDirectEntry",
+          recordIdField: "accountsDirectEntryID"
+        }}
         onReset={handleReset}
       />
       <MemberPopup 

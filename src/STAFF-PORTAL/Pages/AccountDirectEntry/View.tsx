@@ -45,6 +45,10 @@ const StaffAccountDirectEntryView: React.FC = () => {
             showDeleteButton={true}
             showEditButton={true}
             deleteConfirmMessage="Are you sure you want to delete this entry? This action cannot be undone."
+             attachmentConfig={{
+          tableName: "AccountDirectEntry",
+          recordIdField: "accountsDirectEntryID"
+        }}
         />
     );
 };

@@ -3,14 +3,14 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributions/AccountDirectEntry.services";
 
 const columns = [
-  { key: "accountsDirectEntryID", label: "ID", enableSorting: true, type: "text" as const },
-  { key: "memberName", label: "Member", enableSorting: true, type: "text" as const },
-  { key: "branchName", label: "Branch", enableSorting: true, type: "text" as const },
-  { key: "monthName", label: "Month", enableSorting: true, type: "text" as const },
-  { key: "yearName", label: "Year", enableSorting: true, type: "text" as const },
-  { key: "amt", label: "Amount", enableSorting: true, type: "text" as const },
-  { key: "status", label: "Status", enableSorting: true, type: "text" as const },
-  { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" as const },
+  { key: "accountsDirectEntryID", label: "ID",       enableSorting: true, type: "text" as const },
+  { key: "memberName",            label: "Member",   enableSorting: true, type: "text" as const },
+  { key: "branchName",            label: "Branch",   enableSorting: true, type: "text" as const },
+  { key: "monthName",             label: "Month",    enableSorting: true, type: "text" as const },
+  { key: "yearName",              label: "Year",     enableSorting: true, type: "text" as const },
+  { key: "amt",                   label: "Amount",   enableSorting: true, type: "text" as const },
+  { key: "status",                label: "Status",   enableSorting: true, type: "text" as const },
+  { key: "isApproved",            label: "Approved", enableSorting: true, type: "checkbox" as const },
 ];
 
 const StaffAccountDirectEntryList: React.FC = () => {
@@ -19,10 +19,7 @@ const StaffAccountDirectEntryList: React.FC = () => {
     const storedUser = localStorage.getItem("user");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const staffId = parsedUser?.memberId;
-    
-    if (!staffId) {
-      return [];
-    }
+    if (!staffId) return [];
     const response = await AccountDirectEntryService.getAccountDirectEntryByStaffId(staffId);
     return response.value ?? [];
   };
@@ -32,6 +29,8 @@ const StaffAccountDirectEntryList: React.FC = () => {
       ...e,
       monthName: e.monthName ?? e.monthCode,
       branchName: e.branchName ?? "-",
+      // ── Disable edit if approved ──────────────────────────────
+      _disableEdit: e.isApproved === true || e.status === "Approved",
     }));
   };
 

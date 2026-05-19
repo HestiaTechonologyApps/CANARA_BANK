@@ -6,10 +6,11 @@ export interface ContributionMaster {
   fileExtension:        string;
   fileSize:             number;
   month:                string;
+  monthName:            string;
   year:                 string;
   circle:               string;
-  totalamount:          string;
-  totalentry:           string;
+  totalAmount:          string;
+  totalEntry:           string;
   newMemberCount:       string;
   contributionStatus:   string;
   isApproved:           boolean;

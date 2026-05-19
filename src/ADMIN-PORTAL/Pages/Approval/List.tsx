@@ -12,18 +12,18 @@ const ContributionMasterApprovalList: React.FC = () => {
                 { key: "contributionMasterId", label: "ID", enableSorting: true, type: "text" },
                 { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
                 { key: "fileType", label: "File Type", enableSorting: true, type: "text" },
-                { key: "month", label: "Month", enableSorting: true, type: "text" },
+                { key: "monthName", label: "Month", enableSorting: true, type: "text" },
                 { key: "year", label: "Year", enableSorting: true, type: "text" },
                 { key: "circle", label: "Circle", enableSorting: true, type: "text" },
-                { key: "totalamount", label: "Total Amount", enableSorting: true, type: "text" },
-                { key: "totalentry", label: "Total Entries", enableSorting: true, type: "text" },
+                { key: "totalAmount", label: "Total Amount", enableSorting: true, type: "text" },
+                { key: "totalEntry", label: "Total Entries", enableSorting: true, type: "text" },
                 { key: "contributionStatus", label: "Status", enableSorting: true, type: "text" },
                 { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
             ]}
 
             filterColumns={[
                 { key: "contributionMasterId", label: "ID", type: "text" },
-                { key: "month", label: "Month", type: "text" },
+                { key: "monthName", label: "Month", type: "text" },
                 { key: "year", label: "Year", type: "text" },
                 { key: "circle", label: "Circle", type: "text" },
                 {

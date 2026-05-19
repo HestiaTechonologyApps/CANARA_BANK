@@ -158,6 +158,9 @@ USER_TYPE: {
    GET_PARKED:(masterId:number)=>`${API_BASE_URL}/ContributionMaster/${masterId}/parked`,
    APPROVE: (masterId: number) => `${API_BASE_URL}/ContributionMaster/${masterId}/approve`,
   },
+  MEMBER_ACCOUNTS_DETAILS:{
+    GET_BY_ID:(id: number)=>`${API_BASE_URL}/MemberAccountsDetails/${id}`,
+  },
  CONTRIBUTION_DETAIL: {
  GET_BY_DETAIL_ID: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}`,
  CREATE_PARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/park`,
