@@ -15,11 +15,11 @@ const ManagingCommitteeEdit: React.FC = () => {
 
   const fields: Field[] = [
     // { name: "managingComiteeId", rules: { type: "number", label: "ID", disabled: true, colWidth: 3 } },
-    { name: "managingComitteeName", rules: { type: "text", label: "Name", required: true, placeholder: "Enter committee member name", colWidth: 6 } },
+    { name: "managingComitteeName", rules: { type: "text", label: "Name", required: true, placeholder: "Enter committee member name", colWidth: 6, pattern: /^[a-zA-Z\s.]+$/, } },
     { name: "position", rules: { type: "text", label: "Position", required: true, placeholder: "Chairman / Director / Member", colWidth: 6 } },
-    { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 6 } },
     { name: "description1", rules: { type: "textarea", label: "Primary Description", required: true, placeholder: "Brief introduction or role summary", colWidth: 6 } },
     { name: "description2", rules: { type: "textarea", label: "Additional Description", placeholder: "Optional additional details", colWidth: 6 } },
+    { name: "order", rules: { type: "number", label: "Display Order", required: true, placeholder: "Enter display priority", colWidth: 6 } },
     // { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 3 } },
   ];
 
