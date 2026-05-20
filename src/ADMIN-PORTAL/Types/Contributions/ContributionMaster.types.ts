@@ -9,8 +9,8 @@ export interface ContributionMaster {
   monthName:            string;
   year:                 string;
   circle:               string;
-  totalAmount:          string;
-  totalEntry:           string;
+  totalamount:          string;
+  totalentry:           string;
   newMemberCount:       string;
   contributionStatus:   string;
   isApproved:           boolean;
