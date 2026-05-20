@@ -7,19 +7,22 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 const MemberList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={async () => {  
-        const response = await MemberService.getMembersPaginated({
-          pageNumber: 1,
-          pageSize: 99999, 
-          searchTerm: "",
-        });
-        return response.data.map(member => ({
-          ...member,
-          profileImageSrc: member.profileImageSrc
-            ? getFullImageUrl(member.profileImageSrc)
-            : defaultProfileImage,
-        }));
-      }}
+       fetchService={async () => {  
+    const response = await MemberService.getMembersPaginated({
+      pageNumber: 1,
+      pageSize: 99999, 
+      searchTerm: "",
+    });
+    return response.data.map(member => ({
+      ...member,
+      profileImageSrc: member.profileImageSrc
+        ? getFullImageUrl(member.profileImageSrc)
+        : defaultProfileImage,
+    }));
+  }}
+  transformData={(data) =>
+    [...data].sort((a, b) => a.memberId - b.memberId)
+  }
 
       columns={[
         { key: "memberId", label: "Member ID", enableSorting: true, type: "text" },
