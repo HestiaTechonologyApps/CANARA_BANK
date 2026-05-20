@@ -47,16 +47,38 @@ const ContributionMasterCreate: React.FC = () => {
     },
   };
 
-  const handleSubmit = async (formData: Record<string, any>) => {
-    if (!selectedMonth) throw new Error("Please select a month");
-    if (!selectedYear)  throw new Error("Please select a year");
+  // const handleSubmit = async (formData: Record<string, any>) => {
+  //   if (!selectedMonth) throw new Error("Please select a month");
+  //   if (!selectedYear)  throw new Error("Please select a year");
 
+  //   await ContributionMasterService.uploadAndSave({
+  //     MonthCode:        selectedMonth.monthCode,
+  //     YearOf:           Number(selectedYear.yearOf),
+  //     ContributionFile: formData.ContributionFile as File,
+  //   });
+  // };
+
+  const handleSubmit = async (formData: Record<string, any>) => {
+  if (!selectedMonth) throw new Error("Please select a month");
+  if (!selectedYear)  throw new Error("Please select a year");
+
+  try {
     await ContributionMasterService.uploadAndSave({
       MonthCode:        selectedMonth.monthCode,
       YearOf:           Number(selectedYear.yearOf),
       ContributionFile: formData.ContributionFile as File,
     });
-  };
+  } catch (error: any) {
+    const msg = error?.message || "";
+
+    if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
+      throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+    }
+
+    // Re-throw any other errors as-is
+    throw error;
+  }
+};
 
   return (
     <>

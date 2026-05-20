@@ -72,7 +72,25 @@ const ContributionMasterEdit: React.FC = () => {
     setSelectedYear(initialYear);
   };
 
-const handleUpdate = async (id: string, _formData: Record<string, any>) => {
+// const handleUpdate = async (id: string, _formData: Record<string, any>) => {
+//   if (!selectedMonth) throw new Error("Please select a month");
+//   if (!selectedYear)  throw new Error("Please select a year");
+
+//   const fileInput = document.querySelector(
+//     'input[type="file"][name="ContributionFile"]'
+//   ) as HTMLInputElement;
+//   const actualFile = fileInput?.files?.[0];
+
+//   if (!actualFile) throw new Error("Please select a contribution file");
+
+//   await MonthlyContributionMasterService.update({  
+//     id:               Number(id),
+//     MonthCode:        selectedMonth.monthCode,
+//     YearOf:           Number(selectedYear.yearOf),
+//     ContributionFile: actualFile,
+//   });
+// };
+ const handleUpdate = async (id: string, _formData: Record<string, any>) => {
   if (!selectedMonth) throw new Error("Please select a month");
   if (!selectedYear)  throw new Error("Please select a year");
 
@@ -83,14 +101,24 @@ const handleUpdate = async (id: string, _formData: Record<string, any>) => {
 
   if (!actualFile) throw new Error("Please select a contribution file");
 
-  await MonthlyContributionMasterService.update({  
-    id:               Number(id),
-    MonthCode:        selectedMonth.monthCode,
-    YearOf:           Number(selectedYear.yearOf),
-    ContributionFile: actualFile,
-  });
+  try {
+    await MonthlyContributionMasterService.update({
+      id:               Number(id),
+      MonthCode:        selectedMonth.monthCode,
+      YearOf:           Number(selectedYear.yearOf),
+      ContributionFile: actualFile,
+    });
+  } catch (error: any) {
+    const msg = error?.message || "";
+
+    if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
+      throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+    }
+
+    throw error;
+  }
 };
-  const popupHandlers = {
+const popupHandlers = {
     MonthCode: {
       value:       String(selectedMonth?.monthName ?? ""), 
       actualValue: selectedMonth?.monthCode,

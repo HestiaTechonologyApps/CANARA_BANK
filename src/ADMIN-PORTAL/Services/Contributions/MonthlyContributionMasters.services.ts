@@ -15,24 +15,47 @@ import type { ContributionDetail,
 export default class MonthlyContributionMasterService {
 
   // ── Upload and Save ──────────────────────────────────────────────
+  // static async uploadAndSave(
+  //   payload: ContributionUploadPayload
+  // ): Promise<ContributionUploadResponse> {
+  //   const formData = new FormData();
+  //   formData.append("MonthCode",        String(payload.MonthCode));
+  //   formData.append("YearOf",           String(payload.YearOf));
+  //   formData.append("ContributionFile", payload.ContributionFile);
+
+  //   const response = await HttpService.callApi<CustomResponse<ContributionUploadResponse>>(
+  //     API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.CREATE,
+  //     "POST",
+  //     formData,
+  //     false,
+  //     true   // isFormData
+  //   );
+
+  //   return response.value;
+  // }
   static async uploadAndSave(
-    payload: ContributionUploadPayload
-  ): Promise<ContributionUploadResponse> {
-    const formData = new FormData();
-    formData.append("MonthCode",        String(payload.MonthCode));
-    formData.append("YearOf",           String(payload.YearOf));
-    formData.append("ContributionFile", payload.ContributionFile);
+  payload: ContributionUploadPayload
+): Promise<ContributionUploadResponse> {
+  const formData = new FormData();
+  formData.append("MonthCode",        String(payload.MonthCode));
+  formData.append("YearOf",           String(payload.YearOf));
+  formData.append("ContributionFile", payload.ContributionFile);
 
-    const response = await HttpService.callApi<CustomResponse<ContributionUploadResponse>>(
-      API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.CREATE,
-      "POST",
-      formData,
-      false,
-      true   // isFormData
-    );
+  const response = await HttpService.callApi<CustomResponse<ContributionUploadResponse>>(
+    API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.CREATE,
+    "POST",
+    formData,
+    false,
+    true
+  );
 
-    return response.value;
+  // ── Throw if API reports failure so KiduCreate shows error ──
+  if (!response.isSucess && !response.isSuccess) {
+    throw new Error(response.customMessage || response.error || "Upload failed");
   }
+
+  return response.value;
+}
 
   // ── Get All Masters ──────────────────────────────────────────────
   static async getAll(): Promise<MonthlyContributionMaster[]> {
@@ -145,6 +168,24 @@ static async getReport(
 
 // ── Update Contribution ──────────────────────────────────────────
 
+// static async update(
+//   payload: ContributionUpdatePayload
+// ): Promise<ContributionUpdateResponse> {
+//   const formData = new FormData();
+//   formData.append("MonthCode",        String(payload.MonthCode));
+//   formData.append("YearOf",           String(payload.YearOf));
+//   formData.append("ContributionFile", payload.ContributionFile);
+
+//   const response = await HttpService.callApi<CustomResponse<ContributionUpdateResponse>>(
+//     API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.UPDATE(payload.id),
+//     "PUT",
+//     formData,
+//     false,
+//     true
+//   );
+
+//   return response.value;  
+// }
 static async update(
   payload: ContributionUpdatePayload
 ): Promise<ContributionUpdateResponse> {
@@ -161,7 +202,12 @@ static async update(
     true
   );
 
-  return response.value;  
+  // ── Throw if API reports failure ──
+  if (!response.isSucess && !response.isSuccess) {
+    throw new Error(response.customMessage || response.error || "Update failed");
+  }
+
+  return response.value;
 }
 
 }

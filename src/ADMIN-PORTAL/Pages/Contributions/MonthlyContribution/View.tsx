@@ -199,7 +199,7 @@ const REPORT_TABS: Array<{
   { type: "WRONGBRANCH", label: "Wrong Branch",  icon: "🏢", accent: "#e67e22", description: "Records where the DP code doesn't match any known branch.",      actionLabel: "+ Create Branch", modalType: "branch", blocksForward: true },
   { type: "WRONGCIRCLE", label: "Wrong Circle",  icon: "⭕", accent: "#8e3b46", description: "Records where the circle code doesn't match any known circle.",   actionLabel: "+ Create Circle", modalType: "circle", blocksForward: true },
   { type: "PARKEDITEMS", label: "Parked Items",  icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution.", blocksForward: true },
-  { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
+ // { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
   { type: "ALL",         label: "All Records",   icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
 ];
 
