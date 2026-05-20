@@ -72,16 +72,42 @@ const ContactMessageView: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: Date | string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  // const formatDate = (dateString: Date | string) => {
+  //   const date = new Date(dateString);
+  //   return date.toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "long",
+  //     day: "numeric",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //   });
+  // };
+const formatDate = (dateString: Date | string | null | undefined) => {
+  if (!dateString) return "—";
+
+  if (typeof dateString === "string") {
+    const [datePart, timePart] = dateString.split("T");
+    const [year, month, day] = datePart.split("-");
+    const months = ["January","February","March","April","May","June",
+                    "July","August","September","October","November","December"];
+
+    if (timePart) {
+      const [hours, minutes] = timePart.split(":");
+      // Add 12.5 hours (server is UTC-7, we need IST UTC+5:30)
+      const totalMinutes = parseInt(hours) * 60 + parseInt(minutes) + 750; // 750 = 12.5 * 60
+      const correctedHours = Math.floor(totalMinutes / 60) % 24;
+      const correctedMinutes = totalMinutes % 60;
+      const ampm = correctedHours >= 12 ? "pm" : "am";
+      const h12 = correctedHours % 12 || 12;
+      const mm = String(correctedMinutes).padStart(2, "0");
+      return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year} at ${h12}:${mm} ${ampm}`;
+    }
+
+    return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
+  }
+
+  return "—";
+};
 
   if (loading) {
     return <KiduLoader type="..." />;
