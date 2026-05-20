@@ -125,6 +125,8 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const [previewUrl, setPreviewUrl] = useState<string>(imageConfig?.defaultImage || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  const [resetKey, setResetKey] = useState(0);
+
   // Cleanup blob URLs
   useEffect(() => {
     return () => {
@@ -472,6 +474,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
       case "file":
         return (
           <Form.Control
+          key={resetKey} 
             type="file"
             name={name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -663,7 +666,11 @@ fieldChangeHandlers?.[name]?.(updatedValue);
                   initialValues={initialValues}
                   setFormData={setFormData}
                   setErrors={setErrors}
-                  onReset={onReset}
+                  // onReset={onReset}
+                  onReset={() => {
+    setResetKey(prev => prev + 1);  
+    onReset?.();
+  }}
                 />
               )}
               <KiduSubmit

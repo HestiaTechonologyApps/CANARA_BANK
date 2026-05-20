@@ -7,9 +7,10 @@ import type { State } from "../../Types/Settings/States.types";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//import { toast, ToastContainer } from "react-toastify";
+//import "react-toastify/dist/ReactToastify.css";
 //import Circle_StatePopup from "./Circle-StatePopup";
+import toast from "react-hot-toast";
 
 const BranchCreate: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -66,21 +67,31 @@ const BranchCreate: React.FC = () => {
     },
     circleId: {
       value: selectedCircle?.name || "",
+      // onOpen: () => {
+      //   if (!selectedState) {
+      //     toast.warning("Please select a State first to continue.", {
+      //       position: "top-right",
+      //       autoClose: 3000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       pauseOnHover: true,
+      //       draggable: true,
+      //       theme: "colored",
+      //     });
+      //     return;
+      //   }
+      //   setShowCirclePopup(true);
+      // },
       onOpen: () => {
-        if (!selectedState) {
-          toast.warning("Please select a State first to continue.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-          });
-          return;
-        }
-        setShowCirclePopup(true);
-      },
+  if (!selectedState) {
+    toast("Please select a State first to continue.", {
+      icon: "⚠️",
+      duration: 3000,
+    });
+    return;
+  }
+  setShowCirclePopup(true);
+},
     },
   };
 
@@ -127,7 +138,7 @@ const BranchCreate: React.FC = () => {
       />
 
       {/* Toast Container */}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </>
   );
 };
