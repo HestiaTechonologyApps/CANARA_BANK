@@ -10,7 +10,8 @@ interface KiduPopupProps<T> {
   handleClose: () => void;
   title: string;
   fetchEndpoint: string;
-  columns: { key: keyof T; label: string }[];
+  //columns: { key: keyof T; label: string }[];
+  columns: { key: keyof T; label: string; type?: 'text' | 'checkbox' | 'image' | 'rating' | 'date'; render?: (value: unknown) => React.ReactNode }[];
   onSelect?: (item: T) => void;
   AddModalComponent?: React.ComponentType<{
     show: boolean;
@@ -19,8 +20,9 @@ interface KiduPopupProps<T> {
   }>;
   idKey?: string;
   rowsPerPage?: number;
-  searchKeys?: (keyof T)[]; // Keys to search in
-  showAddButton?: boolean; // Control whether to show add button in empty state
+  searchKeys?: (keyof T)[]; 
+  showAddButton?: boolean; 
+  filterData?: (items: T[]) => T[];
 }
 
 function KiduPopup<T extends Record<string, any>>({
@@ -34,7 +36,8 @@ function KiduPopup<T extends Record<string, any>>({
   idKey = "id",
   rowsPerPage = 10,
   searchKeys,
-  showAddButton = true // Default to true for backward compatibility
+  showAddButton = true,
+  filterData, 
 }: KiduPopupProps<T>) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -47,23 +50,42 @@ function KiduPopup<T extends Record<string, any>>({
     
     setLoading(true);
     HttpService.callApi<CustomResponse<T[]>>(fetchEndpoint, "GET")
-      .then((res) => {
-        console.log("✅ Fetched all data:", res);
+      // .then((res) => {
+      //   console.log("✅ Fetched all data:", res);
         
-        if (Array.isArray(res)) {
-          setAllData(res);
-        } else if ((res.isSuccess || res.isSucess) && res.value) {
-          if (Array.isArray(res.value)) {
-            setAllData(res.value);
-          } else if (typeof res.value === "object" && "data" in res.value) {
-            const valueObj = res.value as any;
-            setAllData(Array.isArray(valueObj.data) ? valueObj.data : []);
-          }
-        } else {
-          console.warn("⚠️ Unexpected API format:", res);
-          setAllData([]);
-        }
-      })
+      //   if (Array.isArray(res)) {
+      //     setAllData(res);
+      //   } else if ((res.isSuccess || res.isSucess) && res.value) {
+      //     if (Array.isArray(res.value)) {
+      //       setAllData(res.value);
+      //     } else if (typeof res.value === "object" && "data" in res.value) {
+      //       const valueObj = res.value as any;
+      //       setAllData(Array.isArray(valueObj.data) ? valueObj.data : []);
+      //     }
+      //   } else {
+      //     console.warn("⚠️ Unexpected API format:", res);
+      //     setAllData([]);
+      //   }
+      // })
+      .then((res) => {
+  console.log("✅ Fetched all data:", res);
+
+  const applyFilter = (arr: T[]) => filterData ? filterData(arr) : arr;
+
+  if (Array.isArray(res)) {
+    setAllData(applyFilter(res));
+  } else if ((res.isSuccess || res.isSucess) && res.value) {
+    if (Array.isArray(res.value)) {
+      setAllData(applyFilter(res.value));
+    } else if (typeof res.value === "object" && "data" in res.value) {
+      const valueObj = res.value as any;
+      setAllData(applyFilter(Array.isArray(valueObj.data) ? valueObj.data : []));
+    }
+  } else {
+    console.warn("⚠️ Unexpected API format:", res);
+    setAllData([]);
+  }
+})
       .catch((err) => {
         console.error("❌ Error fetching popup data:", err);
         setAllData([]);
@@ -159,7 +181,9 @@ function KiduPopup<T extends Record<string, any>>({
               <KiduServerTable
                 columns={columns.map(col => ({ 
                   key: String(col.key), 
-                  label: col.label 
+                  label: col.label,
+                  type: col.type,
+                  render: col.render,
                 }))}
                 idKey={idKey}
                 fetchData={fetchData}

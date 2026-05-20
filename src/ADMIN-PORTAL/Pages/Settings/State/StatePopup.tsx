@@ -20,7 +20,8 @@ const StatePopup: React.FC<StatePopupProps> = ({
     { key: "stateId" as keyof State, label: "ID" },
     { key: "name" as keyof State, label: "State Name" },
     { key: "abbreviation" as keyof State, label: "Abbreviation" },
-    { key: "isActive" as keyof State, label: "Active" }
+   // { key: "isActive" as keyof State, label: "Active" }
+   { key: "isActive" as keyof State, label: "Active", type: "checkbox" as const },
   ];
 
   return (

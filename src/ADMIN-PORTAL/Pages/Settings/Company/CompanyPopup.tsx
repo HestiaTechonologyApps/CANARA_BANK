@@ -21,7 +21,8 @@ const CompanyPopup: React.FC<CompanyPopupProps> = ({
     { key: "contactNumber" as keyof Company, label: "Contact" },
     { key: "city" as keyof Company, label: "City" },
     { key: "state" as keyof Company, label: "State" },
-    { key: "isActive" as keyof Company, label: "Active" },
+    //{ key: "isActive" as keyof Company, label: "Active" },
+    { key: "isActive" as keyof Company, label: "Active", type: "checkbox" as const },
   ];
 
   return (

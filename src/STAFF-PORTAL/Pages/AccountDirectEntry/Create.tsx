@@ -138,7 +138,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
           fields={fields}
           onSubmit={handleSubmit}
           popupHandlers={popupHandlers}
-          submitButtonText="Create Account Direct Entry"
+          submitButtonText="Create"
           showResetButton
           navigateOnSuccess="/staff-portal/contribution-list"
           successMessage="Entry created successfully"

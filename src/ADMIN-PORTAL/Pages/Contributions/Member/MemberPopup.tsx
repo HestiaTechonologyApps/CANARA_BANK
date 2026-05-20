@@ -22,7 +22,8 @@ const MemberPopup: React.FC<MemberPopupProps> = ({
     { key: "name" as keyof Member, label: "Name" },
     { key: "designationName" as keyof Member, label: "Designation" },
     { key: "branchName" as keyof Member, label: "Branch" },
-    { key: "isRegCompleted" as keyof Member, label: "Reg.Completed" },
+    //{ key: "isRegCompleted" as keyof Member, label: "Reg.Completed" },
+     { key: "isRegCompleted" as keyof Member, label: "Reg.Completed", type: "checkbox" as const },
   ];
 
   return (
@@ -37,6 +38,7 @@ const MemberPopup: React.FC<MemberPopupProps> = ({
       idKey="memberId"
       rowsPerPage={10}
       showAddButton={showAddButton}
+      filterData={(members) => members.filter(m => m.isRegCompleted === true)}
     />
   );
 };

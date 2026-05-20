@@ -40,7 +40,7 @@ const StaffAccountDirectEntryList: React.FC = () => {
       subtitle="Manage entry with search and pagination"
       columns={columns}
       idKey="accountsDirectEntryID"
-      addButtonLabel="Add Entry"
+      addButtonLabel="Add New"
       fetchService={fetchService}
       transformData={transformData}
       addRoute="/staff-portal/contributions/staffaccountDirectEntry-create"
