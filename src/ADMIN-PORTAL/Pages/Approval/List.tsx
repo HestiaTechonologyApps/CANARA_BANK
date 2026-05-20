@@ -6,8 +6,12 @@ import ContributionMasterService from "../../Services/Contributions/Contribution
 const ContributionMasterApprovalList: React.FC = () => {
     return (
         <KiduServerTableList
+            //fetchService={ContributionMasterService.getAll}
             fetchService={ContributionMasterService.getAll}
-
+            transformData={(data) =>
+                [...data].sort((a, b) => a.contributionMasterId - b.contributionMasterId)
+            }
+           
             columns={[
                 { key: "contributionMasterId", label: "ID", enableSorting: true, type: "text" },
                 { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
