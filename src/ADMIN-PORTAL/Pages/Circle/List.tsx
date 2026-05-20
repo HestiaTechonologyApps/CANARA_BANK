@@ -47,7 +47,7 @@ const CircleList: React.FC = () => {
       idKey="circleId"
       title="Circle Management"
       subtitle="Manage circles with search, filter, and pagination"
-      addButtonLabel="Add Circle"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/circle-create"
       editRoute="/dashboard/settings/circle-edit"
       viewRoute="/dashboard/settings/circle-view"

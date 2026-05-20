@@ -26,7 +26,7 @@ const StateList: React.FC = () => {
       idKey="stateId"
       title="State Management"
       subtitle="Manage states with search, filter, and pagination."
-      addButtonLabel="Add State"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/state-create"
       editRoute="/dashboard/settings/state-edit"
       viewRoute="/dashboard/settings/state-view"

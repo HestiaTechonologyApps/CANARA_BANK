@@ -40,7 +40,7 @@ const DayQuoteList: React.FC = () => {
       idKey="dayQuoteId"
       title="Day Quotes Management"
       subtitle="Manage day quotes articles with search, filter, and pagination."
-      addButtonLabel="Add Quotes"
+      addButtonLabel="Add New"
       addRoute="/dashboard/cms/dayquote-create"
       editRoute="/dashboard/cms/dayquote-edit"
       viewRoute="/dashboard/cms/dayquote-view"

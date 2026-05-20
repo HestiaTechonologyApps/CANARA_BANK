@@ -21,7 +21,7 @@ const UserTypeList: React.FC = () => {
       idKey="userTypeId"
       title="User Type Management"
       subtitle="Manage user types with search and pagination"
-      addButtonLabel="Add User Type"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/usertype-create"
       editRoute="/dashboard/settings/usertype-edit"
       viewRoute="/dashboard/settings/usertype-view"

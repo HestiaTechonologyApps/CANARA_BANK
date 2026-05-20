@@ -386,7 +386,7 @@ const ContactMessageView: React.FC = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="mt-4 pt-3" style={{ borderTop: "1px solid #dee2e6" }}>
+              {/* <div className="mt-4 pt-3" style={{ borderTop: "1px solid #dee2e6" }}>
                 <h6 style={{ fontSize: "14px", fontWeight: 600, color: "#1B3763" }}>
                   Quick Actions
                 </h6>
@@ -400,7 +400,7 @@ const ContactMessageView: React.FC = () => {
                     Send Email
                   </a>
                 </div>
-              </div>
+              </div> */}
             </Card.Body>
           </Card>
         </Col>

@@ -21,7 +21,7 @@ const UserRoleRightList: React.FC = () => {
       idKey="userRoleRightId"
       title="User Role Right List"
       subtitle="Manage access control for user roles"
-      addButtonLabel="Add Role Right"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/userroleright-create"
       editRoute="/dashboard/settings/userroleright-edit"
       viewRoute="/dashboard/settings/userroleright-view"

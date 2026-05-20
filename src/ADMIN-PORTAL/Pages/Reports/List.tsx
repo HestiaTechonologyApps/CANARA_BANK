@@ -29,7 +29,7 @@ const ReportsList: React.FC = () => {
       idKey="reportId"
       title="Reports Management"
       subtitle="Manage reports with search, filter, and pagination."
-      addButtonLabel="Add Report"
+      addButtonLabel="Add New"
       addRoute="/dashboard/report-create"
       editRoute="/dashboard/report-edit"
       viewRoute="/dashboard/report-view"

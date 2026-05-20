@@ -32,7 +32,7 @@ const UserList: React.FC = () => {
       idKey="userId"
       title="User Management"
       subtitle="Manage system users with search and pagination"
-      addButtonLabel="Add User"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/user-create"
       editRoute="/dashboard/settings/user-edit"
       viewRoute="/dashboard/settings/user-view"

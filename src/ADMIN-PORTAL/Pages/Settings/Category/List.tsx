@@ -21,7 +21,7 @@ const CategoryList: React.FC = () => {
       idKey="categoryId"
       title="Category Management"
       subtitle="Manage categories with search, filter, and pagination"
-      addButtonLabel="Add Category"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/category-create"
       editRoute="/dashboard/settings/category-edit"
       viewRoute="/dashboard/settings/category-view"

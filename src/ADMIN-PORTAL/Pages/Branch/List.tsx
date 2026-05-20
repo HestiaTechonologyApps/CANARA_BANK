@@ -46,11 +46,11 @@ const BranchList: React.FC = () => {
        { 
     key: "status", 
     label: "Status", 
-    type: "select",                          // 👈 changed from "text"
+    type: "select",                         
     options: [
       {value: "Active", label: "Active"},
       {value: "Inactive", label: "Inactive"},
-    ]       // 👈 exact values to match
+    ]       
   },
    
       ]}
@@ -58,7 +58,7 @@ const BranchList: React.FC = () => {
       idKey="branchId"
       title="Branch Management"
       subtitle="Manage branches with search, filter, and pagination."
-      addButtonLabel="Add Branch"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/branch-create"
       editRoute="/dashboard/settings/branch-edit"
       viewRoute="/dashboard/settings/branch-view"

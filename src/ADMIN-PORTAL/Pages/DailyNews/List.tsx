@@ -45,7 +45,7 @@ const DailyNewsList: React.FC = () => {
       idKey="dailyNewsId"
       title="Daily News Management"
       subtitle="Manage daily news articles with search, filter, and pagination."
-      addButtonLabel="Add News"
+      addButtonLabel="Add New"
       addRoute="/dashboard/cms/dailynews-create"
       editRoute="/dashboard/cms/dailynews-edit"
       viewRoute="/dashboard/cms/dailynews-view"

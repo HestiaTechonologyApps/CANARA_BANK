@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { UserPlus, Eye, EyeOff } from "lucide-react";
+import { UserPlus, Eye, EyeOff, X } from "lucide-react";
 import "../Style/Auth.css";
 import type { RegisterRequest } from "../../Types/Auth.types";
 import AuthService from "../../Services/Auth.services";
@@ -29,42 +29,44 @@ interface FormErrors {
   phoneNumber?: string;
 }
 
-const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
-  const [formData, setFormData] = useState<FormData>({
-    staffNo: "",
-    userName: "",
-    password: "",
-    userEmail: "",
-    phoneNumber: "",
-    address: "",
-  });
+const EMPTY_FORM: FormData = {
+  staffNo: "",
+  userName: "",
+  password: "",
+  userEmail: "",
+  phoneNumber: "",
+  address: "",
+};
 
+const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
+  const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ── Reset all fields every time the modal opens ──
+  useEffect(() => {
+    if (show) {
+      setFormData(EMPTY_FORM);
+      setErrors({});
+      setShowPassword(false);
+      setIsSubmitting(false);
+    }
+  }, [show]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Clear error for this field when user starts typing
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Staff Number validation
     if (!formData.staffNo.trim()) {
       newErrors.staffNo = "Staff number is required";
     } else if (!/^\d+$/.test(formData.staffNo)) {
@@ -73,7 +75,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       newErrors.staffNo = "Staff number must be a positive number";
     }
 
-    // Username validation
     if (!formData.userName.trim()) {
       newErrors.userName = "Username is required";
     } else if (formData.userName.trim().length < 3) {
@@ -84,23 +85,10 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       newErrors.userName = "Username must contain at least one letter";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
     }
-    // else if (formData.password.length < 6) {
-    //   newErrors.password = "Password must be at least 6 characters";
-    // } else if (!/(?=.*[a-z])/.test(formData.password)) {
-    //   newErrors.password = "Password must contain at least one lowercase letter";
-    // } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-    //   newErrors.password = "Password must contain at least one uppercase letter";
-    // } else if (!/(?=.*\d)/.test(formData.password)) {
-    //   newErrors.password = "Password must contain at least one number";
-    // } else if (!/(?=.*[@$!%*?&#])/.test(formData.password)) {
-    //   newErrors.password = "Password must contain at least one special character (@$!%*?&#)";
-    // }
 
-    // Email validation
     if (!formData.userEmail.trim()) {
       newErrors.userEmail = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail)) {
@@ -109,7 +97,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       newErrors.userEmail = "Please enter a valid email address (e.g. name@example.com)";
     }
 
-    // Phone Number validation
     if (!formData.phoneNumber.trim()) {
       newErrors.phoneNumber = "Phone number is required";
     } else if (!/^\d{10}$/.test(formData.phoneNumber)) {
@@ -143,22 +130,8 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
       const response = await AuthService.register(registerData);
       console.log("REGISTER RESPONSE 👉", response);
 
-
       if (response.isSucess) {
         toast.success(response.customMessage || "Registration successful! Please login.");
-
-        // Reset form
-        setFormData({
-          staffNo: "",
-          userName: "",
-          password: "",
-          userEmail: "",
-          phoneNumber: "",
-          address: "",
-        });
-        setErrors({});
-
-        // Close modal and redirect to login
         setTimeout(() => {
           onClose();
           onLogin();
@@ -174,14 +147,36 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+  const handleClose = () => {
+    onClose();
   };
 
   return (
-    <Modal show={show} onHide={onClose} centered className="auth-modal">
-      {/* Header Section (No Change) */}
-      <div className="auth-header">
+    <Modal show={show} onHide={handleClose} centered className="auth-modal">
+      {/* ── Header ── */}
+      <div className="auth-header" style={{ position: "relative" }}>
+
+       {/* ── Close button ── */}
+<button
+  type="button"
+  onClick={handleClose}
+  disabled={isSubmitting}
+  aria-label="Close"
+  style={{
+    position: "absolute",
+    top: "12px",
+    right: "16px",
+    background: "none",
+    border: "none",
+    cursor: isSubmitting ? "not-allowed" : "pointer",
+    padding: "4px",
+    lineHeight: 1,
+    zIndex: 10,
+  }}
+>
+  <X size={20} color="white" opacity={isSubmitting ? 0.3 : 1} />
+</button>
+
         <div className="auth-icon">
           <UserPlus size={23} className="auth-icon-gold" />
         </div>
@@ -189,7 +184,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
         <p className="auth-sub">Join our community of members</p>
       </div>
 
-      {/* Body Starts */}
+      {/* ── Body ── */}
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
           <Row>
@@ -239,7 +234,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                   Password <span className="text-danger">*</span>
                 </Form.Label>
                 <div className="password-wrapper position-relative">
-                  {/* <Lock className="input-icon" /> */}
                   <Form.Control
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -252,18 +246,8 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                   />
                   <button
                     type="button"
-                    onClick={togglePasswordVisibility}
+                    onClick={() => setShowPassword((prev) => !prev)}
                     className="password-eye"
-                    // style={{
-                    //   right: "10px",
-                    //   top: "50%",
-                    //   transform: "translateY(-50%)",
-                    //   padding: "0",
-                    //   border: "none",
-                    //   background: "none",
-                    //   cursor: "pointer",
-                    //   zIndex: 10,
-                    // }}
                     disabled={isSubmitting}
                   >
                     {showPassword ? (
@@ -284,8 +268,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                 <Form.Label>
                   Email Id <span className="text-danger">*</span>
                 </Form.Label>
-                {/* <div className="input-icon-wrapper">
-                  <Mail className="input-icon" /> */}
                 <Form.Control
                   type="text"
                   name="userEmail"
@@ -298,7 +280,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
                 <Form.Control.Feedback type="invalid">
                   {errors.userEmail}
                 </Form.Control.Feedback>
-                {/* </div> */}
               </Form.Group>
             </Col>
 
@@ -339,12 +320,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
             </Col>
           </Row>
 
-          {/* Register Button (No Change) */}
-          <Button
-            type="submit"
-            className="auth-btn w-100"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" className="auth-btn w-100" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -358,7 +334,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
           </Button>
         </Form>
 
-        {/* Footer Section (No Change) */}
         <div className="auth-footer">
           Already have an account?{" "}
           <button className="auth-link" onClick={onLogin} disabled={isSubmitting}>
@@ -368,10 +343,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
 
         <p className="auth-help">
           Need help? Call{" "}
-          <a
-            href="tel:047124721760"
-            className="text-secondary text-decoration-none"
-          >
+          <a href="tel:047124721760" className="text-secondary text-decoration-none">
             047124721760
           </a>
         </p>

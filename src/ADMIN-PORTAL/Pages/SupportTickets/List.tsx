@@ -23,7 +23,7 @@ const SupportTicketList: React.FC = () => {
       idKey="supportTicketId"
       title="Support Tickets"
       subtitle="Manage support tickets with search, filter, and pagination."
-      addButtonLabel="Add Ticket"
+      addButtonLabel="Add New"
       addRoute="/dashboard/supportTickets-create"
       editRoute="/dashboard/supportTickets-edit"
       viewRoute="/dashboard/supportTickets-view"

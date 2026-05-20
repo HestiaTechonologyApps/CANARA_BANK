@@ -1,7 +1,7 @@
 // PUBLIC-PORTAL/Auth/LoginModal.tsx
-import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import React, { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import { LogIn, Lock, Mail, Eye, EyeOff } from "lucide-react";
+import { LogIn, Lock, Mail, Eye, EyeOff, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../Services/Auth.services";
@@ -28,6 +28,19 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+  // ── Reset all fields every time the modal opens ──
+  useEffect(() => {
+    if (show) {
+      setUserName("");
+      setPassword("");
+      setErrors({ userName: "", password: "" });
+      setSubmitted(false);
+      setShowPassword(false);
+      setRememberMe(false);
+      setIsLoading(false);
+    }
+  }, [show]);
 
   const validateUserName = (value: string): string => {
     if (!value) return "Username is required";
@@ -68,15 +81,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       try {
         const response = await AuthService.login({ userName, password });
 
-        // ─── Unified failure path ────────────────────────────────────────────
-        // Whether the backend says wrong username OR wrong password, we always
-        // show "Invalid username or password" so we never leak which one failed.
         if (!response.isSucess) {
           toast.error("Invalid username or password");
           return;
         }
 
-        // ─── Extra guard: role validation ────────────────────────────────────
         if (!response.value) {
           toast.error("Invalid username or password");
           return;
@@ -103,23 +112,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
         }, 1000);
 
       } catch (error: any) {
-        // ─── Network / unexpected errors ─────────────────────────────────────
-        // Even if an exception is thrown (e.g. 400/500 HTTP error from backend),
-        // we still show the same friendly message instead of "An unexpected error".
         console.error("Login error:", error);
 
-        // Try to extract a server message first; fall back to the generic one.
         const serverMessage =
           error?.response?.data?.customMessage ||
           error?.response?.data?.error ||
           error?.message;
 
-        // For auth failures (400) always show the safe message
         const status = error?.response?.status;
         if (!status || status === 400 || status === 401) {
           toast.error("Invalid username or password");
         } else {
-          // Only show a different message for genuine server errors (500 etc.)
           toast.error(serverMessage || "Invalid username or password");
         }
       } finally {
@@ -140,7 +143,29 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
 
   return (
     <Modal show={show} onHide={handleClose} centered className="auth-modal">
-      <div className="auth-header">
+      <div className="auth-header" style={{ position: "relative" }}>
+
+        {/* ── Close button ── */}
+        <button
+          type="button"
+          onClick={handleClose}
+          disabled={isLoading}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "16px",
+            background: "none",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            padding: "4px",
+            lineHeight: 1,
+            zIndex: 10,
+          }}
+        >
+          <X size={20} color="white" opacity={isLoading ? 0.3 : 1} />
+        </button>
+
         <div className="auth-icon">
           <LogIn size={23} className="auth-icon-gold" />
         </div>
@@ -178,14 +203,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
             <Form.Label>
               Password <span className="text-danger">*</span>
             </Form.Label>
-            {/*
-              FIX Canara_81: replaced `input-icon-wrapper` with a plain
-              `position:relative` div so only ONE eye icon appears.
-              The lock icon is placed on the left with absolute positioning;
-              the eye toggle is placed on the right — no CSS class duplication.
-            */}
             <div style={{ position: "relative" }}>
-              {/* Left lock icon */}
               <Lock
                 size={18}
                 style={{
@@ -209,7 +227,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
                 style={{ paddingLeft: "38px", paddingRight: "45px" }}
               />
 
-              {/* Right eye-toggle button — the ONLY eye icon */}
               <button
                 type="button"
                 onClick={() => !isLoading && setShowPassword(!showPassword)}

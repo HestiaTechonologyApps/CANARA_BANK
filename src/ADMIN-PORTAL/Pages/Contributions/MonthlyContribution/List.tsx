@@ -46,7 +46,7 @@ const ContributionMasterList: React.FC = () => {
       idKey="contributionMasterId"
       title="Monthly Contribution"
       subtitle="Manage monthly contribution files with search, filter, and pagination."
-      addButtonLabel="Upload File"
+      addButtonLabel="Add New"
       addRoute="/dashboard/contributions/monthlyContribution-create"
       editRoute="/dashboard/contributions/monthlyContribution-edit"
       viewRoute="/dashboard/contributions/monthlyContribution-view"

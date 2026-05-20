@@ -21,7 +21,7 @@ const MonthList: React.FC = () => {
       idKey="monthCode"
       title="Month List"
       subtitle="Manage months with search, sort, and pagination"
-      addButtonLabel="Add Month"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/month-create"
       editRoute="/dashboard/settings/month-edit"
       viewRoute="/dashboard/settings/month-view"

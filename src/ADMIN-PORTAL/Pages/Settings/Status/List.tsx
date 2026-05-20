@@ -24,7 +24,7 @@ const StatusList: React.FC = () => {
       idKey="statusId"
       title="Status Management"
       subtitle="Manage system statuses with search, filter, and pagination"
-      addButtonLabel="Add Status"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/status-create"
       editRoute="/dashboard/settings/status-edit"
       viewRoute="/dashboard/settings/status-view"

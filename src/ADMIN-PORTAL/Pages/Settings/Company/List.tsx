@@ -49,7 +49,7 @@ const CompanyList: React.FC = () => {
       idKey="companyId"
       title="Company Management"
       subtitle="Manage companies with search, filter, and pagination"
-      addButtonLabel="Add Company"
+      addButtonLabel="Add New"
       addRoute="/dashboard/settings/company-create"
       editRoute="/dashboard/settings/company-edit"
       viewRoute="/dashboard/settings/company-view"
