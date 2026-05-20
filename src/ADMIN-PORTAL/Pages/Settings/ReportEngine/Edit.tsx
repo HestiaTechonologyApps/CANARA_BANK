@@ -50,7 +50,7 @@ const ReportEngineEdit: React.FC = () => {
       fields={fields}
       onFetch={handleFetch}
       onUpdate={handleUpdate}
-      submitButtonText="Update Report"
+      submitButtonText="Update Report Engine"
       showResetButton={true}
       successMessage="Report Engine updated successfully!"
       errorMessage="Failed to update report engine. Please try again."

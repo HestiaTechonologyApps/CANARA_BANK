@@ -28,7 +28,7 @@ const AttachmentList: React.FC = () => {
       idKey="attachmentId"
       title="Attachments"
       subtitle="Manage attachments uploaded"
-      addButtonLabel="Add File"
+      addButtonLabel="Add New"
       addRoute="/dashboard/cms/attachments-create"
       editRoute="/dashboard/cms/attachments-edit"
       viewRoute="/dashboard/cms/attachments-view"

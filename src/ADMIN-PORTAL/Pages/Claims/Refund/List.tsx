@@ -32,7 +32,7 @@ const RefundContributionList: React.FC = () => {
       idKey="refundContributionId"
       title="Refund Contribution Management"
       subtitle="Manage refund contributions with search, filter, and pagination."
-      addButtonLabel="Add Refund"
+      addButtonLabel="Add New"
       addRoute="/dashboard/claims/refundcontribution-create"
       editRoute="/dashboard/claims/refundcontribution-edit"
       viewRoute="/dashboard/claims/refundcontribution-view"

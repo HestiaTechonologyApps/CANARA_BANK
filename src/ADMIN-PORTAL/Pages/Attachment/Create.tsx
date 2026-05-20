@@ -25,7 +25,7 @@ const AttachmentCreate: React.FC = () => {
       title="Upload Attachment"
       fields={fields}
       onSubmit={handleSubmit}
-      submitButtonText="Upload Attachment"
+      submitButtonText="Create Attachment"
       showResetButton
       successMessage="Attachment uploaded successfully!"
       errorMessage="Failed to upload attachment. Please try again."

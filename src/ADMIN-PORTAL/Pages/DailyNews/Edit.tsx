@@ -57,7 +57,7 @@ const handleFetch = async (id: string) => {
         onFetch={handleFetch}
         onUpdate={handleUpdate}
         paramName="dailyNewsId"
-        submitButtonText="Update Daily News"
+        submitButtonText="Update News"
         showResetButton
         successMessage="Daily News updated successfully!"
         errorMessage="Failed to update Daily News. Please try again."

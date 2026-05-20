@@ -27,7 +27,7 @@ const ReportEngineCreate: React.FC = () => {
       title="Create Report Engine"
       fields={fields}
       onSubmit={handleSubmit}
-      submitButtonText="Create Report"
+      submitButtonText="Create Report Engine"
       showResetButton
       successMessage="Report Engine created successfully!"
       errorMessage="Failed to create report engine. Please try again."

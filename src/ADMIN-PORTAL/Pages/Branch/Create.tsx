@@ -98,6 +98,7 @@ const BranchCreate: React.FC = () => {
         popupHandlers={popupHandlers}
         options={{ status: statusOptions }}
         showResetButton
+        submitButtonText="Create Branch"
         navigateOnSuccess="/dashboard/settings/branch-list"
         successMessage="Branch created successfully!"
         errorMessage="Failed to create branch. Please try again."

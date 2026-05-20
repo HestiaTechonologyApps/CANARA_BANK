@@ -46,7 +46,7 @@ const MemberList: React.FC = () => {
       idKey="memberId"
       title="Member Management"
       subtitle="Manage members with search, filter, and pagination."
-      addButtonLabel="Add Member"
+      addButtonLabel="Add New"
       addRoute="/dashboard/contributions/member-create"
       editRoute="/dashboard/contributions/member-edit"
       viewRoute="/dashboard/contributions/member-view"

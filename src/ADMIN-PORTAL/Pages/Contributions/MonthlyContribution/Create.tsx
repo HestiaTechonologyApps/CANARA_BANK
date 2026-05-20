@@ -64,7 +64,7 @@ const ContributionMasterCreate: React.FC = () => {
         title="Monthly Contribution"
         fields={fields}
         onSubmit={handleSubmit}
-        submitButtonText="Create"
+        submitButtonText="Create Contribution"
         showResetButton
         showBackButton
         successMessage="Contribution file uploaded successfully!"
