@@ -10,6 +10,6 @@ export interface SupportTicket {
   isApproved: boolean;
   approvedByUserId?: number;
   approvedDate?: Date | string;
-  approvedDateString?: Date | string;   // ✅ FIXED
+  approvedDateString?: Date | string;   
   auditLogs?: AuditTrails[];
 }

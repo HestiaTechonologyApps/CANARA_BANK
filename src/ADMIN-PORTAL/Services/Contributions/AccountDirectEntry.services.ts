@@ -5,9 +5,7 @@ import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { AccountDirectEntry } from "../../Types/Contributions/AccountDirectEntry.types";
 
 const AccountDirectEntryService = {
-  /**
-   * 🔹 Get all account direct entries
-   */
+  
   async getAllAccountDirectEntries(): Promise<AccountDirectEntry[]> {
     const response = await HttpService.callApi<
       CustomResponse<AccountDirectEntry[]>
@@ -18,9 +16,7 @@ const AccountDirectEntryService = {
     return response.value;
   },
 
-  /**
-   * 🔹 Get account direct entry by ID
-   */
+ 
   async getAccountDirectEntryById(
     id: number
   ): Promise<CustomResponse<AccountDirectEntry>> {
@@ -33,9 +29,7 @@ const AccountDirectEntryService = {
     return response;
   },
 
-  /**
-   * 🔹 Create new account direct entry
-   */
+ 
   async createAccountDirectEntry(
     data: Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs">
   ): Promise<AccountDirectEntry> {
@@ -49,9 +43,7 @@ const AccountDirectEntryService = {
     return response.value;
   },
 
-  /**
-   * 🔹 Update existing account direct entry
-   */
+ 
   async updateAccountDirectEntry(
     id: number,
     data: Partial<Omit<AccountDirectEntry, "accountsDirectEntryID" | "auditLogs">>
@@ -66,9 +58,7 @@ const AccountDirectEntryService = {
     return response.value;
   },
 
-  /**
-   * 🔹 Delete account direct entry
-   */
+  
   async deleteAccountDirectEntry(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.ACCOUNT_DIRECT_ENTRY.DELETE(id),
@@ -76,9 +66,7 @@ const AccountDirectEntryService = {
     );
   },
 
-  /**
-   * 🔹 Get account direct entries by Member / Staff ID
-   */
+ 
   async getAccountDirectEntryByStaffId(
     memberId: number
   ): Promise<CustomResponse<AccountDirectEntry[]>> {

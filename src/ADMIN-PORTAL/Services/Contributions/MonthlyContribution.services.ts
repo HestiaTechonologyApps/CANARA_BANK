@@ -52,7 +52,7 @@ const MonthlyContributionService = {
     );
   },
 
-  // ✅ File Upload (same pattern as Member profile upload)
+  
   // async uploadFile(file: File, monthlyContributionId: number): Promise<string> {
   //   const formData = new FormData();
   //   formData.append("MonthlyContributionId", monthlyContributionId.toString());
@@ -72,13 +72,6 @@ const MonthlyContributionService = {
   //   return result.value || result.filePath || "";
   // },
 
-  /**
-   * Upload Monthly Contribution File
-   * @param file - The file to upload
-   * @param monthCode - Month code (integer)
-   * @param yearOf - Year (integer)
-   * @returns Promise with upload response
-   */
   async uploadFile(
     file: File,
     monthCode: number,
@@ -87,7 +80,6 @@ const MonthlyContributionService = {
     try {
       const formData = new FormData();
       
-      // Match the API parameter names from backend
       formData.append('ContributionFile', file);
       formData.append('MonthCode', monthCode.toString());
       formData.append('YearOf', yearOf.toString());
@@ -109,7 +101,7 @@ const MonthlyContributionService = {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          // Do NOT set Content-Type - browser sets it automatically with boundary
+          
         },
         body: formData,
       });
@@ -120,7 +112,7 @@ const MonthlyContributionService = {
         ok: response.ok,
       });
 
-      // Get response text first for better error debugging
+    
       const responseText = await response.text();
       console.log('Response text:', responseText);
 
@@ -137,7 +129,7 @@ const MonthlyContributionService = {
         throw new Error(errorMessage);
       }
 
-      // Parse the successful response
+      
       let result: MonthlyContributionUploadResponse;
       try {
         result = JSON.parse(responseText);

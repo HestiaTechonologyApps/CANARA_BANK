@@ -21,7 +21,7 @@ const ReportTypeService = {
     return response;
   },
 
-  // Create (auditLogs excluded)
+  
   async createReportType(
     data: Omit<ReportType, "auditLogs">
   ): Promise<ReportType> {

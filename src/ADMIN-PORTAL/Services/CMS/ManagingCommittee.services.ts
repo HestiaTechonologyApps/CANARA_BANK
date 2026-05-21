@@ -52,15 +52,13 @@ const ManagingCommitteeService = {
     );
   },
 
-  // ========================= UPLOAD IMAGE =========================
+  // ================== UPLOAD IMAGE ====================
   async uploadManagingCommitteeImage(file: File, managingComiteeId?: number): Promise<string> {
     try {
       const formData = new FormData();
 
-      // If id not passed, use 0 (or remove if backend doesn't require id)
       const idToUse = managingComiteeId ?? 0;
 
-      // ⚠️ Match backend DTO parameter names exactly
       formData.append("ManagingComiteeId", idToUse.toString());
       formData.append("Image", file); // change key if backend expects different name
 
@@ -73,7 +71,7 @@ const ManagingCommitteeService = {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          // ❗ DO NOT set Content-Type for FormData
+          
         },
         body: formData,
       });
@@ -98,7 +96,7 @@ const ManagingCommitteeService = {
         result = responseText;
       }
 
-      // Handle different response formats
+    
       if (typeof result === "object") {
         return (
           result.value ||

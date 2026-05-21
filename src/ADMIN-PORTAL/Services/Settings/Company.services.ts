@@ -54,17 +54,11 @@ const CompanyService = {
     );
   },
 
-  /**
-   * Upload company logo
-   * @param file The image file to upload
-   * @param companyId The ID of the company
-   * @returns The uploaded file path/name
-   */
+  
   async uploadCompanyLogo(file: File, companyId: number): Promise<string> {
     try {
       const formData = new FormData();
       
-      // Match the DTO parameter names from backend
       formData.append('CompanyId', companyId.toString());
       formData.append('CompanyLogo', file);
 
@@ -85,7 +79,7 @@ const CompanyService = {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          // Do NOT set Content-Type - browser sets it automatically with boundary
+          
         },
         body: formData,
       });
@@ -96,7 +90,7 @@ const CompanyService = {
         ok: response.ok,
       });
 
-      // Get response text first for better error debugging
+    
       const responseText = await response.text();
       console.log('Response text:', responseText);
 
@@ -113,18 +107,18 @@ const CompanyService = {
         throw new Error(errorMessage);
       }
 
-      // Parse the successful response
+      
       let result;
       try {
         result = JSON.parse(responseText);
       } catch {
-        // If response is not JSON, it might be a plain string
+        
         result = responseText;
       }
 
       console.log('Upload successful, result:', result);
 
-      // Handle different possible response formats
+      
       if (typeof result === 'object') {
         // Try different possible property names
         return result.value || 

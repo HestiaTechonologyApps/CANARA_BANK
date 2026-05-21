@@ -29,7 +29,7 @@ const MonthService = {
       data
     );
     
-    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to create month");
     }
@@ -47,7 +47,7 @@ const MonthService = {
       data
     );
     
-    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+  
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to update month");
     }
@@ -61,7 +61,7 @@ const MonthService = {
       "DELETE"
     );
     
-    // ✅ CHECK IF API RETURNED ERROR
+    
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to delete month");
     }

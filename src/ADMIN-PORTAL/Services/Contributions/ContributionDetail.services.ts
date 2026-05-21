@@ -9,7 +9,7 @@ import type {
 
 export default class ContributionDetailService {
 
-  // ── Get by Detail ID ─────────────────────────────────────────────
+  // ── Get by Detail ID ───────────────────────────
   static async getByDetailId(
     detailId: number
   ): Promise<ContributionDetailItem> {
@@ -21,7 +21,7 @@ export default class ContributionDetailService {
     return response?.value ?? response;
   }
 
-  // ── Park a Detail ────────────────────────────────────────────────
+  // ── Park a Detail ─────────────────────────────────
   static async park(
     detailId: number,
     payload: ParkPayload
@@ -33,7 +33,7 @@ export default class ContributionDetailService {
     );
   }
 
-  // ── Unpark a Detail ──────────────────────────────────────────────
+  // ── Unpark a Detail ─────────────────────────────────
   static async unpark(
     params: UnparkParams
   ): Promise<void> {

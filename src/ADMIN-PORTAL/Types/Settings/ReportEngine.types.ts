@@ -16,24 +16,5 @@ export interface ReportEngine {
   auditLogs?: AuditTrails[];
 }
 
-// export interface CreateReportEngineDto {
-//   reportEngineId: number;
-//   name: string;
-//   description: string;
-//   sqlString: string;
-//   isActive: boolean;
-//   isDeleted:boolean;
-//   createdDate: Date | string;
-//   modifiedDate: Date | string;
-// }
 
-// export interface UpdateReportEngineDto {
-//   reportEngineId: number;
-//   name: string;
-//   description: string;
-//   sqlString: string;
-//   isActive: boolean;
-//   isDeleted:boolean;
-//   createdDate: Date | string;
-//   modifiedDate: Date | string;
-// }
+

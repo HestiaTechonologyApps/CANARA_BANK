@@ -8,16 +8,16 @@ export interface Designation {
   auditLogs?: AuditTrails[];
 }
 
-// Matches backend DesignationPaginationParams : BasePaginationParams
+
 export interface DesignationPaginationParams {
-  // From BasePaginationParams
+  
   pageNumber: number;
   pageSize: number;
   searchTerm?: string;
   sortBy?: string;
   sortDescending?: boolean;
   
-  // Designation-specific filters
+  
   designationId?: number;
   name?: string;
   description?: string;

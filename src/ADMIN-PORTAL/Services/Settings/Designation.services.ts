@@ -18,7 +18,7 @@ const DesignationService = {
     return response.value;
   },
 
-  // NEW: Paginated service method
+  
   async getPagedDesignations(params: {
     pageNumber: number;
     pageSize: number;

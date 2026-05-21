@@ -7,9 +7,7 @@ import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { Member } from "../../Types/Contributions/Member.types";
 
 const MemberService = {
-  /**
-   * Get all members (non-paginated)
-   */
+  
   async getAllMembers(): Promise<Member[]> {
     try {
       const response = await HttpService.callApi<CustomResponse<Member[]>>(
@@ -23,9 +21,7 @@ const MemberService = {
     }
   },
 
-  /**
-   * Get member by ID
-   */
+  
   async getMemberById(id: number): Promise<CustomResponse<Member>> {
     const response = await HttpService.callApi<CustomResponse<Member>>(
       API_ENDPOINTS.MEMBER.GET_BY_ID(id),
@@ -34,9 +30,7 @@ const MemberService = {
     return response;
   },
 
-  /**
-   * Get current staff member (from auth)
-   */
+
   async getCurrentStaffMember(): Promise<CustomResponse<Member>> {
     const memberId = AuthService.getMemberId();
     
@@ -48,17 +42,13 @@ const MemberService = {
     return this.getMemberById(memberId);
   },
 
-  /**
-   * Check if current user is a member
-   */
+ 
   isCurrentUserMember(): boolean {
     const memberId = AuthService.getMemberId();
     return memberId !== null && memberId > 0;
   },
 
-  /**
-   * Create new member
-   */
+
   async createMember(
     data: Omit<Member, "memberId" | "auditLogs">
   ): Promise<Member> {
@@ -70,9 +60,7 @@ const MemberService = {
     return response.value;
   },
 
-  /**
-   * Update member
-   */
+
   async updateMember(
     id: number,
     data: Partial<Omit<Member, "memberId" | "auditLogs">>
@@ -85,9 +73,7 @@ const MemberService = {
     return response.value;
   },
 
-  /**
-   * Update current staff member profile
-   */
+
   async updateCurrentStaffMember(
     data: Partial<Omit<Member, "memberId" | "auditLogs">>
   ): Promise<Member> {
@@ -101,9 +87,7 @@ const MemberService = {
     return this.updateMember(memberId, data);
   },
 
-  /**
-   * Delete member (soft delete)
-   */
+ 
   async deleteMember(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.MEMBER.DELETE(id),
@@ -111,39 +95,32 @@ const MemberService = {
     );
   },
 
-  /**
-   * Upload profile picture for a member
-   * @param file The image file to upload
-   * @param memberId The ID of the member (optional, will be retrieved from auth if not provided)
-   * @returns The uploaded file path/URL
-   */
+ 
   async uploadProfilePicture(file: File, memberId?: number): Promise<string> {
     try {
-      // Validate file
+      
       if (!file) {
         throw new Error('No file provided');
       }
 
-      // Check file size (max 2MB)
       const maxFileSize = 2 * 1024 * 1024;
       if (file.size > maxFileSize) {
         throw new Error('File size exceeds 2MB. Please choose a smaller image.');
       }
 
-      // Check file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
         throw new Error('Only image files (JPG, PNG, GIF, WEBP) are allowed.');
       }
 
-      // Get memberId from auth service if not provided
+      
       const memberIdToUse = memberId || AuthService.getMemberId();
       
       if (!memberIdToUse) {
         throw new Error('Member ID is required for profile picture upload');
       }
 
-      // Create FormData
+      
       const formData = new FormData();
       formData.append('MemberId', memberIdToUse.toString());
       formData.append('ProfilePic', file);
@@ -156,18 +133,18 @@ const MemberService = {
         lastModified: new Date(file.lastModified).toISOString()
       });
 
-      // Get auth token
+      
       const token = AuthService.getToken();
       if (!token) {
         throw new Error('No authentication token found. Please log in again.');
       }
 
-      // Upload file
+    
       const response = await fetch(API_ENDPOINTS.MEMBER.UPLOAD_PROFILE_PIC, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          // ⚠️ DO NOT set Content-Type - browser automatically sets it with boundary
+          
         },
         body: formData,
       });
@@ -178,11 +155,11 @@ const MemberService = {
         ok: response.ok,
       });
 
-      // Get response text for debugging
+      
       const responseText = await response.text();
       console.log('📄 Response text:', responseText);
 
-      // Handle error responses
+      
       if (!response.ok) {
         let errorMessage = `Upload failed: ${response.status} ${response.statusText}`;
         
@@ -196,22 +173,22 @@ const MemberService = {
         throw new Error(errorMessage);
       }
 
-      // Parse successful response
+      
       let result;
       try {
         result = JSON.parse(responseText);
       } catch {
-        // If response is not JSON, treat as plain string
+        
         result = responseText;
       }
 
       console.log('✅ Upload successful:', result);
 
-      // Extract file path/URL from response
+      
       let filePath = '';
       
       if (typeof result === 'object' && result !== null) {
-        // Try different possible property names
+      
         filePath = result.value || 
                    result.fileName || 
                    result.filePath || 
@@ -241,9 +218,7 @@ const MemberService = {
     }
   },
 
-  /**
-   * ✅ Get paginated members - ONE LINE using generic helper!
-   */
+
   getMembersPaginated: createPaginatedService<Member>(API_ENDPOINTS.MEMBER.GET_ALL_PAGINETED),
 
 };

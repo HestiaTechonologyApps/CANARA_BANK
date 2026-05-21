@@ -16,7 +16,7 @@ import type {
 } from "../../Types/Dashboard/Dashboard.types";
 
 const DashboardService = {
-  // ✅ year param appended as query string — e.g. /Dashboard?year=2025
+  
   getAll: async (year: number): Promise<DashboardData> => {
     const response = await HttpService.callApi<CustomResponse<DashboardData>>(
       `${API_ENDPOINTS.DASHBOARD.GET_ALL}?year=${year}`,

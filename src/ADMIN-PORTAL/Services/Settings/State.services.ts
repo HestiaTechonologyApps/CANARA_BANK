@@ -29,7 +29,7 @@ const StateService = {
       data
     );
     
-    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to create state");
     }
@@ -47,7 +47,7 @@ const StateService = {
       data
     );
     
-    // ✅ CHECK IF API RETURNED ERROR (duplicate case)
+    
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to update state");
     }
@@ -61,7 +61,7 @@ const StateService = {
       "DELETE"
     );
     
-    // ✅ CHECK IF API RETURNED ERROR
+    
     if (!response.isSucess) {
       throw new Error(response.error || "Failed to delete state");
     }
