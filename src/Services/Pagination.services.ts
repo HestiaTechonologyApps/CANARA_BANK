@@ -1,5 +1,5 @@
 import type { CustomResponse } from "../Types/ApiTypes";
-import HttpService from "./HttpService";
+import HttpService from "./Http.services";
 
 export interface PaginationParams {
   pageNumber?: number;
@@ -24,10 +24,6 @@ export interface PaginatedResponse<T> {
   hasNext: boolean;
 }
 
-/**
- * Generic pagination service
- * Use this for any entity that has a /paged endpoint
- */
 export const createPaginatedService = <T>(baseEndpoint: string) => {
   return async (params: PaginationParams): Promise<PaginatedResult<T>> => {
     try {

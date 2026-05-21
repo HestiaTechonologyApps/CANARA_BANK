@@ -18,11 +18,11 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Email validation
+  //  Email validation
   const isValidEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  // ✅ Send reset link
+  //  Send reset link
   const handleForgotPassword = async () => {
     setError("");
 
@@ -99,7 +99,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
             </div>
           </Form.Group>
 
-          {/* ❌ Error message */}
+        
           {error && <div className="text-danger mb-3">{error}</div>}
 
           <Button
@@ -142,7 +142,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
         </p>
       </Modal.Body>
 
-      {/* ✅ Toast container */}
+   
       <ToastContainer />
     </Modal>
   );

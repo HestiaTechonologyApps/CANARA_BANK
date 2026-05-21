@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import type { CustomResponse } from "../Types/ApiTypes";
-import HttpService from "../Services/HttpService";
+import HttpService from "../Services/Http.services";
 import KiduServerTable from "./KiduServerTable";
 
 interface KiduPopupProps<T> {

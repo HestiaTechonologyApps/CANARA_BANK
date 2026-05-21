@@ -142,12 +142,12 @@
   font-size: "6px"
 }
 
-/* Add left padding so text doesn’t overlap icon */
+
 .input-icon-wrapper .form-control {
   padding-left: 40px;
 }
 
-/* IMPORTANT: keep feedback out of flow */
+
 .input-icon-wrapper .invalid-feedback {
   position: absolute;
   bottom: -18px;

@@ -5,7 +5,6 @@ import "../../Style/Home/Featured.css";
 import PublicPageConfigService from "../../Services/Publicpage.services";
 import type { PublicPage } from "../../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
-// 🔹 Icon name → component map
 const iconMap: Record<string, JSX.Element> = {
   FaHeart: <FaHeart size={32} />,
   FaShieldAlt: <FaShieldAlt size={32} />,
@@ -28,13 +27,11 @@ const FeaturesSection: React.FC = () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
 
-        // pick the active config instead of data[0]
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
         setConfig(activeConfig || null);
 
-        // 🔹 Parse features JSON from CMS
         if (activeConfig?.homeFeatureItemsJson) {
           const parsed = JSON.parse(activeConfig.homeFeatureItemsJson);
           setFeatures(parsed);

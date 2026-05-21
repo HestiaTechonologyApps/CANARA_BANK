@@ -9,7 +9,6 @@ import PublicPageConfigService from "../Services/Publicpage.services";
 
 const ManagingCommitteePublic: React.FC = () => {
 
-  // const managingCommittee = PublicService.managingCommittee
   const [config, setConfig] = useState<PublicPage | null>(null);
   const [members, setMembers] = useState<ManagingCommittee[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +16,7 @@ const ManagingCommitteePublic: React.FC = () => {
   useEffect(() => {
     const fetchManagingCommittee = async () => {
       try {
-        // CMS page config (ACTIVE only)
+        
         const configData = await PublicPageConfigService.getPublicPageConfig();
         const activeConfig = configData.find(
           (item: PublicPage) => item.isActive === true
@@ -25,11 +24,9 @@ const ManagingCommitteePublic: React.FC = () => {
         setConfig(activeConfig || null);
         const data = await PublicManagingCommitteeService.getManagingCommittee();
 
-        // DEBUG: Log the data to see imageLocation format
         console.log('Managing Committee Data:', data);
         console.log('API_BASE_URL:', API_BASE_URL);
 
-        // sort by order ASC
         const sortedData = [...data].sort(
           (a, b) => a.order - b.order
         );
@@ -45,7 +42,6 @@ const ManagingCommitteePublic: React.FC = () => {
     fetchManagingCommittee();
   }, []);
 
-  //helper function to construct image URL
   const getImageUrl = (imageLocation: string | null | undefined): string => {
     if (!imageLocation) {
       console.log('No imageLocation provided');
@@ -54,19 +50,15 @@ const ManagingCommitteePublic: React.FC = () => {
 
     console.log('Original imageLocation:', imageLocation);
 
-    // If it's already a full URL, return as is
     if (imageLocation.startsWith('http://') || imageLocation.startsWith('https://')) {
       console.log('Full URL detected:', imageLocation);
       return imageLocation;
     }
 
-    // Construct URL from base
     let baseUrl = API_BASE_URL;
 
-    // Remove /api from the end if it exists
     baseUrl = baseUrl.replace(/\/api\/?$/, '');
 
-    // Ensure imageLocation starts with /
     const path = imageLocation.startsWith('/') ? imageLocation : '/' + imageLocation;
 
     const finalUrl = `${baseUrl}${path}`;

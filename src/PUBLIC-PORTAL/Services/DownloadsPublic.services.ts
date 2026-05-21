@@ -1,12 +1,10 @@
 import { API_ENDPOINTS } from "../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../Services/HttpService";
+import HttpService from "../../Services/Http.services";
 import type { CustomResponse } from "../../Types/ApiTypes";
 import type { Attachment } from "../../Types/Attachment.types";
 
 const PublicAttachmentService = {
-  /**
-   * Get all public attachments (Downloads page)
-   */
+  
   async getPublicAttachments(): Promise<Attachment[]> {
     const response = await HttpService.callApi<
       CustomResponse<Attachment[]>
@@ -18,9 +16,6 @@ const PublicAttachmentService = {
     return response.value;
   },
 
-  /**
-   * Download attachment by attachmentId
-   */
   async downloadAttachment(
     attachmentId: number
   ): Promise<Blob> {

@@ -1,6 +1,4 @@
 // PUBLIC-PORTAL/Routes/Route.tsx
-// IMPORTANT: This component should NOT contain <Routes> or <Router>
-// It's just a collection of Route definitions to be used in the main AppRoutes
 
 import { Route } from 'react-router-dom';
 import PublicLayout from '../Layout/Layout';
@@ -31,5 +29,4 @@ export const publicRoutes = (
   </>
 );
 
-// Alternative: Export as function
 export const getPublicRoutes = () => publicRoutes;

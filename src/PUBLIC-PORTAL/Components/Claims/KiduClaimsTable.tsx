@@ -17,7 +17,6 @@ interface ClaimsTableProps {
 
 const ClaimsTable: React.FC<ClaimsTableProps> = ({ title, data, years }) => {
 
-   //  Calculate column-wise totals
   const columnTotals: Record<string, number> = {};
   let grandTotal = 0;
 

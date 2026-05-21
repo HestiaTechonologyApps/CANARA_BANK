@@ -15,14 +15,13 @@ const News: React.FC = () => {
   useEffect(() => {
     const loadNews = async () => {
       try {
-        //  CMS config (ACTIVE ONLY)
+        
         const data = await PublicPageConfigService.getPublicPageConfig();
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
         setConfig(activeConfig || null);
 
-        // Get last 9 added news (filtered and sorted by createdOn)
         const latestNine = await DailyNewsPublicService.getLatestNineNews();
         setNewsItems(latestNine);
       } catch (error) {

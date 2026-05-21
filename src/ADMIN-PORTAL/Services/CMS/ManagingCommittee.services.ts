@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../../Services/HttpService";
+import HttpService from "../../../Services/Http.services";
 import AuthService from "../../../Services/Auth.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ManagingCommittee } from "../../Types/CMS/ManagingCommittee.types";

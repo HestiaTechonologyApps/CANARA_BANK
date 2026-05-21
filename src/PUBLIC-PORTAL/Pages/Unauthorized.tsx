@@ -15,7 +15,7 @@ const Unauthorized: React.FC = () => {
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate('/', { state: { showLogin: true } }); // Go to home and show login modal
+    navigate('/', { state: { showLogin: true } }); 
   };
 
   return (

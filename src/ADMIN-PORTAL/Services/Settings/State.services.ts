@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../../Services/HttpService";
+import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { State } from "../../Types/Settings/States.types";
 

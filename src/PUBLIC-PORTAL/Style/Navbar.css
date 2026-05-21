@@ -33,12 +33,10 @@
   transition: all 0.2s ease-in-out;
 }
 
-/* HOVER → ONLY TEXT COLOR CHANGES TO YELLOW */
 .nav-item:hover {
   color: #e8b500 !important;
 }
 
-/* ACTIVE PAGE STYLE (Blue Pill) */
 .active-nav {
   background-color: #0f2a55 !important;
   color: #ffffff !important;

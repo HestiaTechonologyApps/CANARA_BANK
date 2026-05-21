@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { AuditLogResponse, AuditTrails } from "../Types/AuditLog.types";
-import HttpService from "./HttpService";
+import HttpService from "./Http.services";
  
 class AuditLogService {
   static async getByTableAndId(

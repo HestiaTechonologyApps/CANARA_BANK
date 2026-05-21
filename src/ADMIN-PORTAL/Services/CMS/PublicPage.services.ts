@@ -1,7 +1,7 @@
 // src/Services/CMS/PublicPage.services.ts
 
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../../Services/HttpService";
+import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 

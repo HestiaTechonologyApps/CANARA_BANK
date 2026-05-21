@@ -1,7 +1,7 @@
 // src/services/Settings/YearMaster.services.ts
 
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../../Services/HttpService";
+import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 

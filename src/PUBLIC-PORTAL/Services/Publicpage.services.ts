@@ -1,13 +1,10 @@
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 import { API_ENDPOINTS } from "../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../Services/HttpService";
+import HttpService from "../../Services/Http.services";
 import type { CustomResponse } from "../../Types/ApiTypes";
 
 const PublicPageConfigService = {
-  /**
-   * Fetch public page configuration
-   * Backend returns array (usually single record)
-   */
+ 
   async getPublicPageConfig(): Promise<PublicPage[]> {
     const response = await HttpService.callApi<
       CustomResponse<PublicPage[]>

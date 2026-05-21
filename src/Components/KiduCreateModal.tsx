@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import toast from "react-hot-toast";
 import KiduValidation from "./KiduValidation";
-import HttpService from "../Services/HttpService";
+import HttpService from "../Services/Http.services";
 import KiduReset from "./KiduReset";
 
 

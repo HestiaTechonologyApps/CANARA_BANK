@@ -9,17 +9,14 @@ export class HttpService {
     const token = localStorage.getItem('jwt_token');
     const headers: Record<string, string> = {};
 
-    // Set Content-Type header if not sending FormData
     if (!isFormData) {
       headers['Content-Type'] = 'application/json';
     }
 
-    // Add Authorization header if not a public route
     if (!isPublic && token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    // Make API call
     const response = await fetch(endpoint, {
       method,
       headers,
@@ -38,7 +35,6 @@ export class HttpService {
     return response.json();
   }
 
-  // ✅ FIXED: Added authentication token
   static async downloadFile(url: string, fileName: string): Promise<void> {
     const token = localStorage.getItem('jwt_token');
     const headers: Record<string, string> = {};

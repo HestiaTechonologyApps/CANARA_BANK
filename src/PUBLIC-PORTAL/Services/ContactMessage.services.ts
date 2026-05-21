@@ -1,7 +1,7 @@
 // src/Services/ContactMessage/ContactMessage.service.ts
 
 import { API_ENDPOINTS } from "../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../Services/HttpService";
+import HttpService from "../../Services/Http.services";
 import type { CustomResponse } from "../../Types/ApiTypes";
 import type { ContactMessage } from "../Types/ContactMessage.types";
 
@@ -23,7 +23,7 @@ const ContactMessageService = {
       payload
     );
 
-    return response.value; // 👈 important
+    return response.value; 
   },
 };
 

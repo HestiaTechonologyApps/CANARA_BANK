@@ -10,7 +10,7 @@ const AboutUs: React.FC = () => {
     const loadAboutConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-        // pick active config instead of data[0]
+        
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );

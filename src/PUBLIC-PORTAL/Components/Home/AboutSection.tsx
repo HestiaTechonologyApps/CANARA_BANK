@@ -11,7 +11,7 @@ const AboutSection: React.FC = () => {
     const loadAboutConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-       // pick the active config instead of data[0]
+       
                const activeConfig = data.find(
                  (item: PublicPage) => item.isActive === true
                );
@@ -25,7 +25,6 @@ const AboutSection: React.FC = () => {
     loadAboutConfig();
   }, []);
   
-  // Parse aboutStatsJson STRING → ARRAY (NO UI change)
   const aboutStats = config?.aboutStatsJson
     ? JSON.parse(config.aboutStatsJson)
     : [];

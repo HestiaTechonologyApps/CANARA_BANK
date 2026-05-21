@@ -3,15 +3,12 @@
 export interface PublicPageConfig {
     publicPageId: number;
 
-    /* =======================
-       NAVBAR
-       ======================= */
+      // NAVBAR  
     navBrandTitle: string;
     navBrandSubTitle: string;
     navLogoUrl: string;
     navLogoAlt: string;
     navMenuHead: boolean;
-
     navHomeLabel: string;
     navAboutLabel: string;
     navRulesLabel: string;
@@ -19,77 +16,60 @@ export interface PublicPageConfig {
     navCommitteeLabel: string;
     navClaimsLabel: string;
     navContactLabel: string;
-
     navLoginLabel: string;
     navLoginIcon: string;
-
     navPhoneIcon: string;
     navPhoneValue: string;
     navEmailIcon: string;
     navEmailValue: string;
 
-    /* =======================
-       HOME – HERO
-       ======================= */
+      // HOME – HERO
     homeHeroBadge: string;
     homeHeroTitle: string;
     homeHeroLine1: string;
     homeHeroHighlight: string;
     homeHeroLine3: string;
     homeHeroDescription: string;
-
     homePrimaryBtnLabel: string;
     homePrimaryBtnRoute: string;
     homeSecondaryBtnLabel: string;
     homeSecondaryBtnRoute: string;
-
     homeHeroImageUrl: string;
     homeHeroImageAlt: string;
-
-    /* =======================
-       HOME – FEATURES
-       ======================= */
+  
+     //  HOME – FEATURES
     homeFeatureHeading: string;
     homeFeatureLabel: string;
     homeFeatureTitle: string;
     homeFeatureSubTitle: string;
-    homeFeatureItemsJson: string; // JSON string
-
-    /* =======================
-       HOME – ABOUT
-       ======================= */
+    homeFeatureItemsJson: string; 
+  
+       //HOME – ABOUT
     homeAboutLabel: string;
     homeAboutTitle: string;
     homeAboutParagraph: string;
 
-    /* =======================
-       NEWS PAGE
-       ======================= */
+      // NEWS PAGE 
     newsHeroTitle: string;
     newsHeroSubTitle: string;
     newsBreadcrumbHomeLabel: string;
     newsBreadcrumbCurrentLabel: string;
     newsLoadingText: string;
     newsEmptyText: string;
-    newsItemsJson: string; // JSON string
+    newsItemsJson: string; 
     newsSidebarQuoteTitle: string;
     newsSidebarQuoteText: string;
-    newsQuickLinksJson: string; // JSON string
+    newsQuickLinksJson: string; 
 
-    /* =======================
-       ABOUT PAGE
-       ======================= */
+       //ABOUT PAGE
     aboutHeaderTitle: string;
     aboutHeaderSubTitle: string;
-
     aboutMissionTitle: string;
     aboutMissionIcon: string;
     aboutMissionDescription: string;
-
     aboutVisionTitle: string;
     aboutVisionIcon: string;
     aboutVisionDescription: string;
-
     aboutHistoryTitle: string;
     aboutHistoryIcon: string;
     aboutHistoryPara1: string;
@@ -97,70 +77,52 @@ export interface PublicPageConfig {
     aboutHistoryPara3: string;
     aboutHistoryPara4: string;
     aboutHistoryPara5: string;
-
-    /* =======================
-       RULES PAGE
-       ======================= */
+  
+      // RULES PAGE  
     rulesHeaderTitle: string;
     rulesHeaderSubTitle: string;
-
     rulesPreambleTitle: string;
     rulesPreamblePara1: string;
     rulesPreamblePara2: string;
     rulesPreamblePara3: string;
     rulesPreamblePara4: string;
     rulesPreamblePara5: string;
-
-    rulesSectionsJson: string; // JSON string
-
-    /* =======================
-       DOWNLOADS PAGE
-       ======================= */
+    rulesSectionsJson: string; 
+   
+      // DOWNLOADS PAGE   
     downloadsHeaderTitle: string;
     downloadsHeaderSubTitle: string;
-    downloadItemsJson: string; // JSON string
+    downloadItemsJson: string; 
 
-    /* =======================
-       COMMITTEE PAGE
-       ======================= */
+      // COMMITTEE PAGE
     committeeHeaderTitle: string;
     committeeHeaderSubTitle: string;
-    committeeMembersJson: string; // JSON string
+    committeeMembersJson: string; 
 
-    /* =======================
-       CLAIMS PAGE
-       ======================= */
+      // CLAIMS PAGE
     claimsHeroTitle: string;
     claimsHeroSubTitle: string;
-
     claimsStat1Icon: string;
     claimsStat1Value: string;
     claimsStat1Label: string;
-
     claimsStat2Icon: string;
     claimsStat2Value: string;
     claimsStat2Label: string;
-
     claimsStat3Icon: string;
     claimsStat3Value: string;
     claimsStat3Label: string;
-
-    claimsTableHeadersJson: string; // JSON string
+    claimsTableHeadersJson: string; 
     claimsYearsRange: string;
 
-    /* =======================
-       CONTACT PAGE
-       ======================= */
+      // CONTACT PAGE
     contactHeaderTitle: string;
     contactHeaderSubTitle: string;
-
     contactFullNameLabel: string;
     contactPhoneLabel: string;
     contactEmailLabel: string;
     contactSubjectLabel: string;
     contactMessageLabel: string;
     contactSubmitButtonLabel: string;
-
     officeTitle: string;
     officeAddress: string;
     officePhone: string;
@@ -169,41 +131,31 @@ export interface PublicPageConfig {
     officeDay1Time: string;
     officeDay2Time: string;
     officeDay3Time: string;
-
-    /* =======================
-       FOOTER
-       ======================= */
+   
+      // FOOTER
     footerBrandShortName: string;
     footerBrandSubTitle: string;
     footerBrandDescription: string;
     footerLogoAlt: string;
-
     footerAddressLine1: string;
     footerAddressLine2: string;
-
     footerPhoneIcon: string;
     footerPhoneValue: string;
     footerEmailIcon: string;
     footerEmailValue: string;
-
-    footerQuickLinksJson: string; // JSON string
-    footerOfficeHoursJson: string; // JSON string
+    footerQuickLinksJson: string; 
+    footerOfficeHoursJson: string; 
     footerCopyrightText: string;
 
-    /* =======================
-       PRIVACY POLICY
-       ======================= */
+      // PRIVACY POLICY
     privacyHeroBadge: string;
     privacyHeroTitle: string;
     privacyHeroSubTitle: string;
-
     privacyHeading1: string;
     privacyPara1: string;
     privacyPara2: string;
-
     privacyHeading2: string;
     privacyPara3: string;
-
     privacyHeading3: string;
     privacyLine1: string;
     privacyLine2: string;
@@ -212,8 +164,6 @@ export interface PublicPageConfig {
     privacyLine5: string;
     privacyLine6: string;
 
-    /* =======================
-       STATUS
-       ======================= */
+      // STATUS
     isActive: boolean;
 }

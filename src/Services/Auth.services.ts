@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { CustomResponse } from "../Types/ApiTypes";
 import type { ForgotPasswordRequest, LoginRequest, LoginResponse, RegisterRequest } from "../Types/Auth.types";
 import { isValidUserRole } from "../Types/Auth.types";
-import HttpService from "./HttpService";
+import HttpService from "./Http.services";
 
 class AuthService {
   static async login(credentials: LoginRequest): Promise<CustomResponse<LoginResponse>> {
@@ -11,16 +11,14 @@ class AuthService {
         API_ENDPOINTS.AUTH.LOGIN,
         "POST",
         credentials,
-        true // isPublic - no token needed for login
+        true 
       );
 
       console.log('API Response:', response);
 
-      // Store token in localStorage if login successful
       if (response.isSucess && response.value) {
         console.log('Login successful, storing data...');
 
-        // Validate user role before storing
         if (!response.value.user || !isValidUserRole(response.value.user.role)) {
           console.error('Invalid or missing user role');
           return {
@@ -31,13 +29,11 @@ class AuthService {
           };
         }
 
-        // Store token
         if (response.value.token) {
           localStorage.setItem('jwt_token', response.value.token);
           console.log('Token stored:', localStorage.getItem('jwt_token') !== null);
         }
 
-        // Store user data
         if (response.value.user) {
           const userString = JSON.stringify(response.value.user);
           localStorage.setItem('user', userString);
@@ -48,26 +44,22 @@ class AuthService {
           localStorage.setItem('user_role', response.value.user.role);
           console.log('User role stored:', response.value.user.role);
 
-          // ✅ Store memberId separately for easy access (if available)
           if (response.value.user.memberId) {
             localStorage.setItem('member_id', response.value.user.memberId.toString());
             console.log('Member ID stored:', response.value.user.memberId);
           }
 
-          // ✅ Store staffNo separately for easy access
           if (response.value.user.staffNo) {
             localStorage.setItem('staff_no', response.value.user.staffNo.toString());
             console.log('Staff No stored:', response.value.user.staffNo);
           }
         }
 
-        // Store token expiry
         if (response.value.expiresAt) {
           localStorage.setItem('token_expires_at', response.value.expiresAt);
           console.log('Expiry stored:', localStorage.getItem('token_expires_at') !== null);
         }
 
-        // Verify storage
         console.log('Storage verification:');
         console.log('- jwt_token exists:', !!localStorage.getItem('jwt_token'));
         console.log('- user exists:', !!localStorage.getItem('user'));
@@ -93,8 +85,8 @@ class AuthService {
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user');
     localStorage.removeItem('user_role');
-    localStorage.removeItem('member_id'); // ✅ Clear memberId
-    localStorage.removeItem('staff_no'); // ✅ Clear staffNo
+    localStorage.removeItem('member_id'); 
+    localStorage.removeItem('staff_no'); 
     localStorage.removeItem('token_expires_at');
     console.log('After logout - jwt_token:', localStorage.getItem('jwt_token') !== null);
     console.log('After logout - user:', localStorage.getItem('user') !== null);
@@ -114,7 +106,6 @@ class AuthService {
       const user = JSON.parse(userStr);
       console.log('Parsed user:', user);
 
-      // Validate that parsed user has a valid role
       if (!isValidUserRole(user?.role)) {
         console.error('Stored user has invalid role, clearing storage');
         this.logout();
@@ -132,7 +123,6 @@ class AuthService {
       const role = localStorage.getItem('user_role');
       console.log('Getting user role:', role);
 
-      // Validate role
       if (!isValidUserRole(role)) {
         console.error('Invalid user role found, clearing storage');
         this.logout();
@@ -146,14 +136,12 @@ class AuthService {
     }
   }
 
-  // ✅ NEW METHOD - Get memberId for current user
   static getMemberId(): number | null {
     try {
       const memberIdStr = localStorage.getItem('member_id');
       console.log('Getting member ID:', memberIdStr);
 
       if (!memberIdStr) {
-        // Try getting from user object as fallback
         const user = this.getCurrentUser();
         if (user?.memberId) {
           console.log('Member ID found in user object:', user.memberId);
@@ -169,14 +157,12 @@ class AuthService {
       return null;
     }
   }
-  // ✅ NEW METHOD - Get staffNo for current user
   static getStaffNo(): number | null {
     try {
       const staffNoStr = localStorage.getItem('staff_no');
       console.log('Getting staff number:', staffNoStr);
 
       if (!staffNoStr) {
-        // Try getting from user object as fallback
         const user = this.getCurrentUser();
         if (user?.staffNo) {
           console.log('Staff number found in user object:', user.staffNo);
@@ -209,7 +195,6 @@ class AuthService {
       return false;
     }
 
-    // Check if user role is valid
     const role = localStorage.getItem('user_role');
     if (!isValidUserRole(role)) {
       console.log('Not authenticated - invalid or missing role');
@@ -217,7 +202,6 @@ class AuthService {
       return false;
     }
 
-    // Check if token is expired
     const expiresAt = localStorage.getItem('token_expires_at');
     if (expiresAt) {
       const expiryDate = new Date(expiresAt);
@@ -235,10 +219,6 @@ class AuthService {
     return true;
   }
 
-  /**
-   * Get the appropriate dashboard route based on user role
-   * @returns The dashboard route path
-   */
   static getDashboardRoute(): string {
     const role = this.getUserRole();
     console.log('Determining dashboard route for role:', role);
@@ -271,10 +251,6 @@ class AuthService {
     }
   }
 
-  /**
-   * Check if user has admin privileges (Admin User or Super Admin)
-   * @returns boolean indicating if user is admin
-   */
   static isAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
@@ -286,10 +262,6 @@ class AuthService {
       normalizedRole === 'superadmin';
   }
 
-  /**
-   * Check if user is staff
-   * @returns boolean indicating if user is staff
-   */
   static isStaff(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
@@ -297,10 +269,6 @@ class AuthService {
     return role.trim().toLowerCase() === 'staff';
   }
 
-  /**
-   * Check if user is super admin
-   * @returns boolean indicating if user is super admin
-   */
   static isSuperAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
@@ -309,7 +277,6 @@ class AuthService {
     return normalizedRole === 'super admin' || normalizedRole === 'superadmin';
   }
 
-  // change-password
   static async changePassword(currentPassword: string, newPassword: string): Promise<CustomResponse<any>> {
     try {
       const payload = { currentPassword, newPassword };
@@ -325,17 +292,15 @@ class AuthService {
     }
   }
 
-  //forgot-password
   static async forgotPassword(data: ForgotPasswordRequest): Promise<CustomResponse<void>> {
     return await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
       "POST",
       data,
-      true // public endpoint (no token required)
+      true 
     );
   }
 
-  /*  REGISTER API (ADDED) */
   static async register(
     data: RegisterRequest
   ): Promise<CustomResponse<LoginResponse>> {

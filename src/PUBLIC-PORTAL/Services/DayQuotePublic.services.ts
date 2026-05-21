@@ -2,11 +2,11 @@
 
 import type { DayQuote } from "../../ADMIN-PORTAL/Types/CMS/DayQuote.types";
 import { API_ENDPOINTS } from "../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../Services/HttpService";
+import HttpService from "../../Services/Http.services";
 import type { CustomResponse } from "../../Types/ApiTypes";
 
 // const DayQuotePublicService = {
-//   // ✅ NEW: Get all day quotes from public endpoint
+
 //   async getAllDayQuotes(): Promise<DayQuote[]> {
 //     const response = await HttpService.callApi<CustomResponse<DayQuote[]>>(
 //       API_ENDPOINTS.PUBLIC.GET_ALL_DAYQUOTE,
@@ -15,7 +15,7 @@ import type { CustomResponse } from "../../Types/ApiTypes";
 //     return response.value;
 //   },
 
-//   // ✅ NEW: Helper method to get the last/latest quote
+
 //   async getLastQuote(): Promise<DayQuote | null> {
 //     const quotes = await this.getAllDayQuotes();
 //     if (quotes && quotes.length > 0) {
@@ -48,7 +48,7 @@ const DayQuotePublicService = {
 
     const today = new Date();
     const todayDay = today.getDate();
-    const todayMonth = today.getMonth() + 1; // monthCode is 1-based
+    const todayMonth = today.getMonth() + 1; 
 
     return quotes.find(
       (q) => q.day === todayDay && q.monthCode === todayMonth

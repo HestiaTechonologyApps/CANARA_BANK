@@ -1,6 +1,6 @@
 // src/services/UserService.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
-import HttpService from "../../../Services/HttpService";
+import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ChangePasswordRequest, User } from "../../Types/Settings/User.types";
 

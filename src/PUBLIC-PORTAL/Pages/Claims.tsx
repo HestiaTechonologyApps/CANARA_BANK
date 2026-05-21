@@ -21,7 +21,6 @@ interface ClaimsTableRow {
 }
 
 const Claims: React.FC = () => {
-  // const claims = PublicService.claimsPage;
   const [stateWiseClaims, setStateWiseClaims] = useState<ClaimsTableRow[]>([]);
   const [designationWiseClaims, setDesignationWiseClaims] = useState<ClaimsTableRow[]>([]);
   const [years, setYears] = useState<string[]>([]);
@@ -83,7 +82,6 @@ const Claims: React.FC = () => {
       });
     });
 
-    // Aggregate claims by state and year
     deathClaims.forEach((claim) => {
       const state = stateMap.get(claim.stateId);
       if (state) {
@@ -114,7 +112,6 @@ const Claims: React.FC = () => {
       });
     });
 
-    // Aggregate claims by designation and year
     deathClaims.forEach((claim) => {
       const designation = designationMap.get(claim.designationId);
       if (designation) {
