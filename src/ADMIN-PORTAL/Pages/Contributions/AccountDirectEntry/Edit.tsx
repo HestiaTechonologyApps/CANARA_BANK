@@ -50,25 +50,6 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
-  // const handleFetch = async (id: string) => {
-  //   const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
-  //   const entry = response.value;
-  //   if (!entry) return response;
-  //   if (entry.memberId) 
-  //     setSelectedMember((await MemberService.getMemberById(entry.memberId)).value);
-  //   if (entry.branchId) setSelectedBranch((await BranchService.getBranchById(entry.branchId)).value);
-  //   if (entry.monthCode) setSelectedMonth((await MonthService.getMonthById(entry.monthCode)).value);
-  //   if (entry.yearOf) setSelectedYearMaster((await YearMasterService.getYearMasterById(entry.yearOf)).value);
-
-  //   return {
-  //     ...response,
-  //     value: {
-  //       ...entry,
-  //       ddIbaDate: entry.ddIbaDateString?.split("T")[0],
-  //       approvedDate: entry.approvedDateString?.split("T")[0],
-  //     },
-  //   };
-  // };
 const handleFetch = async (id: string) => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
@@ -95,20 +76,12 @@ const handleFetch = async (id: string) => {
       setInitialYearMaster(year); 
     }
 
-    // return {
-    //   ...response,
-    //   value: {
-    //     ...entry,
-    //     ddIbaDate: entry.ddIbaDateString?.split("T")[0],
-    //     approvedDate: entry.approvedDateString?.split("T")[0],
-    //   },
-    // };
     return {
   ...response,
   value: {
     ...entry,
-    ddIbaDate: entry.ddIbaDate ? String(entry.ddIbaDate).split("T")[0] : "",       // 👈 use ddIbaDate not ddIbaDateString
-    approvedDate: entry.approvedDate ? String(entry.approvedDate).split("T")[0] : "", // 👈 same here
+    ddIbaDate: entry.ddIbaDate ? String(entry.ddIbaDate).split("T")[0] : "",     
+    approvedDate: entry.approvedDate ? String(entry.approvedDate).split("T")[0] : "", 
   },
 };
   };

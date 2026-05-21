@@ -52,7 +52,6 @@ const DeathClaimEdit: React.FC = () => {
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
   const toDateOnly = (v?: string) => (v ? v.split("T")[0] : "");
 
-  // ================= FETCH =================
  const handleFetch = async (id: string) => {
   const response = await DeathClaimService.getDeathClaimById(Number(id));
   const claim = response.value;
@@ -123,7 +122,6 @@ const payload: Partial<Omit<DeathClaim, "auditLogs">> = {
     await DeathClaimService.updateDeathClaim(Number(id), payload);
   };
 
-  // ================= POPUPS =================
   const popupHandlers = {
     stateId: {
       value: selectedState?.name || "",

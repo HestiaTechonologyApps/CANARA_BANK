@@ -26,7 +26,6 @@ const Preloader: React.FC = () => {
                 }} >
                 <Row className="text-center">
                     <Col>
-                        {/* Preloader GIF or Spinner */}
                         <div className="mb-3">
                             <img
                                 src={Loading}
@@ -39,13 +38,11 @@ const Preloader: React.FC = () => {
                                 }} />
                         </div>
 
-                        {/* Spinner (Bootstrap alternative) */}
                         <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
                             <Spinner animation="border" variant="success" />
                             <Spinner animation="grow" variant="success" />
                         </div>
 
-                        {/* App name / message */}
                         <h4
                             className="fw-semibold mt-2"
                             style={{ color: "#18575A", fontWeight: 700 }} >

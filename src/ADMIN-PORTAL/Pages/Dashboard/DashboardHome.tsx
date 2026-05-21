@@ -41,7 +41,6 @@ const C = {
 const PIE_COLORS  = [C.navy, C.teal, C.orange, C.blue];
 const BAR_COLORS  = [C.greenL, C.teal, C.blue, C.orange, C.indigo, C.amber];
 
-/* ─── Google Font injection ──────────────────────────────── */
 const FontLink = () => (
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
@@ -49,7 +48,6 @@ const FontLink = () => (
   />
 );
 
-/* ─── Global CSS ─────────────────────────────────────────── */
 const GlobalStyles = () => (
   <style>{`
     .dash-wrap * { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -137,14 +135,12 @@ const GlobalStyles = () => (
   `}</style>
 );
 
-/* ─── Skeleton block ─────────────────────────────────────── */
 const Sk: React.FC<{ h?: number; w?: string; r?: number }> = ({
   h = 14, w = "100%", r = 8,
 }) => (
   <div className="skeleton" style={{ height: h, width: w, borderRadius: r }} />
 );
 
-/* ─── Card wrapper ───────────────────────────────────────── */
 interface CardProps {
   title: string;
   icon: React.ReactNode;
@@ -177,7 +173,6 @@ const Card: React.FC<CardProps> = ({
   </div>
 );
 
-/* ─── Recharts tooltip ───────────────────────────────────── */
 const ChartTip: React.FC<any> = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
@@ -202,7 +197,6 @@ const ChartTip: React.FC<any> = ({ active, payload, label }) => {
   );
 };
 
-/* ─── Activity badge ─────────────────────────────────────── */
 const Badge: React.FC<{ type: RecentActivity["type"] }> = ({ type }) => (
   <span style={{
     fontSize: 9.5, fontWeight: 800, letterSpacing: "0.06em",
@@ -214,15 +208,12 @@ const Badge: React.FC<{ type: RecentActivity["type"] }> = ({ type }) => (
   </span>
 );
 
-/* ─── Y axis formatter ───────────────────────────────────── */
 const fmtY = (v: number) =>
   v >= 100000 ? `₹${(v / 100000).toFixed(1)}L`
   : v >= 1000  ? `₹${(v / 1000).toFixed(0)}k`
   : `₹${v}`;
 
-/* ══════════════════════════════════════════════════════════
-   MAIN COMPONENT
-══════════════════════════════════════════════════════════ */
+
 const DashboardHome: React.FC = () => {
   const { selectedYear: year } = useYear();
 
@@ -230,7 +221,6 @@ const DashboardHome: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState<string | null>(null);
 
-  /* ── fetch ──────────────────────────────────────────────── */
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -246,7 +236,6 @@ const DashboardHome: React.FC = () => {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  /* ── derived data ───────────────────────────────────────── */
   const ov        = data?.overview;
   const monthly   = data?.monthlyContributionVsClaims  ?? [];
   const claimDist = data?.claimTypeDistribution;
@@ -264,7 +253,6 @@ const DashboardHome: React.FC = () => {
 
   const maxMembers = Math.max(...stateWise.map(s => s.memberCount), 1);
 
-  /* ── loading state ──────────────────────────────────────── */
   if (loading) return (
     <div className="dash-wrap pb-4">
       <FontLink /><GlobalStyles />
@@ -293,7 +281,6 @@ const DashboardHome: React.FC = () => {
     </div>
   );
 
-  /* ── error state ────────────────────────────────────────── */
   if (error) return (
     <div className="dash-wrap d-flex flex-column align-items-center justify-content-center"
       style={{ minHeight: 320, gap: 14 }}>
@@ -310,13 +297,11 @@ const DashboardHome: React.FC = () => {
     </div>
   );
 
-  /* ── render ─────────────────────────────────────────────── */
   return (
     <div className="dash-wrap pb-5">
       <FontLink />
       <GlobalStyles />
 
-      {/* ══ PAGE HEADER ═══════════════════════════════════════ */}
       <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4 dash-fade">
         <div>
           <h4 style={{
@@ -334,7 +319,6 @@ const DashboardHome: React.FC = () => {
         </button>
       </div>
 
-      {/* ══ OVERVIEW CARDS ════════════════════════════════════ */}
       <Row className="g-3 mb-4">
         {[
           {
@@ -379,10 +363,8 @@ const DashboardHome: React.FC = () => {
         ))}
       </Row>
 
-      {/* ══ ROW A: Area chart + Pie + State bars ═══════════════ */}
       <Row className="g-3 mb-3">
 
-        {/* Contributions vs Claims — wide */}
         <Col xs={12} lg={6}>
           <Card
             title="Monthly Contributions vs Claims"
@@ -430,7 +412,6 @@ const DashboardHome: React.FC = () => {
           </Card>
         </Col>
 
-        {/* Claim Type Distribution — donut */}
         <Col xs={12} sm={6} lg={3}>
           <Card
             title="Claim Distribution"
@@ -473,7 +454,6 @@ const DashboardHome: React.FC = () => {
           </Card>
         </Col>
 
-        {/* State-wise Membership */}
         <Col xs={12} sm={6} lg={3}>
           <Card
             title="State-wise Membership"
@@ -517,10 +497,8 @@ const DashboardHome: React.FC = () => {
         </Col>
       </Row>
 
-      {/* ══ ROW B: Bar + Line + Top States ════════════════════ */}
       <Row className="g-3 mb-3">
 
-        {/* Monthly Financial Comparison */}
         <Col xs={12} lg={5}>
           <Card
             title="Monthly Financial Comparison"
@@ -550,7 +528,6 @@ const DashboardHome: React.FC = () => {
           </Card>
         </Col>
 
-        {/* Contribution Trends */}
         <Col xs={12} lg={4}>
           <Card
             title="Contribution Trends"
@@ -583,7 +560,6 @@ const DashboardHome: React.FC = () => {
           </Card>
         </Col>
 
-        {/* Top Performing States */}
         <Col xs={12} lg={3}>
           <Card
             title="Top Performing States"
@@ -606,7 +582,6 @@ const DashboardHome: React.FC = () => {
                           paddingBottom: i < topStates.length - 1 ? 8 : 0,
                           marginBottom: i < topStates.length - 1 ? 4 : 0,
                         }}>
-                        {/* Rank badge */}
                         <div style={{
                           width: 32, height: 32, borderRadius: 9, flexShrink: 0,
                           background: medals[i] ?? C.slate200,
@@ -617,7 +592,6 @@ const DashboardHome: React.FC = () => {
                         }}>
                           {s.abbreviation}
                         </div>
-                        {/* Name + bar */}
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{
                             fontSize: 12.5, fontWeight: 600, color: C.navy,
@@ -633,7 +607,6 @@ const DashboardHome: React.FC = () => {
                             }} />
                           </div>
                         </div>
-                        {/* Percent */}
                         <div style={{
                           fontSize: 12.5, fontWeight: 800,
                           color: i === 0 ? C.amber : C.navy,
@@ -650,7 +623,6 @@ const DashboardHome: React.FC = () => {
         </Col>
       </Row>
 
-      {/* ══ ROW C: Recent Activities ═══════════════════════════ */}
       <Row className="g-3">
         <Col xs={12}>
           <Card
@@ -691,7 +663,6 @@ const DashboardHome: React.FC = () => {
                             : <Users size={16} color={C.blue} />}
                         </div>
 
-                        {/* Content */}
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap" }}>
                             <span style={{

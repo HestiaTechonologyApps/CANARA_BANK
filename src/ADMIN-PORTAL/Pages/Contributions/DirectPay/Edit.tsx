@@ -39,7 +39,7 @@ const handleFetch = async (id: string) => {
     ...response,
     value: {
       ...payment,
-      paymentDate: payment.paymentDate ? String(payment.paymentDate).split("T")[0] : "", // 👈 fix date format
+      paymentDate: payment.paymentDate ? String(payment.paymentDate).split("T")[0] : "", 
     },
   };
 };

@@ -20,12 +20,7 @@ const DashBoard: React.FC = () => {
         }}
         className="main-content-area"
       >
-        {/* Outlet renders the matched child route:
-            - index ("/dashboard")        → DashboardHome
-            - "/dashboard/settings/..."  → the settings page
-            - "/dashboard/claims/..."    → the claims page
-            - etc.
-        */}
+      
         <Outlet />
       </div>
 

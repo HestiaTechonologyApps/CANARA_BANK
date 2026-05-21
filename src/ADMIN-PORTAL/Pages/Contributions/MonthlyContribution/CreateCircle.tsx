@@ -1,6 +1,4 @@
 // src/Pages/ContributionMaster/CircleCreatePage.tsx
-// Open via: navigate(`/dashboard/contributions/create-circle?masterId=X&circle=Y`)
-
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CircleService from "../../../Services/Settings/Circle.services";
@@ -8,7 +6,6 @@ import type { Circle } from "../../../Types/Settings/Circle.types";
 import type { State } from "../../../Types/Settings/States.types";
 import StatePopup from "../../Settings/State/StatePopup";
 
-/* ─── Styles ─────────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -22,7 +19,6 @@ const STYLE_TAG = `
   .ccr-section-card { background:#fff;border:1.5px solid #e8edf5;border-radius:16px;overflow:hidden;animation:fadeUp 0.4s ease both; }
 `;
 
-/* ─── Field Components ────────────────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
   <p style={{ margin: "0 0 5px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
@@ -61,7 +57,7 @@ const ToggleInput: React.FC<{ value: boolean; onChange: (v: boolean) => void; la
   </div>
 );
 
-/* ─── Section Card ────────────────────────────────────────────────── */
+
 const SectionCard: React.FC<{ title: string; icon: string; accent?: string; children: React.ReactNode; delay?: number }> = ({ title, icon, accent = "#8e3b46", children, delay = 0 }) => (
   <div className="ccr-section-card" style={{ animationDelay: `${delay}s` }}>
     <div style={{ padding: "14px 20px", background: "#f8fafc", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", gap: 10 }}>
@@ -80,27 +76,27 @@ const Field: React.FC<{ children: React.ReactNode; span?: boolean }> = ({ childr
   <div style={span ? { gridColumn: "1 / -1" } : {}}>{children}</div>
 );
 
-/* ─── Main Page ───────────────────────────────────────────────────── */
+
 const CircleCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const masterId      = searchParams.get("masterId") || "";
+  const masterId = searchParams.get("masterId") || "";
   const prefillCircle = searchParams.get("circle") || "";
 
-  const [circleCode,   setCircleCode]   = useState(prefillCircle);
-  const [name,         setName]         = useState("");
+  const [circleCode, setCircleCode] = useState(prefillCircle);
+  const [name, setName] = useState("");
   const [abbreviation, setAbbreviation] = useState("");
-  const [dateFrom,     setDateFrom]     = useState("");
-  const [dateTo,       setDateTo]       = useState("");
-  const [isActive,     setIsActive]     = useState(true);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [isActive, setIsActive] = useState(true);
 
   const [selectedState, setSelectedState] = useState<State | null>(null);
   const [showStatePopup, setShowStatePopup] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg,   setErrorMsg]   = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const goBack = () =>
     masterId ? navigate(`/dashboard/contributions/monthlyContribution-view/${masterId}`) : navigate(-1);
@@ -118,15 +114,15 @@ const CircleCreatePage: React.FC = () => {
     setErrorMsg("");
     try {
       await CircleService.createCircle({
-        circleCode:   Number(circleCode),
-        name:         name.trim(),
+        circleCode: Number(circleCode),
+        name: name.trim(),
         abbreviation: abbreviation.trim(),
-        stateId:      selectedState.stateId,
-        stateName:    selectedState.name,
+        stateId: selectedState.stateId,
+        stateName: selectedState.name,
         dateFrom,
         dateFromString: "",
         dateTo,
-        dateToString:   "",
+        dateToString: "",
         isActive,
       } as Omit<Circle, "circleId" | "auditLogs">);
       setSuccessMsg("Circle created successfully! Redirecting…");

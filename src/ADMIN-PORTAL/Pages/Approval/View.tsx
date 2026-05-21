@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
-import UserService from "../../Services/Settings/User.services"; // adjust path as needed
+import UserService from "../../Services/Settings/User.services";
 import type { ContributionMaster, ApproveResponse } from "../../Types/Contributions/ContributionMaster.types";
 
 /* ─── Helpers ────────────────────────────────────────────────────── */
@@ -15,8 +15,8 @@ const fmtDate = (v: string | null | undefined) =>
     ? new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
     : "—";
 const MONTH_NAMES = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December",
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
 ];
 const toMonthName = (month: string): string => {
   if (!month) return "—";
@@ -188,12 +188,12 @@ const ContributionMasterApprovalView: React.FC = () => {
   const { masterId } = useParams<{ masterId: string }>();
   const navigate = useNavigate();
 
-  const [data, setData]               = useState<ContributionMaster | null>(null);
-  const [loading, setLoading]         = useState(true);
-  const [approving, setApproving]     = useState(false);
-  const [error, setError]             = useState<string | null>(null);
-  const [result, setResult]           = useState<ApproveResponse | null>(null);
-  const [showModal, setShowModal]     = useState(false);
+  const [data, setData] = useState<ContributionMaster | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [approving, setApproving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<ApproveResponse | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const [approvedByName, setApprovedByName] = useState<string>("—");
 
   const id = masterId ? parseInt(masterId, 10) : null;
@@ -207,37 +207,37 @@ const ContributionMasterApprovalView: React.FC = () => {
   }, [id]);
 
   // Resolve approvedBy ID → user name
-//   useEffect(() => {
-//     if (!data?.approvedBy) { setApprovedByName("—"); return; }
-//     const parsed = parseInt(data.approvedBy, 10);
-//     if (isNaN(parsed)) {
-//       // approvedBy is already a name string
-//       setApprovedByName(data.approvedBy);
-//       return;
-//     }
-//     // approvedBy is a numeric ID — fetch user name
-//     UserService.getById(parsed)
-//       .then((user: any) => setApprovedByName(user?.name || user?.userName || user?.fullName || `User #${parsed}`))
-//       .catch(() => setApprovedByName(`User #${parsed}`));
-//   }, [data?.approvedBy]);
-// Resolve approvedBy ID → user name
-useEffect(() => {
-  if (!data?.approvedBy) { setApprovedByName("—"); return; }
+  //   useEffect(() => {
+  //     if (!data?.approvedBy) { setApprovedByName("—"); return; }
+  //     const parsed = parseInt(data.approvedBy, 10);
+  //     if (isNaN(parsed)) {
+  //       // approvedBy is already a name string
+  //       setApprovedByName(data.approvedBy);
+  //       return;
+  //     }
+  //     // approvedBy is a numeric ID — fetch user name
+  //     UserService.getById(parsed)
+  //       .then((user: any) => setApprovedByName(user?.name || user?.userName || user?.fullName || `User #${parsed}`))
+  //       .catch(() => setApprovedByName(`User #${parsed}`));
+  //   }, [data?.approvedBy]);
+  // Resolve approvedBy ID → user name
+  useEffect(() => {
+    if (!data?.approvedBy) { setApprovedByName("—"); return; }
 
-  const parsed = parseInt(data.approvedBy, 10);
+    const parsed = parseInt(data.approvedBy, 10);
 
-  if (isNaN(parsed)) {
-    setApprovedByName(data.approvedBy);
-    return;
-  }
+    if (isNaN(parsed)) {
+      setApprovedByName(data.approvedBy);
+      return;
+    }
 
-  UserService.getUserById(parsed)
-  .then((res) => {
-    const user = res?.value;
-    setApprovedByName(user?.userName || `User #${parsed}`);
-  })
-  .catch(() => setApprovedByName(`User #${parsed}`));
-}, [data?.approvedBy]);
+    UserService.getUserById(parsed)
+      .then((res) => {
+        const user = res?.value;
+        setApprovedByName(user?.userName || `User #${parsed}`);
+      })
+      .catch(() => setApprovedByName(`User #${parsed}`));
+  }, [data?.approvedBy]);
 
   const handleApprove = async () => {
     if (!id) return;
@@ -248,7 +248,7 @@ useEffect(() => {
       const res = await ContributionMasterService.approve({
         masterId: id,
         approve: true,
-        currentUserId: undefined, // replace with auth context userId
+        currentUserId: undefined,
       });
       setResult(res);
       const updated = await ContributionMasterService.getById(id);
@@ -281,11 +281,11 @@ useEffect(() => {
 
   if (!data) return null;
 
-  const approved     = data.isApproved;
-  const totalAmount  = parseFloat(data.totalamount) || 0;
-  const totalEntry   = parseInt(data.totalentry, 10) || 0;
-  const newMembers   = parseInt(data.newMemberCount, 10) || 0;
-  const fileSizeKB   = data.fileSize ? (data.fileSize / 1024).toFixed(1) : "0";
+  const approved = data.isApproved;
+  const totalAmount = parseFloat(data.totalamount) || 0;
+  const totalEntry = parseInt(data.totalentry, 10) || 0;
+  const newMembers = parseInt(data.newMemberCount, 10) || 0;
+  const fileSizeKB = data.fileSize ? (data.fileSize / 1024).toFixed(1) : "0";
 
   return (
     <>
@@ -375,10 +375,10 @@ useEffect(() => {
 
         {/* ── Stat strip ───────────────────────────────────────── */}
         <div style={{ display: "flex", gap: 12, marginBottom: 18, flexWrap: "wrap" }}>
-          <StatBrick label="Total Amount"  value={fmt(totalAmount)}   icon="₹"  accent="#1B3763" delay={0.1} />
-          <StatBrick label="Total Entries" value={totalEntry}          icon="📋" accent="#0f5a8e" delay={0.15} />
-          <StatBrick label="New Members"   value={newMembers}          icon="👥" accent="#0d7377" delay={0.2} />
-          <StatBrick label="File Size"     value={`${fileSizeKB} KB`} icon="💾" accent="#6366f1" delay={0.25} />
+          <StatBrick label="Total Amount" value={fmt(totalAmount)} icon="₹" accent="#1B3763" delay={0.1} />
+          <StatBrick label="Total Entries" value={totalEntry} icon="📋" accent="#0f5a8e" delay={0.15} />
+          <StatBrick label="New Members" value={newMembers} icon="👥" accent="#0d7377" delay={0.2} />
+          <StatBrick label="File Size" value={`${fileSizeKB} KB`} icon="💾" accent="#6366f1" delay={0.25} />
         </div>
 
         {/* ── Main 3-column grid ────────────────────────────────── */}
@@ -389,15 +389,15 @@ useEffect(() => {
             <InfoField label="File name" value={
               <span style={{ fontSize: 13, wordBreak: "break-all" }}>{data.fileName}</span>
             } />
-            <InfoField label="File type"  value={data.fileType} />
-            <InfoField label="Extension"  value={data.fileExtension.toUpperCase()} mono />
-            <InfoField label="File size"  value={`${fileSizeKB} KB`} mono />
+            <InfoField label="File type" value={data.fileType} />
+            <InfoField label="Extension" value={data.fileExtension.toUpperCase()} mono />
+            <InfoField label="File size" value={`${fileSizeKB} KB`} mono />
           </SectionCard>
 
           {/* Period & circle */}
           <SectionCard title="Period & circle" icon="📅" accent="#0f5a8e" delay={0.2}>
-            <InfoField label="Month"  value={toMonthName(data.month)} />
-            <InfoField label="Year"   value={toFullYear(data.year)} mono />
+            <InfoField label="Month" value={toMonthName(data.month)} />
+            <InfoField label="Year" value={toFullYear(data.year)} mono />
             <InfoField label="Circle" value={data.circle} mono />
             <InfoField label="Status" value={
               <span style={{
@@ -420,9 +420,9 @@ useEffect(() => {
                 </span>
               </span>
             } />
-            <InfoField label="Approved by"   value={approvedByName} />
+            <InfoField label="Approved by" value={approvedByName} />
             <InfoField label="Approved date" value={fmtDate(data.approvedDate)} mono={!!data.approvedDate} />
-            <InfoField label="Is approved"   value={
+            <InfoField label="Is approved" value={
               <span style={{
                 background: approved ? "#dcfce7" : "#fee2e2",
                 color: approved ? "#15803d" : "#dc2626",
@@ -454,14 +454,14 @@ useEffect(() => {
             <span style={{ fontSize: 13, fontWeight: 800, color: "#0f172a" }}>Contribution summary</span>
           </div>
           <div style={{ padding: "16px 20px", display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))", gap: "16px 28px" }}>
-            <InfoField label="Total Amount"  value={<span style={{ color: "#0d7377", fontFamily: "'JetBrains Mono',monospace" }}>{fmt(totalAmount)}</span>} />
+            <InfoField label="Total Amount" value={<span style={{ color: "#0d7377", fontFamily: "'JetBrains Mono',monospace" }}>{fmt(totalAmount)}</span>} />
             <InfoField label="Total Entries" value={String(totalEntry)} mono />
-            <InfoField label="New Members"   value={String(newMembers)} mono />
-            <InfoField label="File Type"     value={data.fileType} />
-            <InfoField label="Month"         value={toMonthName(data.month)} />
-            <InfoField label="Year"          value={toFullYear(data.year)} mono />
-            <InfoField label="Circle"        value={data.circle} mono />
-            <InfoField label="Status"        value={
+            <InfoField label="New Members" value={String(newMembers)} mono />
+            <InfoField label="File Type" value={data.fileType} />
+            <InfoField label="Month" value={toMonthName(data.month)} />
+            <InfoField label="Year" value={toFullYear(data.year)} mono />
+            <InfoField label="Circle" value={data.circle} mono />
+            <InfoField label="Status" value={
               <span style={{ background: data.contributionStatus === "Processed" ? "#dcfdf7" : "#fef3c7", color: data.contributionStatus === "Processed" ? "#0d7377" : "#92400e", padding: "3px 10px", borderRadius: 99, fontSize: 12, fontWeight: 700 }}>
                 {data.contributionStatus}
               </span>

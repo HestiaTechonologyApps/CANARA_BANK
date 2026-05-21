@@ -1,5 +1,4 @@
 // src/Pages/ContributionMaster/BranchCreatePage.tsx
-
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import BranchService from "../../../Services/Settings/Branch.services";
@@ -9,7 +8,6 @@ import type { Circle } from "../../../Types/Settings/Circle.types";
 import StatePopup from "../../Settings/State/StatePopup";
 import CirclePopup from "../../Circle/CirclePopup";
 
-/* ─── Styles ───────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -23,7 +21,6 @@ const STYLE_TAG = `
   .bcr-section-card { background:#fff;border:1.5px solid #e8edf5;border-radius:16px;overflow:hidden;animation:fadeUp 0.4s ease both; }
 `;
 
-/* ─── Field Components ────────────────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
   <p style={{ margin: "0 0 5px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
@@ -73,7 +70,6 @@ const ToggleInput: React.FC<{ value: boolean; onChange: (v: boolean) => void; la
   </div>
 );
 
-/* ─── Section Card ────────────────────────────────────────────────── */
 const SectionCard: React.FC<{ title: string; icon: string; accent?: string; children: React.ReactNode; delay?: number }> = ({ title, icon, accent = "#1B3763", children, delay = 0 }) => (
   <div className="bcr-section-card" style={{ animationDelay: `${delay}s` }}>
     <div style={{ padding: "14px 20px", background: "#f8fafc", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", gap: 10 }}>
@@ -92,32 +88,31 @@ const Field: React.FC<{ children: React.ReactNode; span?: boolean }> = ({ childr
   <div style={span ? { gridColumn: "1 / -1" } : {}}>{children}</div>
 );
 
-/* ─── Main Page ───────────────────────────────────────────────────── */
 const BranchCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const masterId       = searchParams.get("masterId") || "";
-  const prefillDpCode  = searchParams.get("dpCode") || "";
+  const masterId = searchParams.get("masterId") || "";
+  const prefillDpCode = searchParams.get("dpCode") || "";
 
-  const [dpCode,         setDpCode]         = useState(prefillDpCode);
-  const [branchName,     setBranchName]     = useState("");
-  const [district,       setDistrict]       = useState("");
-  const [address1,       setAddress1]       = useState("");
-  const [address2,       setAddress2]       = useState("");
-  const [address3,       setAddress3]       = useState("");
-  const [status,         setStatus]         = useState("Active");
+  const [dpCode, setDpCode] = useState(prefillDpCode);
+  const [branchName, setBranchName] = useState("");
+  const [district, setDistrict] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [address3, setAddress3] = useState("");
+  const [status, setStatus] = useState("Active");
   const [isRegCompleted, setIsRegCompleted] = useState(false);
 
-  const [selectedState,  setSelectedState]  = useState<State | null>(null);
+  const [selectedState, setSelectedState] = useState<State | null>(null);
   const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
 
-  const [showStatePopup,  setShowStatePopup]  = useState(false);
+  const [showStatePopup, setShowStatePopup] = useState(false);
   const [showCirclePopup, setShowCirclePopup] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg,   setErrorMsg]   = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const goBack = () =>
     masterId ? navigate(`/dashboard/contributions/monthlyContribution-view/${masterId}`) : navigate(-1);
@@ -131,18 +126,18 @@ const BranchCreatePage: React.FC = () => {
     setErrorMsg("");
     try {
       await BranchService.createBranch({
-        dpCode:        Number(dpCode),
-        name:          branchName.trim(),
-        district:      district.trim(),
-        address1:      address1.trim(),
-        address2:      address2.trim(),
-        address3:      address3.trim(),
-        stateId:       selectedState.stateId,
-        circleId:      selectedCircle.circleId,
+        dpCode: Number(dpCode),
+        name: branchName.trim(),
+        district: district.trim(),
+        address1: address1.trim(),
+        address2: address2.trim(),
+        address3: address3.trim(),
+        stateId: selectedState.stateId,
+        circleId: selectedCircle.circleId,
         status,
         isRegCompleted,
-        stateName:     selectedState.name,
-        circleName:    selectedCircle.name,
+        stateName: selectedState.name,
+        circleName: selectedCircle.name,
       } as Omit<Branch, "branchId" | "auditLogs">);
       setSuccessMsg("Branch created successfully! Redirecting…");
       setTimeout(() => goBack(), 1600);
@@ -285,7 +280,7 @@ const BranchCreatePage: React.FC = () => {
         </div>
       </div>
 
-      <StatePopup  show={showStatePopup}  handleClose={() => setShowStatePopup(false)}  onSelect={s => { setSelectedState(s); setSelectedCircle(null); setShowStatePopup(false); }} />
+      <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={s => { setSelectedState(s); setSelectedCircle(null); setShowStatePopup(false); }} />
       <CirclePopup show={showCirclePopup} handleClose={() => setShowCirclePopup(false)} onSelect={c => { setSelectedCircle(c); setShowCirclePopup(false); }} />
     </>
   );

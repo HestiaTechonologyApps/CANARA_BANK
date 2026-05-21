@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Field } from "../../../Components/KiduEdit";
-import MonthService from "../../../Services/Settings/Month.services"; 
+import MonthService from "../../../Services/Settings/Month.services";
 import type { Month } from "../../../Types/Settings/Month.types";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import MonthPopup from "../../Settings/Month/MonthPopup";
@@ -11,13 +11,13 @@ import MonthlyContributionMasterService from "../../../Services/Contributions/Mo
 
 const ContributionMasterEdit: React.FC = () => {
   const [showMonthPopup, setShowMonthPopup] = useState(false);
-  const [showYearPopup,  setShowYearPopup]  = useState(false);
+  const [showYearPopup, setShowYearPopup] = useState(false);
 
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [selectedYear,  setSelectedYear]  = useState<YearMaster | null>(null);
+  const [selectedYear, setSelectedYear] = useState<YearMaster | null>(null);
 
   const [initialMonth, setInitialMonth] = useState<Month | null>(null);
-  const [initialYear,  setInitialYear]  = useState<YearMaster | null>(null);
+  const [initialYear, setInitialYear] = useState<YearMaster | null>(null);
 
   const [existingFileName, setExistingFileName] = useState<string | null>(null);
 
@@ -36,98 +36,81 @@ const ContributionMasterEdit: React.FC = () => {
     },
   ];
 
- const handleFetch = async (id: string) => {
-  const [master, allMonths] = await Promise.all([
-    ContributionMasterService.getById(Number(id)),  
-    MonthService.getAllMonths(),
-  ]);
+  const handleFetch = async (id: string) => {
+    const [master, allMonths] = await Promise.all([
+      ContributionMasterService.getById(Number(id)),
+      MonthService.getAllMonths(),
+    ]);
 
-  if (!master) throw new Error("Contribution master not found");
+    if (!master) throw new Error("Contribution master not found");
 
-  const month = allMonths.find((m) => m.monthCode === Number(master.month)) ?? null;
+    const month = allMonths.find((m) => m.monthCode === Number(master.month)) ?? null;
 
-  const year: YearMaster = {
-  yearOf:   master.yearOf,        
-  yearName: Number(master.year),
-};
+    const year: YearMaster = {
+      yearOf: master.yearOf,
+      yearName: Number(master.year),
+    };
 
-  setExistingFileName(master.fileName);
-  setSelectedMonth(month);
-  setSelectedYear(year);
-  setInitialMonth(month);
-  setInitialYear(year);
+    setExistingFileName(master.fileName);
+    setSelectedMonth(month);
+    setSelectedYear(year);
+    setInitialMonth(month);
+    setInitialYear(year);
 
-  return {
-    isSucess: true,
-    value: {
-      MonthCode:        master.month,
-      YearOf:           master.year,
-      ContributionFile: null,
-    },
+    return {
+      isSucess: true,
+      value: {
+        MonthCode: master.month,
+        YearOf: master.year,
+        ContributionFile: null,
+      },
+    };
   };
-};
 
   const handleReset = () => {
     setSelectedMonth(initialMonth);
     setSelectedYear(initialYear);
   };
 
-// const handleUpdate = async (id: string, _formData: Record<string, any>) => {
-//   if (!selectedMonth) throw new Error("Please select a month");
-//   if (!selectedYear)  throw new Error("Please select a year");
 
-//   const fileInput = document.querySelector(
-//     'input[type="file"][name="ContributionFile"]'
-//   ) as HTMLInputElement;
-//   const actualFile = fileInput?.files?.[0];
+  const handleUpdate = async (id: string, _formData: Record<string, any>) => {
+    if (!selectedMonth) throw new Error("Please select a month");
+    if (!selectedYear) throw new Error("Please select a year");
 
-//   if (!actualFile) throw new Error("Please select a contribution file");
+    const fileInput = document.querySelector(
+      'input[type="file"][name="ContributionFile"]'
+    ) as HTMLInputElement;
+    const actualFile = fileInput?.files?.[0];
 
-//   await MonthlyContributionMasterService.update({  
-//     id:               Number(id),
-//     MonthCode:        selectedMonth.monthCode,
-//     YearOf:           Number(selectedYear.yearOf),
-//     ContributionFile: actualFile,
-//   });
-// };
- const handleUpdate = async (id: string, _formData: Record<string, any>) => {
-  if (!selectedMonth) throw new Error("Please select a month");
-  if (!selectedYear)  throw new Error("Please select a year");
+    if (!actualFile) throw new Error("Please select a contribution file");
 
-  const fileInput = document.querySelector(
-    'input[type="file"][name="ContributionFile"]'
-  ) as HTMLInputElement;
-  const actualFile = fileInput?.files?.[0];
+    try {
+      await MonthlyContributionMasterService.update({
+        id: Number(id),
+        MonthCode: selectedMonth.monthCode,
+        YearOf: Number(selectedYear.yearOf),
+        ContributionFile: actualFile,
+      });
+    } catch (error: any) {
+      const msg = error?.message || "";
 
-  if (!actualFile) throw new Error("Please select a contribution file");
+      if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
+        throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+      }
 
-  try {
-    await MonthlyContributionMasterService.update({
-      id:               Number(id),
-      MonthCode:        selectedMonth.monthCode,
-      YearOf:           Number(selectedYear.yearOf),
-      ContributionFile: actualFile,
-    });
-  } catch (error: any) {
-    const msg = error?.message || "";
-
-    if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
-      throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+      throw error;
     }
-
-    throw error;
-  }
-};
-const popupHandlers = {
+  };
+  const popupHandlers = {
     MonthCode: {
-      value:       String(selectedMonth?.monthName ?? ""), 
+      value: String(selectedMonth?.monthName ?? ""),
       actualValue: selectedMonth?.monthCode,
-      onOpen:      () => setShowMonthPopup(true),
+      onOpen: () => setShowMonthPopup(true),
     },
     YearOf: {
-      value:       String(selectedYear?.yearName ?? ""),
+      value: String(selectedYear?.yearName ?? ""),
       actualValue: selectedYear?.yearOf,
-      onOpen:      () => setShowYearPopup(true),
+      onOpen: () => setShowYearPopup(true),
     },
   };
 

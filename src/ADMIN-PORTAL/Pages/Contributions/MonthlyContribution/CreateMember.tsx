@@ -1,5 +1,4 @@
 // src/Pages/ContributionMaster/MemberCreatePage.tsx
-// Open via: navigate(`/dashboard/contributions/create-member?masterId=X&staffNo=Y&name=Z&dpCode=W&circle=C`)
 
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -15,7 +14,6 @@ import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import CategoryPopup from "../../Settings/Category/CategoryPopup";
 import StatusPopup from "../../Settings/Status/StatusPopup";
 
-/* ─── Styles ─────────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -29,10 +27,8 @@ const STYLE_TAG = `
   .mcr-section-card { background:#fff;border:1.5px solid #e8edf5;border-radius:16px;overflow:hidden;animation:fadeUp 0.4s ease both; }
 `;
 
-/* ─── Helpers ─────────────────────────────────────────────────────── */
 const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
 
-/* ─── Reusable Field Components ───────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
   <p style={{ margin: "0 0 5px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
@@ -91,7 +87,6 @@ const ToggleInput: React.FC<{ value: boolean; onChange: (v: boolean) => void; la
   </div>
 );
 
-/* ─── Section Card ────────────────────────────────────────────────── */
 const SectionCard: React.FC<{ title: string; icon: string; accent?: string; children: React.ReactNode; delay?: number }> = ({ title, icon, accent = "#1B3763", children, delay = 0 }) => (
   <div className="mcr-section-card" style={{ animationDelay: `${delay}s` }}>
     <div style={{ padding: "14px 20px", background: "#f8fafc", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", gap: 10 }}>
@@ -102,7 +97,6 @@ const SectionCard: React.FC<{ title: string; icon: string; accent?: string; chil
   </div>
 );
 
-/* ─── Form Grid ───────────────────────────────────────────────────── */
 const FormGrid: React.FC<{ children: React.ReactNode; cols?: number }> = ({ children, cols = 2 }) => (
   <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: "14px 18px" }}>{children}</div>
 );
@@ -111,42 +105,40 @@ const Field: React.FC<{ children: React.ReactNode; span?: boolean }> = ({ childr
   <div style={span ? { gridColumn: "1 / -1" } : {}}>{children}</div>
 );
 
-/* ─── Main Page ───────────────────────────────────────────────────── */
 const MemberCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const masterId  = searchParams.get("masterId") || "";
+  const masterId = searchParams.get("masterId") || "";
   const prefillStaffNo = searchParams.get("staffNo") || "";
-  const prefillName    = searchParams.get("name") || "";
+  const prefillName = searchParams.get("name") || "";
 
-  /* ── Form state ── */
-  const [staffNo,          setStaffNo]          = useState(prefillStaffNo);
-  const [name,             setName]             = useState(prefillName);
-  const [genderId,         setGenderId]         = useState("");
-  const [dob,              setDob]              = useState("");
-  const [doj,              setDoj]              = useState("");
-  const [dojtoScheme,      setDojtoScheme]      = useState("");
-  const [nominee,          setNominee]          = useState("");
-  const [nomineeRelation,  setNomineeRelation]  = useState("");
-  const [nomineeIdentity,  setNomineeIdentity]  = useState("");
-  const [unionMember,      setUnionMember]      = useState("");
-  const [totalRefund,      setTotalRefund]      = useState("0");
-  const [isRegCompleted,   setIsRegCompleted]   = useState(false);
+  const [staffNo, setStaffNo] = useState(prefillStaffNo);
+  const [name, setName] = useState(prefillName);
+  const [genderId, setGenderId] = useState("");
+  const [dob, setDob] = useState("");
+  const [doj, setDoj] = useState("");
+  const [dojtoScheme, setDojtoScheme] = useState("");
+  const [nominee, setNominee] = useState("");
+  const [nomineeRelation, setNomineeRelation] = useState("");
+  const [nomineeIdentity, setNomineeIdentity] = useState("");
+  const [unionMember, setUnionMember] = useState("");
+  const [totalRefund, setTotalRefund] = useState("0");
+  const [isRegCompleted, setIsRegCompleted] = useState(false);
 
-  const [selectedBranch,      setSelectedBranch]      = useState<Branch | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
-  const [selectedCategory,    setSelectedCategory]    = useState<Category | null>(null);
-  const [selectedStatus,      setSelectedStatus]      = useState<Status | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  const [showBranchPopup,      setShowBranchPopup]      = useState(false);
+  const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
-  const [showCategoryPopup,    setShowCategoryPopup]    = useState(false);
-  const [showStatusPopup,      setShowStatusPopup]      = useState(false);
+  const [showCategoryPopup, setShowCategoryPopup] = useState(false);
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg,   setErrorMsg]   = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const goBack = () =>
     masterId
@@ -162,26 +154,26 @@ const MemberCreatePage: React.FC = () => {
     setErrorMsg("");
     try {
       await MemberService.createMember({
-        staffNo:          Number(staffNo),
-        name:             name.trim(),
-        genderId:         Number(genderId),
-        designationId:    selectedDesignation.designationId,
-        categoryId:       selectedCategory.categoryId,
-        branchId:         selectedBranch.branchId,
-        statusId:         selectedStatus.statusId,
-        dob:              toIso(dob),
-        dobString:        toIso(dob),
-        doj:              toIso(doj),
-        dojString:        toIso(doj),
-        dojtoScheme:      toIso(dojtoScheme),
+        staffNo: Number(staffNo),
+        name: name.trim(),
+        genderId: Number(genderId),
+        designationId: selectedDesignation.designationId,
+        categoryId: selectedCategory.categoryId,
+        branchId: selectedBranch.branchId,
+        statusId: selectedStatus.statusId,
+        dob: toIso(dob),
+        dobString: toIso(dob),
+        doj: toIso(doj),
+        dojString: toIso(doj),
+        dojtoScheme: toIso(dojtoScheme),
         dojtoSchemeString: toIso(dojtoScheme),
         isRegCompleted,
-        nominee:          nominee.trim(),
+        nominee: nominee.trim(),
         nomineeRelation,
-        nomineeIDentity:  nomineeIdentity.trim(),
-        profileImageSrc:  "",
+        nomineeIDentity: nomineeIdentity.trim(),
+        profileImageSrc: "",
         unionMember,
-        totalRefund:      totalRefund || "0",
+        totalRefund: totalRefund || "0",
       } as Omit<Member, "memberId" | "auditLogs">);
       setSuccessMsg("Member created successfully! Redirecting…");
       setTimeout(() => goBack(), 1600);
@@ -338,7 +330,7 @@ const MemberCreatePage: React.FC = () => {
               <Field>
                 <FieldLabel label="Nominee Relation" />
                 <SelectInput value={nomineeRelation} onChange={setNomineeRelation} placeholder="Select relation"
-                  options={["Spouse","Father","Mother","Son","Daughter","Sibling","Nephew","Niece","Grandparent"].map(v => ({ value: v, label: v }))} />
+                  options={["Spouse", "Father", "Mother", "Son", "Daughter", "Sibling", "Nephew", "Niece", "Grandparent"].map(v => ({ value: v, label: v }))} />
               </Field>
               <Field span>
                 <FieldLabel label="Nominee Identity" />
@@ -376,10 +368,10 @@ const MemberCreatePage: React.FC = () => {
       </div>
 
       {/* Popups */}
-      <BranchPopup      show={showBranchPopup}      handleClose={() => setShowBranchPopup(false)}      onSelect={b => { setSelectedBranch(b);      setShowBranchPopup(false); }} />
+      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={b => { setSelectedBranch(b); setShowBranchPopup(false); }} />
       <DesignationPopup show={showDesignationPopup} handleClose={() => setShowDesignationPopup(false)} onSelect={d => { setSelectedDesignation(d); setShowDesignationPopup(false); }} />
-      <CategoryPopup    show={showCategoryPopup}    handleClose={() => setShowCategoryPopup(false)}    onSelect={c => { setSelectedCategory(c);    setShowCategoryPopup(false); }} />
-      <StatusPopup      show={showStatusPopup}      handleClose={() => setShowStatusPopup(false)}      onSelect={s => { setSelectedStatus(s);      setShowStatusPopup(false); }} />
+      <CategoryPopup show={showCategoryPopup} handleClose={() => setShowCategoryPopup(false)} onSelect={c => { setSelectedCategory(c); setShowCategoryPopup(false); }} />
+      <StatusPopup show={showStatusPopup} handleClose={() => setShowStatusPopup(false)} onSelect={s => { setSelectedStatus(s); setShowStatusPopup(false); }} />
     </>
   );
 };

@@ -11,10 +11,10 @@ import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 
 const ContributionMasterCreate: React.FC = () => {
   const [showMonthPopup, setShowMonthPopup] = useState(false);
-  const [showYearPopup,  setShowYearPopup]  = useState(false);
+  const [showYearPopup, setShowYearPopup] = useState(false);
 
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
-  const [selectedYear,  setSelectedYear]  = useState<YearMaster | null>(null);
+  const [selectedYear, setSelectedYear] = useState<YearMaster | null>(null);
 
   const handleReset = () => {
     setSelectedMonth(null);
@@ -28,7 +28,7 @@ const ContributionMasterCreate: React.FC = () => {
     },
     {
       name: "YearOf",
-      rules: { type: "popup", label: "Year",  required: true, colWidth: 4 },
+      rules: { type: "popup", label: "Year", required: true, colWidth: 4 },
     },
     {
       name: "ContributionFile",
@@ -47,38 +47,27 @@ const ContributionMasterCreate: React.FC = () => {
     },
   };
 
-  // const handleSubmit = async (formData: Record<string, any>) => {
-  //   if (!selectedMonth) throw new Error("Please select a month");
-  //   if (!selectedYear)  throw new Error("Please select a year");
-
-  //   await ContributionMasterService.uploadAndSave({
-  //     MonthCode:        selectedMonth.monthCode,
-  //     YearOf:           Number(selectedYear.yearOf),
-  //     ContributionFile: formData.ContributionFile as File,
-  //   });
-  // };
-
   const handleSubmit = async (formData: Record<string, any>) => {
-  if (!selectedMonth) throw new Error("Please select a month");
-  if (!selectedYear)  throw new Error("Please select a year");
+    if (!selectedMonth) throw new Error("Please select a month");
+    if (!selectedYear) throw new Error("Please select a year");
 
-  try {
-    await ContributionMasterService.uploadAndSave({
-      MonthCode:        selectedMonth.monthCode,
-      YearOf:           Number(selectedYear.yearOf),
-      ContributionFile: formData.ContributionFile as File,
-    });
-  } catch (error: any) {
-    const msg = error?.message || "";
+    try {
+      await ContributionMasterService.uploadAndSave({
+        MonthCode: selectedMonth.monthCode,
+        YearOf: Number(selectedYear.yearOf),
+        ContributionFile: formData.ContributionFile as File,
+      });
+    } catch (error: any) {
+      const msg = error?.message || "";
 
-    if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
-      throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+      if (msg.toLowerCase().includes("wrong length") || msg.toLowerCase().includes("no valid lines")) {
+        throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
+      }
+
+
+      throw error;
     }
-
-    
-    throw error;
-  }
-};
+  };
 
   return (
     <>

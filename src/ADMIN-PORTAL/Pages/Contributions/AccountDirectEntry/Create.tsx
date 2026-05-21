@@ -48,7 +48,6 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
 
-  // ---------- SUBMIT ----------
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");

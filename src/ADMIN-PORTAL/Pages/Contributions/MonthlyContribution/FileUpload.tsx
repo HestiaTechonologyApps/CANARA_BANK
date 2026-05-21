@@ -20,7 +20,7 @@ const FileUploadCreate: React.FC = () => {
     <div className="container-fluid px-2 mt-1" style={{ fontFamily: "Urbanist" }}>
       <div className="shadow-sm rounded p-4 bg-white">
 
-        {/* HEADER */}
+        
         <div className="d-flex align-items-center mb-3">
           <KiduPrevious />
           <h4 className="fw-bold mb-0 ms-2 text-primary">
@@ -30,11 +30,11 @@ const FileUploadCreate: React.FC = () => {
 
         <hr />
 
-        {/* FORM */}
+      
         <Form>
           <Row className="mb-3">
 
-            {/* ✅ YEAR POPUP FIELD */}
+            
             <Col md={6}>
               <Form.Label className="fw-bold">Year</Form.Label>
               <InputGroup>
@@ -53,7 +53,7 @@ const FileUploadCreate: React.FC = () => {
               </InputGroup>
             </Col>
 
-            {/* ✅ MONTH POPUP FIELD */}
+           
             <Col md={6}>
               <Form.Label className="fw-bold">Month</Form.Label>
               <InputGroup>
@@ -73,7 +73,7 @@ const FileUploadCreate: React.FC = () => {
             </Col>
           </Row>
 
-          {/* FILE UPLOAD */}
+         
           <Row className="mb-4">
             <Col md={6}>
               <Form.Label className="fw-bold">Upload File</Form.Label>
@@ -88,14 +88,14 @@ const FileUploadCreate: React.FC = () => {
             </Col>
           </Row>
 
-          {/* ACTION BUTTONS */}
+          
           <div className="d-flex justify-content-center gap-3 mb-4">
             <Button variant="primary">Upload</Button>
             <Button variant="danger">Cancel</Button>
           </div>
         </Form>
 
-        {/* SUMMARY TABLE */}
+       
         <Table bordered className="mb-4 text-center">
           <thead className="table-light">
             <tr>
@@ -113,7 +113,7 @@ const FileUploadCreate: React.FC = () => {
           </tbody>
         </Table>
 
-        {/* DETAILS TABLE */}
+      
         <Table bordered hover>
           <thead className="table-light">
             <tr>
@@ -131,13 +131,13 @@ const FileUploadCreate: React.FC = () => {
           </tbody>
         </Table>
 
-        {/* BACK BUTTON */}
+       
         <div className="mt-3">
           <Button variant="secondary">« Back to List</Button>
         </div>
       </div>
 
-      {/* ✅ YEAR POPUP */}
+      
       <YearMasterPopup
         show={showYearPopup}
         handleClose={() => setShowYearPopup(false)}
@@ -147,7 +147,7 @@ const FileUploadCreate: React.FC = () => {
         }}
       />
 
-      {/* ✅ MONTH POPUP */}
+     
       <MonthPopup
         show={showMonthPopup}
         handleClose={() => setShowMonthPopup(false)}

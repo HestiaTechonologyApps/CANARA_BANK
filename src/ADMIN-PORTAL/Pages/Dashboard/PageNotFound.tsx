@@ -17,7 +17,6 @@ const PageNotFound: React.FC = () => {
         }} >
         <Row className="text-center">
           <Col>
-            {/* GIF Section */}
             <div className="mb-3 rounded-3">
               <img
                 src={
@@ -32,7 +31,6 @@ const PageNotFound: React.FC = () => {
                 }}
               />
             </div>
-            {/* Message Section */}
             <h4
               className="fw-semibold mt-3"
               style={{ color: "#18575A", fontWeight: 700 }} >
@@ -50,7 +48,6 @@ const PageNotFound: React.FC = () => {
               The page you’re looking for doesn’t exist or has been moved.
             </p>
 
-            {/* Back Button */}
             <button
               onClick={() => navigate("/dashboard")}
               className="rounded-3 p-2 border-0"

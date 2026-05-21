@@ -128,7 +128,6 @@ const RefundContributionEdit: React.FC = () => {
     await RefundContributionService.updateRefundContribution(Number(id), payload);
   };
 
-  /* ===================== POPUPS ===================== */
   const popupHandlers = {
     stateId: {
       value: selectedState?.name || "",

@@ -27,7 +27,6 @@ import MonthlyContributionMasterService from "../../../Services/Contributions/Mo
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
 import UserService from "../../../Services/Settings/User.services";
 
-/* ─── Helpers ─────────────────────────────────────────────────────── */
 const fmt = (n: number | string) => {
   const num = typeof n === "string" ? parseFloat(n) : n;
   return `₹\u202F${(num || 0).toLocaleString("en-IN", { minimumFractionDigits: 0 })}`;
@@ -35,14 +34,14 @@ const fmt = (n: number | string) => {
 const fmtDate = (v: string | null | undefined) =>
   v && v !== ""
     ? new Date(v).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      })
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
     : "—";
 const MONTH_NAMES = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December",
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
 ];
 const toMonthName = (month: string): string => {
   if (!month) return "—";
@@ -59,22 +58,20 @@ const toFullYear = (year: string): string => {
 const initials = (name: string) =>
   name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 const AVATAR_COLORS = [
-  "#1B3763","#0f5a8e","#0d7377","#14a085",
-  "#2c3e7a","#6b3fa0","#8e3b46","#3b6b8e",
+  "#1B3763", "#0f5a8e", "#0d7377", "#14a085",
+  "#2c3e7a", "#6b3fa0", "#8e3b46", "#3b6b8e",
 ];
 const avatarColor = (name: string) =>
   AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
 
 const CURRENT_USER_ID = 1;
 
-/* ─── Report types that make a row eligible for parking ──────────── */
 const PARK_ELIGIBLE_REPORT_TYPES: ContributionReportType[] = [
   "NEWMEMBERS",
   "WRONGBRANCH",
   "WRONGCIRCLE",
 ];
 
-/* ─── Toast ───────────────────────────────────────────────────────── */
 let _toastContainer: HTMLDivElement | null = null;
 
 const showToast = (
@@ -117,14 +114,14 @@ const showToast = (
     blockers && blockers.length
       ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px">
           ${blockers
-            .map(
-              (b) =>
-                `<span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;
+        .map(
+          (b) =>
+            `<span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;
                   background:${b.accent}18;color:${b.accent};border:1px solid ${b.accent}40;white-space:nowrap">
                   ${b.icon} ${b.count.toLocaleString()} ${b.label}
                 </span>`
-            )
-            .join("")}
+        )
+        .join("")}
         </div>`
       : "";
 
@@ -147,7 +144,6 @@ const showToast = (
   }, 5000);
 };
 
-/* ─── Styles ──────────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -183,7 +179,6 @@ const STYLE_TAG = `
   .del-confirm-no:hover { background:#334155!important;transform:translateY(-1px)!important; }
 `;
 
-/* ─── Report Tab Config ───────────────────────────────────────────── */
 const REPORT_TABS: Array<{
   type: ContributionReportType;
   label: string;
@@ -194,15 +189,14 @@ const REPORT_TABS: Array<{
   modalType?: "member" | "branch" | "circle";
   blocksForward?: boolean;
 }> = [
-  { type: "NEWMEMBERS",  label: "New Members",  icon: "👤", accent: "#0d7377", description: "Staff found in this file who are not yet registered as members.", actionLabel: "+ Create Member", modalType: "member", blocksForward: true },
-  { type: "WRONGBRANCH", label: "Wrong Branch",  icon: "🏢", accent: "#e67e22", description: "Records where the DP code doesn't match any known branch.",      actionLabel: "+ Create Branch", modalType: "branch", blocksForward: true },
-  { type: "WRONGCIRCLE", label: "Wrong Circle",  icon: "⭕", accent: "#8e3b46", description: "Records where the circle code doesn't match any known circle.",   actionLabel: "+ Create Circle", modalType: "circle", blocksForward: true },
-  { type: "PARKEDITEMS", label: "Parked Items",  icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution.", blocksForward: true },
- // { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
-  { type: "ALL",         label: "All Records",   icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
-];
+    { type: "NEWMEMBERS", label: "New Members", icon: "👤", accent: "#0d7377", description: "Staff found in this file who are not yet registered as members.", actionLabel: "+ Create Member", modalType: "member", blocksForward: true },
+    { type: "WRONGBRANCH", label: "Wrong Branch", icon: "🏢", accent: "#e67e22", description: "Records where the DP code doesn't match any known branch.", actionLabel: "+ Create Branch", modalType: "branch", blocksForward: true },
+    { type: "WRONGCIRCLE", label: "Wrong Circle", icon: "⭕", accent: "#8e3b46", description: "Records where the circle code doesn't match any known circle.", actionLabel: "+ Create Circle", modalType: "circle", blocksForward: true },
+    { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution.", blocksForward: true },
+    // { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
+    { type: "ALL", label: "All Records", icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
+  ];
 
-/* ─── Park Reason Modal ───────────────────────────────────────────── */
 const ParkReasonModal: React.FC<{
   row: ContributionDetail;
   onClose: () => void;
@@ -269,7 +263,6 @@ const ParkReasonModal: React.FC<{
   );
 };
 
-/* ─── Unpark Confirm Modal ────────────────────────────────────────── */
 const UnparkConfirmModal: React.FC<{
   row: ContributionDetail;
   masterId: number;
@@ -277,10 +270,10 @@ const UnparkConfirmModal: React.FC<{
   onSuccess: () => void;
   onGoToReport: (type: ContributionReportType) => void;
 }> = ({ row, masterId, onClose, onSuccess, onGoToReport }) => {
-  const [checking,   setChecking]   = useState(true);
-  const [issues,     setIssues]     = useState<Array<{ type: ContributionReportType; label: string; icon: string; accent: string }>>([]);
+  const [checking, setChecking] = useState(true);
+  const [issues, setIssues] = useState<Array<{ type: ContributionReportType; label: string; icon: string; accent: string }>>([]);
   const [submitting, setSubmitting] = useState(false);
-  const [errorMsg,   setErrorMsg]   = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const check = async () => {
@@ -379,17 +372,17 @@ const UnparkConfirmModal: React.FC<{
           )}
         </div>
 
-        {/* ── Body ── */}
+        
         <div style={{ padding: "14px 18px 18px" }}>
 
-          {/* CHECKING */}
+        
           {checking && (
             <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", textAlign: "center", padding: "10px 0" }}>
               Please wait a moment…
             </p>
           )}
 
-          {/* HAS ISSUES — buttons */}
+          
           {!checking && issues.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {issues.map((issue, idx) => (
@@ -408,7 +401,7 @@ const UnparkConfirmModal: React.FC<{
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${issue.accent}0d`; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#fff"; }}
                 >
-                  {/* Step number circle */}
+                  
                   <div style={{
                     width: 28, height: 28, borderRadius: "50%",
                     background: issue.accent, color: "#fff",
@@ -416,7 +409,7 @@ const UnparkConfirmModal: React.FC<{
                     fontSize: 13, fontWeight: 800, flexShrink: 0,
                   }}>{idx + 1}</div>
 
-                  {/* Label */}
+                  
                   <div style={{ flex: 1 }}>
                     <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: issue.accent }}>
                       {issue.icon} {issue.label}
@@ -430,7 +423,7 @@ const UnparkConfirmModal: React.FC<{
                 </button>
               ))}
 
-              {/* Close button */}
+              
               <button
                 onClick={onClose}
                 style={{
@@ -445,7 +438,7 @@ const UnparkConfirmModal: React.FC<{
             </div>
           )}
 
-          {/* NO ISSUES — confirm */}
+        
           {!checking && issues.length === 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {row.parkReason && (
@@ -498,7 +491,6 @@ const UnparkConfirmModal: React.FC<{
   );
 };
 
-/* ─── Delete Confirm Modal ────────────────────────────────────────── */
 const DeleteConfirmModal: React.FC<{
   master: MonthlyContributionMaster;
   onClose: () => void;
@@ -546,128 +538,6 @@ const DeleteConfirmModal: React.FC<{
     </div>
   </div>
 );
-
-/* ─── Shared Modal Shell ──────────────────────────────────────────── */
-// const ModalShell: React.FC<{
-//   title: string;
-//   accent: string;
-//   icon: string;
-//   onClose: () => void;
-//   children: React.ReactNode;
-//   submitting?: boolean;
-//   onSubmit: () => void;
-//   submitLabel: string;
-//   successMsg?: string;
-//   errorMsg?: string;
-// }> = ({ title, icon, onClose, children, submitting, onSubmit, submitLabel, successMsg, errorMsg }) => {
-//   // Lock body scroll when modal is open
-//   useEffect(() => {
-//     const prev = document.body.style.overflow;
-//     document.body.style.overflow = "hidden";
-//     return () => { document.body.style.overflow = prev; };
-//   }, []);
-
-//   return (
-//     <div
-//       style={{
-//         position: "fixed", inset: 0, zIndex: 1000,
-//         background: "rgba(15,23,42,0.6)",
-//         display: "flex", alignItems: "center", justifyContent: "center",
-//         animation: "fadeIn 0.2s ease",
-//         backdropFilter: "blur(4px)",
-//         padding: "20px 16px",
-//         boxSizing: "border-box",
-//         overflowY: "auto",          // allows the backdrop itself to scroll on very small screens
-//       }}
-//       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-//     >
-//       <div
-//         style={{
-//           background: "#fff",
-//           borderRadius: 20,
-//           width: "100%", maxWidth: 680,
-//           // No fixed maxHeight — let content breathe; inner body scrolls if needed
-//           display: "flex", flexDirection: "column",
-//           animation: "slideUp 0.25s ease",
-//           boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
-//           fontFamily: "'Sora',sans-serif",
-//           overflow: "hidden",
-//           margin: "auto",           // centres vertically when content is shorter than viewport
-//         }}
-//         onClick={(e) => e.stopPropagation()}
-//       >
-//         {/* Header */}
-//         <div style={{
-//           background: "#1B3763",
-//           borderRadius: "20px 20px 0 0",
-//           padding: "22px 28px",
-//           display: "flex", alignItems: "center", justifyContent: "space-between",
-//           flexShrink: 0,
-//         }}>
-//           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-//             <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{icon}</div>
-//             <div>
-//               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#fff" }}>{title}</h2>
-//               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Fill in the details below</p>
-//             </div>
-//           </div>
-//           <button
-//             className="modal-close-btn"
-//             onClick={onClose}
-//             style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", fontWeight: 700 }}>
-//             ✕
-//           </button>
-//         </div>
-
-//         {/* Scrollable body */}
-//         <div style={{
-//           padding: "24px 28px",
-//           overflowY: "auto",
-//           maxHeight: "calc(100vh - 200px)",   // leaves room for header + footer
-//         }}>
-//           {successMsg && (
-//             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
-//               ✅ {successMsg}
-//             </div>
-//           )}
-//           {errorMsg && (
-//             <div style={{ background: "#fee2e2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#991b1b", fontSize: 13, fontWeight: 600 }}>
-//               ❌ {errorMsg}
-//             </div>
-//           )}
-//           {children}
-//         </div>
-
-//         {/* Footer */}
-//         <div style={{
-//           padding: "16px 28px 24px",
-//           display: "flex", gap: 10, justifyContent: "flex-end",
-//           borderTop: "1.5px solid #f1f5f9",
-//           flexShrink: 0,
-//           background: "#fff",
-//         }}>
-//           <button
-//             className="modal-cancel-btn"
-//             onClick={onClose}
-//             disabled={submitting}
-//             style={{ padding: "10px 22px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
-//             Cancel
-//           </button>
-//           <button
-//             className="modal-submit-btn"
-//             onClick={onSubmit}
-//             disabled={submitting}
-//             style={{ padding: "10px 24px", borderRadius: 10, border: "none", background: "#1B3763", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
-//             {submitting && (
-//               <div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
-//             )}
-//             {submitting ? "Saving…" : submitLabel}
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 const ModalShell: React.FC<{
   title: string;
@@ -717,7 +587,7 @@ const ModalShell: React.FC<{
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+      
         <div style={{
           background: "#1B3763",
           borderRadius: "20px 20px 0 0",
@@ -740,7 +610,7 @@ const ModalShell: React.FC<{
           </button>
         </div>
 
-        {/* Body */}
+       
         <div style={{ padding: "24px 28px" }}>
           {successMsg && (
             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
@@ -755,7 +625,7 @@ const ModalShell: React.FC<{
           {children}
         </div>
 
-        {/* Footer */}
+       
         <div style={{
           padding: "16px 28px 24px",
           display: "flex", gap: 10, justifyContent: "flex-end",
@@ -786,7 +656,6 @@ const ModalShell: React.FC<{
     </div>
   );
 };
-/* ─── Form Field Helpers ──────────────────────────────────────────── */
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
   <p style={{ margin: "0 0 5px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
@@ -828,7 +697,6 @@ const FormSection: React.FC<{ title?: string; children: React.ReactNode; span?: 
   </div>
 );
 
-/* ─── Member Create Modal ─────────────────────────────────────────── */
 const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {
   const [staffNo, setStaffNo] = useState(prefill.staffNo || "");
   const [name, setName] = useState(prefill.name || "");
@@ -882,20 +750,19 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
           <FormSection><FieldLabel label="Union Member" /><SelectInput value={unionMember} onChange={setUnionMember} placeholder="Select" options={[{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }]} /></FormSection>
           <FormSection><FieldLabel label="Total Refund" /><TextInput value={totalRefund} onChange={setTotalRefund} type="number" placeholder="0" /></FormSection>
           <FormSection><FieldLabel label="Nominee Name" /><TextInput value={nominee} onChange={setNominee} placeholder="Nominee full name" /></FormSection>
-          <FormSection><FieldLabel label="Nominee Relation" /><SelectInput value={nomineeRelation} onChange={setNomineeRelation} placeholder="Select relation" options={["Spouse","Father","Mother","Son","Daughter","Sibling","Nephew","Niece","Grandparent"].map(v => ({ value: v, label: v }))} /></FormSection>
+          <FormSection><FieldLabel label="Nominee Relation" /><SelectInput value={nomineeRelation} onChange={setNomineeRelation} placeholder="Select relation" options={["Spouse", "Father", "Mother", "Son", "Daughter", "Sibling", "Nephew", "Niece", "Grandparent"].map(v => ({ value: v, label: v }))} /></FormSection>
           <FormSection span><FieldLabel label="Nominee Identity" /><TextInput value={nomineeIdentity} onChange={setNomineeIdentity} placeholder="Aadhar / PAN etc." /></FormSection>
           <FormSection span><ToggleInput value={isRegCompleted} onChange={setIsRegCompleted} label="Registration Completed" accent="#0d7377" /></FormSection>
         </FormGrid>
       </ModalShell>
-      <BranchPopup      show={showBranchPopup}      handleClose={() => setShowBranchPopup(false)}      onSelect={b => { setSelectedBranch(b); setShowBranchPopup(false); }} />
+      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={b => { setSelectedBranch(b); setShowBranchPopup(false); }} />
       <DesignationPopup show={showDesignationPopup} handleClose={() => setShowDesignationPopup(false)} onSelect={d => { setSelectedDesignation(d); setShowDesignationPopup(false); }} />
-      <CategoryPopup    show={showCategoryPopup}    handleClose={() => setShowCategoryPopup(false)}    onSelect={c => { setSelectedCategory(c); setShowCategoryPopup(false); }} />
-      <StatusPopup      show={showStatusPopup}      handleClose={() => setShowStatusPopup(false)}      onSelect={s => { setSelectedStatus(s); setShowStatusPopup(false); }} />
+      <CategoryPopup show={showCategoryPopup} handleClose={() => setShowCategoryPopup(false)} onSelect={c => { setSelectedCategory(c); setShowCategoryPopup(false); }} />
+      <StatusPopup show={showStatusPopup} handleClose={() => setShowStatusPopup(false)} onSelect={s => { setSelectedStatus(s); setShowStatusPopup(false); }} />
     </>
   );
 };
 
-/* ─── Branch Create Modal ─────────────────────────────────────────── */
 const BranchCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {
   const [dpCode, setDpCode] = useState(prefill.dpCode || "");
   const [name, setName] = useState("");
@@ -939,13 +806,12 @@ const BranchCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
           <FormSection span><ToggleInput value={isRegCompleted} onChange={setIsRegCompleted} label="Registration Completed" accent="#e67e22" /></FormSection>
         </FormGrid>
       </ModalShell>
-      <StatePopup  show={showStatePopup}  handleClose={() => setShowStatePopup(false)}  onSelect={s => { setSelectedState(s); setSelectedCircle(null); setShowStatePopup(false); }} />
+      <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={s => { setSelectedState(s); setSelectedCircle(null); setShowStatePopup(false); }} />
       <CirclePopup show={showCirclePopup} handleClose={() => setShowCirclePopup(false)} onSelect={c => { setSelectedCircle(c); setShowCirclePopup(false); }} />
     </>
   );
 };
 
-/* ─── Circle Create Modal ─────────────────────────────────────────── */
 const CircleCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {
   const [circleCode, setCircleCode] = useState(String(prefill.circle || ""));
   const [name, setName] = useState("");
@@ -988,7 +854,6 @@ const CircleCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
   );
 };
 
-/* ─── Stat Brick ──────────────────────────────────────────────────── */
 const StatBrick: React.FC<{ label: string; value: string | number; accent?: string; icon: string }> = ({ label, value, accent = "#1B3763", icon }) => (
   <div style={{ background: "#fff", border: "1.5px solid #e8edf5", borderRadius: 14, padding: "14px 16px", display: "flex", alignItems: "center", gap: 12, flex: "1 1 0", minWidth: 0 }}>
     <div style={{ width: 36, height: 36, borderRadius: 10, background: `${accent}14`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>{icon}</div>
@@ -999,7 +864,6 @@ const StatBrick: React.FC<{ label: string; value: string | number; accent?: stri
   </div>
 );
 
-/* ─── Forward Gate Banner ─────────────────────────────────────────── */
 const ForwardGateBanner: React.FC<{
   blockers: { type: ContributionReportType; label: string; count: number; icon: string; accent: string }[];
   onGoToReport: (type: ContributionReportType) => void;
@@ -1028,7 +892,6 @@ const ForwardGateBanner: React.FC<{
   </div>
 );
 
-/* ─── Master Panel ────────────────────────────────────────────────── */
 const MasterPanel: React.FC<{
   master: MonthlyContributionMaster;
   onForward: () => void;
@@ -1044,7 +907,6 @@ const MasterPanel: React.FC<{
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-   // ── Resolve approvedBy ID → name ──────────────────────────────────
   const [approvedByName, setApprovedByName] = useState<string>("—");
   useEffect(() => {
     if (!master?.approvedBy) { setApprovedByName("—"); return; }
@@ -1054,18 +916,16 @@ const MasterPanel: React.FC<{
       .then((res) => setApprovedByName(res?.value?.userName || `User #${parsed}`))
       .catch(() => setApprovedByName(`User #${parsed}`));
   }, [master?.approvedBy]);
-  
-// ─────────────────────────────────────────────────────────────────
 
-  const totalAmount    = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
-  const totalEntry     = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
+
+  const totalAmount = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
+  const totalEntry = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
-  //const isAlreadyForwarded = master.contributionStatus === "FORWARD";
-  //const isApproved = master.isApproved === true;
-  const isAlreadyForwarded = 
-  master.contributionStatus === "FORWARD" ||
-  master.contributionStatus === "Forwarded" ||
-  master.contributionStatus === "forwarded";
+  
+  const isAlreadyForwarded =
+    master.contributionStatus === "FORWARD" ||
+    master.contributionStatus === "Forwarded" ||
+    master.contributionStatus === "forwarded";
 
   const blockers = REPORT_TABS
     .filter(t => t.blocksForward)
@@ -1100,18 +960,18 @@ const MasterPanel: React.FC<{
   };
 
   const fields = [
-    { label: "File Name",     value: master.fileName,  full: true },
-    { label: "File Type",     value: master.fileType },
-    { label: "Extension",     value: master.fileExtension },
-    { label: "File Size",     value: master.fileSize ? `${(master.fileSize / 1024).toFixed(2)} KB` : "N/A" },
-    { label: "Month",         value: toMonthName(master.month) },
-    { label: "Year",          value: toFullYear(master.year) },
-    { label: "Circle",        value: master.circle },
-    { label: "Total Amount",  value: fmt(totalAmount), accent: "#0d7377" },
+    { label: "File Name", value: master.fileName, full: true },
+    { label: "File Type", value: master.fileType },
+    { label: "Extension", value: master.fileExtension },
+    { label: "File Size", value: master.fileSize ? `${(master.fileSize / 1024).toFixed(2)} KB` : "N/A" },
+    { label: "Month", value: toMonthName(master.month) },
+    { label: "Year", value: toFullYear(master.year) },
+    { label: "Circle", value: master.circle },
+    { label: "Total Amount", value: fmt(totalAmount), accent: "#0d7377" },
     { label: "Total Entries", value: String(totalEntry) },
-    { label: "New Members",   value: String(newMemberCount) },
-    { label: "Status",        value: master.contributionStatus, isStatus: true },
-    { label: "Approved By",   value: approvedByName }, 
+    { label: "New Members", value: String(newMemberCount) },
+    { label: "Status", value: master.contributionStatus, isStatus: true },
+    { label: "Approved By", value: approvedByName },
     { label: "Approved Date", value: fmtDate(master.approvedDate) },
   ] as any[];
 
@@ -1132,32 +992,32 @@ const MasterPanel: React.FC<{
               <p style={{ margin: 0, fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Total Amount</p>
               <p style={{ margin: "4px 0 0", fontSize: 28, fontWeight: 800, color: "#fff", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "-0.5px" }}>{fmt(totalAmount)}</p>
             </div>
-           {!confirmOpen ? (
-  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-    <button
-      className="delete-master-btn"
-      onClick={() => setDeleteModalOpen(true)}
-      style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
-      🗑️ Delete
-    </button>
-    {!master.isApproved && (
-      <button
-        className="fwd-btn"
-        onClick={handleForwardButtonClick}
-        disabled={forwarding}
-        {...(!canForward && !isAlreadyForwarded && !forwardDone ? { "data-blocked": "true" } : {})}
-        style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 26px", borderRadius: 10, border: "none", background: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.15)" : canForward ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)", color: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.5)" : canForward ? "#1B3763" : "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: 800, cursor: (isAlreadyForwarded || forwardDone || forwarding) ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif", boxShadow: canForward ? "0 4px 16px rgba(0,0,0,0.2)" : "none", minWidth: 160, justifyContent: "center" }}>
-        {countsLoading
-          ? <><div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid currentColor", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} /> Checking…</>
-          : isAlreadyForwarded || forwardDone
-            ? <><span style={{ fontSize: 16 }}>✅</span> Forwarded</>
-            : !canForward
-              ? <><span style={{ fontSize: 16 }}>🔒</span> Forward Blocked</>
-              : <><span style={{ fontSize: 16 }}>📤</span> Forward</>
-        }
-      </button>
-    )}
-  </div>
+            {!confirmOpen ? (
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <button
+                  className="delete-master-btn"
+                  onClick={() => setDeleteModalOpen(true)}
+                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
+                  🗑️ Delete
+                </button>
+                {!master.isApproved && (
+                  <button
+                    className="fwd-btn"
+                    onClick={handleForwardButtonClick}
+                    disabled={forwarding}
+                    {...(!canForward && !isAlreadyForwarded && !forwardDone ? { "data-blocked": "true" } : {})}
+                    style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 26px", borderRadius: 10, border: "none", background: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.15)" : canForward ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)", color: (isAlreadyForwarded || forwardDone) ? "rgba(255,255,255,0.5)" : canForward ? "#1B3763" : "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: 800, cursor: (isAlreadyForwarded || forwardDone || forwarding) ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif", boxShadow: canForward ? "0 4px 16px rgba(0,0,0,0.2)" : "none", minWidth: 160, justifyContent: "center" }}>
+                    {countsLoading
+                      ? <><div style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid currentColor", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} /> Checking…</>
+                      : isAlreadyForwarded || forwardDone
+                        ? <><span style={{ fontSize: 16 }}>✅</span> Forwarded</>
+                        : !canForward
+                          ? <><span style={{ fontSize: 16 }}>🔒</span> Forward Blocked</>
+                          : <><span style={{ fontSize: 16 }}>📤</span> Forward</>
+                    }
+                  </button>
+                )}
+              </div>
             ) : (
               <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "18px 22px", minWidth: 280, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                 <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Confirm Forward</p>
@@ -1198,7 +1058,6 @@ const MasterPanel: React.FC<{
   );
 };
 
-/* ─── Detail Card ─────────────────────────────────────────────────── */
 const MetaItem: React.FC<{ label: string; value: string; mono?: boolean }> = ({ label, value, mono }) => (
   <div>
     <p style={{ margin: 0, fontSize: 9, fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.07em" }}>{label}</p>
@@ -1213,7 +1072,7 @@ const DetailCard: React.FC<{
   onPark: (row: ContributionDetail) => void;
   onUnpark: (row: ContributionDetail) => void;
 }> = ({ row, rank, hasDiscrepancy, onPark, onUnpark }) => {
-  const bg  = avatarColor(row.name);
+  const bg = avatarColor(row.name);
   const pct = Math.min(100, (row.amount / 5000) * 100);
 
   const renderAction = () => {
@@ -1259,9 +1118,9 @@ const DetailCard: React.FC<{
       <div style={{ height: 1, background: "#f1f5f9" }} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 10px" }}>
         <MetaItem label="Staff No" value={row.staffNo} mono />
-        <MetaItem label="DP Code"  value={row.dpCode}  mono />
-        <MetaItem label="Circle"   value={String(row.circle)} />
-        <MetaItem label="Period"   value={`${toMonthName(row.month)} ${toFullYear(row.year)}`} />
+        <MetaItem label="DP Code" value={row.dpCode} mono />
+        <MetaItem label="Circle" value={String(row.circle)} />
+        <MetaItem label="Period" value={`${toMonthName(row.month)} ${toFullYear(row.year)}`} />
       </div>
       <div style={{ background: "#f8fafc", borderRadius: 8, padding: "8px 10px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
@@ -1279,7 +1138,6 @@ const DetailCard: React.FC<{
   );
 };
 
-/* ─── Report Row ──────────────────────────────────────────────────── */
 
 const ReportRow: React.FC<{
   row: ContributionDetail;
@@ -1294,7 +1152,7 @@ const ReportRow: React.FC<{
   const isParkedItemsTab = reportType === "PARKEDITEMS";
 
   const renderActions = () => {
-  
+
     if (isParkedItemsTab) {
       return (
         <button className="unpark-btn" onClick={() => onUnpark(row)}
@@ -1304,24 +1162,23 @@ const ReportRow: React.FC<{
       );
     }
 
-    // ── Other tabs (NEWMEMBERS / WRONGBRANCH / WRONGCIRCLE / ALL) ──
     return (
       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
         {/* Create action button (only shown when not parked) */}
-        {actionLabel &&  (
+        {actionLabel && (
           <button className="rpt-action-btn" onClick={() => onAction(row)}
             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
             {actionLabel}
           </button>
         )}
 
-        {/* If parked → show PARKED badge instead of Park button */}
+    
         {row.isParked ? (
           <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
             🅿️ Parked
           </span>
         ) : (
-          /* Park button — only shown when row has a discrepancy */
+         
           <button className="park-btn" onClick={() => onPark(row)}
             style={{ background: "#fffbeb", border: "1.5px solid #f59e0b", color: "#b45309", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
             🅿️ Park
@@ -1351,7 +1208,6 @@ const ReportRow: React.FC<{
   );
 };
 
-/* ─── Pagination ──────────────────────────────────────────────────── */
 const Pagination: React.FC<{ page: number; totalPages: number; onPrev: () => void; onNext: () => void; onPageClick: (p: number) => void }> = ({ page, totalPages, onPrev, onNext, onPageClick }) => {
   const pages = Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
     if (totalPages <= 5) return i + 1;
@@ -1369,26 +1225,25 @@ const Pagination: React.FC<{ page: number; totalPages: number; onPrev: () => voi
   );
 };
 
-/* ─── Report Panel ────────────────────────────────────────────────── */
 const ReportPanel: React.FC<{
   masterId: number;
   onCountsChange: (counts: Partial<Record<ContributionReportType, number>>) => void;
   onGoToReport: (type: ContributionReportType) => void;
 }> = ({ masterId, onCountsChange, onGoToReport }) => {
   const [activeReport, setActiveReport] = useState<ContributionReportType>("NEWMEMBERS");
-  const [rows,         setRows]         = useState<ContributionDetail[]>([]);
-  const [total,        setTotal]        = useState(0);
-  const [page,         setPage]         = useState(1);
-  const [loading,      setLoading]      = useState(false);
-  const [totalPages,   setTotalPages]   = useState(1);
-  const [tabCounts,    setTabCounts]    = useState<Partial<Record<ContributionReportType, number>>>({});
+  const [rows, setRows] = useState<ContributionDetail[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [tabCounts, setTabCounts] = useState<Partial<Record<ContributionReportType, number>>>({});
   const [countsLoading, setCountsLoading] = useState(true);
-  const [modalType,    setModalType]    = useState<"member" | "branch" | "circle" | null>(null);
+  const [modalType, setModalType] = useState<"member" | "branch" | "circle" | null>(null);
   const [modalPrefill, setModalPrefill] = useState<Partial<ContributionDetail>>({});
-  const [parkRow,      setParkRow]      = useState<ContributionDetail | null>(null);
-  const [unparkRow,    setUnparkRow]    = useState<ContributionDetail | null>(null);
+  const [parkRow, setParkRow] = useState<ContributionDetail | null>(null);
+  const [unparkRow, setUnparkRow] = useState<ContributionDetail | null>(null);
 
-  const PAGE_SIZE  = 10;
+  const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
 
   const loadTabCounts = useCallback(async () => {
@@ -1522,32 +1377,31 @@ const ReportPanel: React.FC<{
   );
 };
 
-/* ─── Main Component ──────────────────────────────────────────────── */
 const ContributionMasterView: React.FC = () => {
   const { contributionMasterId } = useParams<{ contributionMasterId: string }>();
   const navigate = useNavigate();
 
   const masterId = contributionMasterId ? Number(contributionMasterId) : null;
 
-  const [master,          setMaster]          = useState<MonthlyContributionMaster | null>(null);
-  const [masterLoading,   setMasterLoading]   = useState(true);
-  const [rows,            setRows]            = useState<ContributionDetail[]>([]);
-  const [total,           setTotal]           = useState(0);
-  const [page,            setPage]            = useState(1);
-  const [search,          setSearch]          = useState("");
+  const [master, setMaster] = useState<MonthlyContributionMaster | null>(null);
+  const [masterLoading, setMasterLoading] = useState(true);
+  const [rows, setRows] = useState<ContributionDetail[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [filterParked,    setFilterParked]    = useState<"all" | "true" | "false">("all");
-  const [loading,         setLoading]         = useState(false);
-  const [sortDesc,        setSortDesc]        = useState(true);
-  const [activeTab,       setActiveTab]       = useState<"grid" | "list">("grid");
-  const [mainSection,     setMainSection]     = useState<"entries" | "reports">("entries");
-  const [forwarding,      setForwarding]      = useState(false);
-  const [forwardDone,     setForwardDone]     = useState(false);
-  const [forwardError,    setForwardError]    = useState("");
-  const [reportCounts,    setReportCounts]    = useState<Partial<Record<ContributionReportType, number>>>({});
-  const [countsLoading,   setCountsLoading]   = useState(true);
+  const [filterParked, setFilterParked] = useState<"all" | "true" | "false">("all");
+  const [loading, setLoading] = useState(false);
+  const [sortDesc, setSortDesc] = useState(true);
+  const [activeTab, setActiveTab] = useState<"grid" | "list">("grid");
+  const [mainSection, setMainSection] = useState<"entries" | "reports">("entries");
+  const [forwarding, setForwarding] = useState(false);
+  const [forwardDone, setForwardDone] = useState(false);
+  const [forwardError, setForwardError] = useState("");
+  const [reportCounts, setReportCounts] = useState<Partial<Record<ContributionReportType, number>>>({});
+  const [countsLoading, setCountsLoading] = useState(true);
 
-  const [parkRow,   setParkRow]   = useState<ContributionDetail | null>(null);
+  const [parkRow, setParkRow] = useState<ContributionDetail | null>(null);
   const [unparkRow, setUnparkRow] = useState<ContributionDetail | null>(null);
 
   const [discrepancyIds, setDiscrepancyIds] = useState<Set<number>>(new Set());
@@ -1595,40 +1449,23 @@ const ContributionMasterView: React.FC = () => {
 
   useEffect(() => { loadInitialCounts(); }, [loadInitialCounts]);
 
-  // const handleForward = async () => {
-  //   if (!masterId) return;
-  //   setForwarding(true);
-  //   setForwardError("");
-  //   try {
-  //     await ContributionMasterService.forward(masterId);
-  //     const all = await MonthlyContributionMasterService.getAll();
-  //     const found = all.find(item => String(item.contributionMasterId) === String(masterId));
-  //     if (found) setMaster(found as unknown as MonthlyContributionMaster);
-  //     setForwardDone(true);
-  //   } catch (err: any) {
-  //     setForwardError(err?.message || "Failed to forward. Please try again.");
-  //   } finally {
-  //     setForwarding(false);
-  //   }
-  // };
-const handleForward = async () => {
-  if (!masterId) return;
-  setForwarding(true);
-  setForwardError("");
-  try {
-    await ContributionMasterService.forward(masterId);
-    
-    // ← use getById to get fresh status instead of getAll + find
-    const updated = await ContributionMasterService.getById(masterId);
-    if (updated) setMaster(updated as unknown as MonthlyContributionMaster);
-    
-    setForwardDone(true);
-  } catch (err: any) {
-    setForwardError(err?.message || "Failed to forward. Please try again.");
-  } finally {
-    setForwarding(false);
-  }
-};
+  const handleForward = async () => {
+    if (!masterId) return;
+    setForwarding(true);
+    setForwardError("");
+    try {
+      await ContributionMasterService.forward(masterId);
+
+      const updated = await ContributionMasterService.getById(masterId);
+      if (updated) setMaster(updated as unknown as MonthlyContributionMaster);
+
+      setForwardDone(true);
+    } catch (err: any) {
+      setForwardError(err?.message || "Failed to forward. Please try again.");
+    } finally {
+      setForwarding(false);
+    }
+  };
   const handleDelete = async () => {
     if (!masterId) return;
     await ContributionMasterService.delete(masterId);
@@ -1680,10 +1517,10 @@ const handleForward = async () => {
   useEffect(() => { setPage(1); }, [debouncedSearch, filterParked]);
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
-  const totalAmt  = rows.reduce((s, r) => s + (r.amount || 0), 0);
+  const totalAmt = rows.reduce((s, r) => s + (r.amount || 0), 0);
   const parkedCnt = rows.filter(r => r.isParked).length;
-  const maxAmt    = rows.length ? Math.max(...rows.map(r => r.amount)) : 0;
-  const avgAmt    = rows.length ? Math.round(totalAmt / rows.length) : 0;
+  const maxAmt = rows.length ? Math.max(...rows.map(r => r.amount)) : 0;
+  const avgAmt = rows.length ? Math.round(totalAmt / rows.length) : 0;
 
   const handleCountsChange = useCallback((counts: Partial<Record<ContributionReportType, number>>) => {
     setReportCounts(prev => ({ ...prev, ...counts }));
@@ -1793,10 +1630,10 @@ const handleForward = async () => {
                 </div>
 
                 <div style={{ display: "flex", gap: 10, marginBottom: 18, flexWrap: "wrap" }}>
-                  <StatBrick label="Page Total" value={fmt(totalAmt)}  icon="💰" />
-                  <StatBrick label="Highest"    value={fmt(maxAmt)}    accent="#0d7377" icon="📈" />
-                  <StatBrick label="Average"    value={fmt(avgAmt)}    accent="#6366f1" icon="📊" />
-                  <StatBrick label="Parked"     value={parkedCnt}      accent="#f59e0b" icon="🅿️" />
+                  <StatBrick label="Page Total" value={fmt(totalAmt)} icon="💰" />
+                  <StatBrick label="Highest" value={fmt(maxAmt)} accent="#0d7377" icon="📈" />
+                  <StatBrick label="Average" value={fmt(avgAmt)} accent="#6366f1" icon="📊" />
+                  <StatBrick label="Parked" value={parkedCnt} accent="#f59e0b" icon="🅿️" />
                 </div>
 
                 <div style={{ background: "#fff", border: "1.5px solid #e8edf5", borderRadius: 14, padding: "12px 16px", marginBottom: 18, display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
