@@ -40,19 +40,19 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   };
 
   const fields: Field[] = [
-    { name: "memberId",  rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
-    { name: "branchId",  rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month Code", required: true, colWidth: 4 } },
-    { name: "yearOf",    rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
-    { name: "ddIba",     rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
+    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+    { name: "ddIba", rules: { type: "text", label: "DD / IBA No", colWidth: 4, required: true } },
     { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", colWidth: 4, required: true } },
-    { name: "amt",       rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
-    { name: "status",    rules: { type: "select", label: "Status", colWidth: 3, required: true } },
-    { name: "enrl",      rules: { type: "text", label: "ENRL", colWidth: 3 } },
-    { name: "fine",      rules: { type: "text", label: "Fine", colWidth: 3 } },
-    { name: "f9",        rules: { type: "text", label: "F9", colWidth: 2 } },
-    { name: "f10",       rules: { type: "text", label: "F10", colWidth: 2 } },
-    { name: "f11",       rules: { type: "text", label: "F11", colWidth: 2 } },
+    { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 3 } },
+    { name: "status", rules: { type: "select", label: "Status", colWidth: 3, required: true } },
+    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
+    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
+    { name: "f9", rules: { type: "text", label: "F9", colWidth: 2 } },
+    { name: "f10", rules: { type: "text", label: "F10", colWidth: 2 } },
+    { name: "f11", rules: { type: "text", label: "F11", colWidth: 2 } },
   ];
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
@@ -114,12 +114,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
 
   return (
     <>
-      {/*
-        ✅ Target only the Member field's input-group button using the
-           data-field attribute we inject via the wrapper + CSS :has() selector.
-           Since memberId is always the first .input-group in the form,
-           we use nth-of-type to scope it without affecting Branch/Month/Year.
-      */}
+     
       <style>{`
         .hide-member-search-btn [name="memberId"] ~ button,
         .hide-member-search-btn input[value="${selectedMember?.name || ''}"][readonly] ~ button {

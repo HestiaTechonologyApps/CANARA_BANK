@@ -6,7 +6,6 @@ export interface LoginRequest {
   password: string;
 }
 
-/* REGISTER TYPES (ADDED) */
 export interface RegisterRequest {
   staffNo: number;
   userName: string;
@@ -21,7 +20,7 @@ export interface User {
   userName: string;
   userEmail: string;
   staffNo: number;
-  memberId?: number; // Added to match backend response
+  memberId?: number;
   phoneNumber: string;
   address: string;
   passwordHash: string;
@@ -35,7 +34,7 @@ export interface User {
   createAtSyring: string;
   companyId?: number;
   companyName?: string;
-  role: string; // User role from backend
+  role: string; 
   auditLogs?: AuditTrails[];
 }
 
@@ -49,7 +48,6 @@ export interface ForgotPasswordRequest {
   email: string;
 }
 
-// Type guard to check if user has valid role
 export function isValidUserRole(role: string | null | undefined): role is string {
   if (!role) return false;
   const normalizedRole = role.trim().toLowerCase();

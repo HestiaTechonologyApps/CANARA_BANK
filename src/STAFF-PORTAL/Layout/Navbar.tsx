@@ -17,7 +17,6 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // 🔹 Get user details from localStorage
   const storedUser = localStorage.getItem("user");
   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 

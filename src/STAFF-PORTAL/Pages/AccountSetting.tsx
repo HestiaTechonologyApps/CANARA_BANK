@@ -131,7 +131,7 @@ const AccountSettings: React.FC = () => {
         </h6>
 
         <KiduCreate
-          title="" // Empty title since we have our own header
+          title=""
           fields={fields}
           onSubmit={handleSubmit}
           submitButtonText="Update Password"

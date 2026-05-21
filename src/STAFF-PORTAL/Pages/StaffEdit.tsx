@@ -77,52 +77,21 @@ const StaffEdit: React.FC = () => {
     { value: "Grandparent", label: "Grandparent" }
   ]
 
-  //const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
-  // Helper to convert ISO string to date input format (YYYY-MM-DD)
   const fromIso = (isoString?: string | Date) => {
     if (!isoString) return "";
     const dateString = isoString instanceof Date ? isoString.toISOString() : isoString;
-    return dateString.split('T')[0]; // Returns YYYY-MM-DD
+    return dateString.split('T')[0]; 
   };
 
-  // Helper to convert date input format to ISO string without timezone shift
   const toIsoMidnight = (val?: string) => {
     if (!val) return "";
 
-    // Ensure we're working with YYYY-MM-DD format
     const dateParts = val.split('-');
-    if (dateParts.length !== 3) return val; // Return as-is if not in expected format
+    if (dateParts.length !== 3) return val; 
 
-    // Construct ISO string with explicit midnight time
     return `${val}T00:00:00`;
   };
-
-  // const handleFetch = async (id: string) => {
-  //   const response = await MemberService.getMemberById(Number(id));
-  //   const member = response.value;
-
-  //   if (member) {
-  //     setSelectedBranch({ branchId: member.branchId, name: member.branchName, dpCode: member.dpCode } as unknown as Branch);
-  //     setSelectedDesignation({ designationId: member.designationId, name: member.designationName } as unknown as Designation);
-  //     setSelectedCategory({ categoryId: member.categoryId, name: member.categoryname } as unknown as Category);
-  //     setSelectedStatus({ statusId: member.statusId, name: member.status } as unknown as Status);
-
-  //     return {
-  //       ...response,
-  //       value: {
-  //         ...member,
-  //         dob: fromIso(member.dob),
-  //         doj: fromIso(member.doj),
-  //         dojtoScheme: fromIso(member.dojtoScheme),
-  //         genderId: member.genderId,// Explicitly ensure genderId is included
-  //         profileImage: member.profileImageSrc ? getFullImageUrl(member.profileImageSrc) : "",
-  //       }
-  //     };
-
-  //   }
-
-  //   return response;
-  // };
+ 
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
     const member = response.value;
@@ -188,7 +157,7 @@ const StaffEdit: React.FC = () => {
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
       profileImageSrc: formData.profileImageSrc || "",
-      // profileImageSrc: "", // Will be set by image upload
+      // profileImageSrc: "", 
       nominee: formData.nominee || "",
       nomineeRelation: formData.nomineeRelation || "",
       nomineeIDentity: formData.nomineeIDentity || "",
@@ -203,7 +172,6 @@ const StaffEdit: React.FC = () => {
     };
 
     await MemberService.updateMember(Number(id), payload);
-    // ✅ Upload image if provided (File object from KiduEdit)
     if (formData.profileImage instanceof File) {
       setIsUploading(true);
       await MemberService.uploadProfilePicture(

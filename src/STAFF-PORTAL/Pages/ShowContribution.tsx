@@ -14,7 +14,6 @@ const ShowContribution: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ── Fetch on mount ───────────────────────────────────────────────
   useEffect(() => {
     const fetchContributions = async () => {
       try {
@@ -37,8 +36,7 @@ const ShowContribution: React.FC = () => {
     fetchContributions();
   }, []);
 
-  // ── Transform: group by year → month grid ───────────────────────
-  // { 2025: { 1: 200, 3: 200, ... }, 2024: { ... } }
+
   const grouped = contributions.reduce<Record<number, Record<number, number>>>(
     (acc, item) => {
       if (!acc[item.yearOf]) acc[item.yearOf] = {};
@@ -49,15 +47,12 @@ const ShowContribution: React.FC = () => {
     {}
   );
 
-  // Sort years descending
   const years = Object.keys(grouped)
     .map(Number)
     .sort((a, b) => b - a);
 
-  // Grand total
   const grandTotal = contributions.reduce((s, c) => s + c.amount, 0);
 
-  // ── Print handler ────────────────────────────────────────────────
   const handlePrint = () => {
     if (!cardRef.current) return;
     const iframe = document.createElement("iframe");

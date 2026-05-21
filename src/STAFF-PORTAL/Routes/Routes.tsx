@@ -1,6 +1,4 @@
 // STAFF-PORTAL/Routes/Routes.tsx
-// IMPORTANT: This component should NOT contain <Routes> or <Router>
-// It's just a collection of Route definitions to be used in the main AppRoutes
 
 import { Route } from 'react-router-dom';
 import StaffLayout from '../Layout/Layout';
@@ -37,5 +35,4 @@ export const staffRoutes = (
   </Route>
 );
 
-// Alternative: Export as function
 export const getStaffRoutes = () => staffRoutes;

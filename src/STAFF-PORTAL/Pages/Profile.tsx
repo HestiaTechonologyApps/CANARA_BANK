@@ -13,7 +13,6 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //  Fields configuration (labels + keys only)
   const fields = [
     { label: "Staff No", key: "staffNo" },
     { label: "Name", key: "name" },
@@ -31,14 +30,12 @@ const Profile: React.FC = () => {
     { label: "Nominee Relationship", key: "nomineeRelationship" },
   ];
 
-  //  Fetch member by ID using AuthService
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Use AuthService to get memberId
         const memberId = AuthService.getMemberId();
         if (!memberId) {
           setError("Member ID not found. Please log in again.");
@@ -47,7 +44,6 @@ const Profile: React.FC = () => {
         }
         console.log("Fetching profile for memberId:", memberId);
 
-        // Fetch member details
         const response = await MemberService.getMemberById(memberId);
 
         if (response.isSucess && response.value) {
@@ -162,7 +158,6 @@ const Profile: React.FC = () => {
               <span className="profile-label">{fields[10].label}</span>
               <span className="profile-value">{user?.modifiedDateString ? user.modifiedDateString.split(" ").slice(0, 3).join(" ") : "—"}</span>
             </Col>
-            {/* Retiremnet date needed */}
 
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[11].label}</span>
@@ -197,36 +192,3 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
-
-
-// export const IMAGE_BASE_URL =
-//   import.meta.env.VITE_IMAGE_BASE_URL || "http://api.cbeugjfws.co.in";
-//    {/* Profile Image */}
-//               <div
-//                 style={{
-//                   width: "70px",
-//                   height: "70px",
-//                   border: "1px solid #ddd",
-//                   borderRadius: "6px",
-//                   overflow: "hidden",
-//                   flexShrink: 0,
-//                   backgroundColor: "#f5f5f5",
-//                 }}
-//               >
-//                 <img
-//                   src={
-//                     user?.profileImageSrc
-//                       ? `${IMAGE_BASE_URL}${user.profileImageSrc}`
-//                       : profiledefaultimg
-//                   }
-//                   alt="Profile"
-//                   style={{
-//                     width: "100%",
-//                     height: "100%",
-//                     objectFit: "cover",
-//                   }}
-//                   onError={(e) => {
-//                     (e.target as HTMLImageElement).src = profiledefaultimg;
-//                   }}
-//                 />
-//               </div>

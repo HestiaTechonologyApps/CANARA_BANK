@@ -22,7 +22,6 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
-  // ✅ Store initial fetched popup values for reset
   const [initialMember, setInitialMember] = useState<Member | null>(null);
   const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
   const [initialMonth, setInitialMonth] = useState<Month | null>(null);
@@ -30,7 +29,6 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Hide Member field search button via DOM
   useEffect(() => {
     const hideButton = () => {
       if (!wrapperRef.current) return;
@@ -49,7 +47,6 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
     return () => clearTimeout(timer);
   }, [selectedMember]);
 
-  // ✅ Returns ISO string or null — never returns ""
   const toIso = (v?: string): string | null => {
     if (!v || v.trim() === "") return null;
     return `${v}T00:00:00`;
@@ -61,21 +58,21 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
   };
 
   const fields: Field[] = [
-    { name: "memberId",    rules: { type: "popup", label: "Member",        required: true,  colWidth: 4, disabled: true } },
-    { name: "branchId",    rules: { type: "popup", label: "Branch",        required: true,  colWidth: 4 } },
-    { name: "monthCode",   rules: { type: "popup", label: "Month",         required: true,  colWidth: 4 } },
-    { name: "yearOf",      rules: { type: "popup", label: "Year",          required: true,  colWidth: 4 } },
-    { name: "ddIba",       rules: { type: "text",  label: "DD / IBA",      required: true,  colWidth: 4 } },
-    { name: "ddIbaDate",   rules: { type: "date",  label: "DD / IBA Date", required: true,  colWidth: 4 } },
-    { name: "amt",         rules: { type: "number",label: "Amount",        required: true,  colWidth: 4 } },
-    { name: "enrl",        rules: { type: "text",  label: "ENRL",                           colWidth: 3 } },
-    { name: "fine",        rules: { type: "text",  label: "Fine",                           colWidth: 3 } },
-    { name: "f9",          rules: { type: "text",  label: "F9",                             colWidth: 4 } },
-    { name: "f10",         rules: { type: "text",  label: "F10",                            colWidth: 4 } },
-    { name: "f11",         rules: { type: "text",  label: "F11",                            colWidth: 4 } },
-    { name: "status",      rules: { type: "text",  label: "Status",        required: true,  colWidth: 4, disabled: true } },
-    { name: "approvedBy",  rules: { type: "text",  label: "Approved By",                    colWidth: 3, disabled: true } },
-    { name: "approvedDate",rules: { type: "date",  label: "Approved Date",                  colWidth: 3, disabled: true } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
+    { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+    { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
+    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
+    { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
+    { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
+    { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
+    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
+    { name: "status", rules: { type: "text", label: "Status", required: true, colWidth: 4, disabled: true } },
+    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 3, disabled: true } },
+    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 3, disabled: true } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -103,26 +100,23 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
         yearName: entry.yearName,
       } as YearMaster;
 
-      // Set live state
       setSelectedMember(member);
       setSelectedBranch(branch);
       setSelectedMonth(month);
       setSelectedYearMaster(year);
 
-      // ✅ Save initial snapshots for reset
       setInitialMember(member);
       setInitialBranch(branch);
       setInitialMonth(month);
       setInitialYearMaster(year);
 
-      entry.ddIbaDate    = fromIso(entry.ddIbaDate as string);
+      entry.ddIbaDate = fromIso(entry.ddIbaDate as string);
       entry.approvedDate = fromIso(entry.approvedDate as string);
     }
 
     return response;
   };
 
-  // ✅ Restore initial popup values on reset
   const handleReset = () => {
     setSelectedMember(initialMember);
     setSelectedBranch(initialBranch);
@@ -140,27 +134,25 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
 
     const payload: Omit<AccountDirectEntry, "auditLogs"> = {
       accountsDirectEntryID: Number(id),
-      memberId:   selectedMember.memberId,
+      memberId: selectedMember.memberId,
       memberName: selectedMember.name,
-      branchId:   selectedBranch.branchId,
-      monthCode:  selectedMonth.monthCode,
-      yearOf:     selectedYearMaster.yearOf,
-      ddIba:      formData.ddIba    || "",
-      ddIbaDate:  toIso(formData.ddIbaDate) as string,
-      amt:        Number(formData.amt),
-      enrl:       formData.enrl     || "",
-      fine:       formData.fine     || "",
-      f9:         formData.f9       || "",
-      f10:        formData.f10      || "",
-      f11:        formData.f11      || "",
-      status:     formData.status   || "",
+      branchId: selectedBranch.branchId,
+      monthCode: selectedMonth.monthCode,
+      yearOf: selectedYearMaster.yearOf,
+      ddIba: formData.ddIba || "",
+      ddIbaDate: toIso(formData.ddIbaDate) as string,
+      amt: Number(formData.amt),
+      enrl: formData.enrl || "",
+      fine: formData.fine || "",
+      f9: formData.f9 || "",
+      f10: formData.f10 || "",
+      f11: formData.f11 || "",
+      status: formData.status || "",
       isApproved: Boolean(formData.isApproved),
       approvedBy: formData.approvedBy || "",
-      // ✅ undefined omits the field from JSON entirely — avoids C# DateTime? parse error
       approvedDate: toIso(formData.approvedDate) ?? undefined,
     };
 
-    // 🔍 Debug — remove once confirmed working
     console.log("UPDATE PAYLOAD →", JSON.stringify(payload, null, 2));
 
     await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
@@ -204,9 +196,9 @@ const StaffAccountDirectEntryEdit: React.FC = () => {
           auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
           themeColor="#1B3763"
           attachmentConfig={{
-          tableName: "AccountDirectEntry",
-          recordIdField: "accountsDirectEntryID"
-        }}
+            tableName: "AccountDirectEntry",
+            recordIdField: "accountsDirectEntryID"
+          }}
         />
       </div>
 
