@@ -97,7 +97,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const initialErrors: Record<string, string> = {};
 
   fields.forEach(f => {
-    if (f.rules.type === "rowbreak") return; // Skip rowbreak fields
+    if (f.rules.type === "rowbreak") return; 
 
     if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
       initialValues[f.name] = f.name === "isActive" ? true : false;
@@ -110,7 +110,6 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     initialErrors[f.name] = "";
   });
 
-  // Add image field if configured
   if (imageConfig) {
     initialValues[imageConfig.fieldName] = "";
   }
@@ -225,7 +224,6 @@ fieldChangeHandlers?.[name]?.(updatedValue);
       const rule = f.rules;
       const value = formData[f.name];
 
-      // Special handling for popup fields
       if (rule.type === "popup") {
         if (rule.required) {
           const popupValue = popupHandlers[f.name]?.value;
@@ -234,7 +232,7 @@ fieldChangeHandlers?.[name]?.(updatedValue);
             isValid = false;
           }
         }
-        return; // Skip other validations for popup fields
+        return; 
       }
 
       if (rule.required) {
@@ -277,14 +275,12 @@ fieldChangeHandlers?.[name]?.(updatedValue);
     try {
       const submitData = { ...formData };
 
-      // Convert image to File if exists
       if (imageConfig && selectedFile) {
         submitData[imageConfig.fieldName] = selectedFile;
       }
 
       await onSubmit(submitData);
 
-      // Show success alert with SweetAlert2
       await Swal.fire({
         icon: "success",
         title: "Success!",
@@ -295,18 +291,14 @@ fieldChangeHandlers?.[name]?.(updatedValue);
         confirmButtonText: "OK"
       });
 
-      // Navigate to list page after success
       if (navigateOnSuccess) {
         navigate(navigateOnSuccess);
       }
     } catch (err: any) {
-      // ✅ UPDATED ERROR HANDLING - Show actual error message from API
       const errorMsg = err.message || errorMessage || "An error occurred";
 
-      // Show error toast
       toast.error(errorMsg);
 
-      // Also show SweetAlert for better visibility
       await Swal.fire({
         icon: "error",
         title: "Error!",

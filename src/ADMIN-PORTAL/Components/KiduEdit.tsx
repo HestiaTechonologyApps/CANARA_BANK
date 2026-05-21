@@ -179,7 +179,6 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
 
-       // const data = response.value;
        const data = response.value;
 console.log("RAW DATE VALUES:", {
   dateFrom: data.dateFrom,
@@ -402,7 +401,6 @@ fieldChangeHandlers?.[name]?.(updatedValue);
     try {
       const submitData = { ...formData };
 
-      // ✅ Pass File object directly (same as KiduCreate)
       if (imageConfig && selectedFile) {
         submitData[imageConfig.fieldName] = selectedFile;
       }
@@ -437,12 +435,10 @@ fieldChangeHandlers?.[name]?.(updatedValue);
       });
 
     } catch (err: any) {
-      // ✅ UPDATED ERROR HANDLING - Show actual error message from API
       const errorMsg = err.message || errorMessage || "An error occurred";
-      // Show error toast
+    
       toast.error(errorMsg);
 
-      // Also show SweetAlert for better visibility
       await Swal.fire({
         icon: "error",
         title: "Error!",
@@ -788,7 +784,6 @@ fieldChangeHandlers?.[name]?.(updatedValue);
 
               {children}
 
-              {/* Attachments Section - Only show if attachmentConfig is provided and recordId exists */}
               {attachmentConfig && formData[attachmentConfig.recordIdField] && (
                 <Row className="mb-3">
                   <Col xs={12}>

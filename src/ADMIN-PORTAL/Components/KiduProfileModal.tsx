@@ -115,9 +115,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
           </div>
 
         ) : showContribution ? (
-          // ────────────────────────────────────────────────────────
           //  CONTRIBUTION VIEW
-          // ────────────────────────────────────────────────────────
           contributionLoading ? (
             <div className="d-flex justify-content-center py-5">
               <Spinner animation="border" />
@@ -292,9 +290,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
           )
 
         ) : (
-          // ────────────────────────────────────────────────────────
           //  PROFILE VIEW
-          // ────────────────────────────────────────────────────────
           <>
             {/* Avatar + name */}
             <div className="d-flex flex-column align-items-center mb-4">

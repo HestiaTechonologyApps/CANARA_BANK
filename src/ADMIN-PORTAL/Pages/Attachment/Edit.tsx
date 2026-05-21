@@ -32,7 +32,6 @@ const handleUpdate = async (id: string, formData: Record<string, any>) => {
   let fileType = formData.fileType || "";
 
   if (actualFile) {
-    // ── Upload new file with TableName and RecordId matching the EXISTING record ──
     const fd = new FormData();
     fd.append("File",        actualFile);
     fd.append("TableName",   formData.tableName || "public");
@@ -61,7 +60,6 @@ const handleUpdate = async (id: string, formData: Record<string, any>) => {
     }
   }
 
-  // ── Always update the ORIGINAL record with new or existing file details ──
   const payload = {
     attachmentId:   Number(id),
     description:    formData.description,

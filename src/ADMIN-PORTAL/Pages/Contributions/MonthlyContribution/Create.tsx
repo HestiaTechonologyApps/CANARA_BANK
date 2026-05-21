@@ -75,7 +75,7 @@ const ContributionMasterCreate: React.FC = () => {
       throw new Error("The uploaded file does not match the selected month or year. Please check and try again.");
     }
 
-    // Re-throw any other errors as-is
+    
     throw error;
   }
 };

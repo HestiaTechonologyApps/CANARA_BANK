@@ -65,7 +65,6 @@ const AVATAR_COLORS = [
 const avatarColor = (name: string) =>
   AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
 
-// Current user id — replace with your real auth context
 const CURRENT_USER_ID = 1;
 
 /* ─── Report types that make a row eligible for parking ──────────── */
@@ -1281,12 +1280,7 @@ const DetailCard: React.FC<{
 };
 
 /* ─── Report Row ──────────────────────────────────────────────────── */
-/**
- * CHANGED BEHAVIOUR:
- * - In NEWMEMBERS / WRONGBRANCH / WRONGCIRCLE: if row.isParked → show "PARKED" badge instead of action button
- * - In PARKEDITEMS: always show "Unpark" button (never the "PARKED" badge)
- * - Park button: show only when NOT parked and NOT in PARKEDITEMS tab
- */
+
 const ReportRow: React.FC<{
   row: ContributionDetail;
   rank: number;
@@ -1300,7 +1294,7 @@ const ReportRow: React.FC<{
   const isParkedItemsTab = reportType === "PARKEDITEMS";
 
   const renderActions = () => {
-    // ── PARKED ITEMS tab: always show Unpark button ──
+  
     if (isParkedItemsTab) {
       return (
         <button className="unpark-btn" onClick={() => onUnpark(row)}
@@ -1327,7 +1321,7 @@ const ReportRow: React.FC<{
             🅿️ Parked
           </span>
         ) : (
-          /* Park button — only shown when row has a discrepancy (determined by whether it appears in this report tab) */
+          /* Park button — only shown when row has a discrepancy */
           <button className="park-btn" onClick={() => onPark(row)}
             style={{ background: "#fffbeb", border: "1.5px solid #f59e0b", color: "#b45309", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
             🅿️ Park

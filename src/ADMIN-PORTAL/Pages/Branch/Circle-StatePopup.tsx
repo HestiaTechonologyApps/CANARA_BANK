@@ -8,7 +8,7 @@ interface Circle_StatePopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (circle: any) => void;
-  stateId?: number; // 👈 optional — if provided, filters by state
+  stateId?: number; 
 }
 
 const Circle_StatePopup: React.FC<Circle_StatePopupProps> = ({
@@ -28,11 +28,11 @@ const Circle_StatePopup: React.FC<Circle_StatePopupProps> = ({
     const fetchData = async () => {
       try {
         if (stateId) {
-          // 👈 fetch filtered circles by state
+          
           const data = await BranchService.getCirclesByStateId(stateId);
           setAllData(data);
         } else {
-          // 👈 fallback: fetch all circles
+        
           const { default: CircleService } = await import("../../Services/Settings/Circle.services");
           const data = await CircleService.getAllCircles();
           setAllData(data);

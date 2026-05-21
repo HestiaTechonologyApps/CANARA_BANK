@@ -67,21 +67,6 @@ const BranchCreate: React.FC = () => {
     },
     circleId: {
       value: selectedCircle?.name || "",
-      // onOpen: () => {
-      //   if (!selectedState) {
-      //     toast.warning("Please select a State first to continue.", {
-      //       position: "top-right",
-      //       autoClose: 3000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       pauseOnHover: true,
-      //       draggable: true,
-      //       theme: "colored",
-      //     });
-      //     return;
-      //   }
-      //   setShowCirclePopup(true);
-      // },
       onOpen: () => {
   if (!selectedState) {
     toast("Please select a State first to continue.", {

@@ -1,5 +1,4 @@
 // src/Pages/ContributionMaster/BranchCreatePage.tsx
-// Open via: navigate(`/dashboard/contributions/create-branch?masterId=X&dpCode=Y`)
 
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -10,7 +9,7 @@ import type { Circle } from "../../../Types/Settings/Circle.types";
 import StatePopup from "../../Settings/State/StatePopup";
 import CirclePopup from "../../Circle/CirclePopup";
 
-/* ─── Styles ─────────────────────────────────────────────────────── */
+/* ─── Styles ───────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }

@@ -27,7 +27,7 @@ const NavbarComponent: React.FC = () => {
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
-  // Fetch username from localStorage
+  
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
@@ -43,7 +43,7 @@ const NavbarComponent: React.FC = () => {
           setProfilePic(getFullImageUrl(parsedUser.profileImageSrc));
         }
       }
-      // 🔄 LISTEN FOR CHANGES TO PROFILE PIC
+    
       const handleProfileUpdate = () => {
         const updatedUser = localStorage.getItem("user");
         if (updatedUser) {
@@ -60,7 +60,6 @@ const NavbarComponent: React.FC = () => {
     }
   }, []);
 
-  // const handleClose = () => setShowNotifications(false);
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
     console.log("Selected Year Updated Globally:", year);
@@ -184,7 +183,6 @@ const NavbarComponent: React.FC = () => {
       </Navbar>
 
       {/* Notification Offcanvas */}
-      {/* <ActivityPanel show={showNotifications} handleClose={handleClose} /> */}
       <KiduLogoutModal
         show={showLogoutModal}
         onCancel={() => setShowLogoutModal(false)}
