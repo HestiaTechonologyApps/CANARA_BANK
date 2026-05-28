@@ -5,7 +5,6 @@ import ContributionMasterService from "../../Services/Contributions/Contribution
 import UserService from "../../Services/Settings/User.services";
 import type { ContributionMaster, ApproveResponse } from "../../Types/Contributions/ContributionMaster.types";
 
-/* ─── Helpers ────────────────────────────────────────────────────── */
 const fmt = (n: number | string) => {
   const num = typeof n === "string" ? parseFloat(n) : n;
   return `₹\u202F${(num || 0).toLocaleString("en-IN", { minimumFractionDigits: 0 })}`;
@@ -31,7 +30,6 @@ const toFullYear = (year: string): string => {
   return !isNaN(num) && num < 100 ? String(2000 + num) : year;
 };
 
-/* ─── Styles ─────────────────────────────────────────────────────── */
 const STYLE_TAG = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -47,7 +45,6 @@ const STYLE_TAG = `
   .apv-field-row:hover { background:#f8fafc!important; }
 `;
 
-/* ─── Stat Brick ─────────────────────────────────────────────────── */
 const StatBrick: React.FC<{
   label: string;
   value: string | number;
@@ -81,7 +78,6 @@ const StatBrick: React.FC<{
   </div>
 );
 
-/* ─── Info Field ─────────────────────────────────────────────────── */
 const InfoField: React.FC<{ label: string; value: React.ReactNode; mono?: boolean }> = ({ label, value, mono }) => (
   <div>
     <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</p>
@@ -91,7 +87,6 @@ const InfoField: React.FC<{ label: string; value: React.ReactNode; mono?: boolea
   </div>
 );
 
-/* ─── Section Card ───────────────────────────────────────────────── */
 const SectionCard: React.FC<{
   title: string;
   icon: string;
@@ -120,7 +115,6 @@ const SectionCard: React.FC<{
   </div>
 );
 
-/* ─── Confirm Modal ──────────────────────────────────────────────── */
 const ConfirmModal: React.FC<{
   data: ContributionMaster;
   onClose: () => void;
@@ -183,7 +177,6 @@ const ConfirmModal: React.FC<{
   </div>
 );
 
-/* ─── Main Component ─────────────────────────────────────────────── */
 const ContributionMasterApprovalView: React.FC = () => {
   const { masterId } = useParams<{ masterId: string }>();
   const navigate = useNavigate();
@@ -206,21 +199,6 @@ const ContributionMasterApprovalView: React.FC = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // Resolve approvedBy ID → user name
-  //   useEffect(() => {
-  //     if (!data?.approvedBy) { setApprovedByName("—"); return; }
-  //     const parsed = parseInt(data.approvedBy, 10);
-  //     if (isNaN(parsed)) {
-  //       // approvedBy is already a name string
-  //       setApprovedByName(data.approvedBy);
-  //       return;
-  //     }
-  //     // approvedBy is a numeric ID — fetch user name
-  //     UserService.getById(parsed)
-  //       .then((user: any) => setApprovedByName(user?.name || user?.userName || user?.fullName || `User #${parsed}`))
-  //       .catch(() => setApprovedByName(`User #${parsed}`));
-  //   }, [data?.approvedBy]);
-  // Resolve approvedBy ID → user name
   useEffect(() => {
     if (!data?.approvedBy) { setApprovedByName("—"); return; }
 
@@ -260,7 +238,6 @@ const ContributionMasterApprovalView: React.FC = () => {
     }
   };
 
-  /* ── Loading ─────────────────────────────────────────────────── */
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Sora',sans-serif" }}>
       <div style={{ textAlign: "center" }}>
@@ -292,7 +269,6 @@ const ContributionMasterApprovalView: React.FC = () => {
       <style>{STYLE_TAG}</style>
       <div style={{ fontFamily: "'Sora','Segoe UI',sans-serif", background: "#f1f5f9", minHeight: "100vh", padding: "24px 20px", boxSizing: "border-box" }}>
 
-        {/* ── Nav bar ──────────────────────────────────────────── */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12, animation: "fadeUp 0.35s ease both" }}>
           <button
             className="apv-back"
@@ -310,7 +286,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Hero banner ──────────────────────────────────────── */}
         <div style={{ background: "linear-gradient(135deg,#1B3763 0%,#0f5a8e 60%,#0d7377 100%)", borderRadius: 18, padding: "28px 32px", marginBottom: 20, display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 20, animation: "fadeUp 0.4s ease 0.05s both" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
@@ -328,7 +303,7 @@ const ContributionMasterApprovalView: React.FC = () => {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 14 }}>
-            {/* Amount chip */}
+
             <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 14, padding: "14px 22px", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", textAlign: "right" }}>
               <p style={{ margin: 0, fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Total Amount</p>
               <p style={{ margin: "4px 0 0", fontSize: 28, fontWeight: 800, color: "#fff", fontFamily: "'JetBrains Mono',monospace", letterSpacing: "-0.5px" }}>{fmt(totalAmount)}</p>
@@ -357,7 +332,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Banners ───────────────────────────────────────────── */}
         {result && (
           <div style={{ background: "#f0fdf4", border: "1.5px solid #86efac", borderRadius: 12, padding: "14px 20px", marginBottom: 16, display: "flex", alignItems: "center", gap: 12, animation: "fadeUp 0.3s ease both" }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "#dcfce7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>✅</div>
@@ -373,7 +347,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           </div>
         )}
 
-        {/* ── Stat strip ───────────────────────────────────────── */}
         <div style={{ display: "flex", gap: 12, marginBottom: 18, flexWrap: "wrap" }}>
           <StatBrick label="Total Amount" value={fmt(totalAmount)} icon="₹" accent="#1B3763" delay={0.1} />
           <StatBrick label="Total Entries" value={totalEntry} icon="📋" accent="#0f5a8e" delay={0.15} />
@@ -381,7 +354,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           <StatBrick label="File Size" value={`${fileSizeKB} KB`} icon="💾" accent="#6366f1" delay={0.25} />
         </div>
 
-        {/* ── Main 3-column grid ────────────────────────────────── */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 16 }}>
 
           {/* File information */}
@@ -434,7 +406,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           </SectionCard>
         </div>
 
-        {/* ── File location full width ──────────────────────────── */}
         <div style={{ background: "#fff", border: "1.5px solid #e8edf5", borderRadius: 16, overflow: "hidden", animation: "fadeUp 0.4s ease 0.3s both", marginBottom: 16 }}>
           <div style={{ padding: "12px 20px", background: "#f8fafc", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 30, height: 30, borderRadius: 8, background: "#e8edf5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>📂</div>
@@ -447,7 +418,6 @@ const ContributionMasterApprovalView: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Contribution details row ──────────────────────────── */}
         <div style={{ background: "#fff", border: "1.5px solid #e8edf5", borderRadius: 16, overflow: "hidden", animation: "fadeUp 0.4s ease 0.35s both" }}>
           <div style={{ padding: "12px 20px", background: "#f8fafc", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 30, height: 30, borderRadius: 8, background: "#e8edf5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>📊</div>
@@ -471,7 +441,6 @@ const ContributionMasterApprovalView: React.FC = () => {
 
       </div>
 
-      {/* ── Confirm modal ─────────────────────────────────────── */}
       {showModal && (
         <ConfirmModal
           data={data}

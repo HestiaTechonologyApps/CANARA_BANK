@@ -2,7 +2,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { AccountDirectEntry } from "../../Types/Contributions/AccountDirectEntry.types";
+import type { AccountDirectEntry, ApproveAccountDirectEntryParams } from "../../Types/Contributions/AccountDirectEntry.types";
 
 const AccountDirectEntryService = {
   
@@ -78,6 +78,15 @@ const AccountDirectEntryService = {
     );
     return response;
   },
+
+  async approveAccountDirectEntry(
+  id: number,
+  params: ApproveAccountDirectEntryParams
+): Promise<AccountDirectEntry> {
+  const url = `${API_ENDPOINTS.ACCOUNT_DIRECT_ENTRY.UPDATE_BY_APPROVE(id)}?approve=${params.approve}&currentUserId=${params.currentUserId}`;
+  const response = await HttpService.callApi<CustomResponse<AccountDirectEntry>>(url, "PUT");
+  return response.value;
+},
 };
 
 export default AccountDirectEntryService;

@@ -26,3 +26,7 @@ export interface AccountDirectEntry {
   approvedDateString?:string;
   auditLogs?: AuditTrails[];
 }
+export interface ApproveAccountDirectEntryParams {
+  approve: boolean;
+  currentUserId: number;
+}

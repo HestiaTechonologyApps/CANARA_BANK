@@ -117,6 +117,7 @@ USER_TYPE: {
     UPDATE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     GET_BY_STAFFID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/GetByMemberId${id}`,
+    UPDATE_BY_APPROVE:(id: number) => `${API_BASE_URL}/AccountDirecyEntry/approve/${id}`,
   },
    DIRECT_PAY: {
     GET_ALL: `${API_BASE_URL}/DirectPayment`,

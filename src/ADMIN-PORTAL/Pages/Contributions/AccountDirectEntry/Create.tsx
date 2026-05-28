@@ -11,6 +11,8 @@ import MonthPopup from "../../Settings/Month/MonthPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
 
+const THEME_COLOR = "#1B3763";
+
 const AccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
@@ -22,7 +24,7 @@ const AccountDirectEntryCreate: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<Month | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
-   const handleReset = () => {
+  const handleReset = () => {
     setSelectedMember(null);
     setSelectedBranch(null);
     setSelectedMonth(null);
@@ -43,10 +45,9 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
     { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
     { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
-    { name: "approvedBy", rules: { type: "text", label: "Approved By", colWidth: 4 } },
-    { name: "approvedDate", rules: { type: "date", label: "Approved Date", colWidth: 4 } },
-    { name: "isApproved", rules: { type: "toggle", label: "Approved" } },
   ];
+
+  const statusOptions = [{ value: "Submitted", label: "Submitted" }];
 
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
@@ -66,22 +67,14 @@ const AccountDirectEntryCreate: React.FC = () => {
       ddIbaDateString: `${formData.ddIbaDate}T00:00:00`,
       amt: Number(formData.amt),
       status: formData.status,
-      approvedBy: formData.approvedBy || undefined,
-      approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
-      approvedDateString: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
-      isApproved: Boolean(formData.isApproved),
       enrl: formData.enrl || "",
       fine: formData.fine || "",
       f9: formData.f9 || "",
       f10: formData.f10 || "",
       f11: formData.f11 || "",
+      isApproved: false,
     });
   };
-  
-//status option
-  const statusOptions = [
-    { value: "Submitted", label: "Submitted" }
-  ];
 
   const popupHandlers = {
     memberId: {
@@ -116,30 +109,14 @@ const AccountDirectEntryCreate: React.FC = () => {
         submitButtonText="Create Entry"
         successMessage="Account entry created successfully!"
         navigateOnSuccess="/dashboard/contributions/accountDirectEntry-list"
-        themeColor="#1B3763"
+        themeColor={THEME_COLOR}
         options={{ status: statusOptions }}
         onReset={handleReset}
       />
-      <MemberPopup 
-       show={showMemberPopup} 
-       handleClose={() => setShowMemberPopup(false)} 
-       onSelect={setSelectedMember} 
-       />
-      <BranchPopup 
-       show={showBranchPopup} 
-       handleClose={() => setShowBranchPopup(false)} 
-       onSelect={setSelectedBranch} 
-       />
-      <MonthPopup 
-       show={showMonthPopup} 
-       handleClose={() => setShowMonthPopup(false)} 
-       onSelect={setSelectedMonth} 
-       />
-      <YearMasterPopup 
-       show={showYearMasterPopup} 
-       handleClose={() => setShowYearMasterPopup(false)} 
-       onSelect={setSelectedYearMaster} 
-       />
+      <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />
+      <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} />
+      <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} />
+      <YearMasterPopup show={showYearMasterPopup} handleClose={() => setShowYearMasterPopup(false)} onSelect={setSelectedYearMaster} />
     </>
   );
 };
