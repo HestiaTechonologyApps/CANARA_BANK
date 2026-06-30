@@ -24,13 +24,15 @@ const BranchEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "dpCode", rules: { type: "number", label: "DP Code", required: true, colWidth: 4, } },
     { name: "name", rules: { type: "text", label: "Branch Name", required: true, colWidth: 4 ,pattern: /^[a-zA-Z\s.\-']+$/  } },
+     { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
     { name: "district", rules: { type: "text", label: "District", required: true, colWidth: 4, pattern:/^[a-zA-Z]+$/ } },
     { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
-    { name: "address1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4 } },
-    { name: "address2", rules: { type: "text", label: "Address Line 2", colWidth: 4 } },
-    { name: "address3", rules: { type: "text", label: "Address Line 3", colWidth: 4 } },
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
-    { name: "circleId", rules: { type: "popup", label: "Circle", required: true, colWidth: 4 } },
+    { name: "address1", rules: { type: "textarea", label: "Address Line 1", required: true, colWidth: 4 } },
+    { name: "address2", rules: { type: "textarea", label: "Address Line 2", colWidth: 4 } },
+    { name: "address3", rules: { type: "textarea", label: "Address Line 3", colWidth: 4 } },
+    
+   
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
   ];
 
@@ -100,13 +102,18 @@ const BranchEdit: React.FC = () => {
       actualValue: selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
+    // circleId: {
+    //   value: selectedCircle?.name || "",
+    //   actualValue: selectedCircle?.circleId,
+    //   onOpen: () => {
+    //     if (!selectedState) return alert("Please select State first");
+    //     setShowCirclePopup(true);
+    //   },
+    // },
     circleId: {
       value: selectedCircle?.name || "",
       actualValue: selectedCircle?.circleId,
-      onOpen: () => {
-        if (!selectedState) return alert("Please select State first");
-        setShowCirclePopup(true);
-      },
+      onOpen: () => setShowCirclePopup(true),
     },
   };
 
@@ -135,7 +142,7 @@ const BranchEdit: React.FC = () => {
         handleClose={() => setShowStatePopup(false)}
         onSelect={(state) => {
           setSelectedState(state);
-          setSelectedCircle(null);
+          //setSelectedCircle(null);
           setShowStatePopup(false);
         }}
       />

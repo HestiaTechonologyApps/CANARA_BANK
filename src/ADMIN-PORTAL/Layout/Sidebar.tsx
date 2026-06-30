@@ -18,15 +18,17 @@ const Sidebar: React.FC = () => {
   };
 
   const settingsSubMenu = [
+    { label: "States", path: "/dashboard/settings/state-list" },
+{ label: "Circles", path: "/dashboard/settings/circle-list" },
     { label: "Branches", path: "/dashboard/settings/branch-list" },
     { label: "Category", path: "/dashboard/settings/category-list" },
-    { label: "Circles", path: "/dashboard/settings/circle-list" },
+    
     { label: "Company", path: "/dashboard/settings/company-list" },
     { label: "Designation", path: "/dashboard/settings/designation-list" },
     { label: "Month", path: "/dashboard/settings/month-list" },
     { label: "Report Engine", path: "/dashboard/settings/reportEngine-list" },
     { label: "Report Type", path: "/dashboard/settings/reportType-list" },
-    { label: "States", path: "/dashboard/settings/state-list" },
+    
     { label: "Status", path: "/dashboard/settings/status-list" },
     { label: "Users", path: "/dashboard/settings/user-list" },
     { label: "User Types", path: "/dashboard/settings/usertype-list" },
