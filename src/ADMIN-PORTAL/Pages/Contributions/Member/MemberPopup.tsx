@@ -38,7 +38,7 @@ const MemberPopup: React.FC<MemberPopupProps> = ({
       idKey="memberId"
       rowsPerPage={10}
       showAddButton={showAddButton}
-      filterData={(members) => members.filter(m => m.isRegCompleted === true)}
+      //filterData={(members) => members.filter(m => m.isRegCompleted === true)}
     />
   );
 };
