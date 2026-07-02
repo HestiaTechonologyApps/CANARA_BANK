@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
 import type { Member } from "../../../Types/Contributions/Member.types";
@@ -10,10 +10,14 @@ import BranchPopup from "../../Branch/BranchPopup";
 import MonthPopup from "../../Settings/Month/MonthPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
+import type { AttachmentsStagingHandle } from "../../../../Components/KiduCreateAttachment";
+import AttachmentsStaging from "../../../../Components/KiduCreateAttachment";
+
 
 const THEME_COLOR = "#1B3763";
 
 const AccountDirectEntryCreate: React.FC = () => {
+  const attachmentsRef = useRef<AttachmentsStagingHandle>(null); 
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
@@ -29,6 +33,7 @@ const AccountDirectEntryCreate: React.FC = () => {
     setSelectedBranch(null);
     setSelectedMonth(null);
     setSelectedYearMaster(null);
+     attachmentsRef.current?.clear(); 
   };
 
   const fields: Field[] = [
@@ -53,7 +58,7 @@ const AccountDirectEntryCreate: React.FC = () => {
     if (!selectedMember || !selectedBranch || !selectedMonth || !selectedYearMaster) {
       throw new Error("Please select all required values");
     }
-    await AccountDirectEntryService.createAccountDirectEntry({
+    const created = await AccountDirectEntryService.createAccountDirectEntry({
       memberId: selectedMember.memberId,
       memberName: selectedMember.name,
       branchId: selectedBranch.branchId,
@@ -74,6 +79,12 @@ const AccountDirectEntryCreate: React.FC = () => {
       f11: formData.f11 || "",
       isApproved: false,
     });
+     if (attachmentsRef.current?.hasFiles() && created?.accountsDirectEntryID) {
+      await attachmentsRef.current.uploadAll(
+        "AccountDirectEntry",           // tableName — match your backend's expected value
+        created.accountsDirectEntryID
+      );
+    }
   };
 
   const popupHandlers = {
@@ -112,7 +123,10 @@ const AccountDirectEntryCreate: React.FC = () => {
         themeColor={THEME_COLOR}
         options={{ status: statusOptions }}
         onReset={handleReset}
-      />
+      >
+          <AttachmentsStaging ref={attachmentsRef} />
+    </KiduCreate>
+      
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />
       <BranchPopup show={showBranchPopup} handleClose={() => setShowBranchPopup(false)} onSelect={setSelectedBranch} />
       <MonthPopup show={showMonthPopup} handleClose={() => setShowMonthPopup(false)} onSelect={setSelectedMonth} />
