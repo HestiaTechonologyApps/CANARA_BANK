@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import KiduCreate from "../../../Components/KiduCreate";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
@@ -10,8 +10,11 @@ import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import MemberPopup from "../../Contributions/Member/MemberPopup";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
+import type { AttachmentsStagingHandle } from "../../../../Components/KiduCreateAttachment";
+import AttachmentsStaging from "../../../../Components/KiduCreateAttachment";
 
 const RefundContributionCreate: React.FC = () => {
+  const attachmentsRef = useRef<AttachmentsStagingHandle>(null);
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
@@ -27,6 +30,7 @@ const RefundContributionCreate: React.FC = () => {
     setSelectedMember(null);
     setSelectedDesignation(null);
     setSelectedYearMaster(null);
+    attachmentsRef.current?.clear();
   };
 
   const fields: Field[] = [
@@ -74,9 +78,20 @@ const RefundContributionCreate: React.FC = () => {
     deathDateString: "",
   };
 
-  await RefundContributionService.createRefundContribution(
+//   await RefundContributionService.createRefundContribution(
+//     payload as any
+//   );
+// };
+const created = await RefundContributionService.createRefundContribution(
     payload as any
   );
+
+  if (attachmentsRef.current?.hasFiles() && created?.refundContributionId) {
+    await attachmentsRef.current.uploadAll(
+      "RefundContribution",           // tableName — match your backend's expected value
+      created.refundContributionId
+    );
+  }
 };
 const popupHandlers = {
   stateId: {
@@ -125,7 +140,9 @@ const popupHandlers = {
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"
         themeColor="#1B3763"
         onReset={handleReset}
-      />
+      >
+         <AttachmentsStaging ref={attachmentsRef} />
+         </KiduCreate>
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
