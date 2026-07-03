@@ -15,6 +15,7 @@ import DashboardService from "../../Services/Dashboard/Dashboard.services";
 import { useYear } from "../../Layout/YearContext";
 import type { DashboardData, RecentActivity } from "../../Types/Dashboard/Dashboard.types";
 import DashBoardCards from "./DashBoardCards";
+import { useNavigate } from "react-router-dom";
 
 
 /* ─── Design Tokens ──────────────────────────────────────── */
@@ -215,6 +216,7 @@ const fmtY = (v: number) =>
 
 
 const DashboardHome: React.FC = () => {
+  const navigate = useNavigate();
   const { selectedYear: year } = useYear();
 
   const [data,    setData]    = useState<DashboardData | null>(null);
@@ -327,6 +329,7 @@ const DashboardHome: React.FC = () => {
             change: ov?.totalMembersGrowth ?? 0,
             icon: <Users size={20} />,
             fadeClass: "dash-fade-1",
+            onClick: () => navigate("/dashboard/contributions/member-list"),
           },
           {
             title: "Active Contributions",
@@ -334,6 +337,7 @@ const DashboardHome: React.FC = () => {
             change: ov?.activeContributionsGrowth ?? 0,
             icon: <Wallet size={20} />,
             fadeClass: "dash-fade-2",
+            onClick: () => navigate("/dashboard/contributions/monthlyContribution-list"),
           },
           {
             title: "Total Claims",
@@ -341,6 +345,7 @@ const DashboardHome: React.FC = () => {
             change: ov?.totalClaimsGrowth ?? 0,
             icon: <FileText size={20} />,
             fadeClass: "dash-fade-3",
+            onClick: () => navigate("/dashboard/claims/deathclaims-list"),
           },
           {
             title: "Collection (Lakhs)",
@@ -357,6 +362,7 @@ const DashboardHome: React.FC = () => {
                 value={card.value}
                 change={card.change}
                 icon={card.icon}
+                onClick={card.onClick} 
               />
             </div>
           </Col>
