@@ -16,12 +16,12 @@ const CompanyEdit: React.FC = () => {
     { name: "email", rules: { type: "email", label: "Email", required: true, colWidth: 4 } },
     { name: "taxNumber", rules: { type: "text", label: "Tax Number", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/ } },
     { name: "invoicePrefix", rules: { type: "text", label: "Invoice Prefix", required: true, colWidth: 4 } },
-    { name: "addressLine1", rules: { type: "text", label: "Address Line 1", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
-    { name: "addressLine2", rules: { type: "text", label: "Address Line 2", colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
     { name: "city", rules: { type: "text", label: "City", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
     { name: "state", rules: { type: "text", label: "State", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
     { name: "country", rules: { type: "text", label: "Country", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
     { name: "zipCode", rules: { type: "text", label: "Zip Code", required: true, colWidth: 4 } },
+    { name: "addressLine1", rules: { type: "textarea", label: "Address Line 1", required: true, colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
+    { name: "addressLine2", rules: { type: "textarea", label: "Address Line 2", colWidth: 4, pattern: /^(?=.*[a-zA-Z])[\w\s,./\\#\-@&()':;!?+*=%$~`^{}|<>]+$/ } },
     { name: "isActive", rules: { type: "toggle", label: "Active" } },
   ];
 
