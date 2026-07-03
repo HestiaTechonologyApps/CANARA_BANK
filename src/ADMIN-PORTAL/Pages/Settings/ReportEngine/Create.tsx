@@ -7,7 +7,7 @@ import type { ReportEngine } from "../../../Types/Settings/ReportEngine.types";
 const ReportEngineCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "name", rules: { type: "text", label: "Report Name", required: true, colWidth: 6 } },
-    { name: "description", rules: { type: "text", label: "Description", required: true, colWidth: 6 } },
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
     { name: "sqlString", rules: { type: "textarea", label: "SQL Query", required: true, colWidth: 12 } },
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
