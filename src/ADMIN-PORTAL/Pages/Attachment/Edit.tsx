@@ -7,7 +7,7 @@ const AttachmentEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "fileName", rules: { type: "text", label:"Current File", required: false, colWidth: 6, disabled: true }, },
     { name: "file", rules: { type: "file", label: "Upload New File (Optional)", required: false, colWidth: 6, }, },
-    { name: "description", rules: { type: "text", label: "Description", required: true, colWidth: 6, }, },
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6, }, },
   ];
 
   const handleFetch = async (id: string) => {

@@ -6,7 +6,7 @@ import AttachmentService from "../../../Services/Attachment.services";
 const AttachmentCreate: React.FC = () => {
   const fields: Field[] = [
     { name: "file", rules: { type: "file", label: "File", required: true, colWidth: 6 } },
-    { name: "description", rules: { type: "text", label: "Description", required: true, colWidth: 6 } }
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } }
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
