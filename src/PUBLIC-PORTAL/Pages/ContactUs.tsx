@@ -28,6 +28,11 @@ const ContactUs: React.FC = () => {
       return false;
     }
 
+     if (formData.fullName.trim().length < 4) {
+      toast.error("Full Name must be at least 4 letters");
+      return false;
+    }
+
     if (!formData.phoneNumber.trim()) {
       toast.error("Phone Number is required");
       return false;
@@ -43,7 +48,11 @@ const ContactUs: React.FC = () => {
       return false;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
+    // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
+    //   toast.error("Enter a valid email address");
+    //   return false;
+    // }
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
       toast.error("Enter a valid email address");
       return false;
     }
