@@ -51,9 +51,8 @@ export interface ForgotPasswordRequest {
 export function isValidUserRole(role: string | null | undefined): role is string {
   if (!role) return false;
   const normalizedRole = role.trim().toLowerCase();
-  return normalizedRole === 'staff' || 
-         normalizedRole === 'admin user' || 
-         normalizedRole === 'adminuser' ||
-         normalizedRole === 'super admin' || 
-         normalizedRole === 'superadmin';
+  return normalizedRole === 'systemadmin' ||
+         normalizedRole === 'administrator' ||
+         normalizedRole === 'officestaff' ||
+         normalizedRole === 'deo';
 }

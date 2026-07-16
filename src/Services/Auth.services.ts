@@ -219,7 +219,7 @@ class AuthService {
     return true;
   }
 
-  static getDashboardRoute(): string {
+static getDashboardRoute(): string {
     const role = this.getUserRole();
     console.log('Determining dashboard route for role:', role);
 
@@ -231,18 +231,14 @@ class AuthService {
     const normalizedRole = role.trim().toLowerCase();
 
     switch (normalizedRole) {
-      case 'staff':
+      case 'officestaff':
+      case 'deo':
         console.log('Routing to Staff Portal');
         return '/staff-portal';
 
-      case 'admin user':
-      case 'adminuser':
+      case 'systemadmin':
+      case 'administrator':
         console.log('Routing to Admin Dashboard');
-        return '/dashboard';
-
-      case 'super admin':
-      case 'superadmin':
-        console.log('Routing to Admin Dashboard (Super Admin)');
         return '/dashboard';
 
       default:
@@ -251,30 +247,27 @@ class AuthService {
     }
   }
 
-  static isAdmin(): boolean {
+static isAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
 
     const normalizedRole = role.trim().toLowerCase();
-    return normalizedRole === 'admin user' ||
-      normalizedRole === 'adminuser' ||
-      normalizedRole === 'super admin' ||
-      normalizedRole === 'superadmin';
+    return normalizedRole === 'systemadmin' || normalizedRole === 'administrator';
   }
 
   static isStaff(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
 
-    return role.trim().toLowerCase() === 'staff';
+    const normalizedRole = role.trim().toLowerCase();
+    return normalizedRole === 'officestaff' || normalizedRole === 'deo';
   }
 
   static isSuperAdmin(): boolean {
     const role = this.getUserRole();
     if (!role) return false;
 
-    const normalizedRole = role.trim().toLowerCase();
-    return normalizedRole === 'super admin' || normalizedRole === 'superadmin';
+    return role.trim().toLowerCase() === 'systemadmin';
   }
 
   static async changePassword(currentPassword: string, newPassword: string): Promise<CustomResponse<any>> {

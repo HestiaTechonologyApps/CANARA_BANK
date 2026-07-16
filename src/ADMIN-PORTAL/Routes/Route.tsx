@@ -171,14 +171,14 @@ import ContributionMasterApprovalView from '../Pages/Approval/View';
 
 export const adminRoutes = (
   <>
-    <Route
-      path="/dashboard"
-      element={
-        <ProtectedRoute allowedRoles={['Admin User', 'Super Admin']}>
-          <DashBoard />
-        </ProtectedRoute>
-      }
-    >
+ <Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={['SystemAdmin', 'Administrator']}>
+      <DashBoard />
+    </ProtectedRoute>
+  }
+>
       {/* ✅ INDEX route — renders DashboardHome at exactly "/dashboard" */}
       <Route index element={<DashboardHome />} />
 

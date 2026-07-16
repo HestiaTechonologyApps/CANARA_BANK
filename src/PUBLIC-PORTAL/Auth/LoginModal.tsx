@@ -80,26 +80,33 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       setIsLoading(true);
       try {
         const response = await AuthService.login({ userName, password });
+        console.log("DEBUG 1 - response:", response);
 
         if (!response.isSucess) {
+          console.log("DEBUG - failed at isSucess check");
           toast.error("Invalid username or password");
           return;
         }
 
         if (!response.value) {
+          console.log("DEBUG - failed at value check");
           toast.error("Invalid username or password");
           return;
         }
 
         const userRole = localStorage.getItem("user_role");
+        console.log("DEBUG 2 - userRole from localStorage:", userRole);
         if (!userRole) {
+          console.log("DEBUG - failed at userRole check");
           toast.error("Invalid user credentials. Please contact administrator.");
           AuthService.logout();
           return;
         }
 
         const dashboardRoute = AuthService.getDashboardRoute();
+        console.log("DEBUG 3 - dashboardRoute:", dashboardRoute);
         if (dashboardRoute === "/login") {
+          console.log("DEBUG - failed at dashboardRoute check");
           toast.error("Invalid user role. Please contact administrator.");
           AuthService.logout();
           return;
@@ -114,16 +121,21 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
       } catch (error: any) {
         console.error("Login error:", error);
 
+        const status = error?.response?.status;
         const serverMessage =
           error?.response?.data?.customMessage ||
           error?.response?.data?.error ||
           error?.message;
 
-        const status = error?.response?.status;
-        if (!status || status === 400 || status === 401) {
+        if (status === 400 || status === 401) {
           toast.error("Invalid username or password");
+        } else if (status) {
+          toast.error(serverMessage || "Something went wrong. Please try again.");
         } else {
-          toast.error(serverMessage || "Invalid username or password");
+          // No HTTP status = error happened AFTER login succeeded
+          // (localStorage read, getDashboardRoute, navigation, etc.)
+          // Do not blame credentials for this.
+          toast.error(serverMessage || "Login succeeded but something failed after. Check console.");
         }
       } finally {
         setIsLoading(false);

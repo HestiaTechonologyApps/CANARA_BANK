@@ -5,7 +5,7 @@ import AuthService from '../../Services/Auth.services';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ('Staff' | 'Admin User' | 'Super Admin')[];
+  allowedRoles?: ('SystemAdmin' | 'Administrator' | 'OfficeStaff' | 'DEO')[];
   requireAuth?: boolean;
 }
 
@@ -50,12 +50,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const normalizedUserRole = userRole.trim().toLowerCase();
 
  
-  const hasAccess = allowedRoles.some(role => {
+const hasAccess = allowedRoles.some(role => {
     const normalizedAllowedRole = role.trim().toLowerCase();
-    return normalizedUserRole === normalizedAllowedRole ||
-           // Handle variations
-           (normalizedAllowedRole === 'admin user' && normalizedUserRole === 'adminuser') ||
-           (normalizedAllowedRole === 'super admin' && normalizedUserRole === 'superadmin');
+    return normalizedUserRole === normalizedAllowedRole;
   });
 
   if (!hasAccess) {

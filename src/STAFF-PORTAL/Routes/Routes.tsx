@@ -14,14 +14,14 @@ import StaffAccountDirectEntryView from '../Pages/AccountDirectEntry/View';
 import Claims from '../../PUBLIC-PORTAL/Pages/Claims';
 
 export const staffRoutes = (
-  <Route
-    path="/staff-portal"
-    element={
-      <ProtectedRoute allowedRoles={['Staff']}>
-        <StaffLayout />
-      </ProtectedRoute>
-    }
-  >
+ <Route
+  path="/staff-portal"
+  element={
+    <ProtectedRoute allowedRoles={['OfficeStaff', 'DEO']}>
+      <StaffLayout />
+    </ProtectedRoute>
+  }
+>
     <Route index element={<Profile />} />
     {/* <Route path="nominee" element={<UpdateNominee />} /> */}
     <Route path="staff-edit/:memberId" element={<StaffEdit />} />
