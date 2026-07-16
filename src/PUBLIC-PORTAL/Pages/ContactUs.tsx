@@ -17,57 +17,93 @@ const ContactUs: React.FC = () => {
     message: "",
   });
 
-  const validateForm = () => {
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactMessage, string>>>({});
+
+  // const validateForm = () => {
+  //   if (!formData.fullName.trim()) {
+  //     toast.error("Full Name is required");
+  //     return false;
+  //   }
+
+  //   if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
+  //     toast.error("Full Name must contain only letters");
+  //     return false;
+  //   }
+
+  //    if (formData.fullName.trim().length < 4) {
+  //     toast.error("Full Name must be at least 4 letters");
+  //     return false;
+  //   }
+
+  //   if (!formData.phoneNumber.trim()) {
+  //     toast.error("Phone Number is required");
+  //     return false;
+  //   }
+
+  //   if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
+  //     toast.error("Phone Number must be 10 digits");
+  //     return false;
+  //   }
+
+  //   if (!formData.emailAddress.trim()) {
+  //     toast.error("Email is required");
+  //     return false;
+  //   }
+
+  //   // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
+  //   //   toast.error("Enter a valid email address");
+  //   //   return false;
+  //   // }
+  //   if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
+  //     toast.error("Enter a valid email address");
+  //     return false;
+  //   }
+
+  //   if (!formData.subject.trim()) {
+  //     toast.error("Subject is required");
+  //     return false;
+  //   }
+
+  //   if (!formData.message.trim()) {
+  //     toast.error("Message is required");
+  //     return false;
+  //   }
+
+  //   return true;
+  // };
+const validateForm = () => {
+    const nextErrors: Partial<Record<keyof ContactMessage, string>> = {};
+
     if (!formData.fullName.trim()) {
-      toast.error("Full Name is required");
-      return false;
-    }
-
-    if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
-      toast.error("Full Name must contain only letters");
-      return false;
-    }
-
-     if (formData.fullName.trim().length < 4) {
-      toast.error("Full Name must be at least 4 letters");
-      return false;
+      nextErrors.fullName = "Full Name is required";
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
+      nextErrors.fullName = "Full Name must contain only letters";
+    } else if (formData.fullName.trim().length < 4) {
+      nextErrors.fullName = "Full Name must be at least 4 letters";
     }
 
     if (!formData.phoneNumber.trim()) {
-      toast.error("Phone Number is required");
-      return false;
-    }
-
-    if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
-      toast.error("Phone Number must be 10 digits");
-      return false;
+      nextErrors.phoneNumber = "Phone Number is required";
+    } else if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
+      nextErrors.phoneNumber = "Phone Number must be 10 digits";
     }
 
     if (!formData.emailAddress.trim()) {
-      toast.error("Email is required");
-      return false;
-    }
-
-    // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
-    //   toast.error("Enter a valid email address");
-    //   return false;
-    // }
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
-      toast.error("Enter a valid email address");
-      return false;
+      nextErrors.emailAddress = "Email is required";
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
+      nextErrors.emailAddress = "Enter a valid email address";
     }
 
     if (!formData.subject.trim()) {
-      toast.error("Subject is required");
-      return false;
+      nextErrors.subject = "Subject is required";
     }
 
     if (!formData.message.trim()) {
-      toast.error("Message is required");
-      return false;
+      nextErrors.message = "Message is required";
     }
 
-    return true;
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   useEffect(() => {
@@ -86,14 +122,42 @@ const ContactUs: React.FC = () => {
     loadContactConfig();
   }, []);
 
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData(prev => ({ ...prev, [name]: value }));
+  // };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) return;
+
+  //   try {
+  //     const response = await ContactMessageService.submitMessage(formData);
+  //     toast.success(response.message);
+
+  //     setFormData({
+  //       fullName: "",
+  //       phoneNumber: "",
+  //       emailAddress: "",
+  //       subject: "",
+  //       message: "",
+  //     });
+  //   } catch (error) {
+  //     console.error("Contact message submit failed:", error);
+  //     toast.error("Failed to submit message");
+  //   }
+  // };
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -109,6 +173,7 @@ const ContactUs: React.FC = () => {
         subject: "",
         message: "",
       });
+      setErrors({});
     } catch (error) {
       console.error("Contact message submit failed:", error);
       toast.error("Failed to submit message");
@@ -134,32 +199,52 @@ const ContactUs: React.FC = () => {
                     <Form.Label>{config?.contactFullNameLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control placeholder={config?.contactFullNamePlaceholder} name="fullName"
                       value={formData.fullName}
-                      onChange={handleChange} />
+                      onChange={handleChange}
+                      isInvalid={!!errors.fullName} />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.fullName}
+                    </Form.Control.Feedback>
                   </Col>
                   <Col md={6}>
                     <Form.Label>{config?.contactPhoneLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                     <Form.Control placeholder={config?.contactPhoneNumberPlaceholder} name="phoneNumber"
                       value={formData.phoneNumber}
-                      onChange={handleChange} />
+                      onChange={handleChange}
+                      isInvalid={!!errors.phoneNumber} />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.phoneNumber}
+                    </Form.Control.Feedback>
                   </Col>
                 </Row>
                 <Form.Group className="mb-3">
                   <Form.Label>{config?.contactEmailLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control placeholder={config?.contactEmailPlaceholder} name="emailAddress"
                     value={formData.emailAddress}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    isInvalid={!!errors.emailAddress} />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.emailAddress}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>{config?.contactSubjectLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control placeholder={config?.contactSubjectPlaceholder} name="subject"
                     value={formData.subject}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    isInvalid={!!errors.subject} />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.subject}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-4">
                   <Form.Label>{config?.contactMessageLabel}<span style={{ color: "red" }}>*</span></Form.Label>
                   <Form.Control as="textarea" rows={config?.contactMessageRowNo || 3} placeholder={config?.contactMessagePlaceholder} name="message"
                     value={formData.message}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    isInvalid={!!errors.message} />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" className="send-btn w-100">
                   <i className={config?.contactSubmitButtonIconClass}></i> {config?.contactSubmitButtonLabel}
