@@ -9,8 +9,8 @@ import autoTable from "jspdf-autotable";
 // ✅ Toastify imports
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import type { FilterColumn } from "./KiduTableFilter.";
-import KiduTableFilter from "./KiduTableFilter.";
+import type { FilterColumn } from "./KiduTableFilter";
+import KiduTableFilter from "./KiduTableFilter";
 
 interface KiduServerTableNavbarProps {
   data?: any[];

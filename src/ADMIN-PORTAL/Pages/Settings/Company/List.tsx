@@ -4,7 +4,7 @@ import CompanyService from "../../../Services/Settings/Company.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import defaultCompanyLogo from "../../../Assets/Images/profile.jpg";
-import type { FilterColumn } from "../../../../Components/KiduTableFilter.";
+import type { FilterColumn } from "../../../../Components/KiduTableFilter";
 
 
 const COMPANY_COLUMNS = [

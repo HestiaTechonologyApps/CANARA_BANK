@@ -15,7 +15,8 @@ import KiduSearchBar from "./KiduSearchBar";
 import KiduButton from "./KiduButton";
 import KiduPopupButton from "./KiduPopupButton";
 import KiduServerTableNavbar from "./KiduServerTableNavbar";
-import type { FilterColumn } from "./KiduTableFilter.";
+import type { FilterColumn } from "./KiduTableFilter";
+import defaultProfileImage from "../ADMIN-PORTAL/Assets/Images/profile.jpg";
 
 interface Column {
   key: string;
@@ -193,10 +194,16 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     changeRowsPerPage(newRowsPerPage);
   };
 
-  const handleFilterChange = (newFilters: Record<string, any>) => {
-    setFilters(newFilters);
+const handleFilterChange = (newFilters: Record<string, any>) => {
+    setFilters((prev) => {
+      const prevKeys = Object.keys(prev);
+      const newKeys = Object.keys(newFilters);
+      const isSame =
+        prevKeys.length === newKeys.length &&
+        prevKeys.every((key) => prev[key] === newFilters[key]);
+      return isSame ? prev : newFilters;
+    });
   };
-
   const tableColumns = useMemo<ColumnDef<any>[]>(() => {
     const cols: ColumnDef<any>[] = columns.map((col) => ({
       accessorKey: col.key,
@@ -217,12 +224,17 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
                 style={{ width: '18px', height: '18px', cursor: 'not-allowed', accentColor: '#1B3763' }} />
             );
           }
-          case 'image': {
-            const imageSrc = typeof rawValue === 'string' ? rawValue : "/assets/Images/profile.jpeg";
+         case 'image': {
+            const imageSrc = typeof rawValue === 'string' && rawValue ? rawValue : defaultProfileImage;
             return (
               <img src={imageSrc} alt="Profile"
                 style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: "2px solid #1B3763" }}
-                onError={(e: any) => { e.target.src = "/assets/Images/profile.jpeg"; e.target.onerror = null; }} />
+                onError={(e: any) => {
+                  if (e.target.src !== defaultProfileImage) {
+                    e.target.src = defaultProfileImage;
+                  }
+                  e.target.onerror = null;
+                }} />
             );
           }
           case 'rating': {

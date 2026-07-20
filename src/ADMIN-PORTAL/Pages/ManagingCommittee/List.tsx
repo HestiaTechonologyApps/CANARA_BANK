@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ManagingCommitteeService from "../../Services/CMS/ManagingCommittee.services";
 import KiduServerTableList from "../../../Components/KiduServerTableList";
 import { getFullImageUrl } from "../../../CONSTANTS/API_ENDPOINTS";
 import defaultProfileImage from "../../Assets/Images/profile.jpg";
 
 const ManagingCommitteeList: React.FC = () => {
+  const fetchService = useCallback(async () => {
+    const committees = await ManagingCommitteeService.getAllManagingCommittees();
+
+    return committees.map((m: any) => ({
+      ...m,
+      profileImageSrc: m.imageLocation
+        ? getFullImageUrl(m.imageLocation)
+        : defaultProfileImage,
+    }));
+  }, []);
+
   return (
     <KiduServerTableList
-      fetchService={async () => {
-        const committees =
-          await ManagingCommitteeService.getAllManagingCommittees();
-
-        return committees.map((m: any) => ({
-          ...m,
-          profileImageSrc: m.imageLocation
-            ? getFullImageUrl(m.imageLocation)
-            : defaultProfileImage,
-        }));
-      }}
+      fetchService={fetchService}
 
       columns={[
         { key: "managingComiteeId", label: "Committee ID", enableSorting: true, type: "text" },

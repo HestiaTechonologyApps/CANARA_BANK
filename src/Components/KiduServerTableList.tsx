@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from "react";
 import KiduServerTable from "./KiduServerTable";
-import type { FilterColumn } from "./KiduTableFilter.";
+import type { FilterColumn } from "./KiduTableFilter";
 
 interface Column {
   key: string;
