@@ -1,28 +1,18 @@
 import React from "react";
-import type { Branch } from "../../Types/Settings/Branch.types";
 import BranchService from "../../Services/Settings/Branch.services";
-import StateService from "../../Services/Settings/State.services";
-import CircleService from "../../Services/Settings/Circle.services";
 import KiduServerTableList from "../../../Components/KiduServerTableList";
 
 const BranchList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={async () => {
-        const [branches, states, circles] = await Promise.all([
-          BranchService.getAllBranches(),
-          StateService.getAllStates(),
-          CircleService.getAllCircles(),
-        ]);
-
-        const stateMap = new Map(states.map(s => [s.stateId, s.name]));
-        const circleMap = new Map(circles.map(c => [c.circleId, c.name]));
-
-        return branches.map((b: Branch) => ({
-          ...b,
-          stateName: stateMap.get(b.stateId) || "-",
-          circleName: circleMap.get(b.circleId) || "-",
-        }));
+      paginatedFetchService={async (params) => {
+        return BranchService.getPagedBranches({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
       }}
 
       columns={[

@@ -1,4 +1,3 @@
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -51,12 +50,43 @@ const BranchService = {
     );
   },
 
-   async getCirclesByStateId(stateId: number): Promise<CircleByState[]> {
+  async getCirclesByStateId(stateId: number): Promise<CircleByState[]> {
     const response = await HttpService.callApi<CustomResponse<CircleByState[]>>(
       API_ENDPOINTS.BRANCH.GET_BY_STATE_ID(stateId),
       "GET"
     );
     return response.value;
+  },
+
+  async getPagedBranches(params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+  }): Promise<{ data: Branch[]; total: number }> {
+    const queryParams = new URLSearchParams();
+    queryParams.append("PageNumber", String(params.pageNumber));
+    queryParams.append("PageSize", String(params.pageSize));
+    if (params.searchTerm) queryParams.append("SearchTerm", params.searchTerm);
+    if (params.sortBy) queryParams.append("SortBy", params.sortBy);
+    if (params.sortOrder) queryParams.append("SortDescending", String(params.sortOrder === "desc"));
+
+    const url = `${API_ENDPOINTS.BRANCH.GET_PAGED}?${queryParams.toString()}`;
+
+    type PagedBranchResponse = CustomResponse<{
+      data: Branch[];
+      totalRecords: number;
+      pageNumber: number;
+      pageSize: number;
+    }>;
+
+    const response = await HttpService.callApi<PagedBranchResponse>(url, "GET");
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords,
+    };
   },
 };
 

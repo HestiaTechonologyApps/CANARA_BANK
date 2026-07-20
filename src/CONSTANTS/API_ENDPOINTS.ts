@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
   },
    BRANCH: {
     GET_ALL: `${API_BASE_URL}/Branch`,
+    GET_PAGED: `${API_BASE_URL}/Branch/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/Branch/${id}`,
     CREATE: `${API_BASE_URL}/Branch`,
     UPDATE: (id: number) => `${API_BASE_URL}/Branch/${id}`,
