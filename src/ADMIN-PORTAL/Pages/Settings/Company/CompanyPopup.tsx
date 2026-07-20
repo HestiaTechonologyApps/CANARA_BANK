@@ -37,6 +37,9 @@ const CompanyPopup: React.FC<CompanyPopupProps> = ({
       idKey="companyId"
       rowsPerPage={10}
       searchKeys={["comapanyName", "email", "contactNumber", "city", "state"]} 
+      filterData={(items) =>
+        items.filter((company) => company.isActive)
+      }
     />
   );
 };
