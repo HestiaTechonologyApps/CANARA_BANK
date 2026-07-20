@@ -112,8 +112,9 @@ USER_TYPE: {
     UPDATE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/YearMaster/${id}`,
   },
-   ACCOUNT_DIRECT_ENTRY: {
+ACCOUNT_DIRECT_ENTRY: {
     GET_ALL: `${API_BASE_URL}/AccountDirecyEntry`,
+    GET_PAGED: `${API_BASE_URL}/AccountDirecyEntry/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,
     CREATE: `${API_BASE_URL}/AccountDirecyEntry`,
     UPDATE: (id: number) => `${API_BASE_URL}/AccountDirecyEntry/${id}`,

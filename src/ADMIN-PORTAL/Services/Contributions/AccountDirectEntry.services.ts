@@ -79,7 +79,7 @@ const AccountDirectEntryService = {
     return response;
   },
 
-  async approveAccountDirectEntry(
+async approveAccountDirectEntry(
   id: number,
   params: ApproveAccountDirectEntryParams
 ): Promise<AccountDirectEntry> {
@@ -87,6 +87,37 @@ const AccountDirectEntryService = {
   const response = await HttpService.callApi<CustomResponse<AccountDirectEntry>>(url, "PUT");
   return response.value;
 },
+
+  async getPagedAccountDirectEntries(params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+  }): Promise<{ data: AccountDirectEntry[]; total: number }> {
+    const queryParams = new URLSearchParams();
+    queryParams.append("PageNumber", String(params.pageNumber));
+    queryParams.append("PageSize", String(params.pageSize));
+    if (params.searchTerm) queryParams.append("SearchTerm", params.searchTerm);
+    if (params.sortBy) queryParams.append("SortBy", params.sortBy);
+    if (params.sortOrder) queryParams.append("SortDescending", String(params.sortOrder === "desc"));
+
+    const url = `${API_ENDPOINTS.ACCOUNT_DIRECT_ENTRY.GET_PAGED}?${queryParams.toString()}`;
+
+    type PagedAccountDirectEntryResponse = CustomResponse<{
+      data: AccountDirectEntry[];
+      totalRecords: number;
+      pageNumber: number;
+      pageSize: number;
+    }>;
+
+    const response = await HttpService.callApi<PagedAccountDirectEntryResponse>(url, "GET");
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords,
+    };
+  },
 };
 
 export default AccountDirectEntryService;
