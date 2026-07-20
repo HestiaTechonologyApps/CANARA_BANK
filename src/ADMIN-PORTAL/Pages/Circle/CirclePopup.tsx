@@ -36,6 +36,9 @@ const CirclePopup: React.FC<CirclePopupProps> = ({
       idKey="circleId"
       rowsPerPage={10}
       searchKeys={["circleCode", "name", "abbreviation"]} 
+filterData={(items) =>
+    items.filter((circle) => circle.isActive)
+      }
     />
   );
 };
