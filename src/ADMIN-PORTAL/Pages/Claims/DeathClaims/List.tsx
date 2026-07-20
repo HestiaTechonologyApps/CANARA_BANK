@@ -11,14 +11,21 @@ const formatDateOnly = (value?: string | Date) => {
 const DeathClaimList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={async () => {
-        const data: DeathClaim[] =
-          await DeathClaimService.getAllDeathClaims();
-        return data.map(d => ({
+      paginatedFetchService={async (params) => {
+        return DeathClaimService.getPagedDeathClaims({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+      }}
+      transformData={(data: DeathClaim[]) =>
+        data.map(d => ({
           ...d,
           deathDate: formatDateOnly(d.deathDate),
-        }));
-      }}
+        }))
+      }
 
       columns={[
         { key: "deathClaimId", label: "Death Claim ID", type: "text" },

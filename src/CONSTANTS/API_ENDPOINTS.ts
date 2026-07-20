@@ -170,8 +170,9 @@ ACCOUNT_DIRECT_ENTRY: {
  CREATE_PARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/park`,
  CREATE_UNPARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/unpark`,
   },
-    DEATH_CLAIMS: {
+DEATH_CLAIMS: {
     GET_ALL: `${API_BASE_URL}/DeathClaim`,
+    GET_PAGED: `${API_BASE_URL}/DeathClaim/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
     CREATE: `${API_BASE_URL}/DeathClaim`,
     UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,

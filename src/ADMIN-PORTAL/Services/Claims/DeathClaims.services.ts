@@ -45,11 +45,42 @@ const DeathClaimService = {
     return response.value;
   },
 
-  async deleteDeathClaim(id: number): Promise<void> {
+async deleteDeathClaim(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.DEATH_CLAIMS.DELETE(id),
       "DELETE"
     );
+  },
+
+  async getPagedDeathClaims(params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+  }): Promise<{ data: DeathClaim[]; total: number }> {
+    const queryParams = new URLSearchParams();
+    queryParams.append("PageNumber", String(params.pageNumber));
+    queryParams.append("PageSize", String(params.pageSize));
+    if (params.searchTerm) queryParams.append("SearchTerm", params.searchTerm);
+    if (params.sortBy) queryParams.append("SortBy", params.sortBy);
+    if (params.sortOrder) queryParams.append("SortDescending", String(params.sortOrder === "desc"));
+
+    const url = `${API_ENDPOINTS.DEATH_CLAIMS.GET_PAGED}?${queryParams.toString()}`;
+
+    type PagedDeathClaimResponse = CustomResponse<{
+      data: DeathClaim[];
+      totalRecords: number;
+      pageNumber: number;
+      pageSize: number;
+    }>;
+
+    const response = await HttpService.callApi<PagedDeathClaimResponse>(url, "GET");
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords,
+    };
   },
 };
 
