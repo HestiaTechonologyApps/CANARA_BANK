@@ -8,9 +8,9 @@ export interface Circle {
   isActive: boolean;           
   stateId: number;             
   stateName: string;      
-  dateFrom: Date | string;     
-  dateFromString: string;   
-  dateTo: Date | string;       
-  dateToString: string;     
+ // dateFrom: Date | string;     
+  //dateFromString: string;   
+  //dateTo: Date | string;       
+  //dateToString: string;     
   auditLogs?: AuditTrails[];  
 }
