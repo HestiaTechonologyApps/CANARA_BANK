@@ -90,6 +90,7 @@ export const API_ENDPOINTS = {
   },
    USER: {
     GET_ALL: `${API_BASE_URL}/User`,
+    GET_PAGED: `${API_BASE_URL}/User/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/User/${id}`,
     CREATE: `${API_BASE_URL}/User`,
     UPDATE: (id: number) => `${API_BASE_URL}/User/${id}`,

@@ -5,7 +5,15 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 const UserList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={UserService.getAllUsers}
+      paginatedFetchService={async (params) => {
+        return UserService.getPagedUsers({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+      }}
 
       columns={[
         { key: "userId", label: "User ID", enableSorting: true, type: "text" },
