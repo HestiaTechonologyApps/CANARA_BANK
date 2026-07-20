@@ -177,8 +177,9 @@ ACCOUNT_DIRECT_ENTRY: {
     UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
   },
-   REFUND_CONTRIBUTION: {
+REFUND_CONTRIBUTION: {
     GET_ALL: `${API_BASE_URL}/RefundContribution`,
+    GET_PAGED: `${API_BASE_URL}/RefundContribution/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
     CREATE: `${API_BASE_URL}/RefundContribution`,
     UPDATE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,

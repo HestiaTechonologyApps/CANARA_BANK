@@ -44,11 +44,42 @@ const RefundContributionService = {
     return response.value;
   },
 
-  async deleteRefundContribution(id: number): Promise<void> {
+async deleteRefundContribution(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.REFUND_CONTRIBUTION.DELETE(id),
       "DELETE"
     );
+  },
+
+  async getPagedRefundContributions(params: {
+    pageNumber: number;
+    pageSize: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: "asc" | "desc";
+  }): Promise<{ data: RefundContribution[]; total: number }> {
+    const queryParams = new URLSearchParams();
+    queryParams.append("PageNumber", String(params.pageNumber));
+    queryParams.append("PageSize", String(params.pageSize));
+    if (params.searchTerm) queryParams.append("SearchTerm", params.searchTerm);
+    if (params.sortBy) queryParams.append("SortBy", params.sortBy);
+    if (params.sortOrder) queryParams.append("SortDescending", String(params.sortOrder === "desc"));
+
+    const url = `${API_ENDPOINTS.REFUND_CONTRIBUTION.GET_PAGED}?${queryParams.toString()}`;
+
+    type PagedRefundContributionResponse = CustomResponse<{
+      data: RefundContribution[];
+      totalRecords: number;
+      pageNumber: number;
+      pageSize: number;
+    }>;
+
+    const response = await HttpService.callApi<PagedRefundContributionResponse>(url, "GET");
+
+    return {
+      data: response.value.data,
+      total: response.value.totalRecords,
+    };
   },
 };
 
