@@ -36,6 +36,9 @@ const StatePopup: React.FC<StatePopupProps> = ({
       idKey="stateId"
       rowsPerPage={10}
       showAddButton={showAddButton}
+       filterData={(items) =>
+    items.filter((state) => state.isActive)
+       }
     />
   );
 };
