@@ -236,7 +236,11 @@ const DashboardHome: React.FC = () => {
     }
   }, [year]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+ // useEffect(() => { fetchData(); }, [fetchData]);
+ useEffect(() => {
+  fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [year]);
 
   const ov        = data?.overview;
   const monthly   = data?.monthlyContributionVsClaims  ?? [];
