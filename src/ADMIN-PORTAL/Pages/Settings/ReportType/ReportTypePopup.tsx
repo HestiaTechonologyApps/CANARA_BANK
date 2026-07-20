@@ -35,6 +35,9 @@ const ReportTypePopup: React.FC<ReportTypePopupProps> = ({
       rowsPerPage={10}
       searchKeys={["reportTypeName", "description"]}
       showAddButton={showAddButton}
+      filterData={(items) =>
+    items.filter((reportType) => reportType.isActive)
+  }
     />
   );
 };
