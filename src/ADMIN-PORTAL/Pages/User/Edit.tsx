@@ -33,9 +33,9 @@ const UserEdit: React.FC = () => {
   ];
 
   const roleOptions = [
-    { value: "Staff", label: "Staff" },
-    { value: "Admin User", label: "Admin User" },
-    { value: "Super Admin", label: "Super Admin" },
+    { value: "OfficeStaff", label: "OfficeStaff" },
+    { value: "Administrator", label: "Administrator" },
+    { value: "SystemAdmin", label: "SystemAdmin" },
   ];
 
   const handleFetch = async (id: string) => {

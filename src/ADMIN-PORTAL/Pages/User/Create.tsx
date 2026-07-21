@@ -33,9 +33,9 @@ const UserCreate: React.FC = () => {
   ];
 
   const roleOptions = [
-    { value: "Staff", label: "Staff" },
-    { value: "Admin User", label: "Admin User" },
-    { value: "Super Admin", label: "Super Admin" }
+    { value: "OfficeStaff", label: "OfficeStaff" },
+    { value: "Administrator", label: "Administrator" },
+    { value: "SystemAdmin", label: "SystemAdmin" }
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
