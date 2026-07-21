@@ -15,6 +15,7 @@ interface User {
   userName: string;
   userEmail: string;
   phoneNumber: string;
+  memberId?: number;
 }
 
 const NAVY = "#0f2a55";
@@ -26,7 +27,8 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   show,
   onHide,
 }) => {
-  const [key, setKey] = useState<string>("photo");
+  //const [key, setKey] = useState<string>("photo");
+  const [key, setKey] = useState<string>("password");
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -41,6 +43,21 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   const [preview, setPreview] = useState<string | null>(null);
 
   // Load user from localStorage (same as AccountSettings.tsx)
+  // useEffect(() => {
+  //   const userDataString = localStorage.getItem("user");
+  //   if (userDataString) {
+  //     try {
+  //       const userData = JSON.parse(userDataString);
+  //       setCurrentUser(userData);
+
+  //       if (userData.profileImageSrc) {
+  //         setPreview(getFullImageUrl(userData.profileImageSrc));
+  //       }
+  //     } catch (error) {
+  //       toast.error("Unable to load user information");
+  //     }
+  //   }
+  // }, []);
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
     if (userDataString) {
@@ -50,6 +67,9 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
 
         if (userData.profileImageSrc) {
           setPreview(getFullImageUrl(userData.profileImageSrc));
+        }
+        if (userData.memberId) {
+          setKey("photo");
         }
       } catch (error) {
         toast.error("Unable to load user information");
@@ -221,7 +241,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="p-4">
-        <Tabs
+        {/* <Tabs
           activeKey={key}
           onSelect={(k) => setKey(k || "photo")}
           className="mb-4"
@@ -231,7 +251,20 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
             flexDirection: "row",
             flexWrap: "nowrap",
           }}>
+          
+          <Tab eventKey="photo" title="Profile Photo"> */}
+          <Tabs
+          activeKey={key}
+          onSelect={(k) => setKey(k || (currentUser?.memberId ? "photo" : "password"))}
+          className="mb-4"
+          justify
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "nowrap",
+          }}>
           {/* ---------------- PROFILE PHOTO ---------------- */}
+          {currentUser?.memberId && (
           <Tab eventKey="photo" title="Profile Photo">
             <div className="d-flex flex-column align-items-center gap-3 mt-3">
               <div className="position-relative">
@@ -313,6 +346,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
               </div>
             </div>
           </Tab>
+          )}
 
           {/* ---------------- RESET PASSWORD ---------------- */}
           <Tab eventKey="password" title="Reset Password">

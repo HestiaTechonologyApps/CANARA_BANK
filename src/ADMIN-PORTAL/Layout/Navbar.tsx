@@ -14,6 +14,7 @@ import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
 import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
 import profiledefaultImg from "../Assets/Images/profile.jpg"
+import { getNavbarAvatar } from "../Utils/roleAvatar";
 
 
 const NavbarComponent: React.FC = () => {
@@ -28,7 +29,38 @@ const NavbarComponent: React.FC = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   
-  useEffect(() => {
+  // useEffect(() => {
+  //   try {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser) {
+  //       const parsedUser = JSON.parse(storedUser);
+  //       if (parsedUser?.userName) {
+  //         queueMicrotask(() => {
+  //           setUsername(parsedUser.userName);
+  //           setUseremail(parsedUser.userEmail)
+  //         });
+  //       }
+  //       if (parsedUser?.profileImageSrc) {
+  //         setProfilePic(getFullImageUrl(parsedUser.profileImageSrc));
+  //       }
+  //     }
+    
+  //     const handleProfileUpdate = () => {
+  //       const updatedUser = localStorage.getItem("user");
+  //       if (updatedUser) {
+  //         const parsed = JSON.parse(updatedUser);
+  //         setProfilePic(getFullImageUrl(parsed.profileImageSrc));
+  //       }
+  //     };
+  //     window.addEventListener("profile-pic-updated", handleProfileUpdate);
+  //     return () => {
+  //       window.removeEventListener("profile-pic-updated", handleProfileUpdate);
+  //     };
+  //   } catch (error) {
+  //     console.error("Error parsing user from localStorage:", error);
+  //   }
+  // }, []);
+useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
@@ -39,16 +71,34 @@ const NavbarComponent: React.FC = () => {
             setUseremail(parsedUser.userEmail)
           });
         }
-        if (parsedUser?.profileImageSrc) {
-          setProfilePic(getFullImageUrl(parsedUser.profileImageSrc));
-        }
+        const uploadedImage = parsedUser?.profileImageSrc
+          ? getFullImageUrl(parsedUser.profileImageSrc)
+          : null;
+        setProfilePic(
+          getNavbarAvatar(
+            parsedUser?.role,
+            parsedUser?.memberId,
+            uploadedImage,
+            profiledefaultImg
+          )
+        );
       }
     
       const handleProfileUpdate = () => {
         const updatedUser = localStorage.getItem("user");
         if (updatedUser) {
           const parsed = JSON.parse(updatedUser);
-          setProfilePic(getFullImageUrl(parsed.profileImageSrc));
+          const uploadedImage = parsed?.profileImageSrc
+            ? getFullImageUrl(parsed.profileImageSrc)
+            : null;
+          setProfilePic(
+            getNavbarAvatar(
+              parsed?.role,
+              parsed?.memberId,
+              uploadedImage,
+              profiledefaultImg
+            )
+          );
         }
       };
       window.addEventListener("profile-pic-updated", handleProfileUpdate);
@@ -59,7 +109,6 @@ const NavbarComponent: React.FC = () => {
       console.error("Error parsing user from localStorage:", error);
     }
   }, []);
-
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
     console.log("Selected Year Updated Globally:", year);
@@ -127,8 +176,14 @@ const NavbarComponent: React.FC = () => {
             <div
               className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
             >
-              <Image
+              {/* <Image
                 src={profilePic ? profilePic : profiledefaultImg}
+                alt="profile"
+                className="rounded-circle me-2 border border-2"
+                style={{ width: "30px", height: "30px", objectFit: "cover" }}
+              /> */}
+              <Image
+                src={profilePic}
                 alt="profile"
                 className="rounded-circle me-2 border border-2"
                 style={{ width: "30px", height: "30px", objectFit: "cover" }}
