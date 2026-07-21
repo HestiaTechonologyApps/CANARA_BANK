@@ -1,5 +1,6 @@
 import KiduPopup from "../../../Components/KiduPopup";
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
+import type { BranchLookupItem } from "../../../Types/Lookup.types";
 import type { Branch } from "../../Types/Settings/Branch.types";
 import BranchCreateModal from "./BranchCreateModal";
 
@@ -7,21 +8,32 @@ interface BranchPopupProps {
   show: boolean;
   handleClose: () => void;
   onSelect: (branch: Branch) => void;
-  showAddButton?:boolean;
+  showAddButton?: boolean;
+}
+
+function mapBranchLookupItem(raw: BranchLookupItem): Branch {
+  return {
+    branchId: raw.branchId,
+    dpCode: Number(raw.dpCode),   
+    name: raw.branchName,         
+    address1: "",
+    district: "",
+    status: "",
+    isRegCompleted: false,
+    circleId: 0,
+  } as Branch;
 }
 
 const BranchPopup: React.FC<BranchPopupProps> = ({
   show,
   handleClose,
   onSelect,
-  showAddButton
+  showAddButton,
 }) => {
   const columns = [
     { key: "branchId" as keyof Branch, label: "ID" },
     { key: "dpCode" as keyof Branch, label: "DP Code" },
     { key: "name" as keyof Branch, label: "Branch Name" },
-    { key: "district" as keyof Branch, label: "District" },
-    { key: "status" as keyof Branch, label: "Status" }
   ];
 
   return (
@@ -29,14 +41,18 @@ const BranchPopup: React.FC<BranchPopupProps> = ({
       show={show}
       handleClose={handleClose}
       title="Select Branch"
-      fetchEndpoint={API_ENDPOINTS.BRANCH.GET_ALL}
       columns={columns}
       onSelect={onSelect}
       AddModalComponent={BranchCreateModal}
       idKey="branchId"
       showAddButton={showAddButton}
       rowsPerPage={10}
-      searchKeys={["dpCode", "name", "district", "status"]} 
+      serverSidePagination={{
+        endpoint: API_ENDPOINTS.LOOKUP.PAGED,
+        entityName: "branch",
+        mapItem: mapBranchLookupItem,
+        pageSize: 10,
+      }}
     />
   );
 };

@@ -165,8 +165,22 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     loadData();
   }, [loadData]);
 
+  // ✅ NEW — guards so the search/filters effects below don't re-fire
+  // loadData() on the initial mount. Without these, every table/popup
+  // fired loadData() THREE times on mount (mount effect + filters effect
+  // + debounced search effect). That was masked on cheap/cached popups
+  // but very visible on heavier server-side lookups (e.g. Member), where
+  // the redundant calls made the popup look slow even though it was only
+  // ever meant to fetch 10 rows.
+  const isInitialSearchRender = useRef(true);
+  const isInitialFilterRender = useRef(true);
+
   // ✅ Search: debounced, resets to page 1
   useEffect(() => {
+    if (isInitialSearchRender.current) {
+      isInitialSearchRender.current = false;
+      return;
+    }
     const timeoutId = setTimeout(() => {
       searchTermRef.current = searchTerm;
       currentPageRef.current = 1;
@@ -178,6 +192,11 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
 
   // ✅ Filters changed — fetch immediately
   useEffect(() => {
+    if (isInitialFilterRender.current) {
+      isInitialFilterRender.current = false;
+      filtersRef.current = filters;
+      return;
+    }
     filtersRef.current = filters;
     currentPageRef.current = 1;
     setCurrentPage(1);

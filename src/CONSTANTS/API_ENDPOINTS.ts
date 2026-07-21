@@ -13,6 +13,9 @@ export const API_ENDPOINTS = {
     GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
       `${API_BASE_URL}/AuditLog/${tableName}/${recordId}`
   },
+LOOKUP: {
+  PAGED: `${API_BASE_URL}/Lookup/paged`
+},
    BRANCH: {
     GET_ALL: `${API_BASE_URL}/Branch`,
     GET_PAGED: `${API_BASE_URL}/Branch/paged`,
