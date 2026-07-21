@@ -47,12 +47,17 @@ const BranchPopup: React.FC<BranchPopupProps> = ({
       idKey="branchId"
       showAddButton={showAddButton}
       rowsPerPage={10}
-      serverSidePagination={{
-        endpoint: API_ENDPOINTS.LOOKUP.PAGED,
-        entityName: "branch",
-        mapItem: mapBranchLookupItem,
-        pageSize: 10,
-      }}
+      //serverSidePagination={{
+       // endpoint: API_ENDPOINTS.LOOKUP.PAGED,
+       // entityName: "branch",
+      //  mapItem: mapBranchLookupItem,
+       // pageSize: 10,
+     // }}
+     searchKeys={["dpCode", "name"]}
+     fetchEndpoint={API_ENDPOINTS.BRANCH.GET_ALL}
+       filterData={(items) =>
+    items.filter((branch) => branch.status === "Active")
+  }
     />
   );
 };
