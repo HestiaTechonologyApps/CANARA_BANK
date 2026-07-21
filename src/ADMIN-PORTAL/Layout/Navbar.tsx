@@ -24,6 +24,8 @@ const NavbarComponent: React.FC = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [username, setUsername] = useState<string>("Username");
   const [useremail, setUseremail] = useState<string>("userEmail");
+  const [userRole, setUserRole] = useState<string | undefined>(undefined);
+  const [userMemberId, setUserMemberId] = useState<number | undefined>(undefined);
   const [profilePic, setProfilePic] = useState<string>(profile);
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -63,6 +65,15 @@ const NavbarComponent: React.FC = () => {
 useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
+      // if (storedUser) {
+      //   const parsedUser = JSON.parse(storedUser);
+      //   if (parsedUser?.userName) {
+      //     queueMicrotask(() => {
+      //       setUsername(parsedUser.userName);
+      //       setUseremail(parsedUser.userEmail)
+      //     });
+      //   }
+      //   const uploadedImage = parsedUser?.profileImageSrc
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser?.userName) {
@@ -71,6 +82,8 @@ useEffect(() => {
             setUseremail(parsedUser.userEmail)
           });
         }
+        setUserRole(parsedUser?.role);
+        setUserMemberId(parsedUser?.memberId);
         const uploadedImage = parsedUser?.profileImageSrc
           ? getFullImageUrl(parsedUser.profileImageSrc)
           : null;
@@ -205,6 +218,8 @@ useEffect(() => {
                 onToggle={setShowDropdown}
                 name={username}
                 email={useremail}
+                role={userRole}
+                memberId={userMemberId}
 
                 onAccountSettings={() => {
                   setShowDropdown(false);
