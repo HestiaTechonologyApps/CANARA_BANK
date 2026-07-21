@@ -12,7 +12,7 @@ import KiduLogoutModal from "../../Components/KiduLogoutModal";
 import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
 import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
-import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
+//import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
 import profiledefaultImg from "../Assets/Images/profile.jpg"
 import { getNavbarAvatar } from "../Utils/roleAvatar";
 
@@ -184,7 +184,7 @@ useEffect(() => {
               />
             </div>
 
-            <AdminNotificationDropdown />
+            {/* <AdminNotificationDropdown /> */}
             {/* Profile Section */}
             <div
               className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
