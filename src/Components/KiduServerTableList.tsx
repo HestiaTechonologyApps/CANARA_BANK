@@ -57,7 +57,7 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
   showSearch = true,
   showActions = true,
   rowsPerPage = 10,
-  showFilter = true,
+  showFilter = false,
   filterColumns = [],
   onRowClick,
   onAddClick,

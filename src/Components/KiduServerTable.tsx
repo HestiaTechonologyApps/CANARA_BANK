@@ -82,7 +82,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   showRowsPerPageSelector = true,
   rowsPerPageOptions = [10, 25, 50, 100],
   navbarAdditionalButtons,
-  showFilter = true,
+  showFilter = false,
   filterColumns = [],
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);

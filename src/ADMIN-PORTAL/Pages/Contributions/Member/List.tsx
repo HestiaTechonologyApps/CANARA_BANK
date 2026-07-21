@@ -93,7 +93,6 @@ const MemberList: React.FC = () => {
       showExport={true}
       showSearch={true}
       showActions={true}
-      showFilter={true}  
       rowsPerPage={10}
     />
   );
