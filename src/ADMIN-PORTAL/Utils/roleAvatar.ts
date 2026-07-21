@@ -1,13 +1,16 @@
 // src/ADMIN-PORTAL/Utils/roleAvatar.ts
-import sysAdminImg from "../Assets/Images/sys admin.png";
-import adminImg from "../Assets/Images/admin.png";
+//import sysAdminImg from "../Assets/Images/sys admin.png";
+//import adminImg from "../Assets/Images/admin.png";
+import aibeaImg from "../Assets/Images/aibea.png"
 
 export const getRoleAvatar = (role?: string): string | null => {
   switch (role) {
     case "SystemAdmin":
-      return sysAdminImg;
+     // return sysAdminImg;
+     return aibeaImg;
     case "Administrator":
-      return adminImg;
+    //  return adminImg;
+    return aibeaImg;
     default:
       return null;
   }
