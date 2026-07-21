@@ -633,7 +633,7 @@ export const PublicService = {
                 "© 2025 Canara Bank Employees' Union - Golden Jubilee Family Welfare Scheme. All rights reserved.",
             links: [
                 { label: "Privacy Policy", route: "/privacy-policy" },
-                { label: "Terms of Service", route: "/terms" },
+                // { label: "Terms of Service", route: "/terms" },
             ],
         },
     },
