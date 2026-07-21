@@ -84,7 +84,7 @@ const Sidebar: React.FC = () => {
         onMouseLeave={() => setHovered(false)}
       >
         {/* Profile section */}
-        <div className="profile-section text-center mb-1">
+        {/* <div className="profile-section text-center mb-1">
           {hovered ? (
             <p className="mt-2 text-warning fw-bold" style={{ fontSize: "15px" }}>
               Admin Portal
@@ -94,6 +94,41 @@ const Sidebar: React.FC = () => {
             <p className="fw-bolder fs-6 text-white">
               <span style={{ fontSize: "10px" }}></span>
             </p>
+          )}
+
+        </div> */}
+        {/* Profile section */}
+        <div className="profile-section text-center mb-1">
+          {hovered ? (
+            <div className="d-flex align-items-center justify-content-center gap-2 mt-2">
+              <img
+                src="/AIBEA_logo.jpg"
+                alt="AIBEA Logo"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  flexShrink: 0,
+                }}
+              />
+              <p className="text-warning fw-bold mb-0" style={{ fontSize: "16px" }}>
+                Admin Portal
+              </p>
+            </div>
+          ) : (
+            <div className="d-flex justify-content-center mt-2">
+              <img
+                src="/AIBEA_logo.jpg"
+                alt="AIBEA Logo"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
           )}
 
         </div>
