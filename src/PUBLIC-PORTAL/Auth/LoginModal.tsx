@@ -211,61 +211,71 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
           </Form.Group>
 
           {/* ── Password ── */}
-          <Form.Group className="mb-4">
-            <Form.Label>
-              Password <span className="text-danger">*</span>
-            </Form.Label>
-            <div style={{ position: "relative" }}>
-              <Lock
-                size={18}
-                style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  opacity: 0.45,
-                  zIndex: 5,
-                  pointerEvents: "none",
-                }}
-              />
+         {/* ── Password ── */}
+<Form.Group className="mb-4">
+  <Form.Label>
+    Password <span className="text-danger">*</span>
+  </Form.Label>
 
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={password}
-                onChange={handlePasswordChange}
-                isInvalid={submitted && !!errors.password}
-                disabled={isLoading}
-                style={{ paddingLeft: "38px", paddingRight: "45px" }}
-              />
+  {/* Inner wrapper only contains the input + icons, so 50% centering
+      is never affected by the error text below */}
+  <div style={{ position: "relative" }}>
+    <Lock
+      size={18}
+      style={{
+        position: "absolute",
+        left: "12px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        opacity: 0.45,
+        zIndex: 5,
+        pointerEvents: "none",
+      }}
+    />
 
-              <button
-                type="button"
-                onClick={() => !isLoading && setShowPassword(!showPassword)}
-                disabled={isLoading}
-                style={{
-                  position: "absolute",
-                  right: "12px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  background: "none",
-                  border: "none",
-                  cursor: isLoading ? "not-allowed" : "pointer",
-                  padding: "4px",
-                  opacity: isLoading ? 0.3 : 0.5,
-                  zIndex: 5,
-                }}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+    <Form.Control
+      type={showPassword ? "text" : "password"}
+      placeholder="Enter your password"
+      value={password}
+      onChange={handlePasswordChange}
+      isInvalid={submitted && !!errors.password}
+      disabled={isLoading}
+      style={{
+        paddingLeft: "38px",
+        paddingRight: "45px",
+        ...(submitted && errors.password ? { backgroundImage: "none" } : {}),
+      }}
+    />
 
-              {submitted && errors.password && (
-                <Form.Control.Feedback type="invalid">
-                  {errors.password}
-                </Form.Control.Feedback>
-              )}
-            </div>
-          </Form.Group>
+    <button
+      type="button"
+      onClick={() => !isLoading && setShowPassword(!showPassword)}
+      disabled={isLoading}
+      style={{
+        position: "absolute",
+        right: "12px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        background: "none",
+        border: "none",
+        cursor: isLoading ? "not-allowed" : "pointer",
+        padding: 0,
+        opacity: isLoading ? 0.3 : 0.45,
+        zIndex: 5,
+      }}
+    >
+      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+    </button>
+  </div>
+
+  {/* Error text now lives OUTSIDE the relative wrapper, so it no longer
+      affects the 50% vertical centering of the icons above */}
+  {submitted && errors.password && (
+    <div className="invalid-feedback d-block"  style={{ marginTop: "2px", marginBottom: 0 }}>
+      {errors.password}
+    </div>
+  )}
+</Form.Group>
 
           {/* ── Remember me / Forgot Password ── */}
           <div className="d-flex justify-content-between align-items-center mb-3">
