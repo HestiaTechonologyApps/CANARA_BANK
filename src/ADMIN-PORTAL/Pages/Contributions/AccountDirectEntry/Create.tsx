@@ -42,7 +42,7 @@ const AccountDirectEntryCreate: React.FC = () => {
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
     { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
-    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4 } },
+    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4,min: new Date().toISOString().split("T")[0], } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "status", rules: { type: "select", label: "Status", required: true, colWidth: 4 } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
