@@ -8,8 +8,16 @@
 // 10 rows are visible without an inner scrollbar; Modal.Header padding
 // and title size reduced; export button disabled on the internal
 // KiduServerTable for popup usage (rows-per-page selector kept).
-import React, { useState, useCallback, useEffect } from "react";
+// UPDATED (UI polish): navy/gold themed header, refined loading state,
+// rounded modal corners — no logic changes.
+// UPDATED (full visual refresh): skeleton loading rows, live result-count
+// badge in the header, entrance animation, footer hint bar, and scoped
+// polish for the table/search markup rendered by KiduServerTable.
+// No fetch logic, prop contracts, or existing call sites were changed —
+// every addition below is purely presentational / additive state.
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Modal, Spinner } from "react-bootstrap";
+import { Search, Inbox } from "lucide-react";
 import type { CustomResponse } from "../Types/ApiTypes";
 import HttpService from "../Services/Http.services";
 import KiduServerTable from "./KiduServerTable";
@@ -49,6 +57,14 @@ interface KiduPopupProps<T> {
   serverSidePagination?: KiduServerSideLookupConfig<T>;
 }
 
+const NAVY = "#173a6a";
+const NAVY_SOFT = "#22497f";
+const NAVY_DEEP = "#0f2c52";
+const GOLD = "#f5c542";
+const GOLD_SOFT = "#fde9b0";
+const BORDER = "#e3e8f2";
+const SKELETON_ROWS = 7;
+
 function KiduPopup<T extends Record<string, any>>({
   show,
   handleClose,
@@ -68,6 +84,9 @@ function KiduPopup<T extends Record<string, any>>({
   const [refreshKey, setRefreshKey] = useState(0);
   const [allData, setAllData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
+  // NEW — live count shown as a badge in the header, purely cosmetic.
+  const [resultCount, setResultCount] = useState<number | null>(null);
+  const hasLoadedOnce = useRef(false);
 
   // NEW — mode flag. False for every existing caller.
   const isServerSide = !!serverSidePagination;
@@ -105,6 +124,14 @@ function KiduPopup<T extends Record<string, any>>({
       .finally(() => setLoading(false));
   }, [show, fetchEndpoint, refreshKey, isServerSide]);
 
+  // NEW — reset transient UI state whenever the popup opens fresh
+  useEffect(() => {
+    if (show) {
+      hasLoadedOnce.current = false;
+      setResultCount(null);
+    }
+  }, [show, refreshKey]);
+
   // NEW — Server-side fetch function: calls the paged lookup API directly,
   // server does search + pagination. Used only when serverSidePagination is set.
   const fetchServerData = useCallback(async (params: {
@@ -129,16 +156,23 @@ function KiduPopup<T extends Record<string, any>>({
       if (res?.isSucess && res.value) {
         const rawItems: any[] = Array.isArray(res.value.data) ? res.value.data : [];
         const mapped = rawItems.map(serverSidePagination.mapItem) as T[];
-        return { data: mapped, total: res.value.total ?? mapped.length };
+        const total = res.value.total ?? mapped.length;
+        hasLoadedOnce.current = true;
+        setResultCount(total);
+        return { data: mapped, total };
       }
+      hasLoadedOnce.current = true;
+      setResultCount(0);
       return { data: [], total: 0 };
     } catch (err) {
       console.error("❌ Error fetching server-side lookup data:", err);
+      hasLoadedOnce.current = true;
+      setResultCount(0);
       return { data: [], total: 0 };
     }
   }, [serverSidePagination]);
 
-  // Client-side fetch function for KiduServerTable (UNCHANGED from original)
+  // Client-side fetch function for KiduServerTable (UNCHANGED filter/paginate logic)
   const fetchClientData = useCallback(async (params: {
     pageNumber: number;
     pageSize: number;
@@ -169,7 +203,11 @@ function KiduPopup<T extends Record<string, any>>({
     const startIndex = (params.pageNumber - 1) * params.pageSize;
     const endIndex = startIndex + params.pageSize;
     const paginatedData = filteredData.slice(startIndex, endIndex);
-    
+
+    // NEW — surface the count in the header badge
+    hasLoadedOnce.current = true;
+    setResultCount(filteredData.length);
+
     return { 
       data: paginatedData, 
       total: filteredData.length 
@@ -198,58 +236,203 @@ function KiduPopup<T extends Record<string, any>>({
     setRefreshKey(prev => prev + 1);
   };
 
+  const entityLabel = title.replace("Select ", "").toLowerCase();
+  const showSkeleton = !isServerSide && loading && allData.length === 0;
+
   return (
     <>
+      {/* Scoped polish for the search input + table markup that KiduServerTable
+          renders inside this popup. Generic tag selectors, namespaced under
+          .kidu-popup-shell so nothing outside this modal is affected. */}
+      <style>{`
+        @keyframes kiduPopIn {
+          from { opacity: 0; transform: scale(0.96) translateY(6px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes kiduIconPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(245,197,66,0.35); }
+          50% { box-shadow: 0 0 0 6px rgba(245,197,66,0); }
+        }
+        @keyframes kiduShimmer {
+          0% { background-position: -300px 0; }
+          100% { background-position: 300px 0; }
+        }
+        .kidu-popup-shell .modal-content {
+          animation: kiduPopIn 0.18s ease-out;
+        }
+        .kidu-popup-shell .kidu-popup-icon {
+          animation: kiduIconPulse 2.2s ease-in-out infinite;
+        }
+        .kidu-popup-shell .kidu-popup-body input[type="text"],
+        .kidu-popup-shell .kidu-popup-body input[type="search"] {
+          border-radius: 8px !important;
+          border: 1.5px solid ${BORDER} !important;
+          transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .kidu-popup-shell .kidu-popup-body input[type="text"]:focus,
+        .kidu-popup-shell .kidu-popup-body input[type="search"]:focus {
+          border-color: ${NAVY_SOFT} !important;
+          box-shadow: 0 0 0 3px rgba(34,73,127,0.12) !important;
+          outline: none !important;
+        }
+        .kidu-popup-shell .kidu-popup-body table thead th {
+          background-color: #f4f7fc !important;
+          color: ${NAVY_DEEP} !important;
+          font-weight: 600 !important;
+          font-size: 12.5px !important;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          border-bottom: 1.5px solid ${BORDER} !important;
+        }
+        .kidu-popup-shell .kidu-popup-body table tbody tr {
+          cursor: pointer;
+          transition: background-color 0.12s ease;
+        }
+        .kidu-popup-shell .kidu-popup-body table tbody tr:hover {
+          background-color: #f2f6fd !important;
+        }
+        .kidu-popup-shell .kidu-skeleton-cell {
+          height: 14px;
+          border-radius: 4px;
+          background: linear-gradient(90deg, #eef1f6 25%, #f7f9fc 37%, #eef1f6 63%);
+          background-size: 400px 100%;
+          animation: kiduShimmer 1.3s ease-in-out infinite;
+        }
+      `}</style>
+
       <Modal 
         show={show} 
         onHide={handleModalClose} 
         size="lg" 
         centered 
-        className="head-font"
+        className="head-font kidu-popup-shell"
+        contentClassName="border-0"
+        style={{ ["--bs-modal-border-radius" as any]: "14px" }}
       >
         <Modal.Header 
           closeButton 
+          closeVariant="white"
           style={{ 
-            backgroundColor: "#f8f9fa",
-            borderBottom: "2px solid #173a6a",
-            padding: "8px 16px"
+            background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)`,
+            borderBottom: `3px solid ${GOLD}`,
+            borderTopLeftRadius: "14px",
+            borderTopRightRadius: "14px",
+            padding: "14px 20px",
           }}
         >
-          <Modal.Title className="fs-6 fw-bold" style={{ color: "#173a6a" }}>
-            {title}
-          </Modal.Title>
+          <div className="d-flex align-items-center justify-content-between w-100 pe-2">
+            <Modal.Title
+              className="d-flex align-items-center gap-2 fw-semibold"
+              style={{ color: "#fff", fontSize: "16px" }}
+            >
+              <span
+                className="kidu-popup-icon d-flex align-items-center justify-content-center rounded-circle"
+                style={{ width: 28, height: 28, backgroundColor: "rgba(245,197,66,0.18)" }}
+              >
+                <Search size={14} color={GOLD} />
+              </span>
+              {title}
+            </Modal.Title>
+
+            {resultCount !== null && (
+              <span
+                className="fw-semibold"
+                style={{
+                  fontSize: "11.5px",
+                  color: NAVY_DEEP,
+                  backgroundColor: GOLD_SOFT,
+                  border: `1px solid ${GOLD}`,
+                  borderRadius: "999px",
+                  padding: "3px 10px",
+                  letterSpacing: "0.01em",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {resultCount} {resultCount === 1 ? "result" : "results"}
+              </span>
+            )}
+          </div>
         </Modal.Header>
 
-        <Modal.Body style={{ height: '560px', overflow: 'hidden', padding: 0 }}>
-          {/* NEW — the loading spinner guard only applies to client-side mode's
-              upfront fetch; server-side mode's KiduServerTable manages its own
-              per-page loading state via fetchData, so we skip this gate for it. */}
-          {(!isServerSide && loading && allData.length === 0) ? (
-            <div className="text-center py-5">
-              <Spinner animation="border" /> <span className="ms-2">Loading...</span>
+        <Modal.Body className="kidu-popup-body" style={{ height: '560px', overflow: 'hidden', padding: 0, backgroundColor: "#fbfcfe", display: "flex", flexDirection: "column" }}>
+          {showSkeleton ? (
+            <div style={{ flex: 1, overflow: "hidden", padding: "16px 18px" }}>
+              <div
+                className="rounded-3 overflow-hidden h-100"
+                style={{ border: `1px solid ${BORDER}`, backgroundColor: "#fff", padding: "14px 16px" }}
+              >
+                <div
+                  className="kidu-skeleton-cell mb-4"
+                  style={{ width: "40%", height: "34px", borderRadius: "8px" }}
+                />
+                {Array.from({ length: SKELETON_ROWS }).map((_, i) => (
+                  <div key={i} className="d-flex align-items-center gap-3 mb-3">
+                    {columns.slice(0, 4).map((col, j) => (
+                      <div
+                        key={j}
+                        className="kidu-skeleton-cell"
+                        style={{
+                          flex: j === 0 ? 1.3 : 1,
+                          animationDelay: `${(i * 0.05 + j * 0.03).toFixed(2)}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                ))}
+                <div className="d-flex align-items-center justify-content-center gap-2 mt-2" style={{ color: "#8a94a6", fontSize: "12.5px", fontWeight: 500 }}>
+                  <Spinner animation="border" size="sm" style={{ color: NAVY, width: "0.9rem", height: "0.9rem" }} />
+                  Loading {entityLabel}...
+                </div>
+              </div>
             </div>
           ) : (
-            <div key={refreshKey} style={{ height: '100%', overflow: 'auto', padding: '15px' }}>
-              <KiduServerTable
-                columns={columns.map(col => ({ 
-                  key: String(col.key), 
-                  label: col.label,
-                  type: col.type,
-                  render: col.render,
-                }))}
-                idKey={idKey}
-                fetchData={fetchData}
-                showActions={false}
-                showSearch={true}
-                showTitle={false}
-                showKiduPopupButton={showAddButton && !!AddModalComponent} // Only show if both enabled
-                addRoute={showAddButton && AddModalComponent ? "#" : undefined}
-                addButtonLabel={title.replace("Select ", "")}
-                onRowClick={handleRowClick}
-                onAddClick={() => setShowAddModal(true)}
-                rowsPerPage={serverSidePagination?.pageSize ?? rowsPerPage}
-                showNavbarExportButtons={false}
-              />
+            <div key={refreshKey} style={{ flex: 1, overflow: 'auto', padding: '16px 18px' }}>
+              <div
+                className="rounded-3 overflow-hidden h-100"
+                style={{ border: `1px solid ${BORDER}`, backgroundColor: "#fff" }}
+              >
+                <KiduServerTable
+                  columns={columns.map(col => ({ 
+                    key: String(col.key), 
+                    label: col.label,
+                    type: col.type,
+                    render: col.render,
+                  }))}
+                  idKey={idKey}
+                  fetchData={fetchData}
+                  showActions={false}
+                  showSearch={true}
+                  showTitle={false}
+                  showKiduPopupButton={showAddButton && !!AddModalComponent} // Only show if both enabled
+                  addRoute={showAddButton && AddModalComponent ? "#" : undefined}
+                  addButtonLabel={title.replace("Select ", "")}
+                  onRowClick={handleRowClick}
+                  onAddClick={() => setShowAddModal(true)}
+                  rowsPerPage={serverSidePagination?.pageSize ?? rowsPerPage}
+                  showNavbarExportButtons={false}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* NEW — quiet footer hint bar, only shown once we know there's something (or nothing) to say */}
+          {!showSkeleton && (
+            <div
+              className="d-flex align-items-center justify-content-between"
+              style={{
+                borderTop: `1px solid ${BORDER}`,
+                padding: "8px 20px",
+                fontSize: "11.5px",
+                color: "#8a94a6",
+                backgroundColor: "#fff",
+                flexShrink: 0,
+              }}
+            >
+              <span className="d-flex align-items-center gap-1">
+                <Inbox size={12} color="#adb5c4" />
+                Click a row to select
+              </span>
+              <span>Esc to close</span>
             </div>
           )}
         </Modal.Body>
