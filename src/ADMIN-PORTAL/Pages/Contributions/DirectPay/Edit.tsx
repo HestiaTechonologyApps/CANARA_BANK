@@ -15,7 +15,7 @@ const DirectPaymentEdit: React.FC = () => {
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "paymentDate", rules: { type: "date", label: "Payment Date", required: true, colWidth: 4 } },
+    { name: "paymentDate", rules: { type: "date", label: "Payment Date", required: true, colWidth: 4 ,min: new Date().toISOString().split("T")[0],} },
     { name: "paymentMode", rules: { type: "select", label: "Payment Mode", required: true, colWidth: 4 } },
     { name: "referenceNo", rules: { type: "text", label: "Reference No", required: true, colWidth: 4 } },
     { name: "remarks", rules: { type: "textarea", label: "Remarks", colWidth: 6 } },
