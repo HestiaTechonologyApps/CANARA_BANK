@@ -14,5 +14,14 @@ export interface DirectPayment {
   createdDate: Date | string;
   createdDatestring: string;
   isDeleted: boolean;
+  isApproved: boolean;
+  approvedBy?: string;
+  approvedDate?: Date | string;
+  approvedDateString?: string;
   auditLogs?: AuditTrails[];
+}
+
+export interface ApproveDirectPaymentParams {
+  approve: boolean;
+  currentUserId: number;
 }

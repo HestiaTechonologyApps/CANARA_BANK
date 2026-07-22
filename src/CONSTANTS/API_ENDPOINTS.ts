@@ -131,6 +131,7 @@ ACCOUNT_DIRECT_ENTRY: {
     CREATE: `${API_BASE_URL}/DirectPayment`,
     UPDATE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DirectPayment/${id}`,
+    UPDATE_BY_APPROVE: (id: number) => `${API_BASE_URL}/DirectPayment/approve/${id}`
   },
    MEMBER: {
     GET_ALL: `${API_BASE_URL}/Member`,

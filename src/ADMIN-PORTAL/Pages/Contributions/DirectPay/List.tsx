@@ -24,6 +24,7 @@ const DirectPaymentList: React.FC = () => {
         { key: "paymentDatestring", label: "Payment Date", enableSorting: true, type: "text" },
         { key: "paymentMode", label: "Mode", enableSorting: true, type: "text" },
         { key: "referenceNo", label: "Reference No", enableSorting: true, type: "text" },
+        { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
       ]}
 
       filterColumns={[

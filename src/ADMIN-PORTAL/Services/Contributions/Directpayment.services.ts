@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { DirectPayment } from "../../Types/Contributions/Directpayment.types";
+import type { ApproveDirectPaymentParams, DirectPayment } from "../../Types/Contributions/Directpayment.types";
 
 
 const DirectPaymentService = {
@@ -51,7 +51,16 @@ const DirectPaymentService = {
       API_ENDPOINTS.DIRECT_PAY.DELETE(id),
       "DELETE"
     );
-  }
+  },
+  
+   async approveDirectPayment(
+    id: number,
+    params: ApproveDirectPaymentParams
+  ): Promise<DirectPayment> {
+    const url = `${API_ENDPOINTS.DIRECT_PAY.UPDATE_BY_APPROVE(id)}?approve=${params.approve}&currentUserId=${params.currentUserId}`;
+    const response = await HttpService.callApi<CustomResponse<DirectPayment>>(url, "PUT");
+    return response.value;
+  },
 };
 
 export default DirectPaymentService;
