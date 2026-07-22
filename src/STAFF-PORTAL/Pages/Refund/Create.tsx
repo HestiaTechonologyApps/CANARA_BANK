@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { AttachmentsStagingHandle } from "../../../Components/KiduCreateAttachment";
 import type { State } from "../../../ADMIN-PORTAL/Types/Settings/States.types";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
@@ -9,28 +9,14 @@ import RefundContributionService from "../../../ADMIN-PORTAL/Services/Claims/Ref
 import KiduCreate from "../../../ADMIN-PORTAL/Components/KiduCreate";
 import AttachmentsStaging from "../../../Components/KiduCreateAttachment";
 import StatePopup from "../../../ADMIN-PORTAL/Pages/Settings/State/StatePopup";
-import MemberPopup from "../../../ADMIN-PORTAL/Pages/Contributions/Member/MemberPopup";
-import DesignationPopup from "../../../ADMIN-PORTAL/Pages/Settings/Designation/DesignationPopup";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
-// import type { Field } from "../../../Components/KiduCreate";
-// import KiduCreate from "../../../Components/KiduCreate";
-// import RefundContributionService from "../../../Services/Claims/Refund.services";
-// import type { State } from "../../../Types/Settings/States.types";
-// import type { Designation } from "../../../Types/Settings/Designation.types";
-// import type { Member } from "../../../Types/Contributions/Member.types";
-// import StatePopup from "../../Settings/State/StatePopup";
-// import DesignationPopup from "../../Settings/Designation/DesignationPopup";
-// import MemberPopup from "../../Contributions/Member/MemberPopup";
-// import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
-// import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-// import type { AttachmentsStagingHandle } from "../../../../Components/KiduCreateAttachment";
-// import AttachmentsStaging from "../../../../Components/KiduCreateAttachment";
+import MemberService from "../../../ADMIN-PORTAL/Services/Contributions/Member.services";
+import DesignationService from "../../../ADMIN-PORTAL/Services/Settings/Designation.services";
+import BranchService from "../../../ADMIN-PORTAL/Services/Settings/Branch.services";
 
 const MemberRefundContributionCreate: React.FC = () => {
   const attachmentsRef = useRef<AttachmentsStagingHandle>(null);
   const [showStatePopup, setShowStatePopup] = useState(false);
-  const [showMemberPopup, setShowMemberPopup] = useState(false);
-  const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
   const [selectedState, setSelectedState] = useState<State | null>(null);
@@ -38,21 +24,55 @@ const MemberRefundContributionCreate: React.FC = () => {
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
+  const [presetValues, setPresetValues] = useState<Record<string, any>>({});
+
+  // Auto-fill Member (from session), Designation and DP Code (from member's own record)
+  useEffect(() => {
+    const loadOwnDetails = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) return;
+      const user = JSON.parse(storedUser);
+
+      setSelectedMember({
+        memberId: user.memberId,
+        name: user.userName,
+      } as Member);
+
+      const memberRes = await MemberService.getMemberById(Number(user.memberId));
+      const member = memberRes.value;
+      if (!member) return;
+
+      if (member.designationId) {
+        const designation = (await DesignationService.getDesignationById(member.designationId)).value;
+        setSelectedDesignation(designation);
+      }
+
+      let dpCode = "";
+      if (member.branchId) {
+        const branchRes = await BranchService.getBranchById(member.branchId);
+        const branch = branchRes?.value as any;
+        dpCode = branch?.dpCode || branch?.dpcode || "";
+      }
+
+      setPresetValues({ dpcodeOfTime: dpCode });
+    };
+
+    loadOwnDetails();
+  }, []);
+
   const handleReset = () => {
     setSelectedState(null);
-    setSelectedMember(null);
-    setSelectedDesignation(null);
     setSelectedYearMaster(null);
     attachmentsRef.current?.clear();
   };
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
-    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4, disabled: true } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
     { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
-    { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
+    { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4, disabled: true } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
@@ -106,6 +126,7 @@ const created = await RefundContributionService.createRefundContribution(
     );
   }
 };
+
 const popupHandlers = {
   stateId: {
     value: selectedState?.name || "",
@@ -115,12 +136,12 @@ const popupHandlers = {
   memberId: {
     value: selectedMember?.name || "",
     actualValue: selectedMember?.memberId,
-    onOpen: () => setShowMemberPopup(true),
+    onOpen: () => {}, // no-op, field is disabled
   },
   designationId: {
     value: selectedDesignation?.name || "",
     actualValue: selectedDesignation?.designationId,
-    onOpen: () => setShowDesignationPopup(true),
+    onOpen: () => {}, // no-op, field is disabled
   },
   yearOF: {
     value: selectedYearMaster
@@ -140,23 +161,37 @@ const popupHandlers = {
 
   return (
     <>
-      <KiduCreate
-        title="Create Refund Contribution"
-        fields={fields}
-        onSubmit={handleSubmit}
-        submitButtonText="Create Refund"
-        showResetButton
-        successMessage="Refund created successfully!"
-        errorMessage="Failed to create refund. Please try again."
-        popupHandlers={popupHandlers}
-        options={{ type: typeOptions }}
-       // navigateOnSuccess="/dashboard/claims/refundcontribution-list"
-        navigateOnSuccess="/staff-portal/refund-list"
-        themeColor="#1B3763"
-        onReset={handleReset}
-      >
-         <AttachmentsStaging ref={attachmentsRef} />
-         </KiduCreate>
+      <style>{`
+        .hide-search-btn input:disabled ~ button {
+          display: none !important;
+        }
+        .hide-search-btn input:disabled {
+          border-radius: 4px !important;
+          background-color: #f5f5f5 !important;
+          cursor: not-allowed;
+        }
+      `}</style>
+
+      <div className="hide-search-btn">
+        <KiduCreate
+          title="Create Refund Contribution"
+          fields={fields}
+          onSubmit={handleSubmit}
+          submitButtonText="Create Refund"
+          showResetButton
+          successMessage="Refund created successfully!"
+          errorMessage="Failed to create refund. Please try again."
+          popupHandlers={popupHandlers}
+          options={{ type: typeOptions }}
+          navigateOnSuccess="/staff-portal/refund-list"
+          themeColor="#1B3763"
+          onReset={handleReset}
+          presetValues={presetValues}
+        >
+           <AttachmentsStaging ref={attachmentsRef} />
+        </KiduCreate>
+      </div>
+
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
@@ -164,20 +199,6 @@ const popupHandlers = {
           setSelectedState(s);
           setShowStatePopup(false);
         }} />
-      <MemberPopup
-        show={showMemberPopup}
-        handleClose={() => setShowMemberPopup(false)}
-        onSelect={(m) => {
-          setSelectedMember(m);
-          setShowMemberPopup(false);
-        }} />
-      <DesignationPopup
-        show={showDesignationPopup}
-        handleClose={() => setShowDesignationPopup(false)}
-        onSelect={(d) => {
-          setSelectedDesignation(d);
-          setShowDesignationPopup(false);
-        }}/>
      <YearMasterPopup
        show={showYearMasterPopup}
        handleClose={() => setShowYearMasterPopup(false)}

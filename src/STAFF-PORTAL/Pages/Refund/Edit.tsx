@@ -15,22 +15,6 @@ import StatePopup from "../../../ADMIN-PORTAL/Pages/Settings/State/StatePopup";
 import MemberPopup from "../../../ADMIN-PORTAL/Pages/Contributions/Member/MemberPopup";
 import DesignationPopup from "../../../ADMIN-PORTAL/Pages/Settings/Designation/DesignationPopup";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
-// import type { Field } from "../../../Components/KiduEdit";
-// import KiduEdit from "../../../Components/KiduEdit";
-// import RefundContributionService from "../../../Services/Claims/Refund.services";
-// import type { RefundContribution } from "../../../Types/Claims/Refund.types";
-// import type { State } from "../../../Types/Settings/States.types";
-// import type { Designation } from "../../../Types/Settings/Designation.types";
-// import type { Member } from "../../../Types/Contributions/Member.types";
-// import StatePopup from "../../Settings/State/StatePopup";
-// import DesignationPopup from "../../Settings/Designation/DesignationPopup";
-// import MemberPopup from "../../Contributions/Member/MemberPopup";
-// import MemberService from "../../../Services/Contributions/Member.services";
-// import StateService from "../../../Services/Settings/State.services";
-// import DesignationService from "../../../Services/Settings/Designation.services";
-// import YearMasterService from "../../../Services/Settings/YearMaster.services";
-// import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
-// import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 
 const MemberRefundContributionEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -50,11 +34,11 @@ const MemberRefundContributionEdit: React.FC = () => {
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
-    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
-    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+    { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4, disabled: true } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
     { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
-    { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
+    { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4, disabled: true } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
@@ -144,7 +128,7 @@ const MemberRefundContributionEdit: React.FC = () => {
     await RefundContributionService.updateRefundContribution(Number(id), payload);
   };
 
-  const popupHandlers = {
+const popupHandlers = {
     stateId: {
       value: selectedState?.name || "",
       actualValue: selectedState?.stateId,
@@ -153,12 +137,12 @@ const MemberRefundContributionEdit: React.FC = () => {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(true),
+      onOpen: () => {}, // no-op, field is disabled
     },
     designationId: {
       value: selectedDesignation?.name || "",
       actualValue: selectedDesignation?.designationId,
-      onOpen: () => setShowDesignationPopup(true),
+      onOpen: () => {}, // no-op, field is disabled
     },
      yearOF: {
     value: selectedYearMaster
@@ -168,42 +152,46 @@ const MemberRefundContributionEdit: React.FC = () => {
     onOpen: () => setShowYearMasterPopup(true),
   },
   };
-  return (
+
+ return (
     <>
-      <KiduEdit
-        title="Edit Refund Contribution"
-        fields={fields}
-        onFetch={handleFetch}
-        onUpdate={handleUpdate}
-        submitButtonText="Update Refund"
-        showResetButton
-        paramName="refundContributionId"
-        successMessage="Refund updated successfully!"
-        errorMessage="Failed to update refund. Please try again."
-        loadingText="Loading Refund Contribution..."
-        //navigateBackPath="/dashboard/claims/refundcontribution-list"
-        navigateBackPath="/staff-portal/refund-list"
-        auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
-        popupHandlers={popupHandlers}
-        options={{ type: typeOptions }}
-        themeColor="#1B3763"
-        attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
-        onReset={handleReset}
-      />
+      <style>{`
+        .hide-search-btn input:disabled ~ button {
+          display: none !important;
+        }
+        .hide-search-btn input:disabled {
+          border-radius: 4px !important;
+          background-color: #f5f5f5 !important;
+          cursor: not-allowed;
+        }
+      `}</style>
+
+      <div className="hide-search-btn">
+        <KiduEdit
+          title="Edit Refund Contribution"
+          fields={fields}
+          onFetch={handleFetch}
+          onUpdate={handleUpdate}
+          submitButtonText="Update Refund"
+          showResetButton
+          paramName="refundContributionId"
+          successMessage="Refund updated successfully!"
+          errorMessage="Failed to update refund. Please try again."
+          loadingText="Loading Refund Contribution..."
+          navigateBackPath="/staff-portal/refund-list"
+          auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
+          popupHandlers={popupHandlers}
+          options={{ type: typeOptions }}
+          themeColor="#1B3763"
+          attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
+          onReset={handleReset}
+        />
+      </div>
+
       <StatePopup 
        show={showStatePopup} 
        handleClose={() => setShowStatePopup(false)} 
        onSelect={setSelectedState} 
-       />
-      <MemberPopup 
-       show={showMemberPopup} 
-       handleClose={() => setShowMemberPopup(false)} 
-       onSelect={setSelectedMember} 
-       />
-      <DesignationPopup 
-       show={showDesignationPopup} 
-       handleClose={() => setShowDesignationPopup(false)} 
-       onSelect={setSelectedDesignation} 
        />
         <YearMasterPopup
        show={showYearMasterPopup}

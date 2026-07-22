@@ -64,6 +64,7 @@ export interface KiduCreateProps {
   themeColor?: string;
   fieldChangeHandlers?: Record<string, (value: string, setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>) => void>;
   onReset?: () => void;
+  presetValues?: Record<string, any>;
 }
 // ==================== COMPONENT ====================
 const KiduCreate: React.FC<KiduCreateProps> = ({
@@ -85,6 +86,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   themeColor = "#882626ff",
   fieldChangeHandlers = {},
   onReset,
+  presetValues = {},
 }) => {
   const navigate = useNavigate();
 
@@ -134,6 +136,14 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
       }
     };
   }, [previewUrl]);
+
+  // Merge externally-fetched preset values (e.g. auto-filled read-only fields) into formData
+  useEffect(() => {
+    if (presetValues && Object.keys(presetValues).length > 0) {
+      setFormData(prev => ({ ...prev, ...presetValues }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presetValues]);
 
   // ==================== HANDLERS ====================
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
