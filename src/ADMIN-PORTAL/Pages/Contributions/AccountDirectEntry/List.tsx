@@ -5,7 +5,17 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const AccountsDirectEntryList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={AccountDirectEntryService.getAllAccountDirectEntries}
+     // fetchService={AccountDirectEntryService.getAllAccountDirectEntries}
+     paginatedFetchService={async(params) => {
+        return AccountDirectEntryService.getPagedAccountDirectEntries({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+      }}
+
 
       columns={[
         { key: "accountsDirectEntryID", label: "Account Direct Entry ID", enableSorting: true, type: "text" },
