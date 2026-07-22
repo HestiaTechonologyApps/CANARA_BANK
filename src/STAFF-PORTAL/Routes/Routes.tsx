@@ -12,6 +12,10 @@ import StaffAccountDirectEntryEdit from '../Pages/AccountDirectEntry/Edit';
 import StaffEdit from '../Pages/StaffEdit';
 import StaffAccountDirectEntryView from '../Pages/AccountDirectEntry/View';
 import Claims from '../../PUBLIC-PORTAL/Pages/Claims';
+import RefundContributionByMemberList from '../Pages/Refund/List';
+import MemberRefundContributionCreate from '../Pages/Refund/Create';
+import MemberRefundContributionEdit from '../Pages/Refund/Edit';
+import MemberRefundContributionView from '../Pages/Refund/View';
 
 export const staffRoutes = (
  <Route
@@ -32,7 +36,17 @@ export const staffRoutes = (
     <Route path="settings" element={<AccountSettings />} />
     <Route path="history" element={<ShowContribution />} />
     <Route path="claims" element={<Claims />} />
+    <Route path="refund-list" element={<RefundContributionByMemberList />} />
+    <Route path="refund-list/MemberRefundContribution-create" element={<MemberRefundContributionCreate/>}/>
+    <Route path="refund-list/MemberRefundContribution-edit/:refundContributionId" element={<MemberRefundContributionEdit/>}/>
+    <Route path="refund-list/MemberRefundContribution-view/:refundContributionId" element={<MemberRefundContributionView/>}/>
   </Route>
 );
+    {/* <Route path="refund-list" element={<RefundContributionByMemberList />} />
+    <Route path="refund-list/MemberRefundContribution-create" element={<MemberRefundContributionCreate/>}/>
+    <Route path="refund-list/MemberRefundContribution-edit" element={<MemberRefundContributionEdit/>}/>
+    <Route path="refund-list/MemberRefundContribution-view" element={<MemberRefundContributionView/>}/>
+  </Route>
+); */}
 
 export const getStaffRoutes = () => staffRoutes;

@@ -51,6 +51,16 @@ async deleteRefundContribution(id: number): Promise<void> {
     );
   },
 
+   async getRefundContributionByMemberId(
+    memberId: number
+  ): Promise<CustomResponse<RefundContribution[]>> {
+    const response = await HttpService.callApi<CustomResponse<RefundContribution[]>>(
+      API_ENDPOINTS.REFUND_CONTRIBUTION.GET_BY_MEMBER_ID(memberId),
+      "GET"
+    );
+    return response;
+  },
+
   async getPagedRefundContributions(params: {
     pageNumber: number;
     pageSize: number;
