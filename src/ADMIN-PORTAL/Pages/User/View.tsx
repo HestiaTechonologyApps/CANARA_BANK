@@ -2,7 +2,7 @@ import React from "react";
 import KiduView from "../../Components/KiduView";
 import type { ViewField } from "../../Components/KiduView";
 import UserService from "../../Services/Settings/User.services";
-import defaultUserImage from "../../Assets/Images/profile.jpg";
+//import defaultUserImage from "../../Assets/Images/profile.jpg";
 
 const UserView: React.FC = () => {
   const fields: ViewField[] = [
@@ -49,7 +49,7 @@ const handleFetch = async (userId: string) => {
       editRoute="/dashboard/settings/user-edit"
       listRoute="/dashboard/settings/user-list"
       paramName="userId"
-      imageConfig={{ fieldName: "profileImage", defaultImage: defaultUserImage, showNameField: "userName", showIdField: "userId", isCircle: true, }}
+      //imageConfig={{ fieldName: "profileImage", defaultImage: defaultUserImage, showNameField: "userName", showIdField: "userId", isCircle: true, }}
       auditLogConfig={{ tableName: "User", recordIdField: "userId", }}
       themeColor="#1B3763"
       loadingText="Loading user details..."
