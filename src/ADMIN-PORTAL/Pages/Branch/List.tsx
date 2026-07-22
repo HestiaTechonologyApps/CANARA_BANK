@@ -5,7 +5,19 @@ import KiduServerTableList from "../../../Components/KiduServerTableList";
 const BranchList: React.FC = () => {
   return (
     <KiduServerTableList
-      fetchService={BranchService.getAllBranches}
+      //fetchService={BranchService.getAllBranches}
+      paginatedFetchService={async(params) => {
+        return BranchService.getPagedBranches({
+          pageNumber: params.pageNumber,
+          pageSize: params.pageSize,
+          searchTerm: params.searchTerm,
+          sortBy: params.sortBy,
+          sortOrder: params.sortOrder,
+        });
+      }}
+
+      
+      
 
       columns={[
         { key: "branchId", label: "Branch ID", enableSorting: true, type: "text" },
