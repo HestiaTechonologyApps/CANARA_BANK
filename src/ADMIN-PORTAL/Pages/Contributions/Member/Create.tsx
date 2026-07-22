@@ -25,12 +25,14 @@ const MemberCreate: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
   const [_isUploading, setIsUploading] = useState(false);
+  const [nomineeValue, setNomineeValue] = useState("");
 
   const handleReset = () => {
     setSelectedBranch(null);
     setSelectedDesignation(null);
     setSelectedCategory(null);
     setSelectedStatus(null);
+    setNomineeValue("");
   }
 
  const today = new Date().toISOString().split("T")[0]; 
@@ -48,8 +50,8 @@ const fields: Field[] = [
   { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
   { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
   { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },      
-  { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4 } },
-  { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4 } },
+  { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4, disabled: !nomineeValue.trim()  } },
+  { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4, disabled: !nomineeValue.trim()} },
   { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
   { name: "totalRefund", rules: { type: "number", label: "Total Refund", placeholder: "0", colWidth: 4 } },
 ];
@@ -160,6 +162,14 @@ const fields: Field[] = [
         popupHandlers={popupHandlers}
         options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions,}}
         onReset={handleReset}
+        fieldChangeHandlers={{
+          nominee: (value, setFormData) => {
+            setNomineeValue(value);
+            if (!value.trim()) {
+              setFormData(prev => ({ ...prev, nomineeRelation: "", nomineeIDentity: "" }));
+            }
+          },
+        }}
       />
       <BranchPopup 
         show={showBranchPopup} 

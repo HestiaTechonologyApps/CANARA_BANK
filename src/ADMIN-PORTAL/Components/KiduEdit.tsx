@@ -80,7 +80,7 @@ export interface KiduEditProps {
   paramName?: string;
   navigateBackPath?: string;
   loadingText?: string;
-  fieldChangeHandlers?: Record<string, (value: string) => void>;
+  fieldChangeHandlers?: Record<string, (value: string, setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>) => void>;
   onReset?: () => void;
 }
 
@@ -295,7 +295,7 @@ console.log("RAW DATE VALUES:", {
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-fieldChangeHandlers?.[name]?.(updatedValue);
+fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -515,6 +515,8 @@ fieldChangeHandlers?.[name]?.(updatedValue);
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
+            disabled={rules.disabled}
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
           >
             <option value="">Select {rules.label}</option>
             {fieldOptions.map((opt: any, idx: number) => {

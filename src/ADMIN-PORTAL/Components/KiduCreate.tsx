@@ -62,7 +62,7 @@ export interface KiduCreateProps {
   navigateDelay?: number;
   imageConfig?: ImageConfig;
   themeColor?: string;
-  fieldChangeHandlers?: Record<string, (value: string) => void>;
+  fieldChangeHandlers?: Record<string, (value: string, setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>) => void>;
   onReset?: () => void;
 }
 // ==================== COMPONENT ====================
@@ -172,7 +172,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-fieldChangeHandlers?.[name]?.(updatedValue);
+fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
