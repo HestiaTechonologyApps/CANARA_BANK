@@ -15,6 +15,12 @@ const AccountsDirectEntryList: React.FC = () => {
           sortOrder: params.sortOrder,
         });
       }}
+      transformData={(data) =>
+        data.map((item) => ({
+          ...item,
+          _disableEdit: item.isApproved === true,
+        }))
+      }
 
 
       columns={[

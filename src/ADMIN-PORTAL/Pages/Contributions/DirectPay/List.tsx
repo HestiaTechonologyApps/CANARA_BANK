@@ -16,6 +16,12 @@ const DirectPaymentList: React.FC = () => {
             : "",
         }));
       }}
+      transformData={(data) =>
+        data.map((item) => ({
+          ...item,
+          _disableEdit: item.isApproved === true,
+        }))
+      }
 
       columns={[
         { key: "directPaymentId", label: "Direct payment ID", enableSorting: true, type: "text" },
