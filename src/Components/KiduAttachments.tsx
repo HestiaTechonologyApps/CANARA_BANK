@@ -79,6 +79,17 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
 
         return `${day} ${month} ${year}, ${hours}:${minutes} ${ampm}`;
     };
+    const handleDownloadSelected = () => {
+        if (!selectedFile) return;
+        const url = URL.createObjectURL(selectedFile);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = selectedFile.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
     const handleUpload = async () => {
         if (!selectedFile) {
@@ -433,7 +444,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
                         )}
                     </div>
 
-                    {selectedFile && (
+                    {/* {selectedFile && (
                         <div className="mt-3 p-2 bg-light rounded border">
                             <div className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center gap-2">
@@ -454,6 +465,43 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
                                 >
                                     <X size={14} />
                                 </Button>
+                            </div>
+                        </div>
+                    )} */}
+                    {selectedFile && (
+                        <div className="mt-3 p-2 bg-light rounded border">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className="d-flex align-items-center gap-2">
+                                    {getFileIcon(selectedFile.name)}
+                                    <div>
+                                        <p className="mb-0 fw-medium" style={{ fontSize: '0.9rem' }}>
+                                            {selectedFile.name}
+                                        </p>
+                                        <small className="text-muted">{formatFileSize(selectedFile.size)}</small>
+                                    </div>
+                                </div>
+                                <div className="d-flex gap-1">
+                                    <Button
+                                        variant="outline-primary"
+                                        size="sm"
+                                        onClick={handleDownloadSelected}
+                                        className="d-flex align-items-center justify-content-center"
+                                        style={{ width: '28px', height: '28px', padding: 0 }}
+                                        title="Download"
+                                    >
+                                        <Download size={14} />
+                                    </Button>
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm"
+                                        onClick={() => setSelectedFile(null)}
+                                        className="d-flex align-items-center justify-content-center"
+                                        style={{ width: '28px', height: '28px', padding: 0 }}
+                                        title="Remove"
+                                    >
+                                        <X size={14} />
+                                        </Button>
+                                </div>
                             </div>
                         </div>
                     )}
