@@ -907,6 +907,17 @@ const MasterPanel: React.FC<{
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+    const handleDeleteButtonClick = () => {
+    if (master.isApproved) {
+      showToast(
+        "Cannot Delete",
+        "This contribution has already been approved and can no longer be deleted."
+      );
+      return;
+    }
+    setDeleteModalOpen(true);
+  };
+
   const [approvedByName, setApprovedByName] = useState<string>("—");
   useEffect(() => {
     if (!master?.approvedBy) { setApprovedByName("—"); return; }
@@ -996,7 +1007,8 @@ const MasterPanel: React.FC<{
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <button
                   className="delete-master-btn"
-                  onClick={() => setDeleteModalOpen(true)}
+                  // onClick={() => setDeleteModalOpen(true)}
+                  onClick={handleDeleteButtonClick}
                   style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
                   🗑️ Delete
                 </button>
