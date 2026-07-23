@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
@@ -15,8 +18,17 @@ import DesignationService from "../../../Services/Settings/Designation.services"
 import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
+import AuthService from "../../../../Services/Auth.services";
+
+const THEME_COLOR = "#1B3763";
 
 const RefundContributionEdit: React.FC = () => {
+  const { refundContributionId } = useParams();
+
+  const [isApproving, setIsApproving] = useState(false);
+  const [isRejecting, setIsRejecting] = useState(false);
+  const [isApproved, setIsApproved] = useState<boolean>(false);
+
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
@@ -55,8 +67,13 @@ const RefundContributionEdit: React.FC = () => {
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
- const handleFetch = async (id: string) => {
+//  const handleFetch = async (id: string) => {
+//   const response = await RefundContributionService.getRefundContributionById(Number(id));
+//   const refund = response.value;
+//   if (!refund) return response;
+const handleFetch = async (id: string) => {
   const response = await RefundContributionService.getRefundContributionById(Number(id));
+  console.log("DEBUG - refund response:", response.value);
   const refund = response.value;
   if (!refund) return response;
 
@@ -85,6 +102,8 @@ const RefundContributionEdit: React.FC = () => {
     setInitialYearMaster(year); 
   }
 
+setIsApproved(refund.isApproved);
+
   return {
     ...response,
     value: {
@@ -93,6 +112,93 @@ const RefundContributionEdit: React.FC = () => {
     },
   };
 };
+
+const getCurrentUserId = (): number => {
+  const user = AuthService.getCurrentUser();
+  if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+  return user.userId;
+};
+
+const handleApprove = async () => {
+  if (!refundContributionId) return;
+
+  const result = await Swal.fire({
+    title: "Approve Refund?",
+    text: "Are you sure you want to approve this refund contribution?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: THEME_COLOR,
+    confirmButtonText: "Yes, Approve",
+  });
+
+   if (!result.isConfirmed) return;
+
+  setIsApproving(true);
+  try {
+    const currentUserId = getCurrentUserId();
+    await RefundContributionService.approveRefundContribution(
+      Number(refundContributionId),
+      { approve: true, currentUserId }
+    );
+    setIsApproved(true);
+    await Swal.fire({
+      icon: "success",
+      title: "Approved!",
+      text: "Refund has been approved successfully.",
+      confirmButtonColor: THEME_COLOR,
+    });
+     } catch (err: any) {
+    await Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: err.message || "Failed to approve refund.",
+      confirmButtonColor: THEME_COLOR,
+    });
+  } finally {
+    setIsApproving(false);
+  }
+};
+
+const handleReject = async () => {
+  if (!refundContributionId) return;
+
+  const result = await Swal.fire({
+    title: "Reject Refund?",
+    text: "Are you sure you want to reject this refund contribution?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#dc3545",
+    confirmButtonText: "Yes, Reject",
+  });
+
+  if (!result.isConfirmed) return;
+
+  setIsRejecting(true);
+  try {
+    const currentUserId = getCurrentUserId();
+    await RefundContributionService.approveRefundContribution(
+      Number(refundContributionId),
+      { approve: false, currentUserId }
+    );
+    setIsApproved(true);
+    await Swal.fire({
+      icon: "success",
+      title: "Rejected!",
+      text: "Refund has been rejected successfully.",
+      confirmButtonColor: THEME_COLOR,
+    });
+    } catch (err: any) {
+    await Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: err.message || "Failed to reject refund.",
+      confirmButtonColor: THEME_COLOR,
+    });
+  } finally {
+    setIsRejecting(false);
+  }
+};
+
  const handleReset = () => {    
     setSelectedState(initialState);
     setSelectedMember(initialMember);
@@ -152,12 +258,34 @@ const RefundContributionEdit: React.FC = () => {
     onOpen: () => setShowYearMasterPopup(true),
   },
   };
-  return (
+   return (
     <>
+      <div className="d-flex justify-content-end gap-2 px-3 pt-3">
+        <Button
+          onClick={handleApprove}
+          disabled={isApproving || isRejecting || isApproved}
+          style={{
+            backgroundColor: isApproved ? "#6c757d" : THEME_COLOR,
+            border: "none",
+            cursor: isApproved ? "not-allowed" : "pointer",
+          }}
+        >
+          {isApproving ? "Approving..." : "Approve"}
+        </Button>
+        <Button
+          onClick={handleReject}
+           disabled={isApproving || isRejecting || isApproved}
+          variant={isApproved ? "secondary" : "danger"}
+          style={{ cursor: isApproved ? "not-allowed" : "pointer" }}
+        >
+          {isRejecting ? "Rejecting..." : "Reject"}
+        </Button>
+      </div>
+
       <KiduEdit
         title="Edit Refund Contribution"
         fields={fields}
-        onFetch={handleFetch}
+         onFetch={handleFetch}
         onUpdate={handleUpdate}
         submitButtonText="Update Refund"
         showResetButton
@@ -173,7 +301,7 @@ const RefundContributionEdit: React.FC = () => {
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
       />
-      <StatePopup 
+      <StatePopup
        show={showStatePopup} 
        handleClose={() => setShowStatePopup(false)} 
        onSelect={setSelectedState} 

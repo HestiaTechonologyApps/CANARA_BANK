@@ -14,6 +14,13 @@ const RefundContributionList: React.FC = () => {
           sortOrder: params.sortOrder,
         });
       }}
+        transformData={(data) => {
+        console.log("DEBUG - first row:", data[0]);
+        return data.map((item: any) => ({
+          ...item,
+          _disableEdit: item.isApproved === true,
+        }));
+      }}
 
       columns={[
         { key: "refundContributionId", label: "Refund ID", enableSorting: true, type: "text" },
@@ -24,6 +31,7 @@ const RefundContributionList: React.FC = () => {
         { key: "refundNO", label: "Refund No", enableSorting: true, type: "text" },
         { key: "amount", label: "Amount", enableSorting: true, type: "text" },
         { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+        { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
       ]}
 
       filterColumns={[
@@ -35,6 +43,7 @@ const RefundContributionList: React.FC = () => {
         { key: "refundNO", label: "Refund No", type: "text" },
         { key: "amount", label: "Amount", type: "text" },
         { key: "yearName", label: "Year", type: "text" }, 
+        { key: "isApproved", label: "Approved", type: "text" },
       ]}
       
       idKey="refundContributionId"

@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { RefundContribution } from "../../Types/Claims/Refund.types";
+import type { ApproveRefundContributionParams, RefundContribution } from "../../Types/Claims/Refund.types";
 
 
 const RefundContributionService = {
@@ -59,6 +59,15 @@ async deleteRefundContribution(id: number): Promise<void> {
       "GET"
     );
     return response;
+  },
+
+ async approveRefundContribution(
+    id: number,
+    params: ApproveRefundContributionParams
+  ): Promise<RefundContribution> {
+    const url = `${API_ENDPOINTS.REFUND_CONTRIBUTION.UPDATE_BY_APPROVE(id)}?approve=${params.approve}&currentUserId=${params.currentUserId}`;
+    const response = await HttpService.callApi<CustomResponse<RefundContribution>>(url, "PUT");
+    return response.value;
   },
 
   async getPagedRefundContributions(params: {

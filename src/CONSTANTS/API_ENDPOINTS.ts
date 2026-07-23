@@ -190,6 +190,7 @@ REFUND_CONTRIBUTION: {
     UPDATE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
     GET_BY_MEMBER_ID:(id: number) => `${API_BASE_URL}/RefundContribution/RefundByMemberId/${id}`,
+    UPDATE_BY_APPROVE:(id : number) => `${API_BASE_URL}/RefundContribution/approve/${id}`,
   },
   ATTACHMENT: {
     GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
