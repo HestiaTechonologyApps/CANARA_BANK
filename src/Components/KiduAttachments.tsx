@@ -9,9 +9,11 @@ import AttachmentService from "../Services/Attachment.services";
 interface AttachmentsProps {
     tableName: string;
     recordId: string | number;
+    showAddButton?: boolean;
+    showDeleteButton?: boolean;
 }
 
-const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
+const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddButton = true, showDeleteButton = true }) => {
     const [attachments, setAttachments] = useState<Attachment[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -228,7 +230,7 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
 
                 <Collapse in={isOpen}>
 
-                    <Card.Body className="p-3">
+                    {/* <Card.Body className="p-3">
                         <div className="d-flex justify-content-end">
                             <Button
                                 size="sm"
@@ -241,7 +243,23 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                             >
                                 <Upload size={12} /> Add
                             </Button>
-                        </div>
+                        </div> */}
+                        <Card.Body className="p-3">
+                        {showAddButton && (
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    size="sm"
+                                    className="d-flex align-items-center gap-1"
+                                    style={{ fontSize: '0.85rem', padding: '0.375rem 0.75rem', backgroundColor: "#173a6a" }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowModal(true);
+                                    }}
+                                >
+                                    <Upload size={12} /> Add
+                                </Button>
+                            </div>
+                        )}
                         {loading ? (
                             <div className="text-center py-4">
                                 <Spinner animation="border" variant="primary" size="sm" />
@@ -309,7 +327,34 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td style={{ padding: '0.5rem' }}>
+                                                {/* <td style={{ padding: '0.5rem' }}>
+                                                    <div className="d-flex gap-1 justify-content-center">
+                                                        <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
+                                                            <Button
+                                                                variant="outline-primary"
+                                                                size="sm"
+                                                                className="d-flex align-items-center justify-content-center"
+                                                                style={{ width: '30px', height: '30px', padding: 0 }}
+                                                                onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}
+                                                            >
+                                                                <Download size={13} />
+                                                            </Button>
+                                                        </OverlayTrigger> */}
+
+                                                        {/* <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
+                                                            <Button
+                                                                variant="outline-danger"
+                                                                size="sm"
+                                                                className="d-flex align-items-center justify-content-center"
+                                                                style={{ width: '30px', height: '30px', padding: 0 }}
+                                                                onClick={() => confirmDeleteAttachment(attachment.attachmentId)}
+                                                            >
+                                                                <Trash2 size={13} />
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </td> */}
+                                                 <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex gap-1 justify-content-center">
                                                         <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
                                                             <Button
@@ -323,17 +368,19 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId }) => {
                                                             </Button>
                                                         </OverlayTrigger>
 
-                                                        <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
-                                                            <Button
-                                                                variant="outline-danger"
-                                                                size="sm"
-                                                                className="d-flex align-items-center justify-content-center"
-                                                                style={{ width: '30px', height: '30px', padding: 0 }}
-                                                                onClick={() => confirmDeleteAttachment(attachment.attachmentId)}
-                                                            >
-                                                                <Trash2 size={13} />
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                                        {showDeleteButton && (
+                                                             <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
+                                                                <Button
+                                                                    variant="outline-danger"
+                                                                    size="sm"
+                                                                    className="d-flex align-items-center justify-content-center"
+                                                                    style={{ width: '30px', height: '30px', padding: 0 }}
+                                                                    onClick={() => confirmDeleteAttachment(attachment.attachmentId)}
+                                                                >
+                                                                    <Trash2 size={13} />
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>

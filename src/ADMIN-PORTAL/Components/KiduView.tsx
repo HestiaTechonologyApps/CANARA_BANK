@@ -336,6 +336,8 @@ const KiduView: React.FC<KiduViewProps> = ({
             <Attachments
               tableName={attachmentConfig.tableName}
               recordId={data[attachmentConfig.recordIdField]}
+              showAddButton={false}
+              showDeleteButton={false}
             />
           </div>
         )}
