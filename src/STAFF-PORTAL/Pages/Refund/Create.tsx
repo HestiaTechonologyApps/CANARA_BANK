@@ -33,14 +33,19 @@ const MemberRefundContributionCreate: React.FC = () => {
       if (!storedUser) return;
       const user = JSON.parse(storedUser);
 
-      setSelectedMember({
-        memberId: user.memberId,
-        name: user.userName,
-      } as Member);
+    //   setSelectedMember({
+    //     memberId: user.memberId,
+    //     name: user.userName,
+    //   } as Member);
 
-      const memberRes = await MemberService.getMemberById(Number(user.memberId));
+    //   const memberRes = await MemberService.getMemberById(Number(user.memberId));
+    //   const member = memberRes.value;
+    //   if (!member) return;
+    const memberRes = await MemberService.getMemberById(Number(user.memberId));
       const member = memberRes.value;
       if (!member) return;
+
+      setSelectedMember(member);
 
       if (member.designationId) {
         const designation = (await DesignationService.getDesignationById(member.designationId)).value;

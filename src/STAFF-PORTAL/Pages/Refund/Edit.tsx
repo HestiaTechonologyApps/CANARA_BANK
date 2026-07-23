@@ -12,14 +12,14 @@ import YearMasterService from "../../../ADMIN-PORTAL/Services/Settings/YearMaste
 import type { RefundContribution } from "../../../ADMIN-PORTAL/Types/Claims/Refund.types";
 import KiduEdit from "../../../ADMIN-PORTAL/Components/KiduEdit";
 import StatePopup from "../../../ADMIN-PORTAL/Pages/Settings/State/StatePopup";
-import MemberPopup from "../../../ADMIN-PORTAL/Pages/Contributions/Member/MemberPopup";
-import DesignationPopup from "../../../ADMIN-PORTAL/Pages/Settings/Designation/DesignationPopup";
+//import MemberPopup from "../../../ADMIN-PORTAL/Pages/Contributions/Member/MemberPopup";
+//import DesignationPopup from "../../../ADMIN-PORTAL/Pages/Settings/Designation/DesignationPopup";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
 
 const MemberRefundContributionEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
-  const [showMemberPopup, setShowMemberPopup] = useState(false);
-  const [showDesignationPopup, setShowDesignationPopup] = useState(false);
+  //const [showMemberPopup, setShowMemberPopup] = useState(false);
+  //const [showDesignationPopup, setShowDesignationPopup] = useState(false);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
   const [selectedState, setSelectedState] = useState<State | null>(null);
