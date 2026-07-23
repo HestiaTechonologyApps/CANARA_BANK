@@ -4,15 +4,22 @@ import "../Style/ShowContribution.css";
 import { FaPrint } from "react-icons/fa6";
 import type { MemberAccountDetail } from "../../ADMIN-PORTAL/Types/Contributions/MemberAccountsDetails.types";
 import MemberAccountsDetailsService from "../../ADMIN-PORTAL/Services/Contributions/MemberAccountsDetails.services";
+import type { RefundContribution } from "../../ADMIN-PORTAL/Types/Claims/Refund.types";
+import RefundContributionService from "../../ADMIN-PORTAL/Services/Claims/Refund.services";
 
-const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const ShowContribution: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const refundCardRef = useRef<HTMLDivElement>(null);
 
   const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [refunds, setRefunds] = useState<RefundContribution[]>([]);
+  const [refundLoading, setRefundLoading] = useState(false);
+  const [refundError, setRefundError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContributions = async () => {
@@ -34,6 +41,35 @@ const ShowContribution: React.FC = () => {
       }
     };
     fetchContributions();
+  }, []);
+
+  useEffect(() => {
+    const fetchRefunds = async () => {
+      try {
+        setRefundLoading(true);
+        setRefundError(null);
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) { setRefundError("User not found."); return; }
+        const parsedUser = JSON.parse(storedUser);
+        const memberId = parsedUser?.memberId;
+        if (!memberId) { setRefundError("Member ID not found."); return; }
+
+        const response = await RefundContributionService.getRefundContributionByMemberId(Number(memberId));
+        const rawValue = response.value;
+        const data: RefundContribution[] = Array.isArray(rawValue)
+          ? rawValue
+          : rawValue
+            ? [rawValue as unknown as RefundContribution]
+            : [];
+        setRefunds(data);
+      } catch (err) {
+        console.error("Failed to fetch refund contributions", err);
+        setRefundError("Failed to load refund contributions.");
+      } finally {
+        setRefundLoading(false);
+      }
+    };
+    fetchRefunds();
   }, []);
 
 
@@ -84,109 +120,235 @@ const ShowContribution: React.FC = () => {
     setTimeout(() => document.body.removeChild(iframe), 1000);
   };
 
+  const refundGrandTotal = refunds.reduce((s, r) => s + (r.amount || 0), 0);
+  const netBalance = grandTotal - refundGrandTotal;
+
+  const handleRefundPrint = () => {
+    if (!refundCardRef.current) return;
+    const iframe = document.createElement("iframe");
+    iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;";
+    document.body.appendChild(iframe);
+    const iframeDoc = iframe.contentWindow?.document;
+    if (!iframeDoc) return;
+    iframeDoc.open();
+    iframeDoc.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Canara Bank Employees Union – Refund Contribution Statement</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          table { width: 100%; border-collapse: collapse; font-size: 12px; }
+          th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+          th { background: #f2f2f2; }
+          .sc-header { font-weight: bold; margin-bottom: 12px; text-align: center; }
+          .sc-print { display: none !important; }
+        </style>
+      </head>
+      <body>${refundCardRef.current.innerHTML}</body>
+    </html>
+  `);
+    iframeDoc.close();
+    iframe.contentWindow?.focus();
+    iframe.contentWindow?.print();
+    setTimeout(() => document.body.removeChild(iframe), 1000);
+  };
+
   return (
-    <div ref={cardRef}>
-      <Card className="sc-card">
-        <div className="sc-header fs-6">CONTRIBUTION</div>
-        <Card.Body>
+    <>
+      <div ref={cardRef}>
+        <Card className="sc-card">
+          <div className="sc-header fs-6">CONTRIBUTION</div>
+          <Card.Body>
 
-          {/* ── Loading ── */}
-          {loading && (
-            <div className="d-flex justify-content-center py-4">
-              <Spinner animation="border" />
-            </div>
-          )}
+            {/* ── Loading ── */}
+            {loading && (
+              <div className="d-flex justify-content-center py-4">
+                <Spinner animation="border" />
+              </div>
+            )}
 
-          {/* ── Error ── */}
-          {!loading && error && (
-            <div className="text-center text-danger py-4">{error}</div>
-          )}
+            {/* ── Error ── */}
+            {!loading && error && (
+              <div className="text-center text-danger py-4">{error}</div>
+            )}
 
-          {/* ── Empty ── */}
-          {!loading && !error && contributions.length === 0 && (
-            <div className="text-center text-muted py-4">
-              No contribution records found.
-            </div>
-          )}
+            {/* ── Empty ── */}
+            {!loading && !error && contributions.length === 0 && (
+              <div className="text-center text-muted py-4">
+                No contribution records found.
+              </div>
+            )}
 
-          {/* ── Table ── */}
-          {!loading && !error && contributions.length > 0 && (
-            <div className="table-responsive">
-              <Table bordered hover size="sm" className="sc-table">
-                <thead>
-                  <tr>
-                    <th>Year</th>
-                    {MONTHS.map((m) => (
-                      <th key={m}>{m}</th>
-                    ))}
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {years.map((year) => {
-                    const monthMap = grouped[year];
-                    const yearTotal = Object.values(monthMap).reduce(
-                      (s, v) => s + v,
-                      0
-                    );
-                    return (
-                      <tr key={year}>
-                        <td className="fw-medium">{year}</td>
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map(
-                          (monthCode) => {
-                            const amount = monthMap[monthCode];
-                            return (
-                              <td
-                                key={monthCode}
-                                style={{
-                                  color: amount ? "#0f2a55" : "#adb5bd",
-                                  fontWeight: amount ? 500 : 400,
-                                }}
-                              >
-                                {amount
-                                  ? amount.toLocaleString("en-IN")
-                                  : "—"}
-                              </td>
-                            );
-                          }
-                        )}
-                        <td className="fw-bold" style={{ color: "#0f2a55" }}>
-                          {yearTotal.toLocaleString("en-IN")}
+            {/* ── Table ── */}
+            {!loading && !error && contributions.length > 0 && (
+              <div className="table-responsive">
+                <Table bordered hover size="sm" className="sc-table">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      {MONTHS.map((m) => (
+                        <th key={m}>{m}</th>
+                      ))}
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {years.map((year) => {
+                      const monthMap = grouped[year];
+                      const yearTotal = Object.values(monthMap).reduce(
+                        (s, v) => s + v,
+                        0
+                      );
+                      return (
+                        <tr key={year}>
+                          <td className="fw-medium">{year}</td>
+                          {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                            (monthCode) => {
+                              const amount = monthMap[monthCode];
+                              return (
+                                <td
+                                  key={monthCode}
+                                  style={{
+                                    color: amount ? "#0f2a55" : "#adb5bd",
+                                    fontWeight: amount ? 500 : 400,
+                                  }}
+                                >
+                                  {amount
+                                    ? `₹${amount.toLocaleString("en-IN")}`
+                                    : "—"}
+                                </td>
+                              );
+                            }
+                          )}
+                          <td className="fw-bold" style={{ color: "#0f2a55" }}>
+                            ₹{yearTotal.toLocaleString("en-IN")}
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {/* ── Grand Total Row ── */}
+                    <tr className="sc-total-row">
+                      <td className="fw-bold">Total</td>
+                      <td colSpan={12}></td>
+                      <td className="sc-grand-total fw-bold">
+                        ₹{grandTotal.toLocaleString("en-IN")}
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
+            )}
+
+            {/* ── Print button ── */}
+            {!loading && contributions.length > 0 && (
+              <div className="sc-print">
+                <Button
+                  variant="button"
+                  size="sm"
+                  className="text-danger"
+                  onClick={handlePrint}
+                >
+                  <FaPrint /> Print
+                </Button>
+              </div>
+            )}
+
+          </Card.Body>
+        </Card>
+      </div>
+
+      <div ref={refundCardRef} className="mt-3">
+        <Card className="sc-card">
+          <div className="sc-header fs-6">REFUND CONTRIBUTION</div>
+          <Card.Body>
+
+            {refundLoading && (
+              <div className="d-flex justify-content-center py-4">
+                <Spinner animation="border" />
+              </div>
+            )}
+
+            {!refundLoading && refundError && (
+              <div className="text-center text-danger py-4">{refundError}</div>
+            )}
+
+            {!refundLoading && !refundError && refunds.length === 0 && (
+              <div className="text-center text-muted py-4">
+                No refund contribution records found.
+              </div>
+            )}
+
+            {!refundLoading && !refundError && refunds.length > 0 && (
+              <div className="table-responsive">
+                <Table bordered hover size="sm" className="sc-table">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Refund No</th>
+                      <th>Type</th>
+                      {/* <th>DD No</th>
+                    <th>DD Date</th> */}
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {refunds.map((r) => (
+
+                      <tr key={r.refundContributionId}>
+                        <td className="fw-medium">{r.yearName}</td>
+                        <td>{r.refundNO}</td>
+                        <td>{r.type}</td>
+                        <td style={{ color: "#0f2a55", fontWeight: 500 }}>
+                          {r.amount ? `₹${r.amount.toLocaleString("en-IN")}` : "—"}
                         </td>
                       </tr>
-                    );
-                  })}
+                    ))}
 
-                  {/* ── Grand Total Row ── */}
-                  <tr className="sc-total-row">
-                    <td className="fw-bold">Total</td>
-                    <td colSpan={12}></td>
-                    <td className="sc-grand-total fw-bold">
-                      {grandTotal.toLocaleString("en-IN")}
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-          )}
+                    <tr className="sc-total-row">
+                      <td className="fw-bold" colSpan={5}>Total</td>
+                      <td className="sc-grand-total fw-bold">
+                        ₹{refundGrandTotal.toLocaleString("en-IN")}
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
+            )}
 
-          {/* ── Print button ── */}
-          {!loading && contributions.length > 0 && (
-            <div className="sc-print">
-              <Button
-                variant="button"
-                size="sm"
-                className="text-danger"
-                onClick={handlePrint}
+            {!refundLoading && refunds.length > 0 && (
+              <div className="sc-print">
+                <Button
+                  variant="button"
+                  size="sm"
+                  className="text-danger"
+                  onClick={handleRefundPrint}
+                >
+                  <FaPrint /> Print
+                </Button>
+              </div>
+            )}
+
+          </Card.Body>
+        </Card>
+      </div>
+      {!loading && !refundLoading && (
+        <div className="mt-3">
+          <Card className="sc-card">
+            <Card.Body className="d-flex justify-content-between align-items-center">
+              <span className="fw-bold">Net Balance (Contribution − Refund)</span>
+              <span
+                className="fw-bold fs-5"
+                style={{ color: netBalance >= 0 ? "#0f2a55" : "#c0392b" }}
               >
-                <FaPrint /> Print
-              </Button>
-            </div>
-          )}
-
-        </Card.Body>
-      </Card>
-    </div>
+                ₹{netBalance.toLocaleString("en-IN")}
+              </span>
+            </Card.Body>
+          </Card>
+        </div>
+      )}
+    </>
   );
 };
 
