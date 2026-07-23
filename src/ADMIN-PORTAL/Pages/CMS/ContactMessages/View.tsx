@@ -145,9 +145,9 @@ const formatDate = (dateString: Date | string | null | undefined) => {
                   <Badge bg={contactMessage.isRead ? "success" : "secondary"}>
                     {contactMessage.isRead ? "Read" : "Unread"}
                   </Badge>
-                  <Badge bg={contactMessage.isReplied ? "success" : "warning"}>
+                  {/* <Badge bg={contactMessage.isReplied ? "success" : "warning"}>
                     {contactMessage.isReplied ? "Replied" : "Pending"}
-                  </Badge>
+                  </Badge> */}
                 </div>
               </div>
             </Card.Header>
@@ -323,7 +323,7 @@ const formatDate = (dateString: Date | string | null | undefined) => {
               )}
 
               {/* Mark as Replied Button/Form */}
-              {contactMessage.isRead && !contactMessage.isReplied && (
+              {/* {contactMessage.isRead && !contactMessage.isReplied && (
                 <>
                   {!showNotesInput ? (
                     <Button
@@ -388,7 +388,7 @@ const formatDate = (dateString: Date | string | null | undefined) => {
                     </div>
                   )}
                 </>
-              )}
+              )} */}
 
               {/* Status Info */}
               <div className="mt-4 pt-3" style={{ borderTop: "1px solid #dee2e6" }}>
@@ -403,10 +403,10 @@ const formatDate = (dateString: Date | string | null | undefined) => {
                     </Badge>
                   </div>
                   <div className="d-flex justify-content-between align-items-center">
-                    <span style={{ fontSize: "13px" }}>Reply Status:</span>
-                    <Badge bg={contactMessage.isReplied ? "success" : "warning"}>
+                    {/* <span style={{ fontSize: "13px" }}>Reply Status:</span> */}
+                    {/* <Badge bg={contactMessage.isReplied ? "success" : "warning"}>
                       {contactMessage.isReplied ? "Replied" : "Pending"}
-                    </Badge>
+                    </Badge> */}
                   </div>
                 </div>
               </div>

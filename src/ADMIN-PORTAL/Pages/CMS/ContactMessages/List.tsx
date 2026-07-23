@@ -17,7 +17,7 @@ const ContactMessageList: React.FC = () => {
         { key: "subject", label: "Subject", enableSorting: true, type: "text" },
         { key: "submittedAt", label: "Submitted At", enableSorting: true, type: "date" },
         { key: "isRead", label: "Read", enableSorting: true, type: "checkbox" },
-        { key: "isReplied", label: "Replied", enableSorting: true, type: "checkbox" },
+       // { key: "isReplied", label: "Replied", enableSorting: true, type: "checkbox" },
       ]}
       filterColumns={[
         { key: "contactMessageId", label: "ID", type: "text" },
