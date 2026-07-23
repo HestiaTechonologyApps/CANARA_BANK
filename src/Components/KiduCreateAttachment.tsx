@@ -6,6 +6,7 @@ import {
   Upload, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive,
   FileAudio, FileVideo, FileJson, FileCode, FileType, Paperclip,
   ChevronDown, ChevronUp, Clock,
+  Download,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import AttachmentService from "../Services/Attachment.services";
@@ -143,6 +144,17 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
       setShowDeleteModal(true);
     };
 
+    const handleDownload = (item: StagedAttachment) => {
+      const url = URL.createObjectURL(item.file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = item.file.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    };
+
     const handleRemoveConfirmed = () => {
       if (!staleToDelete) return;
       emitChange(staged.filter((s) => s.id !== staleToDelete));
@@ -259,8 +271,10 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                         <th style={{ width: "30%", padding: "0.5rem" }}>File Name</th>
                         <th style={{ width: "35%", padding: "0.5rem" }}>Description</th>
                         <th style={{ width: "12%", padding: "0.5rem" }} className="text-center">Size</th>
+                        {/* <th style={{ width: "13%", padding: "0.5rem" }} className="text-center">Status</th>
+                        <th style={{ width: "5%", padding: "0.5rem" }} className="text-center">Actions</th> */}
                         <th style={{ width: "13%", padding: "0.5rem" }} className="text-center">Status</th>
-                        <th style={{ width: "5%", padding: "0.5rem" }} className="text-center">Actions</th>
+                        <th style={{ width: "10%", padding: "0.5rem" }} className="text-center">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -296,7 +310,7 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                               <Clock size={11} /> Pending
                             </span>
                           </td>
-                          <td style={{ padding: "0.5rem" }}>
+                          {/* <td style={{ padding: "0.5rem" }}>
                             <div className="d-flex justify-content-center">
                               <Button
                                 variant="outline-danger"
@@ -305,6 +319,32 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                                 style={{ width: "30px", height: "30px", padding: 0 }}
                                 onClick={() => confirmRemove(item.id)}
                                 disabled={uploading}
+                              >
+                                <Trash2 size={13} />
+                              </Button>
+                            </div>
+                          </td> */}
+                          <td style={{ padding: "0.5rem" }}>
+                            <div className="d-flex justify-content-center gap-1">
+                              <Button
+                                variant="outline-primary"
+                                size="sm"
+                                className="d-flex align-items-center justify-content-center"
+                                style={{ width: "30px", height: "30px", padding: 0 }}
+                                onClick={() => handleDownload(item)}
+                                disabled={uploading}
+                                title="Download"
+                              >
+                                <Download size={13} />
+                              </Button>
+                              <Button
+                              variant="outline-danger"
+                                size="sm"
+                                className="d-flex align-items-center justify-content-center"
+                                style={{ width: "30px", height: "30px", padding: 0 }}
+                                onClick={() => confirmRemove(item.id)}
+                                disabled={uploading}
+                                title="Remove"
                               >
                                 <Trash2 size={13} />
                               </Button>
