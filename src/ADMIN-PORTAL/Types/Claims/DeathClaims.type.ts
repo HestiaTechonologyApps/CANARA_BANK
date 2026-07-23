@@ -19,6 +19,15 @@ export interface DeathClaim {
   lastContribution: number;
   yearOF?: number;
   yearName:number;
+  isApproved: boolean;
+  approvedBy?: string;
+  approvedDate?: Date | string;
+  approvedDateString?: string;
   auditLogs?: AuditTrails[];
+}
+
+export interface ApproveDeathClaimParams{
+  approve: boolean;
+  currentUserId: number;
 }
 

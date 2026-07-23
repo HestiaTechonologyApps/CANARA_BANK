@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { DeathClaim } from "../../Types/Claims/DeathClaims.type";
+import type { ApproveDeathClaimParams, DeathClaim } from "../../Types/Claims/DeathClaims.type";
 
 
 const DeathClaimService = {
@@ -50,6 +50,15 @@ async deleteDeathClaim(id: number): Promise<void> {
       API_ENDPOINTS.DEATH_CLAIMS.DELETE(id),
       "DELETE"
     );
+  },
+
+   async approveDeathClaim(
+    id: number,
+    params: ApproveDeathClaimParams
+  ): Promise<DeathClaim> {
+    const url = `${API_ENDPOINTS.DEATH_CLAIMS.UPDATE_BY_APPROVE(id)}?approve=${params.approve}&currentUserId=${params.currentUserId}`;
+    const response = await HttpService.callApi<CustomResponse<DeathClaim>>(url, "PUT");
+    return response.value;
   },
 
   async getPagedDeathClaims(params: {

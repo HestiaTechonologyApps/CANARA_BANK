@@ -181,6 +181,7 @@ DEATH_CLAIMS: {
     CREATE: `${API_BASE_URL}/DeathClaim`,
     UPDATE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
+    UPDATE_BY_APPROVE: (id: number) => `${API_BASE_URL}/DeathClaim/approve/${id}`,
   },
 REFUND_CONTRIBUTION: {
     GET_ALL: `${API_BASE_URL}/RefundContribution`,

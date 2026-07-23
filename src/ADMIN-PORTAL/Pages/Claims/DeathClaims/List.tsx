@@ -35,6 +35,7 @@ const DeathClaimList: React.FC = () => {
         { key: "deathDate", label: "Death Date", type: "text" },
         { key: "amount", label: "Amount", type: "text" },
         { key: "yearName", label: "Year", type: "text" },
+        { key: "isApproved", label: "Approved", type: "checkbox" },
       ]}
 
       filterColumns={[
@@ -45,6 +46,7 @@ const DeathClaimList: React.FC = () => {
         { key: "deathDate", label: "Death Date", type: "date" },
         { key: "amount", label: "Amount", type: "number" },
         { key: "yearName", label: "Year", type: "text" },
+        { key: "isApproved", label: "Approved", type: "text" },
       ]}
       
       idKey="deathClaimId"
