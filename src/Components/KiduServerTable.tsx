@@ -243,10 +243,25 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
                 style={{ width: '18px', height: '18px', cursor: 'not-allowed', accentColor: '#1B3763' }} />
             );
           }
-         case 'image': {
+        //  case 'image': {
+        //     const imageSrc = typeof rawValue === 'string' && rawValue ? rawValue : defaultProfileImage;
+        //     return (
+        //       <img src={imageSrc} alt="Profile"
+        //         style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: "2px solid #1B3763" }}
+        //         onError={(e: any) => {
+        //           if (e.target.src !== defaultProfileImage) {
+        //             e.target.src = defaultProfileImage;
+        //           }
+        //           e.target.onerror = null;
+        //         }} />
+        //     );
+        //   }
+        case 'image': {
             const imageSrc = typeof rawValue === 'string' && rawValue ? rawValue : defaultProfileImage;
             return (
               <img src={imageSrc} alt="Profile"
+                loading="lazy"
+                decoding="async"
                 style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: "2px solid #1B3763" }}
                 onError={(e: any) => {
                   if (e.target.src !== defaultProfileImage) {

@@ -1,30 +1,3 @@
-//import React from "react";
-// import MemberService from "../../../Services/Contributions/Member.services";
-// import KiduServerTableList from "../../../../Components/KiduServerTableList";
-// import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
-// import defaultProfileImage from "../../../Assets/Images/profile.jpg";
-
-// const MemberList: React.FC = () => {
-//   return (
-//     <KiduServerTableList
-//        fetchService={async () => {  
-//     const response = await MemberService.getMembersPaginated({
-//       pageNumber: 1,
-//       pageSize: 99999, 
-//       searchTerm: "",
-//     });
-//     return response.data.map(member => ({
-//       ...member,
-//       profileImageSrc: member.profileImageSrc
-//         ? getFullImageUrl(member.profileImageSrc)
-//         : defaultProfileImage,
-//     }));
-//   }}
-//   transformData={(data) =>
-//     [...data].sort((a, b) => a.memberId - b.memberId)
-//   }
-
-//       columns={[
 import React from "react";
 import MemberService from "../../../Services/Contributions/Member.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
