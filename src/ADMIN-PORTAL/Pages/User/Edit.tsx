@@ -72,6 +72,7 @@ const handleReset = () => {
       userName: formData.userName.trim(),
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
+      memberId: selectedMember.memberId,
       phoneNumber: formData.phoneNumber.trim(),
       address: formData.address?.trim() || "",
       role: formData.role,
