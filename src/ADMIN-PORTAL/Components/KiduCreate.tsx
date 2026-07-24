@@ -663,7 +663,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
             {/* Action Buttons */}
             <div className="d-flex justify-content-end gap-2 mt-4">
-              {showResetButton && (
+              {/* {showResetButton && (
                 <KiduReset
                   initialValues={initialValues}
                   setFormData={setFormData}
@@ -673,6 +673,27 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     setResetKey(prev => prev + 1);  
     onReset?.();
   }}
+                />
+              )} */}
+              {showResetButton && (
+                <KiduReset
+                  initialValues={initialValues}
+                  setFormData={setFormData}
+                  setErrors={setErrors}
+                  onReset={() => {
+                    setResetKey(prev => prev + 1);
+
+                    // Image preview/selectedFile live outside formData, so
+                    // KiduReset's setFormData(initialValues) never clears
+                    // them — reset them here explicitly.
+                    if (typeof previewUrl === "string" && previewUrl.startsWith("blob:")) {
+                      URL.revokeObjectURL(previewUrl);
+                    }
+                    setSelectedFile(null);
+                    setPreviewUrl(imageConfig?.defaultImage || "");
+
+                    onReset?.();
+                  }}
                 />
               )}
               <KiduSubmit
