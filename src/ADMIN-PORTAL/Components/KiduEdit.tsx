@@ -112,32 +112,66 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const navigate = useNavigate();
   const params = useParams();
   const recordId = params[paramName];
+  // const regularFields = fields.filter(f => f.rules.type !== "toggle");
+  // const toggleFields = fields.filter(f => f.rules.type === "toggle");
+  // const initialValues: Record<string, any> = {};
+  // const initialErrors: Record<string, string> = {};
+
+  // fields.forEach(f => {
+  //   if (f.rules.type === "rowbreak") return;
+
+  //   if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
+  //     initialValues[f.name] = false;
+  //   } else if (f.rules.type === "radio" && options[f.name]?.length) {
+  //     const firstOption = options[f.name][0];
+  //     initialValues[f.name] = typeof firstOption === "object" ? firstOption.value : firstOption;
+  //   } else {
+  //     initialValues[f.name] = "";
+  //   }
+  //   initialErrors[f.name] = "";
+  // });
+
+  // if (imageConfig) {
+  //   initialValues[imageConfig.fieldName] = "";
+  // }
+
+  // const [formData, setFormData] = useState<Record<string, any>>(initialValues);
+  // const [initialData, setInitialData] = useState<Record<string, any>>(initialValues);
+  // const [errors, setErrors] = useState<Record<string, string>>(initialErrors);
   const regularFields = fields.filter(f => f.rules.type !== "toggle");
   const toggleFields = fields.filter(f => f.rules.type === "toggle");
-  const initialValues: Record<string, any> = {};
-  const initialErrors: Record<string, string> = {};
 
-  fields.forEach(f => {
-    if (f.rules.type === "rowbreak") return;
+  // Computed once via useState's lazy initializer instead of on every
+  // render — this loop only needs to run on mount since its result is
+  // only ever consumed as the initial value below.
+  const buildInitialState = () => {
+    const values: Record<string, any> = {};
+    const errs: Record<string, string> = {};
 
-    if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-      initialValues[f.name] = false;
-    } else if (f.rules.type === "radio" && options[f.name]?.length) {
-      const firstOption = options[f.name][0];
-      initialValues[f.name] = typeof firstOption === "object" ? firstOption.value : firstOption;
-    } else {
-      initialValues[f.name] = "";
+    fields.forEach(f => {
+      if (f.rules.type === "rowbreak") return;
+
+      if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
+        values[f.name] = false;
+      } else if (f.rules.type === "radio" && options[f.name]?.length) {
+        const firstOption = options[f.name][0];
+        values[f.name] = typeof firstOption === "object" ? firstOption.value : firstOption;
+      } else {
+        values[f.name] = "";
+      }
+      errs[f.name] = "";
+    });
+
+    if (imageConfig) {
+      values[imageConfig.fieldName] = "";
     }
-    initialErrors[f.name] = "";
-  });
 
-  if (imageConfig) {
-    initialValues[imageConfig.fieldName] = "";
-  }
+    return { values, errs };
+  };
 
-  const [formData, setFormData] = useState<Record<string, any>>(initialValues);
-  const [initialData, setInitialData] = useState<Record<string, any>>(initialValues);
-  const [errors, setErrors] = useState<Record<string, string>>(initialErrors);
+  const [formData, setFormData] = useState<Record<string, any>>(() => buildInitialState().values);
+  const [initialData, setInitialData] = useState<Record<string, any>>(() => buildInitialState().values);
+  const [errors, setErrors] = useState<Record<string, string>>(() => buildInitialState().errs);
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
