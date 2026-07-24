@@ -4,7 +4,7 @@ import { UserPlus, Eye, EyeOff, X } from "lucide-react";
 import "../Style/Auth.css";
 import type { RegisterRequest } from "../../Types/Auth.types";
 import AuthService from "../../Services/Auth.services";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Props {
   show: boolean;
@@ -153,6 +153,7 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered className="auth-modal">
+      <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
       {/* ── Header ── */}
       <div className="auth-header" style={{ position: "relative" }}>
 
