@@ -832,12 +832,36 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               )}
 
               <div className="d-flex justify-content-end gap-2 mt-4 me-2">
-                {showResetButton && (
+                {/* {showResetButton && (
                   <KiduReset
                     initialValues={initialData}
                     setFormData={setFormData}
                     setErrors={setErrors}
                     onReset={onReset}
+                  />
+                )} */}
+                {showResetButton && (
+                  <KiduReset
+                    initialValues={initialData}
+                    setFormData={setFormData}
+                    setErrors={setErrors}
+                    onReset={() => {
+                      // Image preview/selectedFile live outside formData, so
+                      // KiduReset's setFormData(initialData) never clears
+                      // them — reset them here explicitly, back to the
+                      // originally-fetched image rather than the default.
+                      if (previewUrl && previewUrl.startsWith("blob:")) {
+                        URL.revokeObjectURL(previewUrl);
+                      }
+                      setSelectedFile(null);
+                      setPreviewUrl(
+                        (imageConfig && initialData[imageConfig.fieldName]) ||
+                          imageConfig?.defaultImage ||
+                          ""
+                      );
+
+                      onReset?.();
+                    }}
                   />
                 )}
                 <Button
