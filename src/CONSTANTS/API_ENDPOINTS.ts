@@ -9,6 +9,15 @@ export const API_ENDPOINTS = {
     FORGOT_PASSWORD: `${API_BASE_URL}/Auth/forgot-password`,
     REGISTER:`${API_BASE_URL}/Auth/register`
   },
+USER_REGISTRATION: {
+    GET_PENDING: `${API_BASE_URL}/UserRegistration/pending`,
+    GET_ALL: `${API_BASE_URL}/UserRegistration/all`,
+    GET_BY_ID: (id: number) => `${API_BASE_URL}/UserRegistration/${id}`,
+    APPROVE: (id: number, approve: boolean, currentUserId: number, rejectReason?: string) =>
+      `${API_BASE_URL}/UserRegistration/${id}/approve?approve=${approve}&currentUserId=${currentUserId}${
+        rejectReason ? `&rejectReason=${encodeURIComponent(rejectReason)}` : ""
+      }`,
+  },
   AUDIT_LOG: {
     GET_BY_TABLE_AND_ID: (tableName: string, recordId: number) =>
       `${API_BASE_URL}/AuditLog/${tableName}/${recordId}`

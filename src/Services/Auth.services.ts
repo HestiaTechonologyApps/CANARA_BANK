@@ -294,10 +294,10 @@ static isAdmin(): boolean {
     );
   }
 
-  static async register(
+static async register(
     data: RegisterRequest
-  ): Promise<CustomResponse<LoginResponse>> {
-    return await HttpService.callApi<CustomResponse<LoginResponse>>(
+  ): Promise<CustomResponse<null>> {
+    return await HttpService.callApi<CustomResponse<null>>(
       API_ENDPOINTS.AUTH.REGISTER,
       "POST",
       data,

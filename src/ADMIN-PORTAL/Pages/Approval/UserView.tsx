@@ -4,12 +4,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Badge, Button, Spinner } from "react-bootstrap";
 import {
   ArrowLeft, CheckCircle2, XCircle, User as UserIcon, Mail, Phone,
-  MapPin, Building2, ShieldCheck, Hash, Clock, CalendarPlus, Lock, LockOpen,
+  MapPin, Building2, ShieldCheck, Hash, Clock, CalendarPlus,
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import UserService from "../../Services/Settings/User.services";
-import CompanyService from "../../Services/Settings/Company.services";
-import type { User } from "../../Types/Settings/User.types";
+import type { UserRegistrationDetail } from "../../Types/UserRegistration/UserRegistration.types";
+import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
+import AuthService from "../../../Services/Auth.services";
+
 
 const THEME = "#1B3763";
 
@@ -68,10 +69,10 @@ const SectionCard: React.FC<{ title: string; children: React.ReactNode }> = ({ t
 );
 
 const UserApprovalView: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
+  const { userId } = useParams<{ userId: string }>(); // this is the userRegistrationId
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserRegistrationDetail | null>(null);
   const [companyName, setCompanyName] = useState<string>("—");
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -81,20 +82,12 @@ const UserApprovalView: React.FC = () => {
       if (!userId) return;
       setLoading(true);
       try {
-        const res = await UserService.getUserById(Number(userId));
-        const u = res.value;
+        const u = await UserRegistrationService.getById(Number(userId));
         setUser(u);
-
-        if (u?.companyId) {
-          try {
-            const companyRes = await CompanyService.getCompanyById(u.companyId);
-            setCompanyName((companyRes as any)?.value?.comapanyName ?? "—");
-          } catch {
-            setCompanyName("—");
-          }
-        }
+        // Registration DTO doesn't currently carry a companyId, so this
+        // stays "—" unless the backend DTO is extended to include one.
       } catch (err) {
-        toast.error("Failed to load user details");
+        toast.error("Failed to load registration details");
       } finally {
         setLoading(false);
       }
@@ -102,24 +95,43 @@ const UserApprovalView: React.FC = () => {
     load();
   }, [userId]);
 
-  // Demo-only — no real approve endpoint wired up yet.
   const handleApprove = async () => {
+    if (!user) return;
     setProcessing(true);
     try {
-      await new Promise((r) => setTimeout(r, 700));
-      toast.success("User approved successfully!");
-      setTimeout(() => navigate(-1), 900);
+      const currentUser = AuthService.getCurrentUser();
+      const currentUserId = currentUser?.userId ?? 0;
+
+      const res = await UserRegistrationService.approve(user.userRegistrationId, currentUserId);
+      if (res.isSucess) {
+        toast.success(res.customMessage || "User approved successfully!");
+        setTimeout(() => navigate(-1), 900);
+      } else {
+        toast.error(res.error || "Failed to approve user");
+      }
+    } catch (err) {
+      toast.error("Failed to approve user");
     } finally {
       setProcessing(false);
     }
   };
 
   const handleReject = async () => {
+    if (!user) return;
     setProcessing(true);
     try {
-      await new Promise((r) => setTimeout(r, 700));
-      toast.error("User registration rejected");
-      setTimeout(() => navigate(-1), 900);
+      const currentUser = AuthService.getCurrentUser();
+      const currentUserId = currentUser?.userId ?? 0;
+
+      const res = await UserRegistrationService.reject(user.userRegistrationId, currentUserId, "Rejected by admin");
+      if (res.isSucess) {
+        toast.error(res.customMessage || "User registration rejected");
+        setTimeout(() => navigate(-1), 900);
+      } else {
+        toast.error(res.error || "Failed to reject user");
+      }
+    } catch (err) {
+      toast.error("Failed to reject user");
     } finally {
       setProcessing(false);
     }
@@ -136,13 +148,15 @@ const UserApprovalView: React.FC = () => {
   if (!user) {
     return (
       <Container className="py-5 text-center">
-        <p className="text-muted">User not found.</p>
+        <p className="text-muted">Registration not found.</p>
         <Button onClick={() => navigate(-1)} style={{ backgroundColor: THEME, border: "none" }}>
           Go Back
         </Button>
       </Container>
     );
   }
+
+  const isPending = user.registrationStatus?.toLowerCase() === "pending";
 
   return (
     <Container fluid className="pb-4">
@@ -186,61 +200,56 @@ const UserApprovalView: React.FC = () => {
                 pill
                 className="d-flex align-items-center gap-1"
                 style={{
-                  backgroundColor: user.isActive ? "#2ecc71" : "#95a5a6",
+                  backgroundColor:
+                    user.registrationStatus?.toLowerCase() === "approved"
+                      ? "#2ecc71"
+                      : user.registrationStatus?.toLowerCase() === "rejected"
+                      ? "#e74c3c"
+                      : "#f1c40f",
                   fontFamily: "Urbanist", fontWeight: 500, fontSize: "12px",
                 }}
               >
-                {user.isActive ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-                {user.isActive ? "Active" : "Inactive"}
-              </Badge>
-              <Badge
-                pill
-                className="d-flex align-items-center gap-1"
-                style={{
-                  backgroundColor: user.islocked ? "#e74c3c" : "rgba(255,255,255,0.15)",
-                  fontFamily: "Urbanist", fontWeight: 500, fontSize: "12px",
-                }}
-              >
-                {user.islocked ? <Lock size={12} /> : <LockOpen size={12} />}
-                {user.islocked ? "Locked" : "Unlocked"}
+                {user.registrationStatus}
               </Badge>
             </div>
           </div>
         </div>
 
-        {/* Approve / Reject actions */}
-        <div className="d-flex gap-2">
-          <Button
-            onClick={handleReject}
-            disabled={processing}
-            className="d-flex align-items-center gap-2 fw-semibold"
-            style={{
-              backgroundColor: "transparent", border: "1.5px solid rgba(255,255,255,0.6)",
-              color: "white", fontFamily: "Urbanist", fontSize: "14px", padding: "8px 18px",
-            }}
-          >
-            <XCircle size={16} /> Reject
-          </Button>
-          <Button
-            onClick={handleApprove}
-            disabled={processing}
-            className="d-flex align-items-center gap-2 fw-semibold"
-            style={{
-              backgroundColor: "#ffffff", border: "none", color: THEME,
-              fontFamily: "Urbanist", fontSize: "14px", padding: "8px 18px",
-            }}
-          >
-            {processing ? <Spinner size="sm" animation="border" /> : <CheckCircle2 size={16} />}
-            Approve
-          </Button>
-        </div>
+        {/* Approve / Reject actions — only shown while still pending */}
+        {isPending && (
+          <div className="d-flex gap-2">
+            <Button
+              onClick={handleReject}
+              disabled={processing}
+              className="d-flex align-items-center gap-2 fw-semibold"
+              style={{
+                backgroundColor: "transparent", border: "1.5px solid rgba(255,255,255,0.6)",
+                color: "white", fontFamily: "Urbanist", fontSize: "14px", padding: "8px 18px",
+              }}
+            >
+              <XCircle size={16} /> Reject
+            </Button>
+            <Button
+              onClick={handleApprove}
+              disabled={processing}
+              className="d-flex align-items-center gap-2 fw-semibold"
+              style={{
+                backgroundColor: "#ffffff", border: "none", color: THEME,
+                fontFamily: "Urbanist", fontSize: "14px", padding: "8px 18px",
+              }}
+            >
+              {processing ? <Spinner size="sm" animation="border" /> : <CheckCircle2 size={16} />}
+              Approve
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Detail sections */}
       <Row className="g-3">
         <Col md={6} lg={4}>
           <SectionCard title="Account Info">
-            <InfoRow icon={<Hash size={16} />} label="User ID" value={user.userId} />
+            <InfoRow icon={<Hash size={16} />} label="Registration ID" value={user.userRegistrationId} />
             <InfoRow icon={<UserIcon size={16} />} label="Username" value={user.userName} />
             <InfoRow icon={<ShieldCheck size={16} />} label="Role" value={user.role} />
           </SectionCard>
@@ -264,23 +273,27 @@ const UserApprovalView: React.FC = () => {
 
         <Col md={6} lg={4}>
           <SectionCard title="Timeline">
-            <InfoRow icon={<CalendarPlus size={16} />} label="Created At" value={formatDate(user.createAt)} />
-            <InfoRow icon={<Clock size={16} />} label="Last Login" value={formatDate(user.lastlogin)} />
+            <InfoRow icon={<CalendarPlus size={16} />} label="Requested Date" value={formatDate(user.requestedDate)} />
+            <InfoRow icon={<Clock size={16} />} label="Approved / Rejected Date" value={formatDate(user.approvedDate)} />
           </SectionCard>
         </Col>
 
         <Col md={6} lg={4}>
           <SectionCard title="Status">
             <InfoRow
-              icon={user.isActive ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
-              label="Account Active"
-              value={user.isActive ? "Yes" : "No"}
+              icon={
+                user.registrationStatus?.toLowerCase() === "approved" ? (
+                  <CheckCircle2 size={16} />
+                ) : (
+                  <XCircle size={16} />
+                )
+              }
+              label="Registration Status"
+              value={user.registrationStatus}
             />
-            <InfoRow
-              icon={user.islocked ? <Lock size={16} /> : <LockOpen size={16} />}
-              label="Account Locked"
-              value={user.islocked ? "Yes" : "No"}
-            />
+            {user.registrationStatus?.toLowerCase() === "rejected" && (
+              <InfoRow icon={<XCircle size={16} />} label="Reject Reason" value={user.rejectReason || "—"} />
+            )}
           </SectionCard>
         </Col>
       </Row>

@@ -191,24 +191,26 @@ const handleSubmit = async (e: FormEvent): Promise<void> => {
         // the backend still returns user data alongside a failure flag.
         const lockedFromValue = response.value?.user?.islocked === true;
 
-        if (!response.isSucess || !response.value || lockedFromValue) {
-          console.log("DEBUG - failed at isSucess/value check, or user is locked");
+if (!response.isSucess || !response.value || lockedFromValue) {
+  console.log("DEBUG - failed at isSucess/value check, or user is locked");
 
-          const serverMessage = (
-            response.customMessage ||
-            response.error ||
-            ""
-          ).toLowerCase();
+  const serverMessage = (
+    response.customMessage ||
+    response.error ||
+    ""
+  ).toLowerCase();
 
-          console.log("DEBUG - serverMessage:", serverMessage);
+  console.log("DEBUG - serverMessage:", serverMessage);
 
-          if (lockedFromValue || serverMessage.includes("lock") || serverMessage.includes("disabled") || serverMessage.includes("suspend")) {
-            toast.error("Your account is locked. Please contact administrator.");
-          } else {
-            toast.error("Invalid username or password");
-          }
-          return;
-        }
+  if (lockedFromValue || serverMessage.includes("lock") || serverMessage.includes("disabled") || serverMessage.includes("suspend")) {
+    toast.error("Your account is locked. Please contact administrator.");
+  } else if (serverMessage.includes("role")) {
+    toast.error("Invalid user role. Please contact administrator.");
+  } else {
+    toast.error("Invalid username or password");
+  }
+  return;
+}
 
         // // ── Step 2: login succeeded, now handle post-login logic ──
         // const userRole = localStorage.getItem("user_role");

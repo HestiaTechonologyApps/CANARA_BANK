@@ -2,15 +2,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import KiduServerTable from "../../../Components/KiduServerTable";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
-
-// ── Demo data for the User tab — replace with a real UserService.getAll() later ──
-const DEMO_USERS = [
-  { userId: 1, name: "Anjali Menon", email: "anjali.menon@example.com", role: "Admin", status: "Active" },
-  { userId: 2, name: "Rahul Nair", email: "rahul.nair@example.com", role: "Approver", status: "Active" },
-  { userId: 3, name: "Priya Suresh", email: "priya.suresh@example.com", role: "Viewer", status: "Inactive" },
-  { userId: 4, name: "Vishnu Kumar", email: "vishnu.kumar@example.com", role: "Approver", status: "Active" },
-  { userId: 5, name: "Divya Raj", email: "divya.raj@example.com", role: "Viewer", status: "Active" },
-];
+import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
 
 type TabKey = "monthlyContribution" | "user";
 
@@ -68,15 +60,23 @@ const ContributionMasterApprovalList: React.FC = () => {
     []
   );
 
-  // Demo fetchData for the User tab
+  // Fetch-once cache for pending user registrations, same pattern as contributions
+ const userCacheRef = useRef<any[] | null>(null);
+
   const fetchUserData = useCallback(
     async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
-      let filtered = [...DEMO_USERS];
+      if (!userCacheRef.current) {
+        userCacheRef.current = await UserRegistrationService.getAll();
+      }
+
+      let filtered = [...userCacheRef.current];
 
       if (params.searchTerm) {
         const searchLower = params.searchTerm.toLowerCase();
         filtered = filtered.filter((item) =>
-          Object.values(item).some((value) => String(value).toLowerCase().includes(searchLower))
+          Object.values(item).some(
+            (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+          )
         );
       }
 
@@ -163,15 +163,16 @@ const ContributionMasterApprovalList: React.FC = () => {
         <KiduServerTable
           fetchData={fetchUserData}
           columns={[
-            { key: "userId", label: "ID", enableSorting: true, type: "text" },
-            { key: "name", label: "Name", enableSorting: true, type: "text" },
-            { key: "email", label: "Email", enableSorting: true, type: "text" },
-            { key: "role", label: "Role", enableSorting: true, type: "text" },
-            { key: "status", label: "Status", enableSorting: true, type: "text" },
+            { key: "userRegistrationId", label: "ID", enableSorting: true, type: "text" },
+            { key: "userName", label: "Name", enableSorting: true, type: "text" },
+            { key: "userEmail", label: "Email", enableSorting: true, type: "text" },
+            { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" },
+            { key: "phoneNumber", label: "Phone", enableSorting: true, type: "text" },
+            { key: "registrationStatus", label: "Status", enableSorting: true, type: "text" },
           ]}
-          idKey="userId"
+          idKey="userRegistrationId"
           title="User List"
-          subtitle="User list waiting for approval"
+          subtitle="User registrations waiting for approval"
           viewRoute="/dashboard/approval/user-view"
           showAddButton={false}
           showExport={false}
