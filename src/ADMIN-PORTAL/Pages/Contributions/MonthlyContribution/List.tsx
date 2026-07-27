@@ -15,6 +15,7 @@ const ContributionMasterList: React.FC = () => {
             item.contributionStatus === "Approved" ||
             item.isApproved === true,
         }))
+        .sort((a, b) => Number(a.contributionMasterId) - Number(b.contributionMasterId))
       }
       columns={[
         { key: "contributionMasterId", label: "ID", type: "text" },
