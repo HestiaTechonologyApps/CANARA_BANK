@@ -49,6 +49,7 @@ const StaffAccountDirectEntryView: React.FC = () => {
           tableName: "AccountDirectEntry",
           recordIdField: "accountsDirectEntryID"
         }}
+        disableEditWhen={(data) => data.isApproved === true || data.status === "Approved"}
         />
     );
 };

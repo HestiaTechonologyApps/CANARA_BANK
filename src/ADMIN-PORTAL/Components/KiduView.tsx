@@ -49,6 +49,8 @@ export interface KiduViewProps {
   showEditButton?: boolean;
   showDeleteButton?: boolean;
   deleteConfirmMessage?: string;
+  disableEditWhen?: (data: any) => boolean;
+  disabledEditTooltip?: string;
 }
 
 // ==================== COMPONENT ====================
@@ -68,6 +70,8 @@ const KiduView: React.FC<KiduViewProps> = ({
   showEditButton = true,
   showDeleteButton = true,
   deleteConfirmMessage = "Are you sure you want to delete this record?",
+  disableEditWhen,
+  disabledEditTooltip = "This record is already approved and cannot be edited",
 }) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -113,6 +117,8 @@ const KiduView: React.FC<KiduViewProps> = ({
       navigate(`${editRoute}/${recordId}`);
     }
   };
+
+  const isEditDisabled = !!(disableEditWhen && data && disableEditWhen(data));
 
   const handleDelete = async () => {
     if (!onDelete || !recordId) return;
@@ -215,7 +221,7 @@ const KiduView: React.FC<KiduViewProps> = ({
           </div>
 
           <div className="d-flex gap-2">
-            {showEditButton && editRoute && (
+            {/* {showEditButton && editRoute && (
               <Button
                 className="d-flex align-items-center gap-2"
                 style={{
@@ -224,6 +230,22 @@ const KiduView: React.FC<KiduViewProps> = ({
                   fontWeight: 500,
                 }}
                 onClick={handleEdit}
+              >
+                <FaEdit /> Edit
+              </Button>
+            )} */}
+            {showEditButton && editRoute && (
+              <Button
+                className="d-flex align-items-center gap-2"
+                style={{
+                  backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
+                  border: "none",
+                  fontWeight: 500,
+                  cursor: isEditDisabled ? "not-allowed" : "pointer",
+                }}
+                onClick={handleEdit}
+                disabled={isEditDisabled}
+                title={isEditDisabled ? disabledEditTooltip : undefined}
               >
                 <FaEdit /> Edit
               </Button>
