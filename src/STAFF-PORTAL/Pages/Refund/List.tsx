@@ -71,11 +71,11 @@ const RefundContributionByMemberList: React.FC = () => {
 
         return refunds.map(r => ({
           ...r,
-          deathDateString: r.deathDateString
-            ? new Date(r.deathDateString).toLocaleDateString("en-IN")
+          deathDateString: r.deathDate
+            ? new Date(r.deathDate).toLocaleDateString("en-IN")
             : "",
-          dddateString: r.dddateString
-            ? new Date(r.dddateString).toLocaleDateString("en-IN")
+          dddateString: r.dddate
+            ? new Date(r.dddate).toLocaleDateString("en-IN")
             : "",
         }));
       }}
