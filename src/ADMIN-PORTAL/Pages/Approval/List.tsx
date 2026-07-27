@@ -1,60 +1,187 @@
 // src/Pages/ContributionMaster/ContributionMasterApprovalList.tsx
-import React from "react";
-import KiduServerTableList from "../../../Components/KiduServerTableList";
+import React, { useState, useCallback, useRef } from "react";
+import KiduServerTable from "../../../Components/KiduServerTable";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
 
+// ── Demo data for the User tab — replace with a real UserService.getAll() later ──
+const DEMO_USERS = [
+  { userId: 1, name: "Anjali Menon", email: "anjali.menon@example.com", role: "Admin", status: "Active" },
+  { userId: 2, name: "Rahul Nair", email: "rahul.nair@example.com", role: "Approver", status: "Active" },
+  { userId: 3, name: "Priya Suresh", email: "priya.suresh@example.com", role: "Viewer", status: "Inactive" },
+  { userId: 4, name: "Vishnu Kumar", email: "vishnu.kumar@example.com", role: "Approver", status: "Active" },
+  { userId: 5, name: "Divya Raj", email: "divya.raj@example.com", role: "Viewer", status: "Active" },
+];
+
+type TabKey = "monthlyContribution" | "user";
+
 const ContributionMasterApprovalList: React.FC = () => {
-    return (
-        <KiduServerTableList
-            //fetchService={ContributionMasterService.getAll}
-            fetchService={ContributionMasterService.getAll}
-            transformData={(data) =>
-                [...data].sort((a, b) => a.contributionMasterId - b.contributionMasterId)
-            }
-           
-            columns={[
-                { key: "contributionMasterId", label: "ID", enableSorting: true, type: "text" },
-                { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
-                { key: "fileType", label: "File Type", enableSorting: true, type: "text" },
-                { key: "monthName", label: "Month", enableSorting: true, type: "text" },
-                { key: "year", label: "Year", enableSorting: true, type: "text" },
-                { key: "circle", label: "Circle", enableSorting: true, type: "text" },
-                { key: "totalAmount", label: "Total Amount", enableSorting: true, type: "text" },
-                { key: "totalEntry", label: "Total Entries", enableSorting: true, type: "text" },
-                { key: "contributionStatus", label: "Status", enableSorting: true, type: "text" },
-                { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
-            ]}
+  const [activeTab, setActiveTab] = useState<TabKey>("monthlyContribution");
 
-            filterColumns={[
-                { key: "contributionMasterId", label: "ID", type: "text" },
-                { key: "monthName", label: "Month", type: "text" },
-                { key: "year", label: "Year", type: "text" },
-                { key: "circle", label: "Circle", type: "text" },
-                {
-                    key: "contributionStatus", label: "Status", type: "select", options: [
-                        { value: "FORWARD", label: "Forward" },
-                        { value: "Processed", label: "Processed" },
-                    ]
-                },
-                {
-                    key: "isApproved", label: "Approved", type: "select", options: [
-                        { value: "true", label: "Approved" },
-                        { value: "false", label: "Not Approved" },
-                    ]
-                },
-            ]}
+  // Fetch-once, filter/search/paginate-locally cache — same pattern
+  // KiduServerTableList used internally, now inlined since we're calling
+  // KiduServerTable directly.
+  const contributionCacheRef = useRef<any[] | null>(null);
 
-            idKey="contributionMasterId"
-            title="Approval List"
-            subtitle="Pending items awaiting admin approval. Review details and take action."
-            viewRoute="/dashboard/contributions/approval-view"
-            showAddButton={false}
-            showExport={true}
-            showSearch={true}
-            showActions={true}
-            rowsPerPage={10}
+  const fetchContributionData = useCallback(
+    async (params: {
+      pageNumber: number;
+      pageSize: number;
+      searchTerm: string;
+      filters?: Record<string, any>;
+    }) => {
+      if (!contributionCacheRef.current) {
+        const allData = await ContributionMasterService.getAll();
+        // Latest first. No wrapper reversing this time, so descending is final.
+        contributionCacheRef.current = [...allData].sort(
+          (a, b) => b.contributionMasterId - a.contributionMasterId
+        );
+      }
+
+      let filtered = [...contributionCacheRef.current];
+
+      if (params.filters && Object.keys(params.filters).length > 0) {
+        filtered = filtered.filter((item) =>
+          Object.entries(params.filters!).every(([key, value]) => {
+            if (value === "" || value === null || value === undefined) return true;
+            const itemValue = (item as any)[key];
+            if (itemValue === null || itemValue === undefined) return false;
+            return String(itemValue).toLowerCase() === String(value).toLowerCase() ||
+              String(itemValue).toLowerCase().includes(String(value).toLowerCase());
+          })
+        );
+      }
+
+      if (params.searchTerm) {
+        const searchLower = params.searchTerm.toLowerCase();
+        filtered = filtered.filter((item) =>
+          Object.values(item as any).some(
+            (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+          )
+        );
+      }
+
+      const start = (params.pageNumber - 1) * params.pageSize;
+      const end = start + params.pageSize;
+
+      return { data: filtered.slice(start, end), total: filtered.length };
+    },
+    []
+  );
+
+  // Demo fetchData for the User tab
+  const fetchUserData = useCallback(
+    async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+      let filtered = [...DEMO_USERS];
+
+      if (params.searchTerm) {
+        const searchLower = params.searchTerm.toLowerCase();
+        filtered = filtered.filter((item) =>
+          Object.values(item).some((value) => String(value).toLowerCase().includes(searchLower))
+        );
+      }
+
+      const start = (params.pageNumber - 1) * params.pageSize;
+      const end = start + params.pageSize;
+
+      return { data: filtered.slice(start, end), total: filtered.length };
+    },
+    []
+  );
+
+  return (
+    <div>
+      {/* Tabs */}
+      <div className="d-flex gap-2 mb-3" style={{ borderBottom: "2px solid #dee2e6" }}>
+        {(["monthlyContribution", "user"] as TabKey[]).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              fontFamily: "Urbanist",
+              fontWeight: 600,
+              fontSize: "14px",
+              padding: "10px 20px",
+              border: "none",
+              background: "transparent",
+              color: activeTab === tab ? "#1B3763" : "#6c757d",
+              borderBottom: activeTab === tab ? "3px solid #1B3763" : "3px solid transparent",
+              cursor: "pointer",
+              marginBottom: "-2px",
+            }}
+          >
+            {tab === "monthlyContribution" ? "Monthly Contribution" : "User"}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "monthlyContribution" && (
+        <KiduServerTable
+          fetchData={fetchContributionData}
+          columns={[
+            { key: "contributionMasterId", label: "ID", enableSorting: true, type: "text" },
+            { key: "fileName", label: "File Name", enableSorting: true, type: "text" },
+            { key: "fileType", label: "File Type", enableSorting: true, type: "text" },
+            { key: "monthName", label: "Month", enableSorting: true, type: "text" },
+            { key: "year", label: "Year", enableSorting: true, type: "text" },
+            { key: "circle", label: "Circle", enableSorting: true, type: "text" },
+            { key: "totalAmount", label: "Total Amount", enableSorting: true, type: "text" },
+            { key: "totalEntry", label: "Total Entries", enableSorting: true, type: "text" },
+            { key: "contributionStatus", label: "Status", enableSorting: true, type: "text" },
+            { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" },
+          ]}
+          filterColumns={[
+            { key: "contributionMasterId", label: "ID", type: "text" },
+            { key: "monthName", label: "Month", type: "text" },
+            { key: "year", label: "Year", type: "text" },
+            { key: "circle", label: "Circle", type: "text" },
+            {
+              key: "contributionStatus", label: "Status", type: "select", options: [
+                { value: "FORWARD", label: "Forward" },
+                { value: "Processed", label: "Processed" },
+              ]
+            },
+            {
+              key: "isApproved", label: "Approved", type: "select", options: [
+                { value: "true", label: "Approved" },
+                { value: "false", label: "Not Approved" },
+              ]
+            },
+          ]}
+          idKey="contributionMasterId"
+          title="Approval List"
+          subtitle="Pending items awaiting admin approval. Review details and take action."
+          viewRoute="/dashboard/contributions/approval-view"
+          showAddButton={false}
+          showExport={true}
+          showSearch={true}
+          showActions={true}
+          rowsPerPage={10}
         />
-    );
+      )}
+
+      {activeTab === "user" && (
+        <KiduServerTable
+          fetchData={fetchUserData}
+          columns={[
+            { key: "userId", label: "ID", enableSorting: true, type: "text" },
+            { key: "name", label: "Name", enableSorting: true, type: "text" },
+            { key: "email", label: "Email", enableSorting: true, type: "text" },
+            { key: "role", label: "Role", enableSorting: true, type: "text" },
+            { key: "status", label: "Status", enableSorting: true, type: "text" },
+          ]}
+          idKey="userId"
+          title="User List"
+          subtitle="User list waiting for approval"
+          viewRoute="/dashboard/approval/user-view"
+          showAddButton={false}
+          showExport={false}
+          showSearch={true}
+          showActions={true}
+          rowsPerPage={10}
+        />
+      )}
+    </div>
+  );
 };
 
 export default ContributionMasterApprovalList;

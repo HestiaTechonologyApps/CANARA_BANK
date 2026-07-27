@@ -167,6 +167,7 @@ import ContributionMasterEdit from '../Pages/Contributions/MonthlyContribution/E
 //Approval
 import ContributionMasterApprovalList from '../Pages/Approval/List';
 import ContributionMasterApprovalView from '../Pages/Approval/View';
+import UserApprovalView from '../Pages/Approval/UserView';
 
 
 export const adminRoutes = (
@@ -324,6 +325,7 @@ export const adminRoutes = (
       {/* Approval */}
       <Route path="approval-list" element={<ContributionMasterApprovalList />} />
       <Route path="contributions/approval-view/:masterId" element={<ContributionMasterApprovalView/>} />
+      <Route path="approval/user-view/:userI" element={<UserApprovalView/>}/>
      
 
       <Route path="notifications" element={<Notifications />} />
