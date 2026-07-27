@@ -51,6 +51,8 @@ export interface KiduViewProps {
   deleteConfirmMessage?: string;
   disableEditWhen?: (data: any) => boolean;
   disabledEditTooltip?: string;
+  disableDeleteWhen?: (data: any) => boolean;
+  disabledDeleteTooltip?: string;
 }
 
 // ==================== COMPONENT ====================
@@ -72,6 +74,8 @@ const KiduView: React.FC<KiduViewProps> = ({
   deleteConfirmMessage = "Are you sure you want to delete this record?",
   disableEditWhen,
   disabledEditTooltip = "This record is already approved and cannot be edited",
+  disableDeleteWhen,
+  disabledDeleteTooltip = "This record is already approved and cannot be deleted",
 }) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -119,6 +123,7 @@ const KiduView: React.FC<KiduViewProps> = ({
   };
 
   const isEditDisabled = !!(disableEditWhen && data && disableEditWhen(data));
+  const isDeleteDisabled = !!(disableDeleteWhen && data && disableDeleteWhen(data));
 
   const handleDelete = async () => {
     if (!onDelete || !recordId) return;
@@ -234,7 +239,7 @@ const KiduView: React.FC<KiduViewProps> = ({
                 <FaEdit /> Edit
               </Button>
             )} */}
-            {showEditButton && editRoute && (
+            {/* {showEditButton && editRoute && (
               <Button
                 className="d-flex align-items-center gap-2"
                 style={{
@@ -249,9 +254,26 @@ const KiduView: React.FC<KiduViewProps> = ({
               >
                 <FaEdit /> Edit
               </Button>
+            )} */}
+            {showEditButton && editRoute && (
+              <span title={isEditDisabled ? disabledEditTooltip : undefined}>
+                <Button
+                  className="d-flex align-items-center gap-2"
+                  style={{
+                    backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
+                    border: "none",
+                    fontWeight: 500,
+                    cursor: isEditDisabled ? "not-allowed" : "pointer",
+                  }}
+                  onClick={handleEdit}
+                  disabled={isEditDisabled}
+                >
+                  <FaEdit /> Edit
+                </Button>
+              </span>
             )}
 
-            {showDeleteButton && onDelete && (
+            {/* {showDeleteButton && onDelete && (
               <Button
                 variant="danger"
                 className="d-flex align-items-center gap-2"
@@ -260,6 +282,31 @@ const KiduView: React.FC<KiduViewProps> = ({
               >
                 <FaTrash size={12} /> Delete
               </Button>
+            )} */}
+            {/* {showDeleteButton && onDelete && (
+              <Button
+                variant={isDeleteDisabled ? "secondary" : "danger"}
+                className="d-flex align-items-center gap-2"
+                style={{ fontWeight: 500, cursor: isDeleteDisabled ? "not-allowed" : "pointer" }}
+                onClick={() => setShowConfirm(true)}
+                disabled={isDeleteDisabled}
+                title={isDeleteDisabled ? disabledDeleteTooltip : undefined}
+              >
+                <FaTrash size={12} /> Delete
+              </Button>
+            )} */}
+            {showDeleteButton && onDelete && (
+              <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
+                <Button
+                  variant={isDeleteDisabled ? "secondary" : "danger"}
+                  className="d-flex align-items-center gap-2"
+                  style={{ fontWeight: 500, cursor: isDeleteDisabled ? "not-allowed" : "pointer" }}
+                  onClick={() => setShowConfirm(true)}
+                  disabled={isDeleteDisabled}
+                >
+                  <FaTrash size={12} /> Delete
+                </Button>
+              </span>
             )}
           </div>
         </div>
