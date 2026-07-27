@@ -144,16 +144,16 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
       setShowDeleteModal(true);
     };
 
-    const handleDownload = (item: StagedAttachment) => {
-      const url = URL.createObjectURL(item.file);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = item.file.name;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    };
+   const handleDownload = (file: File) => {
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
 
     const handleRemoveConfirmed = () => {
       if (!staleToDelete) return;
@@ -331,7 +331,7 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                                 size="sm"
                                 className="d-flex align-items-center justify-content-center"
                                 style={{ width: "30px", height: "30px", padding: 0 }}
-                                onClick={() => handleDownload(item)}
+                                onClick={() => handleDownload(item.file)}
                                 disabled={uploading}
                                 title="Download"
                               >
@@ -412,7 +412,7 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                       <small className="text-muted">{formatFileSize(pendingFile.size)}</small>
                     </div>
                   </div>
-                  <Button
+                  {/* <Button
                     variant="outline-danger"
                     size="sm"
                     onClick={() => setPendingFile(null)}
@@ -421,6 +421,31 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                   >
                     <X size={14} />
                   </Button>
+                </div>
+              </div>
+            )} */}
+            <div className="d-flex gap-1">
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => handleDownload(pendingFile)}
+                      className="d-flex align-items-center justify-content-center"
+                      style={{ width: "28px", height: "28px", padding: 0 }}
+                      title="Download"
+                    >
+                      <Download size={14} />
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => setPendingFile(null)}
+                      className="d-flex align-items-center justify-content-center"
+                      style={{ width: "28px", height: "28px", padding: 0 }}
+                      title="Remove"
+                    >
+                      <X size={14} />
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
