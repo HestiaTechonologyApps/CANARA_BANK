@@ -325,7 +325,7 @@ export const adminRoutes = (
       {/* Approval */}
       <Route path="approval-list" element={<ContributionMasterApprovalList />} />
       <Route path="contributions/approval-view/:masterId" element={<ContributionMasterApprovalView/>} />
-      <Route path="approval/user-view/:userI" element={<UserApprovalView/>}/>
+      <Route path="approval/user-view/:userId" element={<UserApprovalView/>}/>
      
 
       <Route path="notifications" element={<Notifications />} />
