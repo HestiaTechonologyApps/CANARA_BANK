@@ -1,5 +1,16 @@
+// // src/Pages/ContributionMaster/ContributionMasterApprovalList.tsx
+// import React, { useState, useCallback, useRef } from "react";
+// import KiduServerTable from "../../../Components/KiduServerTable";
+// import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
+// import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
+
+// type TabKey = "monthlyContribution" | "user";
+
+// const ContributionMasterApprovalList: React.FC = () => {
+//   const [activeTab, setActiveTab] = useState<TabKey>("monthlyContribution");
 // src/Pages/ContributionMaster/ContributionMasterApprovalList.tsx
-import React, { useState, useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import KiduServerTable from "../../../Components/KiduServerTable";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
 import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
@@ -7,7 +18,17 @@ import UserRegistrationService from "../../Services/UserRegistration/UserRegsitr
 type TabKey = "monthlyContribution" | "user";
 
 const ContributionMasterApprovalList: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabKey>("monthlyContribution");
+  // Active tab is persisted in the URL (?tab=user) rather than local state,
+  // so it survives the unmount/remount that happens when navigating to the
+  // View page and back — plain useState always reset to the default tab
+  // on return, which is why closing the User view always dropped back to
+  // Monthly Contribution.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get("tab") as TabKey) || "monthlyContribution";
+
+  const setActiveTab = (tab: TabKey) => {
+    setSearchParams(tab === "monthlyContribution" ? {} : { tab });
+  };
 
   // Fetch-once, filter/search/paginate-locally cache — same pattern
   // KiduServerTableList used internally, now inlined since we're calling
