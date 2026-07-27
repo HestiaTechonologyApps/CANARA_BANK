@@ -1,14 +1,3 @@
-// // src/Pages/ContributionMaster/ContributionMasterApprovalList.tsx
-// import React, { useState, useCallback, useRef } from "react";
-// import KiduServerTable from "../../../Components/KiduServerTable";
-// import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
-// import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
-
-// type TabKey = "monthlyContribution" | "user";
-
-// const ContributionMasterApprovalList: React.FC = () => {
-//   const [activeTab, setActiveTab] = useState<TabKey>("monthlyContribution");
-// src/Pages/ContributionMaster/ContributionMasterApprovalList.tsx
 import React, { useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import KiduServerTable from "../../../Components/KiduServerTable";
