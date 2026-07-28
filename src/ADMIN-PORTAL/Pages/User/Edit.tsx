@@ -38,7 +38,26 @@ const UserEdit: React.FC = () => {
     { value: "SystemAdmin", label: "SystemAdmin" },
   ];
 
-  const handleFetch = async (id: string) => {
+//   const handleFetch = async (id: string) => {
+//   const response = await UserService.getUserById(Number(id));
+//   const user = response.value;
+
+//   if (user.companyId) {
+//     const companyRes = await CompanyService.getCompanyById(user.companyId);
+//     setSelectedCompany(companyRes.value);
+//     setInitialCompany(companyRes.value);
+//   }
+//   if (user.staffNo) {
+//     const members = await MemberService.getAllMembers();
+//     const member = members.find(m => m.staffNo === user.staffNo);
+//     if (member) {
+//       setSelectedMember(member);
+//       setInitialMember(member);
+//     }
+//   }
+//   return response;
+// };
+const handleFetch = async (id: string) => {
   const response = await UserService.getUserById(Number(id));
   const user = response.value;
 
@@ -47,9 +66,30 @@ const UserEdit: React.FC = () => {
     setSelectedCompany(companyRes.value);
     setInitialCompany(companyRes.value);
   }
+  // if (user.staffNo) {
+  //   // CHANGED — was MemberService.getAllMembers() + client-side .find(),
+  //   // which pulled the entire members table on every page load just to
+  //   // resolve one staffNo. Replaced with a direct single-record lookup
+  //   // so page load time no longer scales with member table size.
+  //   const memberRes = await MemberService.getMemberByStaffNo(user.staffNo);
+  //   const member = memberRes?.value;
+  //   if (member) {
+  //     setSelectedMember(member);
+  //     setInitialMember(member);
+  //   }
+  // }
   if (user.staffNo) {
-    const members = await MemberService.getAllMembers();
-    const member = members.find(m => m.staffNo === user.staffNo);
+    // CHANGED — was MemberService.getAllMembers() + client-side .find(),
+    // which pulled the entire members table on every page load just to
+    // resolve one staffNo. Replaced with the existing getMembersPaginated
+    // call (server-side search), asking for just 1 matching record instead
+    // of the whole table. No changes made to Member.services.ts.
+    const memberRes = await MemberService.getMembersPaginated({
+      pageNumber: 1,
+      pageSize: 1,
+      searchTerm: String(user.staffNo),
+    });
+    const member = memberRes?.data?.[0];
     if (member) {
       setSelectedMember(member);
       setInitialMember(member);

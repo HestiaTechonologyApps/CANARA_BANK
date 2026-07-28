@@ -63,7 +63,7 @@ const BranchPopup: React.FC<BranchPopupProps> = ({
         entityName: "branch",
         mapItem: mapBranchLookupItem,
         pageSize: 10,
-        extraParams: { status: "Active" }, // replaces old client-side filterData
+        extraParams: { status: "Active" }, 
       }}
       searchKeys={["dpCode", "name"]}
     />
