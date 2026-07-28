@@ -85,7 +85,7 @@ const RefundContributionByMemberList: React.FC = () => {
         { key: "memberName", label: "Member", enableSorting: true, type: "text" },
         { key: "stateName", label: "State", enableSorting: true, type: "text" },
         { key: "designationName", label: "Designation", enableSorting: true, type: "text" },
-        { key: "deathDateString", label: "Death Date", enableSorting: true, type: "text" },
+       // { key: "deathDateString", label: "Death Date", enableSorting: true, type: "text" },
         { key: "refundNO", label: "Refund No", enableSorting: true, type: "text" },
         { key: "type", label: "Type", enableSorting: true, type: "text" },
         { key: "ddno", label: "DD No", enableSorting: true, type: "text" },
