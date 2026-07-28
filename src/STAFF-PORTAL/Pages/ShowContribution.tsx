@@ -120,8 +120,17 @@ const ShowContribution: React.FC = () => {
     setTimeout(() => document.body.removeChild(iframe), 1000);
   };
 
-  const refundGrandTotal = refunds.reduce((s, r) => s + (r.amount || 0), 0);
-  const netBalance = grandTotal - refundGrandTotal;
+  // const refundGrandTotal = refunds.reduce((s, r) => s + (r.amount || 0), 0);
+  // const netBalance = grandTotal - refundGrandTotal;
+
+  // CHANGED — was summing every refund regardless of approval state.
+  // Now only counts refunds that have been approved (approvedDate set
+  // AND isApproved true). Rejected and pending refunds no longer affect
+  // the total or Net Balance below.
+  const refundGrandTotal = refunds
+    .filter((r) => r.approvedDate && r.isApproved)
+    .reduce((s, r) => s + (r.amount || 0), 0);
+  //const netBalance = grandTotal - refundGrandTotal;
 
   const handleRefundPrint = () => {
     if (!refundCardRef.current) return;
@@ -291,23 +300,46 @@ const ShowContribution: React.FC = () => {
                       {/* <th>DD No</th>
                     <th>DD Date</th> */}
                       <th>Amount</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {refunds.map((r) => (
+                    {refunds.map((r) => {
+                      // NEW — 3-state label derived from isApproved/approvedDate,
+                      // since isApproved alone (a boolean) can't represent "pending".
+                      const statusLabel = !r.approvedDate
+                        ? "Approval Pending"
+                        : r.isApproved
+                        ? "Approved"
+                        : "Not Approved";
 
-                      <tr key={r.refundContributionId}>
-                        <td className="fw-medium">{r.yearName}</td>
-                        <td>{r.refundNO}</td>
-                        <td>{r.type}</td>
-                        <td style={{ color: "#0f2a55", fontWeight: 500 }}>
-                          {r.amount ? `₹${r.amount.toLocaleString("en-IN")}` : "—"}
-                        </td>
-                      </tr>
-                    ))}
+                      return (
+                        <tr key={r.refundContributionId}>
+                          <td className="fw-medium">{r.yearName}</td>
+                          <td>{r.refundNO}</td>
+                          <td>{r.type}</td>
+                          <td style={{ color: "#0f2a55", fontWeight: 500 }}>
+                            {r.amount ? `₹${r.amount.toLocaleString("en-IN")}` : "—"}
+                          </td>
+                          <td
+                            style={{
+                              color:
+                                statusLabel === "Approved"
+                                  ? "#1E7A3D"
+                                  : statusLabel === "Not Approved"
+                                  ? "#B3261E"
+                                  : "#8792A2",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {statusLabel}
+                          </td>
+                        </tr>
+                      );
+                    })}
 
                     <tr className="sc-total-row">
-                      <td className="fw-bold" colSpan={5}>Total</td>
+                      <td className="fw-bold" colSpan={5}>Total (Approved only)</td>
                       <td className="sc-grand-total fw-bold">
                         ₹{refundGrandTotal.toLocaleString("en-IN")}
                       </td>
@@ -333,7 +365,7 @@ const ShowContribution: React.FC = () => {
           </Card.Body>
         </Card>
       </div>
-      {!loading && !refundLoading && (
+      {/* {!loading && !refundLoading && (
         <div className="mt-3">
           <Card className="sc-card">
             <Card.Body className="d-flex justify-content-between align-items-center">
@@ -347,7 +379,7 @@ const ShowContribution: React.FC = () => {
             </Card.Body>
           </Card>
         </div>
-      )}
+      )} */}
     </>
   );
 };
