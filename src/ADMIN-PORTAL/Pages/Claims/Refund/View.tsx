@@ -61,6 +61,10 @@ const handleFetch = async (id: string) => {
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this refund? This action cannot be undone."
+       disableEditWhen={(data) => data.isApproved === true}
+      disabledEditTooltip="This refund has already been approved and cannot be edited"
+      disableDeleteWhen={(data) => data.isApproved === true}
+      disabledDeleteTooltip="This refund has already been approved and cannot be deleted"
     />
   );
 };
