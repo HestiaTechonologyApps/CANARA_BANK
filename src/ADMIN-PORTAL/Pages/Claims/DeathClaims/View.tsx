@@ -85,6 +85,10 @@ const formatDateOnly = (value?: string | Date) => {
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this death claim? This action cannot be undone."
       attachmentConfig={{ tableName: "DeathClaim", recordIdField:"deathClaimId" }}
+       disableEditWhen={(data) => data.isApproved === true}
+      disabledEditTooltip="This death claim has already been approved and cannot be edited"
+      disableDeleteWhen={(data) => data.isApproved === true}
+      disabledDeleteTooltip="This death claim has already been approved and cannot be deleted"
     />
   );
 };
