@@ -53,11 +53,19 @@ const BranchPopup: React.FC<BranchPopupProps> = ({
       //  mapItem: mapBranchLookupItem,
        // pageSize: 10,
      // }}
-     searchKeys={["dpCode", "name"]}
-     fetchEndpoint={API_ENDPOINTS.BRANCH.GET_ALL}
-       filterData={(items) =>
-    items.filter((branch) => branch.status === "Active")
-  }
+  //    searchKeys={["dpCode", "name"]}
+  //    fetchEndpoint={API_ENDPOINTS.BRANCH.GET_ALL}
+  //      filterData={(items) =>
+  //   items.filter((branch) => branch.status === "Active")
+  // }
+  serverSidePagination={{
+        endpoint: API_ENDPOINTS.LOOKUP.PAGED,
+        entityName: "branch",
+        mapItem: mapBranchLookupItem,
+        pageSize: 10,
+        extraParams: { status: "Active" }, // replaces old client-side filterData
+      }}
+      searchKeys={["dpCode", "name"]}
     />
   );
 };

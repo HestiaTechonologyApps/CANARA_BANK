@@ -17,6 +17,15 @@ import KiduServerTable from "./KiduServerTable";
 // NEW — server-side lookup config. When provided, KiduPopup skips
 // the "fetch everything up front" behavior and instead calls this
 // endpoint for search + pagination, server-side.
+// export interface KiduServerSideLookupConfig<T> {
+//   /** API endpoint accepting entityName/pageNumber/pageSize/searchTerm/lookupMasterId query params */
+//   endpoint: string;
+//   entityName: string;
+//   lookupMasterId?: number;
+//   /** Map one raw item from the API's `data` array into the component's T shape */
+//   mapItem: (raw: any) => T;
+//   pageSize?: number;
+// }
 export interface KiduServerSideLookupConfig<T> {
   /** API endpoint accepting entityName/pageNumber/pageSize/searchTerm/lookupMasterId query params */
   endpoint: string;
@@ -25,6 +34,8 @@ export interface KiduServerSideLookupConfig<T> {
   /** Map one raw item from the API's `data` array into the component's T shape */
   mapItem: (raw: any) => T;
   pageSize?: number;
+  // NEW — static extra filters forwarded as query params (e.g. { status: "Active" })
+  extraParams?: Record<string, string | number | boolean>;
 }
 
 interface KiduPopupProps<T> {
@@ -115,6 +126,15 @@ function KiduPopup<T extends Record<string, any>>({
     if (!serverSidePagination) return { data: [], total: 0 };
 
     try {
+      // const query = new URLSearchParams({
+      //   entityName: serverSidePagination.entityName,
+      //   pageNumber: String(params.pageNumber),
+      //   pageSize: String(params.pageSize),
+      //   searchTerm: params.searchTerm ?? "",
+      //   lookupMasterId: String(serverSidePagination.lookupMasterId ?? 0),
+      // });
+
+      // const url = `${serverSidePagination.endpoint}?${query.toString()}`;
       const query = new URLSearchParams({
         entityName: serverSidePagination.entityName,
         pageNumber: String(params.pageNumber),
@@ -122,6 +142,13 @@ function KiduPopup<T extends Record<string, any>>({
         searchTerm: params.searchTerm ?? "",
         lookupMasterId: String(serverSidePagination.lookupMasterId ?? 0),
       });
+
+      // NEW — forward any static extra filters (e.g. status=Active)
+      if (serverSidePagination.extraParams) {
+        Object.entries(serverSidePagination.extraParams).forEach(([key, value]) => {
+          query.set(key, String(value));
+        });
+      }
 
       const url = `${serverSidePagination.endpoint}?${query.toString()}`;
       const res = await HttpService.callApi<any>(url, "GET");
