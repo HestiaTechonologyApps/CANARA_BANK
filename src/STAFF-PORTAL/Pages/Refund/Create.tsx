@@ -13,6 +13,8 @@ import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPo
 import MemberService from "../../../ADMIN-PORTAL/Services/Contributions/Member.services";
 import DesignationService from "../../../ADMIN-PORTAL/Services/Settings/Designation.services";
 import BranchService from "../../../ADMIN-PORTAL/Services/Settings/Branch.services";
+import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
+import BranchPopup from "../../../ADMIN-PORTAL/Pages/Branch/BranchPopup";
 
 const MemberRefundContributionCreate: React.FC = () => {
   const attachmentsRef = useRef<AttachmentsStagingHandle>(null);
@@ -25,6 +27,9 @@ const MemberRefundContributionCreate: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
 
   const [presetValues, setPresetValues] = useState<Record<string, any>>({});
+
+  const [showBranchPopup, setShowBranchPopup] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
 
   // Auto-fill Member (from session), Designation and DP Code (from member's own record)
   useEffect(() => {
@@ -69,6 +74,7 @@ const MemberRefundContributionCreate: React.FC = () => {
     setSelectedState(null);
     setSelectedYearMaster(null);
     attachmentsRef.current?.clear();
+    setSelectedBranch(null);
   };
 
   const fields: Field[] = [
@@ -76,7 +82,7 @@ const MemberRefundContributionCreate: React.FC = () => {
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4, disabled: true } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
-    { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
+    { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4, disabled: true } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
@@ -94,6 +100,7 @@ const MemberRefundContributionCreate: React.FC = () => {
   if (!selectedMember) throw new Error("Please select Member");
   if (!selectedDesignation) throw new Error("Please select Designation");
   if(!selectedYearMaster) throw new Error("Please select Year");
+  if (!selectedBranch) throw new Error("Please select Branch");
 
   const payload = {
     staffNo: selectedMember.staffNo,
@@ -102,7 +109,8 @@ const MemberRefundContributionCreate: React.FC = () => {
     designationId: selectedDesignation.designationId,
     refundContribution: formData.type,
     refundNO: String(formData.refundNO || "").trim(),
-    branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
+    //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
+    branchNameOFTime: selectedBranch.name,
     dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
     type: formData.type,
     remark: String(formData.remark || "").trim(),
@@ -148,6 +156,11 @@ const popupHandlers = {
     actualValue: selectedDesignation?.designationId,
     onOpen: () => {}, // no-op, field is disabled
   },
+  branchNameOFTime: {
+  value: selectedBranch?.name || "",
+  actualValue: selectedBranch?.name,
+  onOpen: () => setShowBranchPopup(true),
+},
   yearOF: {
     value: selectedYearMaster
       ? String(selectedYearMaster.yearName) 
@@ -211,6 +224,14 @@ const popupHandlers = {
         setSelectedYearMaster(y);
         setShowYearMasterPopup(false);
      }} />
+     <BranchPopup
+  show={showBranchPopup}
+  handleClose={() => setShowBranchPopup(false)}
+  onSelect={(b) => {
+    setSelectedBranch(b);
+    setShowBranchPopup(false);
+  }}
+/>
     </>
   );
 };
