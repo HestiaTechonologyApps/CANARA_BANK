@@ -108,6 +108,7 @@ LOOKUP: {
     UPDATE: (id: number) => `${API_BASE_URL}/User/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/User/${id}`,
     CHANGE_PASSWORD: `${API_BASE_URL}/User/ChangePassWord`,
+    UPDATE_PARTIALLY: (id: number) => `${API_BASE_URL}/User/${id}/update-partially`,
     // UPLOAD_PROFILE_PIC: `${API_BASE_URL}/User/upload-profile-pic`,
   },
 USER_TYPE: {

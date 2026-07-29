@@ -86,6 +86,24 @@ async changePassword(data: ChangePasswordRequest): Promise<string> {
     };
   },
 
+  async updateUserPartially(
+  id: number,
+  data: {
+    userId: number;
+    typeofUpdate: "username" | "useremail" | "phonenumber";
+    userName?: string;
+    userEmail?: string;
+    phoneNumber?: string;
+  }
+): Promise<CustomResponse<any>> {
+  const response = await HttpService.callApi<CustomResponse<any>>(
+    API_ENDPOINTS.USER.UPDATE_PARTIALLY(id),
+    "POST",
+    data
+  );
+  return response;
+},
+
 };
 
 export default UserService;

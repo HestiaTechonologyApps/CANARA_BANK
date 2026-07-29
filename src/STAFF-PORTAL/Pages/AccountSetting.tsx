@@ -12,9 +12,28 @@ interface User {
   phoneNumber: string;
 }
 
+type EditableField = "userName" | "userEmail" | "phoneNumber";
+
+const fieldTypeMap: Record<EditableField, "username" | "useremail" | "phonenumber"> = {
+  userName: "username",
+  userEmail: "useremail",
+  phoneNumber: "phonenumber",
+};
+
+const fieldLabelMap: Record<EditableField, string> = {
+  userName: "User Name",
+  userEmail: "Email",
+  phoneNumber: "Phone Number",
+};
+
 const AccountSettings: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // ✅ inline edit state for User Name / Email / Phone Number
+  const [editingField, setEditingField] = useState<EditableField | null>(null);
+  const [editValue, setEditValue] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const userDataString = localStorage.getItem("user");
@@ -56,6 +75,60 @@ const AccountSettings: React.FC = () => {
     await UserService.changePassword(changePasswordData);
   };
 
+  // ✅ start editing a single field
+  const startEdit = (field: EditableField) => {
+    if (!currentUser) return;
+    setEditingField(field);
+    setEditValue(currentUser[field] || "");
+  };
+
+  // ✅ cancel editing
+  const cancelEdit = () => {
+    setEditingField(null);
+    setEditValue("");
+  };
+
+  // ✅ save a single field via /update-partially
+  const saveEdit = async () => {
+    if (!currentUser || !editingField) return;
+
+    if (!editValue.trim()) {
+      toast.error(`${fieldLabelMap[editingField]} cannot be empty`);
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const response = await UserService.updateUserPartially(currentUser.userId, {
+        userId: currentUser.userId,
+        typeofUpdate: fieldTypeMap[editingField],
+        [editingField]: editValue,
+      });
+
+      const updatedUser = { ...currentUser, [editingField]: editValue };
+      setCurrentUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      toast.success(response?.customMessage || `${fieldLabelMap[editingField]} updated successfully`);
+      setEditingField(null);
+      setEditValue("");
+    } catch (error) {
+      console.error("Error updating field:", error);
+      toast.error(`Failed to update ${fieldLabelMap[editingField].toLowerCase()}. Please try again.`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleEditKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      saveEdit();
+    } else if (e.key === "Escape") {
+      cancelEdit();
+    }
+  };
+
   if (isLoading || !currentUser) {
     return (
       <div className="container-fluid px-2 mt-1" style={{ fontFamily: "Urbanist" }}>
@@ -75,6 +148,68 @@ const AccountSettings: React.FC = () => {
     { name: "confirmPassword", rules: { type: "password", label: "Confirm Password", required: true, minLength: 6, placeholder: "Confirm new password", colWidth: 4 } },
   ];
 
+  // ✅ reusable renderer for an editable field (User Name / Email / Phone Number)
+  const renderEditableField = (field: EditableField, colWidth: 3 | 2 | 4 = 3) => {
+    const isEditing = editingField === field;
+
+    return (
+      <Col md={colWidth}>
+        <div className="mb-2">
+          <small className="text-muted d-block" style={{ fontSize: "0.8rem" }}>
+            {fieldLabelMap[field]}
+          </small>
+
+          {isEditing ? (
+            <div className="d-flex align-items-center gap-2 mt-1">
+              <input
+                type={field === "userEmail" ? "email" : "text"}
+                className="form-control form-control-sm"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                onKeyDown={handleEditKeyDown}
+                autoFocus
+                disabled={isSaving}
+              />
+              <button
+                type="button"
+                className="btn btn-sm btn-success"
+                disabled={isSaving}
+                onClick={saveEdit}
+                title="Save"
+              >
+                {isSaving ? (
+                  <span className="spinner-border spinner-border-sm" role="status" />
+                ) : (
+                  "✓"
+                )}
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary"
+                disabled={isSaving}
+                onClick={cancelEdit}
+                title="Cancel"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div className="d-flex align-items-center gap-2">
+              <strong style={{ fontSize: "0.95rem" }}>{currentUser[field] || "—"}</strong>
+              <i
+                className="bi bi-pencil-square text-primary"
+                role="button"
+                style={{ cursor: "pointer", fontSize: "0.85rem" }}
+                onClick={() => startEdit(field)}
+                title={`Edit ${fieldLabelMap[field].toLowerCase()}`}
+              />
+            </div>
+          )}
+        </div>
+      </Col>
+    );
+  };
+
   return (
     <div className="container-fluid px-2 mt-1" style={{ fontFamily: "Urbanist" }}>
       <div
@@ -90,7 +225,7 @@ const AccountSettings: React.FC = () => {
         </h4>
         <hr />
 
-        {/* Display User Information as Read-Only Card */}
+        {/* Display User Information as Read-Only / Inline-Editable Card */}
         <Card className="mb-4" style={{ backgroundColor: "#f8f9fa" }}>
           <Card.Body>
             <h6 className="fw-bold mb-3" style={{ color: "#1B3763" }}>
@@ -99,28 +234,18 @@ const AccountSettings: React.FC = () => {
             <Row>
               <Col md={2}>
                 <div className="mb-2">
-                  <small className="text-muted d-block">User ID</small>
-                  <strong className="text-danger">{currentUser.userId}</strong>
+                  <small className="text-muted d-block" style={{ fontSize: "0.8rem" }}>
+                    User ID
+                  </small>
+                  <strong className="text-danger" style={{ fontSize: "0.95rem" }}>
+                    {currentUser.userId}
+                  </strong>
                 </div>
               </Col>
-              <Col md={3}>
-                <div className="mb-2">
-                  <small className="text-muted d-block">User Name</small>
-                  <strong>{currentUser.userName}</strong>
-                </div>
-              </Col>
-              <Col md={3}>
-                <div className="mb-2">
-                  <small className="text-muted d-block">Email</small>
-                  <strong>{currentUser.userEmail}</strong>
-                </div>
-              </Col>
-              <Col md={3}>
-                <div className="mb-2">
-                  <small className="text-muted d-block">Phone Number</small>
-                  <strong>{currentUser.phoneNumber}</strong>
-                </div>
-              </Col>
+
+              {renderEditableField("userName", 3)}
+              {renderEditableField("userEmail", 3)}
+              {renderEditableField("phoneNumber", 3)}
             </Row>
           </Card.Body>
         </Card>
