@@ -1,4 +1,5 @@
 // src/Pages/ContributionMaster/ContributionMasterView.tsx
+import ReactDOM from "react-dom";
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MemberService from "../../../Services/Contributions/Member.services";
@@ -557,7 +558,11 @@ const ModalShell: React.FC<{
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  return (
+  // return (
+  //   <div
+  //     style={{
+  //       position: "fixed", inset: 0, zIndex: 1000,
+  return ReactDOM.createPortal(
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 1000,
@@ -611,7 +616,9 @@ const ModalShell: React.FC<{
         </div>
 
        
-        <div style={{ padding: "24px 28px" }}>
+        {/* <div style={{ padding: "24px 28px" }}>
+          {successMsg && ( */}
+          <div style={{ padding: "24px 28px", overflowY: "auto", flex: "1 1 auto", minHeight: 0 }}>
           {successMsg && (
             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
               ✅ {successMsg}
@@ -653,7 +660,8 @@ const ModalShell: React.FC<{
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, required }) => (
