@@ -246,33 +246,63 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                 initialFilters={initialFilters}
               />
             )}
-            {showRowsPerPageSelector && (
-              <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle size="sm" variant="outline" style={{
-                  color: "#1B3763",
-                  fontFamily: "Urbanist",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  borderColor: "#1B3763",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}>
-                  <FaColumns />  Show {rowsPerPage} rows
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {rowsPerPageOptions.map((opt) => (
-                    <Dropdown.Item
-                      key={opt}
-                      active={rowsPerPage === opt}
-                      onClick={() => onRowsPerPageChange?.(opt)}
-                    >
-                      {opt} rows
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
+           {showRowsPerPageSelector && (
+  <Dropdown as={ButtonGroup}>
+    <Dropdown.Toggle size="sm" variant="outline" style={{
+      color: "#1B3763",
+      fontFamily: "Urbanist",
+      fontSize: "13px",
+      fontWeight: 600,
+      borderColor: "#1B3763",
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
+    }}>
+      <FaColumns />  Show {rowsPerPage} rows
+    </Dropdown.Toggle>
+    <Dropdown.Menu style={{
+      fontFamily: "Urbanist",
+      fontSize: "13px",
+      fontWeight: 600,
+      border: "1px solid #1B3763",
+      borderRadius: "6px",
+      boxShadow: "0 4px 10px rgba(27, 55, 99, 0.15)",
+      padding: "4px",
+      minWidth: "140px",
+    }}>
+      {rowsPerPageOptions.map((opt) => {
+        const isActive = rowsPerPage === opt;
+        return (
+          <Dropdown.Item
+            key={opt}
+            active={isActive}
+            onClick={() => onRowsPerPageChange?.(opt)}
+            style={{
+              color: isActive ? "#fff" : "#1B3763",
+              backgroundColor: isActive ? "#1B3763" : "transparent",
+              borderRadius: "4px",
+              fontWeight: isActive ? 700 : 500,
+              padding: "6px 10px",
+              marginBottom: "2px",
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.backgroundColor = "#eef2f7";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.backgroundColor = "transparent";
+              }
+            }}
+          >
+            {opt} rows
+          </Dropdown.Item>
+        );
+      })}
+    </Dropdown.Menu>
+  </Dropdown>
+)}
 
             {/* {showExportButtons && (
               <>
