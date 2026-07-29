@@ -19,6 +19,8 @@ import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 import AuthService from "../../../../Services/Auth.services";
+import type { Branch } from "../../../Types/Settings/Branch.types";
+import BranchPopup from "../../Branch/BranchPopup";
 
 const THEME_COLOR = "#1B3763";
 
@@ -44,12 +46,16 @@ const RefundContributionEdit: React.FC = () => {
   const [initialDesignation, setInitialDesignation] = useState<Designation | null>(null);
   const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
 
+  const [showBranchPopup, setShowBranchPopup] = useState(false);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
-    { name: "branchNameOFTime", rules: { type: "text", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
+    { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
@@ -111,6 +117,16 @@ const handleFetch = async (id: string) => {
     setSelectedDesignation(designation);
     setInitialDesignation(designation); 
   }
+
+  if (refund.branchNameOFTime) {
+  const branchFromSnapshot = {
+    branchId: 0,
+    dpCode: Number(refund.dpcodeOfTime) || 0,
+    name: refund.branchNameOFTime,
+  } as Branch;
+  setSelectedBranch(branchFromSnapshot);
+  setInitialBranch(branchFromSnapshot);
+}
 
   if (refund.yearOF) {
     const year = (await YearMasterService.getYearMasterById(refund.yearOF)).value;
@@ -220,10 +236,11 @@ const handleReject = async () => {
     setSelectedMember(initialMember);
     setSelectedDesignation(initialDesignation);
     setSelectedYearMaster(initialYearMaster);
+    setSelectedBranch(initialBranch);
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedState || !selectedMember || !selectedDesignation ||! selectedYearMaster) {
+    if (!selectedState || !selectedMember || !selectedDesignation ||! selectedYearMaster || !selectedBranch) {
       throw new Error("Please select all required values");
     }
     const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
@@ -233,7 +250,8 @@ const handleReject = async () => {
       memberId: selectedMember.memberId,
       designationId: selectedDesignation.designationId,
       refundNO: String(formData.refundNO || "").trim(),
-      branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
+      //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
+      branchNameOFTime: selectedBranch.name,
       dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
       type: formData.type,
       remark: String(formData.remark || "").trim(),
@@ -266,6 +284,11 @@ const handleReject = async () => {
       actualValue: selectedDesignation?.designationId,
       onOpen: () => setShowDesignationPopup(true),
     },
+    branchNameOFTime: {
+  value: selectedBranch?.name || "",
+  actualValue: selectedBranch?.name,
+  onOpen: () => setShowBranchPopup(true),
+},
      yearOF: {
     value: selectedYearMaster
       ? String(selectedYearMaster.yearName) 
@@ -332,6 +355,14 @@ const handleReject = async () => {
        handleClose={() => setShowDesignationPopup(false)} 
        onSelect={setSelectedDesignation} 
        />
+       <BranchPopup
+  show={showBranchPopup}
+  handleClose={() => setShowBranchPopup(false)}
+  onSelect={(b) => {
+    setSelectedBranch(b);
+    setShowBranchPopup(false);
+  }}
+/>
         <YearMasterPopup
        show={showYearMasterPopup}
        handleClose={() => setShowYearMasterPopup(false)}
