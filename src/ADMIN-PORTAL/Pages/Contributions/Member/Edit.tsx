@@ -52,7 +52,7 @@ const fields: Field[] = [
   { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4, disabled: !nomineeValue.trim() } },
   { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4, disabled: !nomineeValue.trim()  } },
   { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
-  { name: "totalRefund", rules: { type: "number", label: "Total Refund", placeholder: "0", colWidth: 4 } },
+//  { name: "totalRefund", rules: { type: "number", label: "Total Refund", placeholder: "0", colWidth: 4 } },
 ];
 
   // Gender options

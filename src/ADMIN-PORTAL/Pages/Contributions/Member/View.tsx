@@ -8,6 +8,8 @@ import type { MemberAccountDetail } from "../../../Types/Contributions/MemberAcc
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 import MemberAccountsDetailsService from "../../../Services/Contributions/MemberAccountsDetails.services";
+import type { RefundContribution } from "../../../Types/Claims/Refund.types";
+import RefundContributionService from "../../../Services/Claims/Refund.services";
 
 const THEME = "#1B3763";
 const THEME_SOFT = "#EEF1F7";
@@ -100,12 +102,21 @@ const MemberView: React.FC = () => {
   const { memberId } = useParams<{ memberId: string }>();
   const navigate = useNavigate();
 
+  // const [member, setMember] = useState<MemberDetail | null>(null);
+  // const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [contribLoading, setContribLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const [deleting, setDeleting] = useState(false);
   const [member, setMember] = useState<MemberDetail | null>(null);
   const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [contribLoading, setContribLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  // NEW — total refund is now computed from actual approved
+  // RefundContribution records instead of the static Member.totalRefund field.
+  const [approvedRefundTotal, setApprovedRefundTotal] = useState(0);
 
   const loadMember = useCallback(async () => {
     if (!memberId) return;
@@ -133,6 +144,29 @@ const MemberView: React.FC = () => {
     }
   }, [memberId]);
 
+  // const loadContributions = useCallback(async () => {
+  //   if (!memberId) return;
+  //   setContribLoading(true);
+  //   try {
+  //     const data = await MemberAccountsDetailsService.getById(Number(memberId));
+  //     // Most recent contribution first
+  //     const sorted = [...data].sort((a, b) => {
+  //       if (b.yearOf !== a.yearOf) return b.yearOf - a.yearOf;
+  //       return b.monthCode - a.monthCode;
+  //     });
+  //     setContributions(sorted);
+  //   } catch (err) {
+  //     console.error(err);
+  //     // Non-fatal — member details can still render without contributions
+  //   } finally {
+  //     setContribLoading(false);
+  //   }
+  // }, [memberId]);
+
+  // useEffect(() => {
+  //   loadMember();
+  //   loadContributions();
+  // }, [loadMember, loadContributions]);
   const loadContributions = useCallback(async () => {
     if (!memberId) return;
     setContribLoading(true);
@@ -152,10 +186,39 @@ const MemberView: React.FC = () => {
     }
   }, [memberId]);
 
+  // NEW — fetches this member's refund contributions and sums only the
+  // approved ones (approvedDate set AND isApproved true), same convention
+  // already used in ShowContribution.tsx for the staff-portal net balance.
+  const loadApprovedRefundTotal = useCallback(async () => {
+    if (!memberId) return;
+    try {
+      const response = await RefundContributionService.getRefundContributionByMemberId(
+        Number(memberId)
+      );
+      const rawValue = response.value;
+      const refunds: RefundContribution[] = Array.isArray(rawValue)
+        ? rawValue
+        : rawValue
+        ? [rawValue as unknown as RefundContribution]
+        : [];
+
+      const total = refunds
+        .filter((r) => r.approvedDate && r.isApproved)
+        .reduce((sum, r) => sum + (r.amount || 0), 0);
+
+      setApprovedRefundTotal(total);
+    } catch (err) {
+      console.error("Failed to load refund contributions for member:", err);
+      // Non-fatal — member details can still render, total refund falls
+      // back to 0 rather than blocking the page.
+    }
+  }, [memberId]);
+
   useEffect(() => {
     loadMember();
     loadContributions();
-  }, [loadMember, loadContributions]);
+    loadApprovedRefundTotal();
+  }, [loadMember, loadContributions, loadApprovedRefundTotal]);
 
   const handleEdit = () => {
     navigate(`/dashboard/contributions/member-edit/${memberId}`);
@@ -364,9 +427,16 @@ const MemberView: React.FC = () => {
             <div className="mv-stat-label">Total Paid</div>
             <div className="mv-stat-value">{formatCurrency(totalContribution)}</div>
           </div>
-          <div className="mv-stat">
+          {/* <div className="mv-stat">
             <div className="mv-stat-label">Total Refund</div>
             <div className="mv-stat-value">{formatCurrency(member.totalRefund)}</div>
+          </div> */}
+          <div className="mv-stat">
+            <div className="mv-stat-label">Total Refund</div>
+            {/* CHANGED — was member.totalRefund (a static stored field on
+                the Member record). Now shows the sum of this member's
+                actually approved RefundContribution records. */}
+            <div className="mv-stat-value">{formatCurrency(approvedRefundTotal)}</div>
           </div>
         </div>
       </div>
