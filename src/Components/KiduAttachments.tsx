@@ -1,20 +1,36 @@
-import React, { useState, useEffect, useCallback } from "react";
+import  { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import { Button, Modal, Form, Table, Spinner, Alert, OverlayTrigger, Tooltip, Card, Collapse } from "react-bootstrap";
 import { Upload, Download, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive, FileAudio, FileVideo, FileJson, FileCode, FileType, Paperclip, ChevronDown, ChevronUp } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import type { Attachment } from "../Types/Attachment.types";
 import AttachmentService from "../Services/Attachment.services";
 
+export interface AttachmentsHandle {
+    hasPendingFiles: () => boolean;
+    uploadPendingFiles: (tableName: string, recordId: string | number) => Promise<void>;
+}
 
 interface AttachmentsProps {
     tableName: string;
     recordId: string | number;
     showAddButton?: boolean;
     showDeleteButton?: boolean;
+    deferUpload?: boolean;
+    onPendingChange?: (hasPending: boolean) => void;
 }
 
-const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddButton = true, showDeleteButton = true }) => {
+const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
+    tableName,
+    recordId,
+    showAddButton = true,
+    showDeleteButton = true,
+    deferUpload = false,
+    onPendingChange,
+}, ref) => {
     const [attachments, setAttachments] = useState<Attachment[]>([]);
+
+// const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddButton = true, showDeleteButton = true }) => {
+//     const [attachments, setAttachments] = useState<Attachment[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -25,6 +41,30 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [attachmentToDelete, setAttachmentToDelete] = useState<number | null>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+     interface PendingAttachment { id: string; file: File; description: string; }
+    const [pendingFiles, setPendingFiles] = useState<PendingAttachment[]>([]);
+
+    useEffect(() => {
+        onPendingChange?.(pendingFiles.length > 0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pendingFiles]);
+
+    useImperativeHandle(ref, () => ({
+        hasPendingFiles: () => pendingFiles.length > 0,
+        uploadPendingFiles: async (tn, rid) => {
+            for (const pending of pendingFiles) {
+                const formData = new FormData();
+                formData.append("File", pending.file);
+                formData.append("TableName", tn);
+                formData.append("RecordId", Number(rid).toString());
+                if (pending.description) formData.append("Description", pending.description);
+                await AttachmentService.uploadAttachment(formData);
+            }
+            setPendingFiles([]);
+            await fetchAttachments();
+        },
+    }));
 
     useEffect(() => {
         if (tableName && recordId) fetchAttachments();
@@ -91,9 +131,46 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
         URL.revokeObjectURL(url);
     };
 
+    // const handleUpload = async () => {
+    //     if (!selectedFile) {
+    //         setUploadError("Please select a file to upload");
+    //         return;
+    //     }
+
+    //     try {
+    //         setUploading(true);
+    //         setUploadError(null);
+
+    //         const formData = new FormData();
+    //         formData.append("File", selectedFile);
+    //         formData.append("TableName", tableName);
+    //         formData.append("RecordId", Number(recordId).toString());
+    //         if (description) formData.append("Description", description);
+
+    //         await AttachmentService.uploadAttachment(formData);
+    //         await fetchAttachments();
+    //         handleCloseModal();
+    //     } catch (err) {
+    //         console.error("Upload failed:", err);
+    //         setUploadError("Failed to upload file. Please try again.");
+    //     } finally {
+    //         setUploading(false);
+    //     }
+    // };
     const handleUpload = async () => {
         if (!selectedFile) {
             setUploadError("Please select a file to upload");
+            return;
+        }
+
+        // NEW — stage locally instead of hitting the API right away; the
+        // parent's Update button drives the real upload via the ref
+        if (deferUpload) {
+            setPendingFiles(prev => [
+                ...prev,
+                { id: `pending-${Date.now()}-${Math.random()}`, file: selectedFile, description },
+            ]);
+            handleCloseModal();
             return;
         }
 
@@ -271,6 +348,43 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
                                 </Button>
                             </div>
                         )}
+                        {/* {loading ? (
+                            <div className="text-center py-4"> */}
+                            {/* NEW — files staged for upload, shown separately from
+                            already-saved attachments until Update is clicked */}
+                        {pendingFiles.length > 0 && (
+                            <div className="mb-3">
+                                <div className="text-muted small mb-2 fw-semibold">
+                                    Pending upload (saved when you click Update)
+                                </div>
+                                <Table size="sm" className="mb-0" style={{ fontSize: "0.85rem" }}>
+                                    <tbody>
+                                        {pendingFiles.map((p) => (
+                                            <tr key={p.id}>
+                                                <td style={{ padding: "0.4rem" }}>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        {getFileIcon(p.file.name)}
+                                                        <span>{p.file.name}</span>
+                                                        <span className="badge bg-warning text-dark">Pending</span>
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: "0.4rem", width: "40px" }} className="text-center">
+                                                    <Button
+                                                        variant="outline-danger"
+                                                        size="sm"
+                                                        style={{ width: 28, height: 28, padding: 0 }}
+                                                        onClick={() => setPendingFiles(prev => prev.filter(f => f.id !== p.id))}
+                                                    >
+                                                        <X size={14} />
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        )}
+
                         {loading ? (
                             <div className="text-center py-4">
                                 <Spinner animation="border" variant="primary" size="sm" />
@@ -582,6 +696,6 @@ const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddB
             </Modal>
         </>
     );
-};
+});
 
 export default Attachments;

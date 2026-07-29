@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, Row, Col, Image, Card, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,7 +10,7 @@ import KiduPrevious from "../../Components/KiduPrevious";
 import KiduReset from "../../Components/KiduReset";
 import KiduLoader from "../../Components/KiduLoader";
 import KiduAuditLogs from "../../Components/KiduAuditLogs";
-import Attachments from "../../Components/KiduAttachments";
+import Attachments, { type AttachmentsHandle } from "../../Components/KiduAttachments";
 
 // ==================== TYPES ====================
 export interface FieldRule {
@@ -179,6 +179,9 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const [previewUrl, setPreviewUrl] = useState<string>(imageConfig?.defaultImage || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  const attachmentsRef = useRef<AttachmentsHandle>(null);
+  const [hasPendingAttachments, setHasPendingAttachments] = useState(false);
+
   const hasChanges = () => {
     const formDataChanged = JSON.stringify(formData) !== JSON.stringify(initialData);
 
@@ -193,7 +196,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
       }
     });
 
-    return formDataChanged || selectedFile !== null || popupChanged;
+    return formDataChanged || selectedFile !== null || popupChanged || hasPendingAttachments;
   };
 
   // ==================== FETCH DATA ====================
@@ -442,6 +445,23 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         delete submitData.auditLogs;
       }
 
+      // const updateResult = await onUpdate(recordId!, submitData);
+
+      // let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
+
+      // fields.forEach(f => {
+      //   if (f.rules.type === "popup" && popupHandlers[f.name]?.actualValue !== undefined) {
+      //     updatedData = { ...updatedData, [f.name]: popupHandlers[f.name].actualValue };
+      //   }
+      // });
+
+      // if (imageConfig && selectedFile) {
+      //   updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
+      // }
+
+      // setInitialData(updatedData);
+      // setFormData(updatedData);
+      // setSelectedFile(null);
       const updateResult = await onUpdate(recordId!, submitData);
 
       let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
@@ -454,6 +474,16 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
       if (imageConfig && selectedFile) {
         updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
+      }
+
+      // NEW — record update succeeded, now actually send any staged
+      // attachments, same order as Create's AttachmentsStaging.uploadAll()
+      if (attachmentConfig && attachmentsRef.current?.hasPendingFiles()) {
+        const attachmentRecordId = updatedData[attachmentConfig.recordIdField] ?? recordId;
+        await attachmentsRef.current.uploadPendingFiles(
+          attachmentConfig.tableName,
+          attachmentRecordId
+        );
       }
 
       setInitialData(updatedData);
@@ -820,12 +850,25 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
               {children}
 
-              {attachmentConfig && formData[attachmentConfig.recordIdField] && (
+              {/* {attachmentConfig && formData[attachmentConfig.recordIdField] && (
                 <Row className="mb-3">
                   <Col xs={12}>
                     <Attachments
                       tableName={attachmentConfig.tableName}
                       recordId={formData[attachmentConfig.recordIdField]}
+                    />
+                  </Col>
+                </Row>
+              )} */}
+              {attachmentConfig && formData[attachmentConfig.recordIdField] && (
+                <Row className="mb-3">
+                  <Col xs={12}>
+                    <Attachments
+                      ref={attachmentsRef}
+                      tableName={attachmentConfig.tableName}
+                      recordId={formData[attachmentConfig.recordIdField]}
+                      deferUpload
+                      onPendingChange={setHasPendingAttachments}
                     />
                   </Col>
                 </Row>
