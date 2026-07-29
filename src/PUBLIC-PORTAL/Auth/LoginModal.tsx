@@ -393,13 +393,14 @@ if (!response.isSucess || !response.value || lockedFromValue) {
 
           {/* ── Remember me / Forgot Password ── */}
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <Form.Check
+            {/* <Form.Check
               type="checkbox"
               label="Remember me"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
               disabled={isLoading}
-            />
+            /> */}
+            <div />
             <button
               className="auth-link"
               type="button"
