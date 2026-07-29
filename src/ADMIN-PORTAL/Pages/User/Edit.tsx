@@ -21,7 +21,7 @@ const UserEdit: React.FC = () => {
   const [initialMember, setInitialMember] = useState<Member | null>(null); 
 
   const fields: Field[] = [
-    { name: "userName", rules: { type: "text", label: "User Name", required: true, colWidth: 4, pattern: /^(?!\d+$)[A-Za-z0-9._]+$/, } },
+    { name: "userName", rules: { type: "text", label: "User Name", required: true, colWidth: 4 } },
     { name: "userEmail", rules: { type: "email", label: "Email Address", required: true, colWidth: 4 } },
     { name: "staffNo", rules: { type: "popup", label: "Staff No", required: true, colWidth: 4 } },
     { name: "phoneNumber", rules: { type: "number", label: "Phone Number", required: true, colWidth: 4 , minLength:10, maxLength:10} },
