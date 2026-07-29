@@ -57,6 +57,8 @@ interface KiduServerTableProps {
   navbarAdditionalButtons?: React.ReactNode;
   showFilter?: boolean;
   filterColumns?: FilterColumn[];
+  disableEditWhen?: (row: any) => boolean;
+  disabledEditTooltip?: string;
 }
 
 const KiduServerTable: React.FC<KiduServerTableProps> = ({
@@ -84,6 +86,8 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   navbarAdditionalButtons,
   showFilter = false,
   filterColumns = [],
+  disableEditWhen,
+  disabledEditTooltip = "This record is already approved and cannot be edited",
 }) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -311,37 +315,80 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
       },
     }));
 
-    if (showActions) {
+  //   if (showActions) {
+  //     cols.push({
+  //       id: "actions",
+  //       header: "Action",
+  //       enableSorting: false,
+  //       cell: ({ row }) => (
+  //         <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
+  //           {editRoute && (
+  //             <Button size="sm"
+  //             //added to diable the edit button in list page of monthly contribution only
+  //             disabled={!!row.original._disableEdit}
+  //               style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+  //               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; }}
+  //               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; }}
+  //               onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
+  //               <FaEdit className="me-1" /> Edit
+  //             </Button>
+  //           )}
+  //           {viewRoute && (
+  //             <Button size="sm"
+  //               style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+  //               onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
+  //               <FaEye className="me-1" /> View
+  //             </Button>
+  //           )}
+  //         </div>
+  //       ),
+  //     });
+  //   }
+  //   return cols;
+  // }, [columns, showActions, editRoute, viewRoute, navigate, idKey]);
+  if (showActions) {
       cols.push({
         id: "actions",
         header: "Action",
         enableSorting: false,
-        cell: ({ row }) => (
-          <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
-            {editRoute && (
-              <Button size="sm"
-              //added to diable the edit button in list page of monthly contribution only
-              disabled={!!row.original._disableEdit}
-                style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; }}
-                onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
-                <FaEdit className="me-1" /> Edit
-              </Button>
-            )}
-            {viewRoute && (
-              <Button size="sm"
-                style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
-                onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
-                <FaEye className="me-1" /> View
-              </Button>
-            )}
-          </div>
-        ),
+        cell: ({ row }) => {
+          // NEW — respects both the legacy per-row flag (Monthly Contribution)
+          // and the new generic disableEditWhen prop, so either mechanism disables Edit.
+          const isEditDisabled =
+            !!row.original._disableEdit ||
+            !!(disableEditWhen && disableEditWhen(row.original));
+
+          return (
+            <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
+              {editRoute && (
+                // NEW — span wrapper so `title` tooltip still shows on hover
+                // even while the button itself is disabled (disabled buttons
+                // don't fire native title tooltips in most browsers)
+                <span title={isEditDisabled ? disabledEditTooltip : undefined}>
+                  <Button size="sm"
+                    disabled={isEditDisabled}
+                    style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                    onMouseEnter={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; } }}
+                    onMouseLeave={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; } }}
+                    onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
+                    <FaEdit className="me-1" /> Edit
+                  </Button>
+                </span>
+              )}
+              {viewRoute && (
+                <Button size="sm"
+                  style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                  onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
+                  <FaEye className="me-1" /> View
+                </Button>
+              )}
+            </div>
+          );
+        },
       });
     }
     return cols;
-  }, [columns, showActions, editRoute, viewRoute, navigate, idKey]);
+  }, [columns, showActions, editRoute, viewRoute, navigate, idKey, disableEditWhen, disabledEditTooltip]);
 
   const table = useReactTable({
     data,

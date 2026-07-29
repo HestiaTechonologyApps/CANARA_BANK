@@ -37,6 +37,8 @@ interface KiduServerTableListProps {
   filterColumns?: FilterColumn[];
   onRowClick?: (item: any) => void;
   onAddClick?: () => void;
+  disableEditWhen?: (row: any) => boolean;
+  disabledEditTooltip?: string;
 }
 
 const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
@@ -61,6 +63,8 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
   filterColumns = [],
   onRowClick,
   onAddClick,
+  disableEditWhen,
+  disabledEditTooltip,
 }) => {
   const cachedDataRef = useRef<any[] | null>(null);
 
@@ -178,6 +182,8 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
       onAddClick={onAddClick}
       showFilter={showFilter}
       filterColumns={filterColumns}
+      disableEditWhen={disableEditWhen}
+      disabledEditTooltip={disabledEditTooltip}
     />
   );
 };

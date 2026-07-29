@@ -183,6 +183,8 @@ const RefundContributionByMemberList: React.FC = () => {
       showSearch={true}
       showActions={true}
       rowsPerPage={10}
+      disableEditWhen={(row) => row.isApproved === true}
+      disabledEditTooltip="This refund has already been approved and cannot be edited"
     />
   );
 };
