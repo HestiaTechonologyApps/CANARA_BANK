@@ -1159,6 +1159,54 @@ const DetailCard: React.FC<{
 };
 
 
+// const ReportRow: React.FC<{
+//   row: ContributionDetail;
+//   rank: number;
+//   reportType: ContributionReportType;
+//   onAction: (row: ContributionDetail) => void;
+//   actionLabel?: string;
+//   accent: string;
+//   onPark: (row: ContributionDetail) => void;
+//   onUnpark: (row: ContributionDetail) => void;
+// }> = ({ row, rank, reportType, onAction, actionLabel, accent, onPark, onUnpark }) => {
+//   const isParkedItemsTab = reportType === "PARKEDITEMS";
+
+//   const renderActions = () => {
+
+//     if (isParkedItemsTab) {
+//       return (
+//         <button className="unpark-btn" onClick={() => onUnpark(row)}
+//           style={{ background: "#f0fafa", border: "1.5px solid #0d7377", color: "#0d7377", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
+//           ♻️ Unpark
+//         </button>
+//       );
+//     }
+
+//     return (
+//       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
+//         {/* Create action button (only shown when not parked) */}
+//         {actionLabel && (
+//           <button className="rpt-action-btn" onClick={() => onAction(row)}
+//             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
+//             {actionLabel}
+//           </button>
+//         )}
+
+    
+//         {row.isParked ? (
+//           <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
+//             🅿️ Parked
+//           </span>
+//         ) : (
+         
+//           <button className="park-btn" onClick={() => onPark(row)}
+//             style={{ background: "#fffbeb", border: "1.5px solid #f59e0b", color: "#b45309", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
+//             🅿️ Park
+//           </button>
+//         )}
+//       </div>
+//     );
+//   };
 const ReportRow: React.FC<{
   row: ContributionDetail;
   rank: number;
@@ -1184,7 +1232,13 @@ const ReportRow: React.FC<{
 
     return (
       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
-        {/* Create action button (only shown when not parked) */}
+        {/* CHANGED — Create action button now ALWAYS shows when actionLabel
+            exists, even if the row is parked. Previously this was hidden
+            once row.isParked was true, which meant a discrepancy that had
+            been parked before its underlying record (Member/Branch/Circle)
+            was created could never actually be resolved — there was no way
+            to trigger the create action, and Unpark would keep refusing
+            since the issue was still unresolved. */}
         {actionLabel && (
           <button className="rpt-action-btn" onClick={() => onAction(row)}
             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
@@ -1192,13 +1246,21 @@ const ReportRow: React.FC<{
           </button>
         )}
 
-    
         {row.isParked ? (
-          <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
-            🅿️ Parked
-          </span>
+          // CHANGED — added a quick Unpark action alongside the Parked
+          // badge, so once the underlying record has been created (via
+          // the button above), the row can be cleared right here without
+          // navigating to the Parked Items tab.
+          <>
+            <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
+              🅿️ Parked
+            </span>
+            <button className="unpark-btn" onClick={() => onUnpark(row)}
+              style={{ background: "#f0fafa", border: "1.5px solid #0d7377", color: "#0d7377", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
+              ♻️ Unpark
+            </button>
+          </>
         ) : (
-         
           <button className="park-btn" onClick={() => onPark(row)}
             style={{ background: "#fffbeb", border: "1.5px solid #f59e0b", color: "#b45309", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
             🅿️ Park
