@@ -11,6 +11,7 @@ import AccountDirectEntryService from "../../../ADMIN-PORTAL/Services/Contributi
 import type { AccountDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
 import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
+import MemberService from "../../../ADMIN-PORTAL/Services/Contributions/Member.services";
 
 const StaffAccountDirectEntryCreate: React.FC = () => {
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -22,15 +23,23 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
+  // Auto-fill Member from session, then resolve the actual Member record
+  // (was previously using user.userName as a stand-in — that showed the
+  // login username instead of the real member name)
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const loadOwnMember = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) return;
       const user = JSON.parse(storedUser);
-      setSelectedMember({
-        memberId: user.memberId,
-        name: user.userName,
-      } as Member);
-    }
+
+      const memberRes = await MemberService.getMemberById(Number(user.memberId));
+      const member = memberRes.value;
+      if (!member) return;
+
+      setSelectedMember(member);
+    };
+
+    loadOwnMember();
   }, []);
 
   const handleReset = () => {
