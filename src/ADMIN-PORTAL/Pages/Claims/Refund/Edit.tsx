@@ -49,6 +49,7 @@ const RefundContributionEdit: React.FC = () => {
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
+  const [presetValues, setPresetValues] = useState<Record<string, any>>({}); 
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
@@ -237,6 +238,7 @@ const handleReject = async () => {
     setSelectedDesignation(initialDesignation);
     setSelectedYearMaster(initialYearMaster);
     setSelectedBranch(initialBranch);
+    setPresetValues({});
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
@@ -339,6 +341,7 @@ const handleReject = async () => {
         themeColor="#1B3763"
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
+        presetValues={presetValues}
       />
       <StatePopup
        show={showStatePopup} 
@@ -348,7 +351,25 @@ const handleReject = async () => {
       <MemberPopup 
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 
-       onSelect={setSelectedMember} 
+       onSelect={async (m) => {
+         // CHANGED — was onSelect={setSelectedMember}, which didn't close
+         // the popup and didn't auto-fill anything. Now closes the popup
+         // and fetches the full member record to auto-fill Designation
+         // + DP Code, same pattern as RefundContributionCreate.
+         setSelectedMember(m);
+         setShowMemberPopup(false);
+
+         try {
+           const fullMember = (await MemberService.getMemberById(m.memberId)).value;
+           if (fullMember?.designationId) {
+             const designation = (await DesignationService.getDesignationById(fullMember.designationId)).value;
+             setSelectedDesignation(designation);
+           }
+           setPresetValues({ dpcodeOfTime: fullMember?.dpCode || "" });
+         } catch (err) {
+           console.error("Failed to auto-fill designation/DP code:", err);
+         }
+       }} 
        />
       <DesignationPopup 
        show={showDesignationPopup} 

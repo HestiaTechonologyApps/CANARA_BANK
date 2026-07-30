@@ -14,6 +14,8 @@ import type { AttachmentsStagingHandle } from "../../../../Components/KiduCreate
 import AttachmentsStaging from "../../../../Components/KiduCreateAttachment";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import BranchPopup from "../../Branch/BranchPopup";
+import MemberService from "../../../Services/Contributions/Member.services";
+import DesignationService from "../../../Services/Settings/Designation.services";
 
 const RefundContributionCreate: React.FC = () => {
   const attachmentsRef = useRef<AttachmentsStagingHandle>(null);
@@ -29,6 +31,7 @@ const RefundContributionCreate: React.FC = () => {
 
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [presetValues, setPresetValues] = useState<Record<string, any>>({});
 
   const handleReset = () => {
     setSelectedState(null);
@@ -37,6 +40,7 @@ const RefundContributionCreate: React.FC = () => {
     setSelectedYearMaster(null);
     attachmentsRef.current?.clear();
     setSelectedBranch(null);
+    setPresetValues({}); 
   };
 
   const fields: Field[] = [
@@ -153,6 +157,7 @@ const popupHandlers = {
         navigateOnSuccess="/dashboard/claims/refundcontribution-list"
         themeColor="#1B3763"
         onReset={handleReset}
+        presetValues={presetValues}
       >
          <AttachmentsStaging ref={attachmentsRef} />
          </KiduCreate>
@@ -163,12 +168,22 @@ const popupHandlers = {
           setSelectedState(s);
           setShowStatePopup(false);
         }} />
-      <MemberPopup
+       <MemberPopup
         show={showMemberPopup}
         handleClose={() => setShowMemberPopup(false)}
-        onSelect={(m) => {
+        onSelect={async (m) => {
           setSelectedMember(m);
           setShowMemberPopup(false);
+          try {
+            const fullMember = (await MemberService.getMemberById(m.memberId)).value;
+            if (fullMember?.designationId) {
+              const designation = (await DesignationService.getDesignationById(fullMember.designationId)).value;
+              setSelectedDesignation(designation);
+            }
+            setPresetValues({ dpcodeOfTime: fullMember?.dpCode || "" });
+          } catch (err) {
+            console.error("Failed to auto-fill designation/DP code:", err);
+          }
         }} />
       <DesignationPopup
         show={showDesignationPopup}

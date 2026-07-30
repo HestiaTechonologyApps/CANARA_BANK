@@ -82,6 +82,7 @@ export interface KiduEditProps {
   loadingText?: string;
   fieldChangeHandlers?: Record<string, (value: string, setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>) => void>;
   onReset?: () => void;
+  presetValues?: Record<string, any>;
 }
 
 // ==================== COMPONENT ====================
@@ -108,6 +109,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   loadingText = "Loading...",
   fieldChangeHandlers = {},
   onReset,
+  presetValues = {},
 }) => {
   const navigate = useNavigate();
   const params = useParams();
@@ -294,6 +296,13 @@ console.log("RAW DATE VALUES:", {
       }
     };
   }, [previewUrl]);
+
+  useEffect(() => {
+    if (presetValues && Object.keys(presetValues).length > 0) {
+      setFormData(prev => ({ ...prev, ...presetValues }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presetValues]);
 
   // ==================== HANDLERS ====================
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
