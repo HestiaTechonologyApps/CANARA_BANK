@@ -193,7 +193,7 @@ const REPORT_TABS: Array<{
     { type: "NEWMEMBERS", label: "New Members", icon: "👤", accent: "#0d7377", description: "Staff found in this file who are not yet registered as members.", actionLabel: "+ Create Member", modalType: "member", blocksForward: true },
     { type: "WRONGBRANCH", label: "Wrong Branch", icon: "🏢", accent: "#e67e22", description: "Records where the DP code doesn't match any known branch.", actionLabel: "+ Create Branch", modalType: "branch", blocksForward: true },
     { type: "WRONGCIRCLE", label: "Wrong Circle", icon: "⭕", accent: "#8e3b46", description: "Records where the circle code doesn't match any known circle.", actionLabel: "+ Create Circle", modalType: "circle", blocksForward: true },
-    { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution.", blocksForward: true },
+    { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution." },
     // { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
     { type: "ALL", label: "All Records", icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
   ];
@@ -1266,15 +1266,43 @@ const ReportPanel: React.FC<{
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
 
+  // const loadTabCounts = useCallback(async () => {
+  //   setCountsLoading(true);
+  //   try {
+  //     const results = await Promise.all(
+  //       REPORT_TABS.map(tab =>
+  //         MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
+  //           .then(r => ({ type: tab.type, count: r.totalRecords }))
+  //           .catch(() => ({ type: tab.type, count: 0 }))
+  //       )
+  //     );
+  //     const counts: Partial<Record<ContributionReportType, number>> = {};
+  //     results.forEach(r => { counts[r.type] = r.count; });
+  //     setTabCounts(counts);
+  //     onCountsChange(counts);
+  //   } finally { setCountsLoading(false); }
+  // }, [masterId, onCountsChange]);
   const loadTabCounts = useCallback(async () => {
     setCountsLoading(true);
     try {
       const results = await Promise.all(
-        REPORT_TABS.map(tab =>
-          MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
+        REPORT_TABS.map(tab => {
+          // CHANGED — blocksForward tabs (New Members / Wrong Branch /
+          // Wrong Circle) must exclude records that have already been
+          // parked; a parked discrepancy is resolved for forwarding
+          // purposes, even though it still technically matches this
+          // report type. Non-blocking tabs (ALL, Parked Items) keep the
+          // cheap pageSize:1 totalRecords count since they don't need
+          // parked-filtering.
+          if (tab.blocksForward) {
+            return MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
+              .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
+              .catch(() => ({ type: tab.type, count: 0 }));
+          }
+          return MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
             .then(r => ({ type: tab.type, count: r.totalRecords }))
-            .catch(() => ({ type: tab.type, count: 0 }))
-        )
+            .catch(() => ({ type: tab.type, count: 0 }));
+        })
       );
       const counts: Partial<Record<ContributionReportType, number>> = {};
       results.forEach(r => { counts[r.type] = r.count; });
@@ -1450,14 +1478,36 @@ const ContributionMasterView: React.FC = () => {
 
   useEffect(() => { loadDiscrepancyIds(); }, [loadDiscrepancyIds]);
 
+  // const loadInitialCounts = useCallback(async () => {
+  //   if (!masterId) return;
+  //   setCountsLoading(true);
+  //   try {
+  //     const results = await Promise.all(
+  //       REPORT_TABS.filter(t => t.blocksForward).map(tab =>
+  //         MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
+  //           .then(r => ({ type: tab.type, count: r.totalRecords }))
+  //           .catch(() => ({ type: tab.type, count: 0 }))
+  //       )
+  //     );
+  //     const counts: Partial<Record<ContributionReportType, number>> = {};
+  //     results.forEach(r => { counts[r.type] = r.count; });
+  //     setReportCounts(counts);
+  //   } finally { setCountsLoading(false); }
+  // }, [masterId]);
   const loadInitialCounts = useCallback(async () => {
     if (!masterId) return;
     setCountsLoading(true);
     try {
       const results = await Promise.all(
+        // CHANGED — was pageSize:1 + r.totalRecords, which counted parked
+        // records as blockers too. Now fetches the full set (same 9999
+        // pattern already used by loadDiscrepancyIds below) and only
+        // counts records that are NOT parked — a parked New Member /
+        // Wrong Branch / Wrong Circle record is a resolved discrepancy
+        // and should no longer block forwarding.
         REPORT_TABS.filter(t => t.blocksForward).map(tab =>
-          MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
-            .then(r => ({ type: tab.type, count: r.totalRecords }))
+          MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
+            .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
             .catch(() => ({ type: tab.type, count: 0 }))
         )
       );
