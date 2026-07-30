@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.types";
 import type { Branch } from "../../../ADMIN-PORTAL/Types/Settings/Branch.types";
 import type { Month } from "../../../ADMIN-PORTAL/Types/Settings/Month.types";
@@ -12,8 +12,11 @@ import type { AccountDirectEntry } from "../../../ADMIN-PORTAL/Types/Contributio
 import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../../ADMIN-PORTAL/Pages/YearMaster/YearMasterPopup";
 import MemberService from "../../../ADMIN-PORTAL/Services/Contributions/Member.services";
+import type { AttachmentsStagingHandle } from "../../../Components/KiduCreateAttachment";
+import AttachmentsStaging from "../../../Components/KiduCreateAttachment";
 
 const StaffAccountDirectEntryCreate: React.FC = () => {
+  const attachmentsRef = useRef<AttachmentsStagingHandle>(null);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [showMonthPopup, setShowMonthPopup] = useState(false);
@@ -46,6 +49,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     setSelectedBranch(null);
     setSelectedMonth(null);
     setSelectedYearMaster(null);
+    attachmentsRef.current?.clear();
   };
 
   const fields: Field[] = [
@@ -90,9 +94,20 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       approvedBy: formData.approvedBy || "",
       approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
     };
+    // CHANGED — capture the created record so its ID can be used for
+    // attachment uploads, same pattern as RefundContributionCreate
+    const created = await AccountDirectEntryService.createAccountDirectEntry(payload);
 
-    await AccountDirectEntryService.createAccountDirectEntry(payload);
+    if (attachmentsRef.current?.hasFiles() && created?.accountsDirectEntryID) {
+      await attachmentsRef.current.uploadAll(
+        "AccountDirectEntry",              // tableName — confirm this matches your backend's expected value
+        created.accountsDirectEntryID
+      );
+    }
   };
+
+  //   await AccountDirectEntryService.createAccountDirectEntry(payload);
+  // };
 
   const popupHandlers = {
     memberId: {
@@ -153,7 +168,9 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
             status: statusOptions,
           }}
           onReset={handleReset}
-        />
+        >
+        <AttachmentsStaging ref={attachmentsRef} />   {/* ADD */}
+        </KiduCreate>
       </div>
 
       <MemberPopup
