@@ -8,11 +8,12 @@
 // 10 rows are visible without an inner scrollbar; Modal.Header padding
 // and title size reduced; export button disabled on the internal
 // KiduServerTable for popup usage (rows-per-page selector kept).
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import type { CustomResponse } from "../Types/ApiTypes";
 import HttpService from "../Services/Http.services";
 import KiduServerTable from "./KiduServerTable";
+import { getNextModalZIndex } from "../ADMIN-PORTAL/Utils/modalZIndex";
 
 // NEW — server-side lookup config. When provided, KiduPopup skips
 // the "fetch everything up front" behavior and instead calls this
@@ -225,6 +226,17 @@ function KiduPopup<T extends Record<string, any>>({
     setRefreshKey(prev => prev + 1);
   };
 
+  // inside the KiduPopup function component, before the return
+const zIndexRef = useRef<number | null>(null);
+if (show && zIndexRef.current === null) {
+  zIndexRef.current = getNextModalZIndex();
+}
+if (!show) {
+  zIndexRef.current = null;
+}
+const z = zIndexRef.current;
+const backdropClass = z ? `kdp-bd-${z}` : undefined;
+
   return (
     <>
       <Modal 
@@ -233,7 +245,12 @@ function KiduPopup<T extends Record<string, any>>({
         size="lg" 
         centered 
         className="head-font"
+        style={z ? { zIndex: z } : undefined}
+  backdropClassName={backdropClass}
       >
+        {z && (
+    <style>{`.${backdropClass} { z-index: ${z - 10} !important; }`}</style>
+  )}
         <Modal.Header 
           closeButton 
           style={{ 
