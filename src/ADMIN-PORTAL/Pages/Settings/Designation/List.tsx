@@ -1,4 +1,3 @@
-// DesignationList.tsx
 import React from "react";
 import DesignationService from "../../../Services/Settings/Designation.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
@@ -6,8 +5,6 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const DesignationList: React.FC = () => {
   return (
     <KiduServerTableList
-      // Use the paginated service instead of fetchService
-      //paginatedFetchService={DesignationService.getPagedDesignations}
 fetchService={async () => {   
         const data = await DesignationService.getAllDesignations();
         return data;

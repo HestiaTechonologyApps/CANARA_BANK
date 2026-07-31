@@ -42,7 +42,6 @@ const handleFetch = async (id: string) => {
       editRoute="/dashboard/cms/dailynews-edit"
       listRoute="/dashboard/cms/dailynews-list"
       paramName="dailyNewsId"
-     // auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
       themeColor="#1B3763"
       loadingText="Loading daily news details..."
       showEditButton={true}

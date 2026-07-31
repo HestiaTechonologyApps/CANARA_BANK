@@ -81,7 +81,7 @@ const AccountDirectEntryCreate: React.FC = () => {
     });
      if (attachmentsRef.current?.hasFiles() && created?.accountsDirectEntryID) {
       await attachmentsRef.current.uploadAll(
-        "AccountDirectEntry",           // tableName — match your backend's expected value
+        "AccountDirectEntry",           
         created.accountsDirectEntryID
       );
     }

@@ -18,7 +18,7 @@ import DashBoardCards from "./DashBoardCards";
 import { useNavigate } from "react-router-dom";
 
 
-/* ─── Design Tokens ──────────────────────────────────────── */
+/* ─── Design Tokens ────────────────────── */
 const C = {
   navy:    "#0f2a55",
   navyMid: "#1a3a6e",

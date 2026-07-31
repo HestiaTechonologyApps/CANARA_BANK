@@ -20,20 +20,11 @@ const DeathClaimList: React.FC = () => {
           sortOrder: params.sortOrder,
         });
       }}
-      // transformData={(data: DeathClaim[]) =>
-      //   data.map(d => ({
-      //     ...d,
-      //     deathDate: formatDateOnly(d.deathDate),
-      //   }))
-      // }
+    
       transformData={(data: DeathClaim[]) =>
         data.map(d => ({
           ...d,
           deathDate: formatDateOnly(d.deathDate),
-          // NEW — KiduServerTable already reads row.original._disableEdit
-          // to disable the Edit button (same mechanism already used in
-          // RefundContributionList). Once a death claim is approved, Edit
-          // is disabled in the list rather than only enforced on save.
           _disableEdit: d.isApproved === true,
         }))
       }

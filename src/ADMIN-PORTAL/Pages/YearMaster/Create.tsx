@@ -36,7 +36,6 @@ const YearMasterCreate: React.FC = () => {
       yearName: year,
     };
     
-    // ✅ This will throw an error if duplicate or validation fails
     await YearMasterService.createYearMaster(yearData);
   };
 

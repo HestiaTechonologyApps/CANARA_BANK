@@ -63,7 +63,6 @@ const handleFetch = async (id: string) => {
         errorMessage="Failed to update Daily News. Please try again."
         loadingText="Loading Daily News..."
         navigateBackPath="/dashboard/cms/dailynews-list"
-       // auditLogConfig={{ tableName: "DailyNews", recordIdField: "dailyNewsId" }}
         themeColor="#1B3763"
       />
 

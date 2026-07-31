@@ -75,7 +75,6 @@ const RefundContributionCreate: React.FC = () => {
     designationId: selectedDesignation.designationId,
     refundContribution: formData.type,
     refundNO: String(formData.refundNO || "").trim(),
-   // branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
     branchNameOFTime: selectedBranch.name,
     dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
     type: formData.type,
@@ -90,17 +89,13 @@ const RefundContributionCreate: React.FC = () => {
     deathDateString: "",
   };
 
-//   await RefundContributionService.createRefundContribution(
-//     payload as any
-//   );
-// };
 const created = await RefundContributionService.createRefundContribution(
     payload as any
   );
 
   if (attachmentsRef.current?.hasFiles() && created?.refundContributionId) {
     await attachmentsRef.current.uploadAll(
-      "RefundContribution",           // tableName — match your backend's expected value
+      "RefundContribution",           
       created.refundContributionId
     );
   }

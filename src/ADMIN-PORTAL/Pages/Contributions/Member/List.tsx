@@ -7,10 +7,6 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 const MemberList: React.FC = () => {
   return (
     <KiduServerTableList
-      // Switched from fetchService (fetch-everything-then-paginate-locally)
-      // to paginatedFetchService, because the API hard-caps pageSize at 100
-      // server-side — requesting 99999 silently returns only page 1 of 100
-      // records, which was why only 10 pages ever showed up.
       paginatedFetchService={async ({ pageNumber, pageSize, searchTerm }) => {
         const response = await MemberService.getMembersPaginated({
           pageNumber,
@@ -18,9 +14,6 @@ const MemberList: React.FC = () => {
           searchTerm: searchTerm || "",
         });
 
-        // MemberService (via createPaginatedService) already unwraps the API's
-        // { statusCode, isSucess, value } envelope and returns
-        // PaginatedResult<Member> = { data, total } directly.
         return {
           data: response.data.map((member: any) => ({
             ...member,

@@ -1,5 +1,3 @@
-// src/Modules/Contributions/Pages/MemberView.tsx
-
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -64,7 +62,7 @@ const statusTone = (status?: string) => {
   return { bg: THEME_SOFT, fg: THEME };
 };
 
-// ── Small presentational pieces ─────────────────────────────────────────────
+// ── Small presentational pieces ──
 
 const InfoRow: React.FC<{ icon: string; label: string; value: React.ReactNode }> = ({
   icon,
@@ -96,26 +94,19 @@ const SectionCard: React.FC<{ title: string; icon: string; children: React.React
   </div>
 );
 
-// ── Main component ──────────────────────────────────────────────────────────
+// ── Main component ─────────────────────
 
 const MemberView: React.FC = () => {
   const { memberId } = useParams<{ memberId: string }>();
   const navigate = useNavigate();
 
-  // const [member, setMember] = useState<MemberDetail | null>(null);
-  // const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [contribLoading, setContribLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const [deleting, setDeleting] = useState(false);
   const [member, setMember] = useState<MemberDetail | null>(null);
   const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [contribLoading, setContribLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
-  // NEW — total refund is now computed from actual approved
-  // RefundContribution records instead of the static Member.totalRefund field.
+
   const [approvedRefundTotal, setApprovedRefundTotal] = useState(0);
 
   const loadMember = useCallback(async () => {
@@ -134,7 +125,6 @@ const MemberView: React.FC = () => {
         value.dojString = formatDateOnly(value.dojString);
         value.dojtoSchemeString = formatDateOnly(value.dojtoSchemeString);
       }
-      //setMember(value ?? null);
       setMember(value ? (value as unknown as MemberDetail) : null);
     } catch (err) {
       console.error(err);
@@ -144,35 +134,11 @@ const MemberView: React.FC = () => {
     }
   }, [memberId]);
 
-  // const loadContributions = useCallback(async () => {
-  //   if (!memberId) return;
-  //   setContribLoading(true);
-  //   try {
-  //     const data = await MemberAccountsDetailsService.getById(Number(memberId));
-  //     // Most recent contribution first
-  //     const sorted = [...data].sort((a, b) => {
-  //       if (b.yearOf !== a.yearOf) return b.yearOf - a.yearOf;
-  //       return b.monthCode - a.monthCode;
-  //     });
-  //     setContributions(sorted);
-  //   } catch (err) {
-  //     console.error(err);
-  //     // Non-fatal — member details can still render without contributions
-  //   } finally {
-  //     setContribLoading(false);
-  //   }
-  // }, [memberId]);
-
-  // useEffect(() => {
-  //   loadMember();
-  //   loadContributions();
-  // }, [loadMember, loadContributions]);
   const loadContributions = useCallback(async () => {
     if (!memberId) return;
     setContribLoading(true);
     try {
       const data = await MemberAccountsDetailsService.getById(Number(memberId));
-      // Most recent contribution first
       const sorted = [...data].sort((a, b) => {
         if (b.yearOf !== a.yearOf) return b.yearOf - a.yearOf;
         return b.monthCode - a.monthCode;
@@ -180,15 +146,11 @@ const MemberView: React.FC = () => {
       setContributions(sorted);
     } catch (err) {
       console.error(err);
-      // Non-fatal — member details can still render without contributions
     } finally {
       setContribLoading(false);
     }
   }, [memberId]);
 
-  // NEW — fetches this member's refund contributions and sums only the
-  // approved ones (approvedDate set AND isApproved true), same convention
-  // already used in ShowContribution.tsx for the staff-portal net balance.
   const loadApprovedRefundTotal = useCallback(async () => {
     if (!memberId) return;
     try {
@@ -209,8 +171,6 @@ const MemberView: React.FC = () => {
       setApprovedRefundTotal(total);
     } catch (err) {
       console.error("Failed to load refund contributions for member:", err);
-      // Non-fatal — member details can still render, total refund falls
-      // back to 0 rather than blocking the page.
     }
   }, [memberId]);
 
@@ -427,15 +387,9 @@ const MemberView: React.FC = () => {
             <div className="mv-stat-label">Total Paid</div>
             <div className="mv-stat-value">{formatCurrency(totalContribution)}</div>
           </div>
-          {/* <div className="mv-stat">
-            <div className="mv-stat-label">Total Refund</div>
-            <div className="mv-stat-value">{formatCurrency(member.totalRefund)}</div>
-          </div> */}
           <div className="mv-stat">
             <div className="mv-stat-label">Total Refund</div>
-            {/* CHANGED — was member.totalRefund (a static stored field on
-                the Member record). Now shows the sum of this member's
-                actually approved RefundContribution records. */}
+           
             <div className="mv-stat-value">{formatCurrency(approvedRefundTotal)}</div>
           </div>
         </div>

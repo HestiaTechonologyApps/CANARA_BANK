@@ -5,7 +5,6 @@ import KiduServerTableList from "../../../../Components/KiduServerTableList";
 const AccountsDirectEntryList: React.FC = () => {
   return (
     <KiduServerTableList
-     // fetchService={AccountDirectEntryService.getAllAccountDirectEntries}
      paginatedFetchService={async(params) => {
         return AccountDirectEntryService.getPagedAccountDirectEntries({
           pageNumber: params.pageNumber,

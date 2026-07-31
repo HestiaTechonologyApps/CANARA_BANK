@@ -33,28 +33,6 @@ const DirectPaymentEdit: React.FC = () => {
     { name: "remarks", rules: { type: "textarea", label: "Remarks", colWidth: 6 } },
   ];
 
-// const handleFetch = async (id: string) => {
-//   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
-//   const payment = response.value;
-
-//   if (payment) {
-//     const member = {
-//       memberId: payment.memberId,
-//       name: payment.memberName || "",
-//     } as unknown as Member;
-
-//     setSelectedMember(member);
-//     setInitialMember(member);
-//   }
-
-//   return {
-//     ...response,
-//     value: {
-//       ...payment,
-//       paymentDate: payment.paymentDate ? String(payment.paymentDate).split("T")[0] : "", 
-//     },
-//   };
-// };
 const handleFetch = async (id: string) => {
   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
   const payment = response.value;

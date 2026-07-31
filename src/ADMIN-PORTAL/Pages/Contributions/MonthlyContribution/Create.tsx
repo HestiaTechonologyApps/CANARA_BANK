@@ -1,5 +1,3 @@
-// src/Pages/ContributionMaster/ContributionMasterCreate.tsx
-
 import React, { useState } from "react";
 import KiduCreate from "../../../Components/KiduCreate";
 import type { Field, PopupHandler } from "../../../Components/KiduCreate";

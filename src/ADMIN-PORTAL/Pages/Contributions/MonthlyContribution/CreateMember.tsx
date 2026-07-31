@@ -1,9 +1,6 @@
-// src/Pages/ContributionMaster/MemberCreatePage.tsx
-
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import MemberService from "../../../Services/Contributions/Member.services";
-//import BranchService from "../../../Services/Settings/Branch.services";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { Category } from "../../../Types/Settings/Category.types";

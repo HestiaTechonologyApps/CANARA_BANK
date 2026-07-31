@@ -1,5 +1,3 @@
-// src/Components/AttachmentsStaging.tsx
-
 import { useState, useCallback, forwardRef, useImperativeHandle } from "react";
 import { Button, Modal, Form, Table, Alert, Card, Collapse, Spinner } from "react-bootstrap";
 import {
@@ -14,30 +12,21 @@ import AttachmentService from "../Services/Attachment.services";
 // ── Types ────────────────────────────────────────────────────────────────
 
 export interface StagedAttachment {
-  id: string;           // local-only temp id, not a server id
+  id: string;           
   file: File;
   description: string;
 }
 
 export interface AttachmentsStagingHandle {
-  /** All files currently staged, not yet uploaded */
   getStagedFiles: () => StagedAttachment[];
-  /** True if there's at least one staged file */
   hasFiles: () => boolean;
-  /**
-   * Call this AFTER the parent record is successfully created.
-   * Uploads every staged file against the given tableName/recordId.
-   * Throws if any file fails — caller decides how to surface that.
-   */
+  
   uploadAll: (tableName: string, recordId: string | number) => Promise<void>;
-  /** Clear staged files (e.g. after a successful uploadAll, or on modal close) */
   clear: () => void;
 }
 
 interface AttachmentsStagingProps {
-  /** Fires whenever the staged list changes — handy if the parent wants a live count */
   onChange?: (files: StagedAttachment[]) => void;
-  /** Max file size in bytes, defaults to 10MB to match the edit-page component */
   maxSize?: number;
 }
 
@@ -81,7 +70,7 @@ const getFileIcon = (fileName: string) => {
   }
 };
 
-// ── Component ────────────────────────────────────────────────────────────
+// ── Component ─────────────────────────────
 
 const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagingProps>(
   ({ onChange, maxSize = 10485760 }, ref) => {
@@ -183,10 +172,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
             formData.append("TableName", tableName);
             formData.append("RecordId", Number(recordId).toString());
             if (item.description) formData.append("Description", item.description);
-
-            // Sequential, not Promise.all — keeps upload order predictable
-            // and avoids hammering the API with N simultaneous requests.
-            // eslint-disable-next-line no-await-in-loop
             await AttachmentService.uploadAttachment(formData);
           }
           emitChange([]);
@@ -271,8 +256,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                         <th style={{ width: "30%", padding: "0.5rem" }}>File Name</th>
                         <th style={{ width: "35%", padding: "0.5rem" }}>Description</th>
                         <th style={{ width: "12%", padding: "0.5rem" }} className="text-center">Size</th>
-                        {/* <th style={{ width: "13%", padding: "0.5rem" }} className="text-center">Status</th>
-                        <th style={{ width: "5%", padding: "0.5rem" }} className="text-center">Actions</th> */}
                         <th style={{ width: "13%", padding: "0.5rem" }} className="text-center">Status</th>
                         <th style={{ width: "10%", padding: "0.5rem" }} className="text-center">Actions</th>
                       </tr>
@@ -310,20 +293,7 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                               <Clock size={11} /> Pending
                             </span>
                           </td>
-                          {/* <td style={{ padding: "0.5rem" }}>
-                            <div className="d-flex justify-content-center">
-                              <Button
-                                variant="outline-danger"
-                                size="sm"
-                                className="d-flex align-items-center justify-content-center"
-                                style={{ width: "30px", height: "30px", padding: 0 }}
-                                onClick={() => confirmRemove(item.id)}
-                                disabled={uploading}
-                              >
-                                <Trash2 size={13} />
-                              </Button>
-                            </div>
-                          </td> */}
+                        
                           <td style={{ padding: "0.5rem" }}>
                             <div className="d-flex justify-content-center gap-1">
                               <Button
@@ -412,18 +382,7 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
                       <small className="text-muted">{formatFileSize(pendingFile.size)}</small>
                     </div>
                   </div>
-                  {/* <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => setPendingFile(null)}
-                    className="d-flex align-items-center justify-content-center"
-                    style={{ width: "28px", height: "28px", padding: 0 }}
-                  >
-                    <X size={14} />
-                  </Button>
-                </div>
-              </div>
-            )} */}
+                  
             <div className="d-flex gap-1">
                     <Button
                       variant="outline-primary"

@@ -75,18 +75,7 @@ const DeathClaimEdit: React.FC = () => {
     setInitialState(state); 
   }
 
-  // if (claim.memberId) {
-  //   const members = await MemberService.getAllMembers();
-  //   const member = members.find(m => m.memberId === claim.memberId) || null;
-  //   setSelectedMember(member);
-  //   setInitialMember(member); 
-  // }
   if (claim.memberId) {
-    // CHANGED — was MemberService.getAllMembers() + client-side .find(),
-    // pulling the entire members table on every page load just to resolve
-    // one memberId. Since memberId is available directly here (unlike the
-    // staffNo-based lookups in the Refund pages), MemberService.getMemberById
-    // is the correct single-record fetch — no new service method needed.
     const memberRes = await MemberService.getMemberById(claim.memberId);
     const member = memberRes?.value || null;
     setSelectedMember(member);

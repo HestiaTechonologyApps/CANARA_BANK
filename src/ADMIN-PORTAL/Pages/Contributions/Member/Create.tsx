@@ -35,26 +35,25 @@ const MemberCreate: React.FC = () => {
     setNomineeValue("");
   }
 
- const today = new Date().toISOString().split("T")[0]; 
+  const today = new Date().toISOString().split("T")[0];
 
-const fields: Field[] = [
-  { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
-  { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
-  { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
-  { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-  { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
-  { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
-  { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
-  { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4, max: today } },        
-  { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4, max: today } },    
-  { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
-  { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
-  { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },      
-  { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4, disabled: !nomineeValue.trim()  } },
-  { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4, disabled: !nomineeValue.trim()} },
-  { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
- // { name: "totalRefund", rules: { type: "number", label: "Total Refund", placeholder: "0", colWidth: 4 } },
-];
+  const fields: Field[] = [
+    { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
+    { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
+    { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
+    { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
+    { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
+    { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
+    { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
+    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4, max: today } },
+    { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4, max: today } },
+    { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
+    { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
+    { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
+    { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 4, disabled: !nomineeValue.trim() } },
+    { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity", colWidth: 4, disabled: !nomineeValue.trim() } },
+    { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 4 } },
+  ];
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -134,15 +133,15 @@ const fields: Field[] = [
   ];
   //nominee Relation options
   const nomineeRelationOptions = [
-    {value:"Spouse", label: "Spouse"},
-    {value:"Father", label: "Father"},
-    {value:"Mother", label: "Mother"},
-    {value:"Son", label: "Son"},
-    {value:"Daughter", label: "Daughter"},
-    {value:"Sibling", label: "Sibling"},
-    {value:"Nephew", label: "Nephew"},
-    {value:"Niece", label: "Niece"},
-    {value:"Grandparent", label: "Grandparent"},
+    { value: "Spouse", label: "Spouse" },
+    { value: "Father", label: "Father" },
+    { value: "Mother", label: "Mother" },
+    { value: "Son", label: "Son" },
+    { value: "Daughter", label: "Daughter" },
+    { value: "Sibling", label: "Sibling" },
+    { value: "Nephew", label: "Nephew" },
+    { value: "Niece", label: "Niece" },
+    { value: "Grandparent", label: "Grandparent" },
   ]
 
   return (
@@ -153,14 +152,14 @@ const fields: Field[] = [
         onSubmit={handleSubmit}
         submitButtonText="Create Member"
         showResetButton
-         imageConfig={{ fieldName: "profileImage", defaultImage: profiledefaultimg, label: "Profile Picture", }}
+        imageConfig={{ fieldName: "profileImage", defaultImage: profiledefaultimg, label: "Profile Picture", }}
         successMessage="Member created successfully!"
         errorMessage="Failed to create member. Please try again."
         navigateOnSuccess="/dashboard/contributions/member-list"
         navigateDelay={1200}
         themeColor="#1B3763"
         popupHandlers={popupHandlers}
-        options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions,}}
+        options={{ genderId: genderOptions, unionMember: unionMemberOptions, nomineeRelation: nomineeRelationOptions, }}
         onReset={handleReset}
         fieldChangeHandlers={{
           nominee: (value, setFormData) => {
@@ -171,25 +170,25 @@ const fields: Field[] = [
           },
         }}
       />
-      <BranchPopup 
-        show={showBranchPopup} 
-        handleClose={() => setShowBranchPopup(false)} 
-        onSelect={setSelectedBranch} 
+      <BranchPopup
+        show={showBranchPopup}
+        handleClose={() => setShowBranchPopup(false)}
+        onSelect={setSelectedBranch}
       />
-      <DesignationPopup 
-        show={showDesignationPopup} 
-        handleClose={() => setShowDesignationPopup(false)} 
-        onSelect={setSelectedDesignation} 
+      <DesignationPopup
+        show={showDesignationPopup}
+        handleClose={() => setShowDesignationPopup(false)}
+        onSelect={setSelectedDesignation}
       />
-      <CategoryPopup 
-        show={showCategoryPopup} 
-        handleClose={() => setShowCategoryPopup(false)} 
-        onSelect={setSelectedCategory} 
+      <CategoryPopup
+        show={showCategoryPopup}
+        handleClose={() => setShowCategoryPopup(false)}
+        onSelect={setSelectedCategory}
       />
-      <StatusPopup 
-        show={showStatusPopup} 
-        handleClose={() => setShowStatusPopup(false)} 
-        onSelect={setSelectedStatus} 
+      <StatusPopup
+        show={showStatusPopup}
+        handleClose={() => setShowStatusPopup(false)}
+        onSelect={setSelectedStatus}
       />
     </>
   );

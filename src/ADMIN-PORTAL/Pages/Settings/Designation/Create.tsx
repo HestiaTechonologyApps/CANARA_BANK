@@ -1,4 +1,3 @@
-// src/components/Designation/DesignationCreate.tsx
 import React from "react";
 import type { Field } from "../../../Components/KiduCreate";
 import type { Designation } from "../../../Types/Settings/Designation.types";

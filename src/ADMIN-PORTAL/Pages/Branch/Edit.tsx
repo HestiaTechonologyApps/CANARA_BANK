@@ -9,7 +9,6 @@ import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
 import StateService from "../../Services/Settings/State.services";
 import CircleService from "../../Services/Settings/Circle.services";
-//import Circle_StatePopup from "./Circle-StatePopup";
 
 const BranchEdit: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -102,14 +101,6 @@ const BranchEdit: React.FC = () => {
       actualValue: selectedState?.stateId,
       onOpen: () => setShowStatePopup(true),
     },
-    // circleId: {
-    //   value: selectedCircle?.name || "",
-    //   actualValue: selectedCircle?.circleId,
-    //   onOpen: () => {
-    //     if (!selectedState) return alert("Please select State first");
-    //     setShowCirclePopup(true);
-    //   },
-    // },
     circleId: {
       value: selectedCircle?.name || "",
       actualValue: selectedCircle?.circleId,

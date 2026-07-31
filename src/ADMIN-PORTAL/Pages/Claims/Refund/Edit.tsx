@@ -74,10 +74,7 @@ const RefundContributionEdit: React.FC = () => {
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
-//  const handleFetch = async (id: string) => {
-//   const response = await RefundContributionService.getRefundContributionById(Number(id));
-//   const refund = response.value;
-//   if (!refund) return response;
+
 const handleFetch = async (id: string) => {
   const response = await RefundContributionService.getRefundContributionById(Number(id));
   console.log("DEBUG - refund response:", response.value);
@@ -90,19 +87,8 @@ const handleFetch = async (id: string) => {
     setInitialState(state); 
   }
 
-  // if (refund.staffNo) {
-  //   const members = await MemberService.getAllMembers();
-  //   const member = members.find(m => m.staffNo === refund.staffNo) || null;
-  //   setSelectedMember(member);
-  //   setInitialMember(member); 
-  // }
   if (refund.staffNo) {
-    // CHANGED — was MemberService.getAllMembers() + client-side .find(),
-    // pulling the entire members table on every page load just to resolve
-    // one staffNo. Replaced with the existing getMembersPaginated call
-    // (server-side search), asking for just 1 matching record. No changes
-    // made to Member.services.ts. Same fix already applied in
-    // MemberRefundContributionEdit.tsx and UserEdit.tsx.
+    
     const memberRes = await MemberService.getMembersPaginated({
       pageNumber: 1,
       pageSize: 1,
@@ -352,10 +338,7 @@ const handleReject = async () => {
        show={showMemberPopup} 
        handleClose={() => setShowMemberPopup(false)} 
        onSelect={async (m) => {
-         // CHANGED — was onSelect={setSelectedMember}, which didn't close
-         // the popup and didn't auto-fill anything. Now closes the popup
-         // and fetches the full member record to auto-fill Designation
-         // + DP Code, same pattern as RefundContributionCreate.
+        
          setSelectedMember(m);
          setShowMemberPopup(false);
 

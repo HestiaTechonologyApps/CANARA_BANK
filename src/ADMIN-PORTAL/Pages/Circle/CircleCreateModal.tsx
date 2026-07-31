@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import type { Field } from "../../../Components/KiduCreateModal";
 import KiduCreateModal from "../../../Components/KiduCreateModal";
-import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import type { State } from "../../Types/Settings/States.types";
 import CircleService from "../../Services/Settings/Circle.services";

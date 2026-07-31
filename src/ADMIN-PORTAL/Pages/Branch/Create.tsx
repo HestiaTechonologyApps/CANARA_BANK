@@ -7,10 +7,6 @@ import type { State } from "../../Types/Settings/States.types";
 import type { Circle } from "../../Types/Settings/Circle.types";
 import StatePopup from "../Settings/State/StatePopup";
 import CirclePopup from "../Circle/CirclePopup";
-//import { toast, ToastContainer } from "react-toastify";
-//import "react-toastify/dist/ReactToastify.css";
-//import Circle_StatePopup from "./Circle-StatePopup";
-import toast from "react-hot-toast";
 
 const BranchCreate: React.FC = () => {
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -67,19 +63,6 @@ const BranchCreate: React.FC = () => {
       value: selectedState?.name || "",
       onOpen: () => setShowStatePopup(true),
     },
-//     circleId: {
-//       value: selectedCircle?.name || "",
-//       onOpen: () => {
-//   if (!selectedState) {
-//     toast("Please select a State first to continue.", {
-//       icon: "⚠️",
-//       duration: 3000,
-//     });
-//     return;
-//   }
-//   setShowCirclePopup(true);
-// },
-//     },
 circleId: {
       value: selectedCircle?.name || "",
       onOpen: () => setShowCirclePopup(true),
@@ -113,7 +96,6 @@ circleId: {
         handleClose={() => setShowStatePopup(false)}
         onSelect={(state) => {
           setSelectedState(state);
-         // setSelectedCircle(null);
           setShowStatePopup(false);
         }}
       />
@@ -121,15 +103,11 @@ circleId: {
       <CirclePopup
         show={showCirclePopup}
         handleClose={() => setShowCirclePopup(false)}
-        //stateId={selectedState?.stateId}
         onSelect={(circle) => {
           setSelectedCircle(circle);
           setShowCirclePopup(false);
         }}
       />
-
-      {/* Toast Container */}
-      {/* <ToastContainer /> */}
     </>
   );
 };

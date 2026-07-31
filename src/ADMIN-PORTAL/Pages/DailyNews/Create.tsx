@@ -10,7 +10,6 @@ const DailyNewsCreate: React.FC = () => {
     { name: "title", rules: { type: "text", label: "Title", required: true, colWidth: 6 } },
     { name: "newsDate", rules: { type: "date", label: "News Date", required: true, colWidth: 6 } },
     { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 12 } },
-   // { name: "companyId", rules: { type: "popup", label: "Company", required: true, colWidth: 6 } },
     { name: "isActive", rules: { type: "toggle", label: "Active", colWidth: 6 } },
   ];
 

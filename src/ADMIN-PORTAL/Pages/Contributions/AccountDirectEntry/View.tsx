@@ -21,7 +21,7 @@ const AccountDirectEntryView: React.FC = () => {
     { key: "f9", label: "F9", icon: "bi-list-check" },
     { key: "f10", label: "F10", icon: "bi-list-check" },
     { key: "f11", label: "F11", icon: "bi-list-check" },
-    { key: "approvedByName", label: "Approved By", icon: "bi-person-check" }, // ✅ changed key
+    { key: "approvedByName", label: "Approved By", icon: "bi-person-check" }, 
     { key: "approvedDateString", label: "Approved Date", icon: "bi-calendar-check" },
     { key: "isApproved", label: "Approved", icon: "bi-patch-check", isBoolean: true },
   ];
@@ -37,7 +37,6 @@ const AccountDirectEntryView: React.FC = () => {
       response.value.ddIbaDateString = formatDateOnly(response.value.ddIbaDateString);
       response.value.approvedDateString = formatDateOnly(response.value.approvedDateString);
 
-      // ✅ Fetch approvedBy username from user ID
       if (response.value.approvedBy) {
         try {
           const userResponse = await UserService.getUserById(Number(response.value.approvedBy));

@@ -1,4 +1,3 @@
-// KiduAuditLogs.tsx
 import React, { useEffect, useState } from "react";
 import { Accordion, Table, Card, Spinner, Alert } from "react-bootstrap";
 import AuditLogService from "../Services/AuditLog.services";
@@ -19,7 +18,6 @@ const KiduAuditLogs: React.FC<AuditTrailsProps> = ({ tableName, recordId }) => {
     if (tableName && recordId) {
       fetchHistory();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableName, recordId]);
  
   const fetchHistory = async () => {

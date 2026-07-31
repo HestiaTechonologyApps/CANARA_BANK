@@ -1,4 +1,3 @@
-// src/Pages/ContributionMaster/ContributionMasterView.tsx
 import ReactDOM from "react-dom";
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -194,7 +193,6 @@ const REPORT_TABS: Array<{
     { type: "WRONGBRANCH", label: "Wrong Branch", icon: "🏢", accent: "#e67e22", description: "Records where the DP code doesn't match any known branch.", actionLabel: "+ Create Branch", modalType: "branch", blocksForward: true },
     { type: "WRONGCIRCLE", label: "Wrong Circle", icon: "⭕", accent: "#8e3b46", description: "Records where the circle code doesn't match any known circle.", actionLabel: "+ Create Circle", modalType: "circle", blocksForward: true },
     { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution." },
-    // { type: "DEFAULTER",   label: "Defaulters",    icon: "⚠️", accent: "#dc2626", description: "Members who have not contributed for this period." },
     { type: "ALL", label: "All Records", icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
   ];
 
@@ -558,10 +556,6 @@ const ModalShell: React.FC<{
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  // return (
-  //   <div
-  //     style={{
-  //       position: "fixed", inset: 0, zIndex: 1000,
   return ReactDOM.createPortal(
     <div
       style={{
@@ -572,7 +566,7 @@ const ModalShell: React.FC<{
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "center",
-        overflowY: "scroll",   /* always show scroll — never hidden */
+        overflowY: "scroll",   
         padding: "40px 16px 60px",
         boxSizing: "border-box",
       }}
@@ -669,10 +663,7 @@ const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, re
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
   </p>
 );
-// const TextInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean }> = ({ value, onChange, placeholder, type = "text", disabled }) => (
-//   <input className="modal-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} disabled={disabled}
-//     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 13, color: "#1e293b", background: disabled ? "#f8fafc" : "#fff", transition: "all 0.2s", boxSizing: "border-box", fontFamily: "'Sora',sans-serif" }} />
-// );
+
 const TextInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean; max?: string; min?: string }> = ({ value, onChange, placeholder, type = "text", disabled, max, min }) => (
   <input className="modal-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} disabled={disabled} max={max} min={min}
     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 13, color: "#1e293b", background: disabled ? "#f8fafc" : "#fff", transition: "all 0.2s", boxSizing: "border-box", fontFamily: "'Sora',sans-serif" }} />
@@ -723,7 +714,6 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
   const [nomineeRelation, setNomineeRelation] = useState("");
   const [nomineeIdentity, setNomineeIdentity] = useState("");
   const [unionMember, setUnionMember] = useState("");
- // const [totalRefund, setTotalRefund] = useState("0");
   const [isRegCompleted, setIsRegCompleted] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
@@ -743,7 +733,6 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
     setSubmitting(true); setErrorMsg("");
     try {
       await MemberService.createMember({ staffNo: Number(staffNo), name: name.trim(), genderId: Number(genderId), designationId: selectedDesignation.designationId, categoryId: selectedCategory.categoryId, branchId: selectedBranch.branchId, statusId: selectedStatus.statusId, dob: toIso(dob), dobString: toIso(dob), doj: toIso(doj), dojString: toIso(doj), dojtoScheme: toIso(dojtoScheme), dojtoSchemeString: toIso(dojtoScheme), isRegCompleted, nominee: nominee.trim(), nomineeRelation, nomineeIDentity: nomineeIdentity.trim(), profileImageSrc: "", unionMember, 
-       // totalRefund: totalRefund || "0" 
       } as Omit<Member, "memberId" | "auditLogs">);
       setSuccessMsg("Member created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
@@ -761,12 +750,10 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
           <FormSection><FieldLabel label="Designation" required /><PopupInput value={selectedDesignation?.name || ""} onOpen={() => setShowDesignationPopup(true)} placeholder="Select designation" /></FormSection>
           <FormSection><FieldLabel label="Category" required /><PopupInput value={selectedCategory?.name || ""} onOpen={() => setShowCategoryPopup(true)} placeholder="Select category" /></FormSection>
           <FormSection><FieldLabel label="Status" required /><PopupInput value={selectedStatus?.name || ""} onOpen={() => setShowStatusPopup(true)} placeholder="Select status" /></FormSection>
-          {/* <FormSection><FieldLabel label="Date of Birth" required /><TextInput value={dob} onChange={setDob} type="date" /></FormSection> */}
           <FormSection><FieldLabel label="Date of Birth" required /><TextInput value={dob} onChange={setDob} type="date" max={todayStr} /></FormSection>
           <FormSection><FieldLabel label="Date of Joining" required /><TextInput value={doj} onChange={setDoj} type="date" /></FormSection>
           <FormSection><FieldLabel label="DOJ to Scheme" required /><TextInput value={dojtoScheme} onChange={setDojtoScheme} type="date" /></FormSection>
           <FormSection><FieldLabel label="Union Member" /><SelectInput value={unionMember} onChange={setUnionMember} placeholder="Select" options={[{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }]} /></FormSection>
-          {/* <FormSection><FieldLabel label="Total Refund" /><TextInput value={totalRefund} onChange={setTotalRefund} type="number" placeholder="0" /></FormSection> */}
           <FormSection><FieldLabel label="Nominee Name" /><TextInput value={nominee} onChange={setNominee} placeholder="Nominee full name" /></FormSection>
           <FormSection><FieldLabel label="Nominee Relation" /><SelectInput value={nomineeRelation} onChange={setNomineeRelation} placeholder="Select relation" options={["Spouse", "Father", "Mother", "Son", "Daughter", "Sibling", "Nephew", "Niece", "Grandparent"].map(v => ({ value: v, label: v }))} /></FormSection>
           <FormSection span><FieldLabel label="Nominee Identity" /><TextInput value={nomineeIdentity} onChange={setNomineeIdentity} placeholder="Aadhar / PAN etc." /></FormSection>
@@ -1168,55 +1155,6 @@ const DetailCard: React.FC<{
   );
 };
 
-
-// const ReportRow: React.FC<{
-//   row: ContributionDetail;
-//   rank: number;
-//   reportType: ContributionReportType;
-//   onAction: (row: ContributionDetail) => void;
-//   actionLabel?: string;
-//   accent: string;
-//   onPark: (row: ContributionDetail) => void;
-//   onUnpark: (row: ContributionDetail) => void;
-// }> = ({ row, rank, reportType, onAction, actionLabel, accent, onPark, onUnpark }) => {
-//   const isParkedItemsTab = reportType === "PARKEDITEMS";
-
-//   const renderActions = () => {
-
-//     if (isParkedItemsTab) {
-//       return (
-//         <button className="unpark-btn" onClick={() => onUnpark(row)}
-//           style={{ background: "#f0fafa", border: "1.5px solid #0d7377", color: "#0d7377", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
-//           ♻️ Unpark
-//         </button>
-//       );
-//     }
-
-//     return (
-//       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
-//         {/* Create action button (only shown when not parked) */}
-//         {actionLabel && (
-//           <button className="rpt-action-btn" onClick={() => onAction(row)}
-//             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
-//             {actionLabel}
-//           </button>
-//         )}
-
-    
-//         {row.isParked ? (
-//           <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
-//             🅿️ Parked
-//           </span>
-//         ) : (
-         
-//           <button className="park-btn" onClick={() => onPark(row)}
-//             style={{ background: "#fffbeb", border: "1.5px solid #f59e0b", color: "#b45309", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
-//             🅿️ Park
-//           </button>
-//         )}
-//       </div>
-//     );
-//   };
 const ReportRow: React.FC<{
   row: ContributionDetail;
   rank: number;
@@ -1242,13 +1180,7 @@ const ReportRow: React.FC<{
 
     return (
       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
-        {/* CHANGED — Create action button now ALWAYS shows when actionLabel
-            exists, even if the row is parked. Previously this was hidden
-            once row.isParked was true, which meant a discrepancy that had
-            been parked before its underlying record (Member/Branch/Circle)
-            was created could never actually be resolved — there was no way
-            to trigger the create action, and Unpark would keep refusing
-            since the issue was still unresolved. */}
+       
         {actionLabel && (
           <button className="rpt-action-btn" onClick={() => onAction(row)}
             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
@@ -1257,10 +1189,7 @@ const ReportRow: React.FC<{
         )}
 
         {row.isParked ? (
-          // CHANGED — added a quick Unpark action alongside the Parked
-          // badge, so once the underlying record has been created (via
-          // the button above), the row can be cleared right here without
-          // navigating to the Parked Items tab.
+          
           <>
             <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
               🅿️ Parked
@@ -1337,35 +1266,13 @@ const ReportPanel: React.FC<{
 
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
-
-  // const loadTabCounts = useCallback(async () => {
-  //   setCountsLoading(true);
-  //   try {
-  //     const results = await Promise.all(
-  //       REPORT_TABS.map(tab =>
-  //         MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
-  //           .then(r => ({ type: tab.type, count: r.totalRecords }))
-  //           .catch(() => ({ type: tab.type, count: 0 }))
-  //       )
-  //     );
-  //     const counts: Partial<Record<ContributionReportType, number>> = {};
-  //     results.forEach(r => { counts[r.type] = r.count; });
-  //     setTabCounts(counts);
-  //     onCountsChange(counts);
-  //   } finally { setCountsLoading(false); }
-  // }, [masterId, onCountsChange]);
+  
   const loadTabCounts = useCallback(async () => {
     setCountsLoading(true);
     try {
       const results = await Promise.all(
         REPORT_TABS.map(tab => {
-          // CHANGED — blocksForward tabs (New Members / Wrong Branch /
-          // Wrong Circle) must exclude records that have already been
-          // parked; a parked discrepancy is resolved for forwarding
-          // purposes, even though it still technically matches this
-          // report type. Non-blocking tabs (ALL, Parked Items) keep the
-          // cheap pageSize:1 totalRecords count since they don't need
-          // parked-filtering.
+        
           if (tab.blocksForward) {
             return MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
               .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
@@ -1550,33 +1457,12 @@ const ContributionMasterView: React.FC = () => {
 
   useEffect(() => { loadDiscrepancyIds(); }, [loadDiscrepancyIds]);
 
-  // const loadInitialCounts = useCallback(async () => {
-  //   if (!masterId) return;
-  //   setCountsLoading(true);
-  //   try {
-  //     const results = await Promise.all(
-  //       REPORT_TABS.filter(t => t.blocksForward).map(tab =>
-  //         MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 1 })
-  //           .then(r => ({ type: tab.type, count: r.totalRecords }))
-  //           .catch(() => ({ type: tab.type, count: 0 }))
-  //       )
-  //     );
-  //     const counts: Partial<Record<ContributionReportType, number>> = {};
-  //     results.forEach(r => { counts[r.type] = r.count; });
-  //     setReportCounts(counts);
-  //   } finally { setCountsLoading(false); }
-  // }, [masterId]);
   const loadInitialCounts = useCallback(async () => {
     if (!masterId) return;
     setCountsLoading(true);
     try {
       const results = await Promise.all(
-        // CHANGED — was pageSize:1 + r.totalRecords, which counted parked
-        // records as blockers too. Now fetches the full set (same 9999
-        // pattern already used by loadDiscrepancyIds below) and only
-        // counts records that are NOT parked — a parked New Member /
-        // Wrong Branch / Wrong Circle record is a resolved discrepancy
-        // and should no longer block forwarding.
+        
         REPORT_TABS.filter(t => t.blocksForward).map(tab =>
           MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
             .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))

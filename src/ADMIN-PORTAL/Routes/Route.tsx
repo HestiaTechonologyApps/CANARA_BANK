@@ -1,7 +1,7 @@
 // Routes/AdminRoutes.tsx
 import { Route } from 'react-router-dom';
 import DashBoard from '../Pages/Dashboard/DashBoard';
-import DashboardHome from '../Pages/Dashboard/DashboardHome'; // ← replaces HomePage
+import DashboardHome from '../Pages/Dashboard/DashboardHome'; 
 import PageNotFound from '../Pages/Dashboard/PageNotFound';
 import ProtectedRoute from '../../PUBLIC-PORTAL/Auth/ProtectedRoute';
 import Notifications from '../Pages/Notifications/Notifications';
@@ -100,11 +100,6 @@ import MemberList from '../Pages/Contributions/Member/List';
 import MemberCreate from '../Pages/Contributions/Member/Create';
 import MemberEdit from '../Pages/Contributions/Member/Edit';
 import MemberView from '../Pages/Contributions/Member/View';
-
-//import MonthlyContributionList from '../Pages/Contributions/MonthlyContribution/List';
-//import MonthlyContributionCreate from '../Pages/Contributions/MonthlyContribution/Create';
-//import MonthlyContributionEdit from '../Pages/Contributions/MonthlyContribution/Edit';
-//import MonthlyContributionView from '../Pages/Contributions/MonthlyContribution/View';
 
 //Claims
 import DeathClaimList from '../Pages/Claims/DeathClaims/List';

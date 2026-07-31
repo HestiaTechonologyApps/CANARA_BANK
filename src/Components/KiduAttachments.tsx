@@ -29,8 +29,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
 }, ref) => {
     const [attachments, setAttachments] = useState<Attachment[]>([]);
 
-// const Attachments: React.FC<AttachmentsProps> = ({ tableName, recordId, showAddButton = true, showDeleteButton = true }) => {
-//     const [attachments, setAttachments] = useState<Attachment[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -47,7 +45,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
 
     useEffect(() => {
         onPendingChange?.(pendingFiles.length > 0);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pendingFiles]);
 
     useImperativeHandle(ref, () => ({
@@ -68,7 +65,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
 
     useEffect(() => {
         if (tableName && recordId) fetchAttachments();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableName, recordId]);
 
     const fetchAttachments = async () => {
@@ -102,10 +98,9 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
     });
 
     const formatDate = (dateString: string): string => {
-        // Add 'Z' to force JavaScript to treat it as UTC
         const date = new Date(dateString + 'Z');
 
-        const istOffset = 5.5 * 60 * 60 * 1000; // IST offset
+        const istOffset = 5.5 * 60 * 60 * 1000; 
         const istDate = new Date(date.getTime() + istOffset);
 
         const day = istDate.getUTCDate().toString().padStart(2, '0');
@@ -131,40 +126,12 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
         URL.revokeObjectURL(url);
     };
 
-    // const handleUpload = async () => {
-    //     if (!selectedFile) {
-    //         setUploadError("Please select a file to upload");
-    //         return;
-    //     }
-
-    //     try {
-    //         setUploading(true);
-    //         setUploadError(null);
-
-    //         const formData = new FormData();
-    //         formData.append("File", selectedFile);
-    //         formData.append("TableName", tableName);
-    //         formData.append("RecordId", Number(recordId).toString());
-    //         if (description) formData.append("Description", description);
-
-    //         await AttachmentService.uploadAttachment(formData);
-    //         await fetchAttachments();
-    //         handleCloseModal();
-    //     } catch (err) {
-    //         console.error("Upload failed:", err);
-    //         setUploadError("Failed to upload file. Please try again.");
-    //     } finally {
-    //         setUploading(false);
-    //     }
-    // };
     const handleUpload = async () => {
         if (!selectedFile) {
             setUploadError("Please select a file to upload");
             return;
         }
 
-        // NEW — stage locally instead of hitting the API right away; the
-        // parent's Update button drives the real upload via the ref
         if (deferUpload) {
             setPendingFiles(prev => [
                 ...prev,
@@ -240,16 +207,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
         return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
     };
 
-    // const formatDate = (dateString: string): string => {
-    //     const date = new Date(dateString);
-    //     return date.toLocaleDateString("en-GB", {
-    //         day: "2-digit",
-    //         month: "short",
-    //         year: "numeric",
-    //         hour: "2-digit",
-    //         minute: "2-digit"
-    //     });
-    // };
 
     const getFileIcon = (fileName: string) => {
         const ext = fileName.split(".").pop()?.toLowerCase();
@@ -318,20 +275,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
 
                 <Collapse in={isOpen}>
 
-                    {/* <Card.Body className="p-3">
-                        <div className="d-flex justify-content-end">
-                            <Button
-                                size="sm"
-                                className="d-flex align-items-center gap-1"
-                                style={{ fontSize: '0.85rem', padding: '0.375rem 0.75rem', backgroundColor: "#173a6a" }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setShowModal(true);
-                                }}
-                            >
-                                <Upload size={12} /> Add
-                            </Button>
-                        </div> */}
                         <Card.Body className="p-3">
                         {showAddButton && (
                             <div className="d-flex justify-content-end">
@@ -348,10 +291,7 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
                                 </Button>
                             </div>
                         )}
-                        {/* {loading ? (
-                            <div className="text-center py-4"> */}
-                            {/* NEW — files staged for upload, shown separately from
-                            already-saved attachments until Update is clicked */}
+                        
                         {pendingFiles.length > 0 && (
                             <div className="mb-3">
                                 <div className="text-muted small mb-2 fw-semibold">
@@ -452,33 +392,7 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
                                                         </div>
                                                     </div>
                                                 </td>
-                                                {/* <td style={{ padding: '0.5rem' }}>
-                                                    <div className="d-flex gap-1 justify-content-center">
-                                                        <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
-                                                            <Button
-                                                                variant="outline-primary"
-                                                                size="sm"
-                                                                className="d-flex align-items-center justify-content-center"
-                                                                style={{ width: '30px', height: '30px', padding: 0 }}
-                                                                onClick={() => handleDownload(attachment.attachmentId, attachment.fileName)}
-                                                            >
-                                                                <Download size={13} />
-                                                            </Button>
-                                                        </OverlayTrigger> */}
-
-                                                        {/* <OverlayTrigger overlay={<Tooltip>Delete</Tooltip>}>
-                                                            <Button
-                                                                variant="outline-danger"
-                                                                size="sm"
-                                                                className="d-flex align-items-center justify-content-center"
-                                                                style={{ width: '30px', height: '30px', padding: 0 }}
-                                                                onClick={() => confirmDeleteAttachment(attachment.attachmentId)}
-                                                            >
-                                                                <Trash2 size={13} />
-                                                            </Button>
-                                                        </OverlayTrigger>
-                                                    </div>
-                                                </td> */}
+                                               
                                                  <td style={{ padding: '0.5rem' }}>
                                                     <div className="d-flex gap-1 justify-content-center">
                                                         <OverlayTrigger overlay={<Tooltip>Download</Tooltip>}>
@@ -558,30 +472,7 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
                         )}
                     </div>
 
-                    {/* {selectedFile && (
-                        <div className="mt-3 p-2 bg-light rounded border">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div className="d-flex align-items-center gap-2">
-                                    {getFileIcon(selectedFile.name)}
-                                    <div>
-                                        <p className="mb-0 fw-medium" style={{ fontSize: '0.9rem' }}>
-                                            {selectedFile.name}
-                                        </p>
-                                        <small className="text-muted">{formatFileSize(selectedFile.size)}</small>
-                                    </div>
-                                </div>
-                                <Button
-                                    variant="outline-danger"
-                                    size="sm"
-                                    onClick={() => setSelectedFile(null)}
-                                    className="d-flex align-items-center justify-content-center"
-                                    style={{ width: '28px', height: '28px', padding: 0 }}
-                                >
-                                    <X size={14} />
-                                </Button>
-                            </div>
-                        </div>
-                    )} */}
+                                
                     {selectedFile && (
                         <div className="mt-3 p-2 bg-light rounded border">
                             <div className="d-flex justify-content-between align-items-center">

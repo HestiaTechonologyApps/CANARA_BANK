@@ -1,5 +1,4 @@
 // PUBLIC-PORTAL/Routes/Route.tsx
-
 import { Route } from 'react-router-dom';
 import PublicLayout from '../Layout/Layout';
 import ContactUs from '../Pages/ContactUs';

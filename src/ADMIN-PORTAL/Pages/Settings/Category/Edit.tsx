@@ -1,4 +1,3 @@
-// src/components/Category/CategoryEdit.tsx 
 import React from "react"; 
 import type { Field } from "../../../Components/KiduEdit"; 
 import CategoryService from "../../../Services/Settings/Category.services"; 

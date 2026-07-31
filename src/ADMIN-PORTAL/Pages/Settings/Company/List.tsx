@@ -8,27 +8,29 @@ import type { FilterColumn } from "../../../../Components/KiduTableFilter";
 
 
 const COMPANY_COLUMNS = [
-  { key: "companyId",     label: "Company ID",   enableSorting: true,  type: "text"     as const },
-  { key: "companyLogo",   label: "Logo",         enableSorting: false, type: "image"    as const },
-  { key: "comapanyName",  label: "Company Name", enableSorting: true,  type: "text"     as const },
-  { key: "email",         label: "Email",                              type: "text"     as const },
-  { key: "contactNumber", label: "Contact",                            type: "text"     as const },
-  { key: "city",          label: "City",                               type: "text"     as const },
-  { key: "state",         label: "State",                              type: "text"     as const },
-  { key: "isActive",      label: "Active",                             type: "checkbox" as const },
+  { key: "companyId", label: "Company ID", enableSorting: true, type: "text" as const },
+  { key: "companyLogo", label: "Logo", enableSorting: false, type: "image" as const },
+  { key: "comapanyName", label: "Company Name", enableSorting: true, type: "text" as const },
+  { key: "email", label: "Email", type: "text" as const },
+  { key: "contactNumber", label: "Contact", type: "text" as const },
+  { key: "city", label: "City", type: "text" as const },
+  { key: "state", label: "State", type: "text" as const },
+  { key: "isActive", label: "Active", type: "checkbox" as const },
 ];
 
 const COMPANY_FILTER_COLUMNS: FilterColumn[] = [
-  { key: "companyId",     label: "Company ID",   type: "text" },
-  { key: "comapanyName",  label: "Company Name", type: "text" },
-  { key: "email",         label: "Email",        type: "text" },
-  { key: "contactNumber", label: "Contact",      type: "text" },
-  { key: "city",          label: "City",         type: "text" },
-  { key: "state",         label: "State",        type: "text" },
-  { key: "isActive",      label: "Active",       type: "select", options: [
-    { value: "true", label: "Active" },
-    { value: "false", label: "Inactive" }
-  ] },
+  { key: "companyId", label: "Company ID", type: "text" },
+  { key: "comapanyName", label: "Company Name", type: "text" },
+  { key: "email", label: "Email", type: "text" },
+  { key: "contactNumber", label: "Contact", type: "text" },
+  { key: "city", label: "City", type: "text" },
+  { key: "state", label: "State", type: "text" },
+  {
+    key: "isActive", label: "Active", type: "select", options: [
+      { value: "true", label: "Active" },
+      { value: "false", label: "Inactive" }
+    ]
+  },
 ];
 
 const transformCompanyData = (companies: Company[]) =>

@@ -75,14 +75,12 @@ const today = new Date().toISOString().split("T")[0];
       yearOF: selectedYearMaster.yearOf,
     };
 
-  //   await DeathClaimService.createDeathClaim(payload as any);
-  // };
 
   const created = await DeathClaimService.createDeathClaim(payload as any);
 
     if (attachmentsRef.current?.hasFiles() && created?.deathClaimId) {
       await attachmentsRef.current.uploadAll(
-        "DeathClaim",           // tableName — match your backend's expected value
+        "DeathClaim",           
         created.deathClaimId
       );
     }

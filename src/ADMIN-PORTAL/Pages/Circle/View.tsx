@@ -10,28 +10,13 @@ const CircleView: React.FC = () => {
     { key: "name", label: "Circle Name", icon: "bi-geo-alt" },
     { key: "abbreviation", label: "Abbreviation", icon: "bi-hash" },
     { key: "stateName", label: "State", icon: "bi-flag" },
-   // { key: "dateFromString", label: "Date From", icon: "bi-calendar-event" },
-   // { key: "dateToString", label: "Date To", icon: "bi-calendar-x" },
     { key: "isActive", label: "Active", icon: "bi-check-circle" },
   ];
  const handleFetch = async (circleId: string) => {
   const response = await CircleService.getCircleById(Number(circleId));
- // const circle = response.value;
 
- // if (!circle)
      return response;
 
-//   const formatDateOnly = (value?: string) =>
-//     value ? new Date(value).toLocaleDateString("en-IN") : "";
-
-//   return {
-//     ...response,
-//     value: {
-//       ...circle,
-//       dateFromString: formatDateOnly(circle.dateFromString),
-//       dateToString: formatDateOnly(circle.dateToString),
-//     },
-//   };
   };
 
   const handleDelete = async (circleId: string) => {
