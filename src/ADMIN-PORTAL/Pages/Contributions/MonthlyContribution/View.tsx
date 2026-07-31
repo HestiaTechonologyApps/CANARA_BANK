@@ -669,8 +669,12 @@ const FieldLabel: React.FC<{ label: string; required?: boolean }> = ({ label, re
     {label}{required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
   </p>
 );
-const TextInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean }> = ({ value, onChange, placeholder, type = "text", disabled }) => (
-  <input className="modal-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} disabled={disabled}
+// const TextInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean }> = ({ value, onChange, placeholder, type = "text", disabled }) => (
+//   <input className="modal-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} disabled={disabled}
+//     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 13, color: "#1e293b", background: disabled ? "#f8fafc" : "#fff", transition: "all 0.2s", boxSizing: "border-box", fontFamily: "'Sora',sans-serif" }} />
+// );
+const TextInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean; max?: string; min?: string }> = ({ value, onChange, placeholder, type = "text", disabled, max, min }) => (
+  <input className="modal-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} disabled={disabled} max={max} min={min}
     style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 13, color: "#1e293b", background: disabled ? "#f8fafc" : "#fff", transition: "all 0.2s", boxSizing: "border-box", fontFamily: "'Sora',sans-serif" }} />
 );
 const SelectInput: React.FC<{ value: string | number; onChange: (v: string) => void; options: { value: string | number; label: string }[]; placeholder?: string }> = ({ value, onChange, options, placeholder }) => (
@@ -705,6 +709,9 @@ const FormSection: React.FC<{ title?: string; children: React.ReactNode; span?: 
   </div>
 );
 
+const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
+const todayStr = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD", matches <input type="date"> format
+
 const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {
   const [staffNo, setStaffNo] = useState(prefill.staffNo || "");
   const [name, setName] = useState(prefill.name || "");
@@ -716,7 +723,7 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
   const [nomineeRelation, setNomineeRelation] = useState("");
   const [nomineeIdentity, setNomineeIdentity] = useState("");
   const [unionMember, setUnionMember] = useState("");
-  const [totalRefund, setTotalRefund] = useState("0");
+ // const [totalRefund, setTotalRefund] = useState("0");
   const [isRegCompleted, setIsRegCompleted] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [selectedDesignation, setSelectedDesignation] = useState<Designation | null>(null);
@@ -735,7 +742,9 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
     if (!staffNo || !name || !genderId || !selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus || !dob || !doj || !dojtoScheme) { setErrorMsg("Please fill all required fields."); return; }
     setSubmitting(true); setErrorMsg("");
     try {
-      await MemberService.createMember({ staffNo: Number(staffNo), name: name.trim(), genderId: Number(genderId), designationId: selectedDesignation.designationId, categoryId: selectedCategory.categoryId, branchId: selectedBranch.branchId, statusId: selectedStatus.statusId, dob: toIso(dob), dobString: toIso(dob), doj: toIso(doj), dojString: toIso(doj), dojtoScheme: toIso(dojtoScheme), dojtoSchemeString: toIso(dojtoScheme), isRegCompleted, nominee: nominee.trim(), nomineeRelation, nomineeIDentity: nomineeIdentity.trim(), profileImageSrc: "", unionMember, totalRefund: totalRefund || "0" } as Omit<Member, "memberId" | "auditLogs">);
+      await MemberService.createMember({ staffNo: Number(staffNo), name: name.trim(), genderId: Number(genderId), designationId: selectedDesignation.designationId, categoryId: selectedCategory.categoryId, branchId: selectedBranch.branchId, statusId: selectedStatus.statusId, dob: toIso(dob), dobString: toIso(dob), doj: toIso(doj), dojString: toIso(doj), dojtoScheme: toIso(dojtoScheme), dojtoSchemeString: toIso(dojtoScheme), isRegCompleted, nominee: nominee.trim(), nomineeRelation, nomineeIDentity: nomineeIdentity.trim(), profileImageSrc: "", unionMember, 
+       // totalRefund: totalRefund || "0" 
+      } as Omit<Member, "memberId" | "auditLogs">);
       setSuccessMsg("Member created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
     } catch (err: any) { setErrorMsg(err?.message || "Failed to create member."); } finally { setSubmitting(false); }
@@ -752,11 +761,12 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
           <FormSection><FieldLabel label="Designation" required /><PopupInput value={selectedDesignation?.name || ""} onOpen={() => setShowDesignationPopup(true)} placeholder="Select designation" /></FormSection>
           <FormSection><FieldLabel label="Category" required /><PopupInput value={selectedCategory?.name || ""} onOpen={() => setShowCategoryPopup(true)} placeholder="Select category" /></FormSection>
           <FormSection><FieldLabel label="Status" required /><PopupInput value={selectedStatus?.name || ""} onOpen={() => setShowStatusPopup(true)} placeholder="Select status" /></FormSection>
-          <FormSection><FieldLabel label="Date of Birth" required /><TextInput value={dob} onChange={setDob} type="date" /></FormSection>
+          {/* <FormSection><FieldLabel label="Date of Birth" required /><TextInput value={dob} onChange={setDob} type="date" /></FormSection> */}
+          <FormSection><FieldLabel label="Date of Birth" required /><TextInput value={dob} onChange={setDob} type="date" max={todayStr} /></FormSection>
           <FormSection><FieldLabel label="Date of Joining" required /><TextInput value={doj} onChange={setDoj} type="date" /></FormSection>
           <FormSection><FieldLabel label="DOJ to Scheme" required /><TextInput value={dojtoScheme} onChange={setDojtoScheme} type="date" /></FormSection>
           <FormSection><FieldLabel label="Union Member" /><SelectInput value={unionMember} onChange={setUnionMember} placeholder="Select" options={[{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }]} /></FormSection>
-          <FormSection><FieldLabel label="Total Refund" /><TextInput value={totalRefund} onChange={setTotalRefund} type="number" placeholder="0" /></FormSection>
+          {/* <FormSection><FieldLabel label="Total Refund" /><TextInput value={totalRefund} onChange={setTotalRefund} type="number" placeholder="0" /></FormSection> */}
           <FormSection><FieldLabel label="Nominee Name" /><TextInput value={nominee} onChange={setNominee} placeholder="Nominee full name" /></FormSection>
           <FormSection><FieldLabel label="Nominee Relation" /><SelectInput value={nomineeRelation} onChange={setNomineeRelation} placeholder="Select relation" options={["Spouse", "Father", "Mother", "Son", "Daughter", "Sibling", "Nephew", "Niece", "Grandparent"].map(v => ({ value: v, label: v }))} /></FormSection>
           <FormSection span><FieldLabel label="Nominee Identity" /><TextInput value={nomineeIdentity} onChange={setNomineeIdentity} placeholder="Aadhar / PAN etc." /></FormSection>
