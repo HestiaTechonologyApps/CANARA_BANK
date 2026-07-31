@@ -1,4 +1,3 @@
-// src/components/AdminComponents/AdminNavbar.tsx
 import React, { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Container, Image, Navbar } from "react-bootstrap";
@@ -12,13 +11,16 @@ import KiduLogoutModal from "../../Components/KiduLogoutModal";
 import KiduAccountsettingsModal from "../Components/KiduAccountsettingsModal";
 import KiduProfileModal from "../Components/KiduProfileModal";
 import KiduNavbarDropdown from "../Components/KiduNavbarDropdown";
-//import AdminNotificationDropdown from "../Components/KiduNotificationDropdown";
-import profiledefaultImg from "../Assets/Images/profile.jpg"
+import profiledefaultImg from "../Assets/Images/profile.jpg";
 import { getNavbarAvatar } from "../Utils/roleAvatar";
 
+const STYLE_TAG = `
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
+  .anv-chevron-btn { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; border:1.5px solid #e2e8f0; background:#fff; cursor:pointer; transition: all .15s; color:#475569; }
+  .anv-chevron-btn:hover { background:#f1f5f9; border-color:#1B3763; color:#1B3763; }
+`;
 
 const NavbarComponent: React.FC = () => {
-  // const [showNotifications, setShowNotifications] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -30,108 +32,45 @@ const NavbarComponent: React.FC = () => {
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
-  
-  // useEffect(() => {
-  //   try {
-  //     const storedUser = localStorage.getItem("user");
-  //     if (storedUser) {
-  //       const parsedUser = JSON.parse(storedUser);
-  //       if (parsedUser?.userName) {
-  //         queueMicrotask(() => {
-  //           setUsername(parsedUser.userName);
-  //           setUseremail(parsedUser.userEmail)
-  //         });
-  //       }
-  //       if (parsedUser?.profileImageSrc) {
-  //         setProfilePic(getFullImageUrl(parsedUser.profileImageSrc));
-  //       }
-  //     }
-    
-  //     const handleProfileUpdate = () => {
-  //       const updatedUser = localStorage.getItem("user");
-  //       if (updatedUser) {
-  //         const parsed = JSON.parse(updatedUser);
-  //         setProfilePic(getFullImageUrl(parsed.profileImageSrc));
-  //       }
-  //     };
-  //     window.addEventListener("profile-pic-updated", handleProfileUpdate);
-  //     return () => {
-  //       window.removeEventListener("profile-pic-updated", handleProfileUpdate);
-  //     };
-  //   } catch (error) {
-  //     console.error("Error parsing user from localStorage:", error);
-  //   }
-  // }, []);
-useEffect(() => {
+
+  useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      // if (storedUser) {
-      //   const parsedUser = JSON.parse(storedUser);
-      //   if (parsedUser?.userName) {
-      //     queueMicrotask(() => {
-      //       setUsername(parsedUser.userName);
-      //       setUseremail(parsedUser.userEmail)
-      //     });
-      //   }
-      //   const uploadedImage = parsedUser?.profileImageSrc
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser?.userName) {
           queueMicrotask(() => {
             setUsername(parsedUser.userName);
-            setUseremail(parsedUser.userEmail)
+            setUseremail(parsedUser.userEmail);
           });
         }
         setUserRole(parsedUser?.role);
         setUserMemberId(parsedUser?.memberId);
-        const uploadedImage = parsedUser?.profileImageSrc
-          ? getFullImageUrl(parsedUser.profileImageSrc)
-          : null;
-        setProfilePic(
-          getNavbarAvatar(
-            parsedUser?.role,
-            parsedUser?.memberId,
-            uploadedImage,
-            profiledefaultImg
-          )
-        );
+        const uploadedImage = parsedUser?.profileImageSrc ? getFullImageUrl(parsedUser.profileImageSrc) : null;
+        setProfilePic(getNavbarAvatar(parsedUser?.role, parsedUser?.memberId, uploadedImage, profiledefaultImg));
       }
-    
+
       const handleProfileUpdate = () => {
         const updatedUser = localStorage.getItem("user");
         if (updatedUser) {
           const parsed = JSON.parse(updatedUser);
-          const uploadedImage = parsed?.profileImageSrc
-            ? getFullImageUrl(parsed.profileImageSrc)
-            : null;
-          setProfilePic(
-            getNavbarAvatar(
-              parsed?.role,
-              parsed?.memberId,
-              uploadedImage,
-              profiledefaultImg
-            )
-          );
+          const uploadedImage = parsed?.profileImageSrc ? getFullImageUrl(parsed.profileImageSrc) : null;
+          setProfilePic(getNavbarAvatar(parsed?.role, parsed?.memberId, uploadedImage, profiledefaultImg));
         }
       };
       window.addEventListener("profile-pic-updated", handleProfileUpdate);
-      return () => {
-        window.removeEventListener("profile-pic-updated", handleProfileUpdate);
-      };
+      return () => window.removeEventListener("profile-pic-updated", handleProfileUpdate);
     } catch (error) {
       console.error("Error parsing user from localStorage:", error);
     }
   }, []);
+
   const handleYearSelect = (year: number) => {
     setSelectedYear(year);
     console.log("Selected Year Updated Globally:", year);
   };
 
-
-  const handleLogout = () => {
-    setShowLogoutModal(true);
-  };
-
+  const handleLogout = () => setShowLogoutModal(true);
   const confirmLogout = () => {
     AuthService.logout();
     navigate("/");
@@ -139,80 +78,53 @@ useEffect(() => {
 
   return (
     <>
+      <style>{STYLE_TAG}</style>
       <Navbar
         expand="lg"
         fixed="top"
-        className="bg-white"
         style={{
-          height: "60px",
+          height: 64,
           zIndex: 999,
-          paddingLeft: "15px",
-          paddingRight: "15px",
+          background: "#fff",
+          borderBottom: "1.5px solid #eef1f6",
+          paddingLeft: 15,
+          paddingRight: 15,
         }}
       >
         <Container
           fluid
-          className="d-flex shadow align-items-center justify-content-between"
+          className="d-flex align-items-center justify-content-between"
           style={{
-            marginLeft: window.innerWidth >= 768 ? "70px" : "0px",
+            marginLeft: window.innerWidth >= 768 ? 70 : 0,
             transition: "margin-left 0.3s ease-in-out",
+            fontFamily: "'Sora',sans-serif",
           }}
         >
-          {/* Left Side */}
-          <div className="d-flex align-items-center head-font">
-            <p
-              className="mb-0 text-dark"
-              style={{
-                fontSize: "12px",
-                fontWeight: 500,
-              }}
-            >
-              <span style={{ color: "#ec9d0aff" }}>Welcome</span>
-              <br />
-              {username}
-            </p>
+          {/* Left */}
+          <div>
+            <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: "#e6a817", textTransform: "uppercase", letterSpacing: "0.06em" }}>Welcome</p>
+            <p style={{ margin: 0, fontSize: 14.5, fontWeight: 700, color: "#0f172a" }}>{username}</p>
           </div>
 
-          {/* Right Side */}
-          <div className="d-flex align-items-center gap-1">
-            {/* Year Dropdown */}
-            <div className="me-3">
-              <KiduYearSelector
-                startYear={2023}
-                onYearSelect={handleYearSelect}
-                defaultYear={selectedYear}
-              />
-            </div>
+          {/* Right */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <KiduYearSelector startYear={2023} onYearSelect={handleYearSelect} defaultYear={selectedYear} />
 
-            {/* <AdminNotificationDropdown /> */}
-            {/* Profile Section */}
-            <div
-              className="d-flex align-items-center cursor-pointer border-none py-1 ms-3"
-            >
-              {/* <Image
-                src={profilePic ? profilePic : profiledefaultImg}
-                alt="profile"
-                className="rounded-circle me-2 border border-2"
-                style={{ width: "30px", height: "30px", objectFit: "cover" }}
-              /> */}
+            <div style={{ width: 1, height: 28, background: "#e2e8f0" }} />
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
               <Image
                 src={profilePic}
                 alt="profile"
-                className="rounded-circle me-2 border border-2"
-                style={{ width: "30px", height: "30px", objectFit: "cover" }}
+                style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: "2px solid #f0f4ff" }}
               />
-              <div className="text-end">
+              <button
+                className="anv-chevron-btn"
+                onClick={(e) => { e.stopPropagation(); setShowDropdown((prev) => !prev); }}
+              >
+                <BsChevronDown size={12} />
+              </button>
 
-              </div>
-              <BsChevronDown
-                className="ms-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowDropdown((prev) => !prev);
-                }}
-              />
-
-              {/* Dropdown */}
               <KiduNavbarDropdown
                 show={showDropdown}
                 onToggle={setShowDropdown}
@@ -220,45 +132,18 @@ useEffect(() => {
                 email={useremail}
                 role={userRole}
                 memberId={userMemberId}
-
-                onAccountSettings={() => {
-                  setShowDropdown(false);
-                  setShowAccountSettings(true);
-                }}
-
-                onProfile={() => {
-                  setShowDropdown(false);
-                  setShowProfileModal(true);
-                }}
-
-                onLogout={() => {
-                  setShowDropdown(false);
-                  handleLogout();
-                }}
+                onAccountSettings={() => { setShowDropdown(false); setShowAccountSettings(true); }}
+                onProfile={() => { setShowDropdown(false); setShowProfileModal(true); }}
+                onLogout={() => { setShowDropdown(false); handleLogout(); }}
               />
-              <KiduAccountsettingsModal
-                show={showAccountSettings}
-                onHide={() => setShowAccountSettings(false)}
-              />
-
-              <KiduProfileModal
-                show={showProfileModal}
-                onHide={() => setShowProfileModal(false)}
-              />
-
+              <KiduAccountsettingsModal show={showAccountSettings} onHide={() => setShowAccountSettings(false)} />
+              <KiduProfileModal show={showProfileModal} onHide={() => setShowProfileModal(false)} />
             </div>
-
           </div>
         </Container>
       </Navbar>
 
-      {/* Notification Offcanvas */}
-      <KiduLogoutModal
-        show={showLogoutModal}
-        onCancel={() => setShowLogoutModal(false)}
-        onConfirm={confirmLogout}
-      />
-
+      <KiduLogoutModal show={showLogoutModal} onCancel={() => setShowLogoutModal(false)} onConfirm={confirmLogout} />
     </>
   );
 };
