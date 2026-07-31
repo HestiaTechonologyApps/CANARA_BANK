@@ -10,6 +10,91 @@ interface Props {
 }
 const ICON_SIZE = 16;
 
+const STAFF_SIDEBAR_STYLE = `
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
+
+  .staff-sidebar {
+    font-family: 'Sora', sans-serif;
+    background: #101f34;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease;
+  }
+
+  .staff-sidebar .sidebar-header {
+    padding: 18px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .staff-sidebar .sidebar-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: #5eead4;
+  }
+
+  .staff-sidebar .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 8px;
+    flex: 1;
+  }
+
+  .staff-sidebar .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: background 0.15s, color 0.15s;
+  }
+  .staff-sidebar .sidebar-nav a:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  .staff-sidebar .sidebar-nav a.active {
+    background: rgba(94,234,212,0.14);
+    color: #fff;
+    box-shadow: inset 3px 0 0 #5eead4;
+  }
+
+  .staff-sidebar .sidebar-footer {
+    padding: 12px 8px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .staff-sidebar .sidebar-footer button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(239,68,68,0.25);
+    background: rgba(239,68,68,0.12);
+    color: #fca5a5 !important;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .staff-sidebar .sidebar-footer button:hover {
+    background: rgba(239,68,68,0.2);
+  }
+
+  .staff-sidebar.collapsed .sidebar-nav a {
+    justify-content: center;
+    padding: 10px 0;
+  }
+  .staff-sidebar.collapsed .sidebar-footer button {
+    justify-content: center;
+    padding: 10px 0;
+  }
+`;
+
 const StaffSidebar = ({ open }: Props) => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -27,6 +112,7 @@ const StaffSidebar = ({ open }: Props) => {
 
   return (
     <>
+      <style>{STAFF_SIDEBAR_STYLE}</style>
       <aside className={`staff-sidebar ${open ? "open" : "collapsed"}`}>
         <div className="sidebar-header">
           {open && <h3>Member Portal</h3>}
@@ -52,7 +138,6 @@ const StaffSidebar = ({ open }: Props) => {
         onCancel={() => setShowLogoutModal(false)}
         onConfirm={confirmLogout}
       />
-
     </>
   );
 };

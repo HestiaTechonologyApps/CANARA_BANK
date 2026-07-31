@@ -84,20 +84,6 @@ const Sidebar: React.FC = () => {
         onMouseLeave={() => setHovered(false)}
       >
         {/* Profile section */}
-        {/* <div className="profile-section text-center mb-1">
-          {hovered ? (
-            <p className="mt-2 text-warning fw-bold" style={{ fontSize: "15px" }}>
-              Admin Portal
-            </p>
-
-          ) : (
-            <p className="fw-bolder fs-6 text-white">
-              <span style={{ fontSize: "10px" }}></span>
-            </p>
-          )}
-
-        </div> */}
-        {/* Profile section */}
         <div className="profile-section text-center mb-1">
           {hovered ? (
             <div className="d-flex align-items-center justify-content-center gap-2 mt-2">
@@ -112,7 +98,7 @@ const Sidebar: React.FC = () => {
                   flexShrink: 0,
                 }}
               />
-              <p className="text-warning fw-bold mb-0" style={{ fontSize: "16px" }}>
+              <p className="fw-bold mb-0" style={{ fontSize: "16px", color: "#5eead4" }}>
                 Admin Portal
               </p>
             </div>
@@ -152,7 +138,7 @@ const Sidebar: React.FC = () => {
               to="/dashboard"
               end
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-2 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "bg-warning" : ""}`
+                `d-flex align-items-center gap-2 mx-auto ${hovered ? "ps-2 pe-3" : "justify-content-center"} rounded mt-1 ${isActive ? "sidebar-active" : ""}`
               }
               style={{
                 fontSize: "14px",
@@ -165,11 +151,11 @@ const Sidebar: React.FC = () => {
               {({ isActive }) => (
                 <>
                   <BsGridFill
-                    className={isActive ? "text-white" : "text-white"}
-                    style={{ fontSize: "20px", minWidth: "20px" }}
+                    className="text-white"
+                    style={{ fontSize: "20px", minWidth: "20px", opacity: isActive ? 1 : 0.85 }}
                   />
                   {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
+                    <span className="fw-bold flex-grow-1 text-white">
                       Dashboard
                     </span>
                   )}
@@ -181,17 +167,19 @@ const Sidebar: React.FC = () => {
             {/* Settings Menu */}
             <div>
               <div
-                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
+                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 sidebar-group-head`}
                 style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('settings')}
               >
-                <BsGearFill className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
+                <BsGearFill className="text-white" style={{ fontSize: "20px", minWidth: "20px", opacity: 0.85 }} />
                 {hovered && (
                   <>
                     <span className="text-white fw-bold flex-grow-1">Settings</span>
                     <BsChevronDown
                       className="text-white"
                       style={{
+                        fontSize: "13px",
+                        opacity: 0.7,
                         transition: "transform 0.3s",
                         transform: openMenu === 'settings' ? "rotate(180deg)" : "rotate(0deg)",
                       }}
@@ -208,7 +196,7 @@ const Sidebar: React.FC = () => {
                       to={sub.path}
                       end
                       className={({ isActive }) =>
-                        `d-flex align-items-center gap-2 p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
+                        `d-flex align-items-center gap-2 p-2 ms-4 me-3 mb-1 rounded ${isActive ? "sidebar-sub-active" : "text-white"}`
                       }
                       style={{ fontSize: "13px", textDecoration: "none" }}
                     >
@@ -222,17 +210,19 @@ const Sidebar: React.FC = () => {
             {/* Contributions Menu */}
             <div>
               <div
-                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
+                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 sidebar-group-head`}
                 style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('contributions')}
               >
-                <BsCashStack className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
+                <BsCashStack className="text-white" style={{ fontSize: "20px", minWidth: "20px", opacity: 0.85 }} />
                 {hovered && (
                   <>
                     <span className="text-white fw-bold flex-grow-1">Contributions</span>
                     <BsChevronDown
                       className="text-white"
                       style={{
+                        fontSize: "13px",
+                        opacity: 0.7,
                         transition: "transform 0.3s",
                         transform: openMenu === 'contributions' ? "rotate(180deg)" : "rotate(0deg)",
                       }}
@@ -249,7 +239,7 @@ const Sidebar: React.FC = () => {
                       to={sub.path}
                       end
                       className={({ isActive }) =>
-                        `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
+                        `d-block p-2 ms-4 me-3 mb-1 rounded ${isActive ? "sidebar-sub-active" : "text-white"}`
                       }
                       style={{ fontSize: "13px", textDecoration: "none" }}
                     >
@@ -263,17 +253,19 @@ const Sidebar: React.FC = () => {
             {/* Claims Menu */}
             <div>
               <div
-                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
+                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 sidebar-group-head`}
                 style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('claims')}
               >
-                <FaFileInvoice className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
+                <FaFileInvoice className="text-white" style={{ fontSize: "20px", minWidth: "20px", opacity: 0.85 }} />
                 {hovered && (
                   <>
                     <span className="text-white fw-bold flex-grow-1">Claims</span>
                     <BsChevronDown
                       className="text-white"
                       style={{
+                        fontSize: "13px",
+                        opacity: 0.7,
                         transition: "transform 0.3s",
                         transform: openMenu === 'claims' ? "rotate(180deg)" : "rotate(0deg)",
                       }}
@@ -290,7 +282,7 @@ const Sidebar: React.FC = () => {
                       to={sub.path}
                       end
                       className={({ isActive }) =>
-                        `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
+                        `d-block p-2 ms-4 me-3 mb-1 rounded ${isActive ? "sidebar-sub-active" : "text-white"}`
                       }
                       style={{ fontSize: "13px", textDecoration: "none" }}
                     >
@@ -304,17 +296,19 @@ const Sidebar: React.FC = () => {
             {/* CMS Menu */}
             <div>
               <div
-                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2`}
+                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 sidebar-group-head`}
                 style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
                 onClick={() => handleMenuToggle('cms')}
               >
-                <BsNewspaper className="text-white" style={{ fontSize: "20px", minWidth: "20px" }} />
+                <BsNewspaper className="text-white" style={{ fontSize: "20px", minWidth: "20px", opacity: 0.85 }} />
                 {hovered && (
                   <>
                     <span className="text-white fw-bold flex-grow-1">CMS</span>
                     <BsChevronDown
                       className="text-white"
                       style={{
+                        fontSize: "13px",
+                        opacity: 0.7,
                         transition: "transform 0.3s",
                         transform: openMenu === 'cms' ? "rotate(180deg)" : "rotate(0deg)",
                       }}
@@ -331,7 +325,7 @@ const Sidebar: React.FC = () => {
                       to={sub.path}
                       end
                       className={({ isActive }) =>
-                        `d-block p-2 ms-4 me-3 mb-1 ${isActive ? "bg-warning text-white rounded" : "text-white"}`
+                        `d-block p-2 ms-4 me-3 mb-1 rounded ${isActive ? "sidebar-sub-active" : "text-white"}`
                       }
                       style={{ fontSize: "13px", textDecoration: "none" }}
                     >
@@ -346,18 +340,18 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/report-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "sidebar-active" : ""}`
               }
               style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsBarChart
-                    className={isActive ? "text-white" : "text-white"}
-                    style={{ fontSize: "20px", minWidth: "20px" }}
+                    className="text-white"
+                    style={{ fontSize: "20px", minWidth: "20px", opacity: isActive ? 1 : 0.85 }}
                   />
                   {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
+                    <span className="fw-bold flex-grow-1 text-white">
                       Reports
                     </span>
                   )}
@@ -369,18 +363,18 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/supportTickets-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "sidebar-active" : ""}`
               }
               style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsTicketPerforated
-                    className={isActive ? "text-white" : "text-white"}
-                    style={{ fontSize: "20px", minWidth: "20px" }}
+                    className="text-white"
+                    style={{ fontSize: "20px", minWidth: "20px", opacity: isActive ? 1 : 0.85 }}
                   />
                   {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
+                    <span className="fw-bold flex-grow-1 text-white">
                       Support Tickets
                     </span>
                   )}
@@ -392,18 +386,18 @@ const Sidebar: React.FC = () => {
             <NavLink
               to="/dashboard/approval-list"
               className={({ isActive }) =>
-                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "bg-warning" : ""}`
+                `d-flex align-items-center gap-2 mx-1 ${hovered ? "ps-3 pe-3" : "justify-content-center"} rounded mt-2 ${isActive ? "sidebar-active" : ""}`
               }
               style={{ fontSize: "14px", textDecoration: "none", padding: "8px 0" }}
             >
               {({ isActive }) => (
                 <>
                   <BsBag
-                    className={isActive ? "text-white" : "text-white"}
-                    style={{ fontSize: "20px", minWidth: "20px" }}
+                    className="text-white"
+                    style={{ fontSize: "20px", minWidth: "20px", opacity: isActive ? 1 : 0.85 }}
                   />
                   {hovered && (
-                    <span className={`fw-bold flex-grow-1 ${isActive ? "text-white" : "text-white"}`}>
+                    <span className="fw-bold flex-grow-1 text-white">
                       Approval
                     </span>
                   )}
@@ -418,12 +412,13 @@ const Sidebar: React.FC = () => {
               style={{
                 fontSize: "13px",
                 textDecoration: "none",
-                backgroundColor: "#3d5272ff",
+                backgroundColor: "rgba(239,68,68,0.15)",
+                border: "1px solid rgba(239,68,68,0.3)",
                 cursor: "pointer",
               }}
             >
-              <BiLogOut style={{ fontSize: "20px", color: "red" }} />
-              {hovered && <span className="ms-2 text-danger">Logout</span>}
+              <BiLogOut style={{ fontSize: "20px", color: "#f87171" }} />
+              {hovered && <span className="ms-2" style={{ color: "#f87171" }}>Logout</span>}
             </p>
           </Nav>
         </div>
@@ -486,7 +481,7 @@ const Sidebar: React.FC = () => {
         </Container>
       </Navbar>
 
-      {/* Inline minimal WebKit scrollbar styles */}
+      {/* Inline minimal WebKit scrollbar + active state styles */}
       <style>
         {`
           .admin-sidebar-scroll::-webkit-scrollbar {
@@ -498,6 +493,17 @@ const Sidebar: React.FC = () => {
           }
           .admin-sidebar-scroll::-webkit-scrollbar-track {
             background: transparent;
+          }
+          .sidebar-active {
+            background: rgba(94, 234, 212, 0.15);
+            border-left: 3px solid #5eead4;
+          }
+          .sidebar-group-head:hover {
+            background: rgba(255, 255, 255, 0.06);
+          }
+          .sidebar-sub-active {
+            background: rgba(94, 234, 212, 0.15);
+            color: #5eead4 !important;
           }
         `}
       </style>
