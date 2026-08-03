@@ -288,7 +288,7 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
             const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
             return (
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2px' }}>
-                {Array.from({ length: fullStars }).map((_, i) => <span key={`full-${i}`} style={{ color: '#FFD700', fontSize: '14px' }}>★</span>)}
+                {Array.from({ length: fullStars }).map((_, i) => <span key={`full-${i}`} style={{ color: '#FFD700', fontSize: '16px' }}>★</span>)}
                 {hasHalfStar && (
                   <span style={{ position: 'relative', display: 'inline-block', width: '14px', height: '14px' }}>
                     <span style={{ position: 'absolute', color: '#e0e0e0', fontSize: '14px', zIndex: 1 }}>★</span>
@@ -296,7 +296,7 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
                   </span>
                 )}
                 {Array.from({ length: emptyStars }).map((_, i) => <span key={`empty-${i}`} style={{ color: '#e0e0e0', fontSize: '14px' }}>★</span>)}
-                <span style={{ marginLeft: '4px', fontSize: '11px', color: '#666', fontWeight: 500 }}>({rating.toFixed(1)})</span>
+                <span style={{ marginLeft: '4px', fontSize: '13px', color: '#666', fontWeight: 500 }}>({rating.toFixed(1)})</span>
               </div>
             );
           }
@@ -367,7 +367,8 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
                 <span title={isEditDisabled ? disabledEditTooltip : undefined}>
                   <Button size="sm"
                     disabled={isEditDisabled}
-                    style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                    // style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                   style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "14px", padding: "5px 12px", fontWeight: 500 }}
                     onMouseEnter={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; } }}
                     onMouseLeave={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; } }}
                     onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
@@ -377,7 +378,8 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
               )}
               {viewRoute && (
                 <Button size="sm"
-                  style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                 // style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
+                  style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "14px", padding: "5px 12px", fontWeight: 500 }}
                   onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
                   <FaEye className="me-1" /> View
                 </Button>
@@ -421,7 +423,7 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
         <Row className="mb-3 align-items-center">
           <Col>
             <h4 className="mb-0 fw-bold" style={{ fontFamily: "Urbanist", color: "#1B3763" }}>{title}</h4>
-            {subtitle && <p className="text-muted mb-0" style={{ fontFamily: "Urbanist", fontSize: "14px" }}>{subtitle}</p>}
+            {subtitle && <p className="text-muted mb-0" style={{ fontFamily: "Urbanist", fontSize: "16px" }}>{subtitle}</p>}
           </Col>
         </Row>
       )}
@@ -459,14 +461,16 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
       <Row>
         <Col>
           <div ref={tableRef} className="table-responsive">
-            <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "13px" }}>
+            {/* <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "13px" }}> */}
+              <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "15px" }}>
               <thead className="text-center" style={{ fontFamily: "Urbanist" }}>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th key={header.id}
-                        style={{ padding: "10px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "13px", fontWeight: 600 }}
-                        onClick={header.column.getToggleSortingHandler()}>
+                        // style={{ padding: "10px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "13px", fontWeight: 600 }}
+                       style={{ padding: "12px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "15px", fontWeight: 600 }}
+                       onClick={header.column.getToggleSortingHandler()}>
                         <div className="d-flex align-items-center justify-content-center gap-1">
                           {flexRender(header.column.columnDef.header, header.getContext())}
                           {header.column.getCanSort() && (
@@ -519,7 +523,7 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
 
       {totalPages > 1 && (
         <div className="d-flex justify-content-between align-items-center mt-3">
-          <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "13px" }}>
+          <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "15px" }}>
             Page {currentPage} of {totalPages} (Total: {total} records)
           </span>
           <Pagination className="m-0" size="sm">
