@@ -15,8 +15,25 @@ const StateCreateModal: React.FC<StateCreateModalProps> = ({
   onAdded
 }) => {
   const fields: Field[] = [
-    { name: "name", label: "State Name", type: "text", required: true, minLength: 2, maxLength: 100 },
-    { name: "abbreviation", label: "Abbreviation", type: "text", required: true, minLength: 2, maxLength: 10}
+    {
+      name: "name",
+      label: "State Name",
+      type: "text",
+      required: true,
+      minLength: 2,
+      maxLength: 100,
+      placeholder: "e.g. Kerala",
+    },
+    {
+      name: "abbreviation",
+      label: "Abbreviation",
+      type: "text",
+      required: true,
+      minLength: 2,
+      maxLength: 10,
+      placeholder: "e.g. KL",
+      pattern: /^[A-Za-z]+$/,
+    },
   ];
 
   return (
@@ -24,6 +41,9 @@ const StateCreateModal: React.FC<StateCreateModalProps> = ({
       show={show}
       handleClose={handleClose}
       title="Add New State"
+      subtitle="Create a new state entry"
+      icon="🗺️"
+      accent="#1B3763"
       fields={fields}
       endpoint={API_ENDPOINTS.STATE.CREATE}
       onCreated={onAdded}
