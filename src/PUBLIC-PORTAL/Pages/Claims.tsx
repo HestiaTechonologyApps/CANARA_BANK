@@ -13,6 +13,8 @@ import YearMasterService from "../../ADMIN-PORTAL/Services/Settings/YearMaster.s
 import type { YearMaster } from "../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 import PublicPageConfigService from "../Services/Publicpage.services";
+import type { ClaimsSettledStats } from "../Types/ClaimSettled.types";
+import ClaimsSettledService from "../Services/ClaimSettled.services";
 
 interface ClaimsTableRow {
   name: string;
@@ -26,6 +28,7 @@ const Claims: React.FC = () => {
   const [years, setYears] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState<PublicPage | null>(null);
+  const [claimsStats, setClaimsStats] = useState<ClaimsSettledStats | null>(null);
 
   useEffect(() => {
     loadClaimsData();
@@ -41,6 +44,12 @@ const Claims: React.FC = () => {
         YearMasterService.getAllYearMasters(),
         PublicPageConfigService.getPublicPageConfig(),
       ]);
+      try {
+        const claimsSettledStats = await ClaimsSettledService.getClaimsSettledStats();
+        setClaimsStats(claimsSettledStats);
+      } catch (statsError) {
+        console.error("Error loading claims settled stats:", statsError);
+      }
 
       // ---------- CMS (Public Page Content) ----------
       const activeConfig = publicPageConfigs.find(
@@ -130,20 +139,37 @@ const Claims: React.FC = () => {
   const claims = config
     ? {
 
+      // stats: [
+      //   {
+      //     icon: config?.claimsStat1Icon,
+      //     value: config?.claimsStat1Value,
+      //     label: config?.claimsStat1Label,
+      //   },
+      //   {
+      //     icon: config?.claimsStat2Icon,
+      //     value: config?.claimsStat2Value,
+      //     label: config.claimsStat2Label,
+      //   },
+      //   {
+      //     icon: config?.claimsStat3Icon,
+      //     value: config?.claimsStat3Value,
+      //     label: config?.claimsStat3Label,
+      //   },
+      // ],
       stats: [
         {
           icon: config?.claimsStat1Icon,
-          value: config?.claimsStat1Value,
+          value: claimsStats?.totalClaimsSettled ?? config?.claimsStat1Value,
           label: config?.claimsStat1Label,
         },
         {
           icon: config?.claimsStat2Icon,
-          value: config?.claimsStat2Value,
+          value: claimsStats?.totalAmountDisbursed ?? config.claimsStat2Value,
           label: config.claimsStat2Label,
         },
         {
           icon: config?.claimsStat3Icon,
-          value: config?.claimsStat3Value,
+          value: claimsStats?.activeMembers ?? config?.claimsStat3Value,
           label: config?.claimsStat3Label,
         },
       ],
