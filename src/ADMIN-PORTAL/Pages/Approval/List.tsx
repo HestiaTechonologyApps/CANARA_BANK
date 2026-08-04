@@ -158,7 +158,7 @@ const ContributionMasterApprovalList: React.FC = () => {
             },
           ]}
           idKey="contributionMasterId"
-          title="Approval List"
+          title="Monthly Contribution Approval List"
           subtitle="Pending items awaiting admin approval. Review details and take action."
           viewRoute="/dashboard/contributions/approval-view"
           showAddButton={false}
@@ -181,7 +181,7 @@ const ContributionMasterApprovalList: React.FC = () => {
             { key: "registrationStatus", label: "Status", enableSorting: true, type: "text" },
           ]}
           idKey="userRegistrationId"
-          title="User List"
+          title="New Users Approval List"
           subtitle="User registrations waiting for approval"
           viewRoute="/dashboard/approval/user-view"
           showAddButton={false}
