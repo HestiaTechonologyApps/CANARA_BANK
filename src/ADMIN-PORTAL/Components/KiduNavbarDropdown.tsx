@@ -1,7 +1,7 @@
 import { User } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Dropdown } from "react-bootstrap";
-import { BsGear, BsBoxArrowRight } from "react-icons/bs";
+import { BsGear, BsBoxArrowRight, BsX } from "react-icons/bs";
 import { getRoleAvatar } from "../Utils/roleAvatar";
 
 interface KiduNavbarDropdownProps {
@@ -33,6 +33,20 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
   onLogout,
 }) => {
   const avatarSrc = getRoleAvatar(role);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!show) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        onToggle(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [show, onToggle]);
 
   return (
     <Dropdown show={show} onToggle={onToggle} align="end">
@@ -44,6 +58,7 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
       />
 
       <Dropdown.Menu
+      ref={menuRef}
         className="border-0"
         style={{
           minWidth: "240px",
@@ -55,12 +70,33 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
       >
         {/* Header */}
         <div
-          className="d-flex align-items-center gap-3"
+          className="d-flex align-items-center gap-3 position-relative"
           style={{
             background: `linear-gradient(135deg, ${NAVY} 0%, #16346b 100%)`,
             padding: "16px",
           }}
         >
+           <button
+            onClick={() => onToggle(false)}
+            aria-label="Close"
+            className="d-flex align-items-center justify-content-center border-0"
+            style={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              backgroundColor: "rgba(255,255,255,0.12)",
+              color: "#fff",
+              transition: "background-color 0.15s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.25)")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)")}
+          >
+            <BsX size={16} />
+          </button>
+          
           {avatarSrc ? (
             <img
               src={avatarSrc}
