@@ -401,14 +401,14 @@ if (!response.isSucess || !response.value || lockedFromValue) {
               disabled={isLoading}
             /> */}
             <div />
-            <button
+            {/* <button
               className="auth-link"
               type="button"
               onClick={onForgot}
               disabled={isLoading}
             >
               Forgot Password?
-            </button>
+            </button> */}
           </div>
 
           {/* ── Submit ── */}
