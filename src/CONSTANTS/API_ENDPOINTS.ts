@@ -242,6 +242,9 @@ REFUND_CONTRIBUTION: {
     UPDATE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/PublicPage/${id}`
   },
+  CLAIM_SETTLED:{
+   GET:`${API_BASE_URL}/ClaimsSettled/claims-settled-stats`,
+  },
   DAY_QUOTE: {
     GET_ALL: `${API_BASE_URL}/DayQuote`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/DayQuote/${id}`,
