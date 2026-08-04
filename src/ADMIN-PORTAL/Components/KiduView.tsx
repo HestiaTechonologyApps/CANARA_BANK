@@ -263,6 +263,8 @@ const KiduView: React.FC<KiduViewProps> = ({
                     backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
                     border: "none",
                     fontWeight: 500,
+                    fontSize: "14px",
+                    padding: "6px 14px",
                     cursor: isEditDisabled ? "not-allowed" : "pointer",
                   }}
                   onClick={handleEdit}
@@ -358,7 +360,7 @@ const KiduView: React.FC<KiduViewProps> = ({
             hover
             responsive
             className="align-middle mb-0"
-            style={{ fontFamily: "Urbanist", fontSize: "13px" }}
+            style={{ fontFamily: "Urbanist", fontSize: "15px" }}
           >
             <tbody>
               {fields.map((field, index) => {
@@ -382,7 +384,7 @@ const KiduView: React.FC<KiduViewProps> = ({
                     <td
                       style={{
                         width: "40%",
-                        padding: "8px 6px",
+                        padding: "10px 8px",
                         color: themeColor,
                         fontWeight: 600,
                       }} >
@@ -391,7 +393,7 @@ const KiduView: React.FC<KiduViewProps> = ({
                       )}
                       {field.label}
                     </td>
-                    <td style={{ padding: "8px 6px" }}>{formattedValue}</td>
+                    <td style={{ padding: "10px 8px" }}>{formattedValue}</td>
                   </tr>
                 );
               })}
