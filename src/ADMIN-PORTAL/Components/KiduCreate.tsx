@@ -519,7 +519,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
     return (
       <Col md={colWidth} className="mb-3" key={name}>
-        <Form.Label className="fw-bold">
+        <Form.Label className="fw-bold" style={{ fontSize: "15px" }}>
           {rules.label}
           {rules.required && <span style={{ color: "red", marginLeft: "2px" }}>*</span>}
         </Form.Label>
@@ -651,6 +651,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                         checked={formData[field.name] || false}
                         onChange={handleChange}
                         className="fw-semibold"
+                        style={{ fontSize: "15px" }}
                       />
                     ))}
                   </div>
