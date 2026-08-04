@@ -55,6 +55,21 @@ const formatCurrency = (value?: number) => {
 
 const monthLabel = (monthCode?: number) => MONTH_NAMES[monthCode ?? 0] || "—";
 
+const buildMonthlyPivot = (data: MemberAccountDetail[]) => {
+  const pivot: Record<number, Record<number, number>> = {};
+
+  data.forEach((c) => {
+    if (!pivot[c.yearOf]) pivot[c.yearOf] = {};
+    pivot[c.yearOf][c.monthCode] = (pivot[c.yearOf][c.monthCode] || 0) + (c.amount || 0);
+  });
+
+  const years = Object.keys(pivot)
+    .map(Number)
+    .sort((a, b) => b - a);
+
+  return { pivot, years };
+};
+
 const statusTone = (status?: string) => {
   const s = (status || "").toLowerCase();
   if (s.includes("active") && !s.includes("inactive")) return { bg: "#E4F5E9", fg: "#1E7A3D" };
@@ -161,8 +176,8 @@ const MemberView: React.FC = () => {
       const refunds: RefundContribution[] = Array.isArray(rawValue)
         ? rawValue
         : rawValue
-        ? [rawValue as unknown as RefundContribution]
-        : [];
+          ? [rawValue as unknown as RefundContribution]
+          : [];
 
       const total = refunds
         .filter((r) => r.approvedDate && r.isApproved)
@@ -224,6 +239,7 @@ const MemberView: React.FC = () => {
 
   const totalContribution = contributions.reduce((sum, c) => sum + (c.amount || 0), 0);
   const lastContribution = contributions[0];
+  const { pivot: monthlyPivot, years: monthlyYears } = buildMonthlyPivot(contributions);
 
   if (loading) {
     return (
@@ -348,6 +364,10 @@ const MemberView: React.FC = () => {
 
         .mv-contrib-loading { display: flex; align-items: center; gap: 8px; padding: 30px; color: ${THEME}; font-size: 13.5px; }
         .mv-contrib-loading .mv-spinner { width: 20px; height: 20px; border-width: 2px; }
+
+        .mv-monthly-section { background: #fff; border-radius: 12px; border: 1px solid #E5E9F0; overflow: hidden; margin-top: 20px; margin-bottom: 20px; }
+        .mv-monthly-table th, .mv-monthly-table td { text-align: right; }
+        .mv-monthly-table th:first-child, .mv-monthly-table td:first-child { text-align: left; }
       `}</style>
 
       <div className="mv-topbar">
@@ -389,7 +409,7 @@ const MemberView: React.FC = () => {
           </div>
           <div className="mv-stat">
             <div className="mv-stat-label">Total Refund</div>
-           
+
             <div className="mv-stat-value">{formatCurrency(approvedRefundTotal)}</div>
           </div>
         </div>
@@ -444,6 +464,60 @@ const MemberView: React.FC = () => {
           <InfoRow icon="bi-people" label="Relation" value={member.nomineeRelation} />
           <InfoRow icon="bi-person-badge" label="Nominee Identity" value={member.nomineeIDentity} />
         </SectionCard>
+      </div>
+
+      <div className="mv-monthly-section">
+        <div className="mv-contrib-header">
+          <div className="mv-contrib-header-title">
+            <i className="bi bi-calendar3" /> Monthly Contribution Summary
+          </div>
+        </div>
+
+        {contribLoading ? (
+          <div className="mv-contrib-loading">
+            <div className="mv-spinner" /> Loading contributions...
+          </div>
+        ) : monthlyYears.length === 0 ? (
+          <div className="mv-empty-contrib">
+            <i className="bi bi-inbox" />
+            <span>No contributions recorded for this member yet.</span>
+          </div>
+        ) : (
+          <div className="mv-table-wrap">
+            <table className="mv-table mv-monthly-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  {MONTH_NAMES.slice(1).map((m) => (
+                    <th key={m}>{m.slice(0, 3)}</th>
+                  ))}
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {monthlyYears.map((year) => {
+                  const yearData = monthlyPivot[year] || {};
+                  const yearTotal = Object.values(yearData).reduce((sum, amt) => sum + amt, 0);
+                  return (
+                    <tr key={year}>
+                      <td style={{ fontWeight: 700, color: THEME }}>{year}</td>
+                      {MONTH_NAMES.slice(1).map((_, idx) => {
+                        const monthCode = idx + 1;
+                        const amt = yearData[monthCode];
+                        return (
+                          <td key={monthCode} className={amt ? "mv-amount" : ""}>
+                            {amt ? formatCurrency(amt) : "—"}
+                          </td>
+                        );
+                      })}
+                      <td style={{ fontWeight: 800, color: THEME }}>{formatCurrency(yearTotal)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className="mv-contrib-section">
