@@ -539,14 +539,15 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         return (
           <InputGroup>
             <Form.Control
-              size="sm"
+              //size="sm"
               type="text"
               value={popup?.value || ""}
               placeholder={`Select ${rules.label}`}
               readOnly
               isInvalid={!!errors[name]}
               disabled={rules.disabled}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
+              // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
+                  style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}/>
             <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
               <BsSearch />
             </Button>
@@ -582,14 +583,15 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         const fieldOptions = options[name] || [];
         return (
           <Form.Select
-            size="sm"
+            //size="sm"
             name={name}
             value={formData[name]}
             onChange={handleChange}
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           >
             <option value="">Select {rules.label}</option>
             {fieldOptions.map((opt: any, idx: number) => {
@@ -676,7 +678,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
       default:
         return (
           <Form.Control
-            size="sm"
+            //size="sm"
             type={type === "number" ? "tel" : type}
             name={name}
             autoComplete={type === "email" ? "email" : "off"}
@@ -687,7 +689,8 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           />
         );
     }
@@ -918,7 +921,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 )}
                 <Button
                   type="submit"
-                  style={{ backgroundColor: themeColor, border: "none" }}
+                  style={{ backgroundColor: themeColor, border: "none", fontSize: "14px", padding: "6px 14px"}}
                   disabled={isSubmitting || !hasChanges()} >
                   {isSubmitting ? "Updating..." : submitButtonText}
                 </Button>
