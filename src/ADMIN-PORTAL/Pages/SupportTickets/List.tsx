@@ -7,7 +7,7 @@ const SupportTicketList: React.FC = () => {
     <KiduServerTableList
       fetchService={async () => await SupportTicketService.getAllSupportTickets()}
       columns={[
-        { key: "supportTicketId", label: "Support TicketID", enableSorting: true, type: "text" },
+        { key: "supportTicketId", label: "Support Ticket ID", enableSorting: true, type: "text" },
         { key: "supportTicketNum", label: "Ticket No", enableSorting: true, type: "text" },
         { key: "priority", label: "Priority", enableSorting: true, type: "text" },
         { key: "duration", label: "Duration", enableSorting: true, type: "text" },
