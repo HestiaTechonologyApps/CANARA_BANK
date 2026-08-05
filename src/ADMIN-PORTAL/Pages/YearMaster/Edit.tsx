@@ -6,16 +6,7 @@ import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 
 const YearMasterEdit: React.FC = () => {
   const fields: Field[] = [
-    { 
-      name: "yearName", 
-      rules: { 
-        type: "number", 
-        label: "Year", 
-        required: true, 
-        colWidth: 6,
-        placeholder: "e.g. 2024"
-      }
-    },
+    { name: "yearName", rules: { type: "number", label: "Year", required: true, colWidth: 6, placeholder: "e.g. 2024" } },
   ];
 
   const handleFetch = async (yearOf: string) => {
@@ -31,11 +22,11 @@ const YearMasterEdit: React.FC = () => {
   const handleUpdate = async (yearOf: string, formData: Record<string, any>) => {
     // Validate year format
     const year = Number(formData.yearName);
-    
+
     if (isNaN(year)) {
       throw new Error("Please enter a valid year");
     }
-    
+
     if (year < 1900 || year > 2100) {
       throw new Error("Year must be between 1900 and 2100");
     }
@@ -45,7 +36,6 @@ const YearMasterEdit: React.FC = () => {
       yearName: year,
     };
 
-    // ✅ This will throw an error if duplicate or validation fails
     await YearMasterService.updateYearMaster(Number(yearOf), yearData);
   };
 
@@ -63,9 +53,9 @@ const YearMasterEdit: React.FC = () => {
       themeColor="#1B3763"
       navigateBackPath="/dashboard/settings/yearMaster-list"
       loadingText="Loading Year..."
-      auditLogConfig={{ 
+      auditLogConfig={{
         tableName: "YearMaster",
-        recordIdField: "yearOf" 
+        recordIdField: "yearOf"
       }}
     />
   );

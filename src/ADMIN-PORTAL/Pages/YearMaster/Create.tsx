@@ -6,28 +6,17 @@ import KiduCreate from "../../Components/KiduCreate";
 
 const YearMasterCreate: React.FC = () => {
   const fields: Field[] = [
-    { 
-      name: "yearName", 
-      rules: { 
-        type: "number", 
-        label: "Year", 
-        placeholder: "e.g. 2024", 
-        required: true, 
-        colWidth: 6,
-        minLength: 4,
-        maxLength: 4
-      }
-    },
+    { name: "yearName", rules: { type: "number", label: "Year", placeholder: "e.g. 2024", required: true, colWidth: 6, minLength: 4, maxLength: 4 } },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {
     // Validate year format
     const year = Number(formData.yearName);
-    
+
     if (isNaN(year)) {
       throw new Error("Please enter a valid year");
     }
-    
+
     if (year < 1900 || year > 2100) {
       throw new Error("Year must be between 1900 and 2100");
     }
@@ -35,7 +24,7 @@ const YearMasterCreate: React.FC = () => {
     const yearData: Omit<YearMaster, "yearOf" | "auditLogs"> = {
       yearName: year,
     };
-    
+
     await YearMasterService.createYearMaster(yearData);
   };
 

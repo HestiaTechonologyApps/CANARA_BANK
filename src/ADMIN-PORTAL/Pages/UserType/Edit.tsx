@@ -6,8 +6,8 @@ import type { UserType } from "../../Types/Settings/UserType.types";
 
 const UserTypeEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 2, colWidth: 6, },},
-    { name: "description", rules: { type: "textarea", label: "Description", required: true, minLength: 2,  colWidth: 6, },},
+    { name: "abbreviation", rules: { type: "text", label: "Abbreviation", required: true, minLength: 2, colWidth: 6, }, },
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, minLength: 2, colWidth: 6, }, },
   ];
 
   const handleFetch = async (id: string) => {
@@ -41,7 +41,7 @@ const UserTypeEdit: React.FC = () => {
       paramName="userTypeId"
       navigateBackPath="/dashboard/settings/usertype-list"
       loadingText="Loading User Type..."
-      auditLogConfig={{ tableName: "UserType", recordIdField: "userTypeId",}}
+      auditLogConfig={{ tableName: "UserType", recordIdField: "userTypeId", }}
       themeColor="#1B3763"
     />
   );
