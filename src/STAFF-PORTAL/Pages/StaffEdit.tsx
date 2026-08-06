@@ -48,7 +48,7 @@ const StaffEdit: React.FC = () => {
     { name: "nomineeRelation", rules: { type: "select", label: "Nominee Relation", colWidth: 3 } },
     { name: "nomineeIDentity", rules: { type: "text", label: "Nominee Identity Number", colWidth: 3 } },
     { name: "unionMember", rules: { type: "select", label: "Union Member", colWidth: 3 } },
-    { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 3 } },
+   // { name: "totalRefund", rules: { type: "text", label: "Total Refund", colWidth: 3 } },
   ];
 
   // Gender options
