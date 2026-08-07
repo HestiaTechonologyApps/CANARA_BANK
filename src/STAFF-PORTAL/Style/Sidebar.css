@@ -73,7 +73,7 @@
 @media (max-width: 768px) {
   .staff-sidebar {
     transform: translateX(-100%);
-    width: 210px; /* keep SAME open width */
+    width: 210px; 
     transition: transform 0.3s ease-in-out;
   }
 

@@ -1,10 +1,7 @@
-// src/services/AccountDirectEntryService.ts
-
 import type { AccountDirectEntry } from "../../ADMIN-PORTAL/Types/Contributions/AccountDirectEntry.types";
 import { API_ENDPOINTS } from "../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../Services/Http.services";
 import type { CustomResponse } from "../../Types/ApiTypes";
-//import type { AccountDirectEntry } from "../Types/AccountDirectEntry.types";
 
 const AccountDirectEntryService = {
   async getAllAccountDirectEntries(): Promise<AccountDirectEntry[]> {

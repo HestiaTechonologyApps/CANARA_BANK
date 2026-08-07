@@ -14,17 +14,17 @@
 
 /* When sidebar is open */
 .staff-main.expanded {
-  margin-left: 210px; /* must match sidebar open width */
+  margin-left: 210px; 
 }
 
 /* When sidebar is collapsed */
 .staff-main.collapsed {
-  margin-left: 70px; /* must match sidebar collapsed width */
+  margin-left: 70px; 
 }
 
 /* Page content area below navbar */
 .staff-content {
-  padding-top: 70px; /* navbar height */
+  padding-top: 70px; 
   padding-left: 18px;
   padding-right: 15px;
   padding-bottom: 24px;

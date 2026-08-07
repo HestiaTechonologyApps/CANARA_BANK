@@ -3,7 +3,7 @@
    ========================= */
 
 .staff-root {
-  font-size: 10px; /* ⬅ simulates ~80% zoom */
+  font-size: 10px; 
 }
 
 /* Ensure headings don't blow up */

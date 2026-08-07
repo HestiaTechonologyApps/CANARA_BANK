@@ -2,12 +2,12 @@
   position: fixed;
   top: 0;
   right: 0;
-  height: 39px;               /* ⬅ reduced again */
+  height: 39px;               
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
-  padding: 0 14px;            /* tighter */
+  padding: 0 14px;            
   align-items: center;
   z-index: 90;
   transition: left 0.3s ease;
@@ -26,13 +26,13 @@
 /* LEFT SECTION */
 .staff-navbar .left {
   display: flex;
-  gap: 10px;                  /* reduced */
+  gap: 10px;                  
   align-items: center;
 }
 
 /* Toggle button */
 .staff-navbar .left button {
-  width: 32px;                /* smaller */
+  width: 32px;                
   height: 32px;
   border-radius: 6px;
   background: #f2f2f2;
@@ -45,14 +45,14 @@
 /* Welcome text */
 .staff-navbar .left p {
   margin: 0;
-  font-size: 0.65rem;         /* ⬅ reduced again */
+  font-size: 0.65rem;        
   color: #6b7280;
   line-height: 1;
 }
 
 .staff-navbar .left h4 {
   margin: 0;
-  font-size: 0.8rem;          /* ⬅ reduced again */
+  font-size: 0.8rem;          
   font-weight: 600;
   color: #f2b827;
   line-height: 1.1;
@@ -68,13 +68,13 @@
 /* Staff No block */
 .staff-no span {
   display: block;
-  font-size: 0.65rem;         /* smaller */
+  font-size: 0.65rem;         
   color: #6b7280;
   line-height: 1;
 }
 
 .staff-no strong {
-  font-size: 0.8rem;          /* smaller */
+  font-size: 0.8rem;          
   font-weight: 600;
   color: #111827;
   line-height: 1.1;
@@ -85,7 +85,7 @@
   background: #f2f2f2;
   color: red;
   border: none;
-  width: 32px;                /* smaller */
+  width: 32px;                
   height: 32px;
   border-radius: 6px;
   cursor: pointer;
@@ -117,7 +117,7 @@
     padding: 0 12px;
   }
 
-  /* Sidebar state should NOT affect navbar on mobile */
+
   .staff-navbar.expanded,
   .staff-navbar.collapsed {
     left: 0 !important;
@@ -151,6 +151,6 @@
    ========================= */
 @media (max-width: 768px) {
   .staff-navbar {
-    z-index: 120; /* higher than sidebar */
+    z-index: 120; 
   }
 }

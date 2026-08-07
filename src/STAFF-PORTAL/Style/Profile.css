@@ -68,7 +68,7 @@
   }
 }
 
-/* ✅ ONLY FOR IMAGE + STAFF NO ROW */
+
 .profile-row-horizontal {
   flex-direction: row !important;
   align-items: center;

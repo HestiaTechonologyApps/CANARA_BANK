@@ -1,5 +1,4 @@
 // STAFF-PORTAL/Routes/Routes.tsx
-
 import { Route } from 'react-router-dom';
 import StaffLayout from '../Layout/Layout';
 import Profile from '../Pages/Profile';
@@ -42,11 +41,5 @@ export const staffRoutes = (
     <Route path="refund-list/MemberRefundContribution-view/:refundContributionId" element={<MemberRefundContributionView/>}/>
   </Route>
 );
-    {/* <Route path="refund-list" element={<RefundContributionByMemberList />} />
-    <Route path="refund-list/MemberRefundContribution-create" element={<MemberRefundContributionCreate/>}/>
-    <Route path="refund-list/MemberRefundContribution-edit" element={<MemberRefundContributionEdit/>}/>
-    <Route path="refund-list/MemberRefundContribution-view" element={<MemberRefundContributionView/>}/>
-  </Route>
-); */}
 
 export const getStaffRoutes = () => staffRoutes;
