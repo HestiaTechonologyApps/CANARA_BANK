@@ -26,9 +26,6 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
   const [selectedYearMaster, setSelectedYearMaster] = useState<YearMaster | null>(null);
   const [showYearMasterPopup, setShowYearMasterPopup] = useState(false);
 
-  // Auto-fill Member from session, then resolve the actual Member record
-  // (was previously using user.userName as a stand-in — that showed the
-  // login username instead of the real member name)
   useEffect(() => {
     const loadOwnMember = async () => {
       const storedUser = localStorage.getItem("user");
@@ -94,26 +91,22 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
       approvedBy: formData.approvedBy || "",
       approvedDate: formData.approvedDate ? `${formData.approvedDate}T00:00:00` : undefined,
     };
-    // CHANGED — capture the created record so its ID can be used for
-    // attachment uploads, same pattern as RefundContributionCreate
+
     const created = await AccountDirectEntryService.createAccountDirectEntry(payload);
 
     if (attachmentsRef.current?.hasFiles() && created?.accountsDirectEntryID) {
       await attachmentsRef.current.uploadAll(
-        "AccountDirectEntry",              // tableName — confirm this matches your backend's expected value
+        "AccountDirectEntry",              
         created.accountsDirectEntryID
       );
     }
   };
 
-  //   await AccountDirectEntryService.createAccountDirectEntry(payload);
-  // };
-
   const popupHandlers = {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => setShowMemberPopup(false), // no-op, field is disabled
+      onOpen: () => setShowMemberPopup(false), 
     },
     branchId: {
       value: selectedBranch?.name || "",
@@ -169,7 +162,7 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
           }}
           onReset={handleReset}
         >
-        <AttachmentsStaging ref={attachmentsRef} />   {/* ADD */}
+        <AttachmentsStaging ref={attachmentsRef} />   
         </KiduCreate>
       </div>
 
