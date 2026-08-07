@@ -2,9 +2,6 @@ import React from "react";
 import type { ViewField } from "../../../ADMIN-PORTAL/Components/KiduView";
 import RefundContributionService from "../../../ADMIN-PORTAL/Services/Claims/Refund.services";
 import KiduView from "../../../ADMIN-PORTAL/Components/KiduView";
-// import type { ViewField } from "../../../Components/KiduView";
-// import KiduView from "../../../Components/KiduView";
-// import RefundContributionService from "../../../Services/Claims/Refund.services";
 
 const MemberRefundContributionView: React.FC = () => {
   const fields: ViewField[] = [
@@ -27,22 +24,22 @@ const MemberRefundContributionView: React.FC = () => {
   ];
 
   const formatDateOnly = (value?: string | Date | null) => {
-  if (!value) return "";
-  return new Date(value).toLocaleDateString("en-IN");
-};
+    if (!value) return "";
+    return new Date(value).toLocaleDateString("en-IN");
+  };
 
-const handleFetch = async (id: string) => {
-  const response = await RefundContributionService.getRefundContributionById(
-    Number(id)
-  );
+  const handleFetch = async (id: string) => {
+    const response = await RefundContributionService.getRefundContributionById(
+      Number(id)
+    );
 
-  if (response.value) {
-    response.value.deathDateString = formatDateOnly(response.value.deathDateString);
-    response.value.dddateString = formatDateOnly(response.value.dddateString);
-  }
+    if (response.value) {
+      response.value.deathDateString = formatDateOnly(response.value.deathDateString);
+      response.value.dddateString = formatDateOnly(response.value.dddateString);
+    }
 
-  return response;
-};
+    return response;
+  };
 
   const handleDelete = async (id: string) => {
     await RefundContributionService.deleteRefundContribution(Number(id));
@@ -55,9 +52,9 @@ const handleFetch = async (id: string) => {
       onFetch={handleFetch}
       onDelete={handleDelete}
       paramName="refundContributionId"
-    //   listRoute="/dashboard/claims/refundcontribution-list"
-    //   editRoute="/dashboard/claims/refundcontribution-edit"
-    listRoute="/staff-portal/refund-list"
+      //   listRoute="/dashboard/claims/refundcontribution-list"
+      //   editRoute="/dashboard/claims/refundcontribution-edit"
+      listRoute="/staff-portal/refund-list"
       editRoute="/staff-portal/refund-list/MemberRefundContribution-edit"
       auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId", }}
       attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
@@ -66,7 +63,7 @@ const handleFetch = async (id: string) => {
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this refund? This action cannot be undone."
-       disableEditWhen={(data) => data.isApproved === true}
+      disableEditWhen={(data) => data.isApproved === true}
       disabledEditTooltip="This refund has already been approved and cannot be edited"
       disableDeleteWhen={(data) => data.isApproved === true}
       disabledDeleteTooltip="This refund has already been approved and cannot be deleted"

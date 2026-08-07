@@ -38,14 +38,6 @@ const MemberRefundContributionCreate: React.FC = () => {
       if (!storedUser) return;
       const user = JSON.parse(storedUser);
 
-    //   setSelectedMember({
-    //     memberId: user.memberId,
-    //     name: user.userName,
-    //   } as Member);
-
-    //   const memberRes = await MemberService.getMemberById(Number(user.memberId));
-    //   const member = memberRes.value;
-    //   if (!member) return;
     const memberRes = await MemberService.getMemberById(Number(user.memberId));
       const member = memberRes.value;
       if (!member) return;
@@ -124,17 +116,14 @@ const MemberRefundContributionCreate: React.FC = () => {
     deathDateString: "",
   };
 
-//   await RefundContributionService.createRefundContribution(
-//     payload as any
-//   );
-// };
+
 const created = await RefundContributionService.createRefundContribution(
     payload as any
   );
 
   if (attachmentsRef.current?.hasFiles() && created?.refundContributionId) {
     await attachmentsRef.current.uploadAll(
-      "RefundContribution",           // tableName — match your backend's expected value
+      "RefundContribution",           
       created.refundContributionId
     );
   }
@@ -149,7 +138,7 @@ const popupHandlers = {
   memberId: {
     value: selectedMember?.name || "",
     actualValue: selectedMember?.memberId,
-    onOpen: () => {}, // no-op, field is disabled
+    onOpen: () => {}, 
   },
   designationId: {
     value: selectedDesignation?.name || "",

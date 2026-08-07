@@ -72,18 +72,7 @@ const MemberRefundContributionEdit: React.FC = () => {
     setInitialState(state); 
   }
 
-  // if (refund.staffNo) {
-  //   const members = await MemberService.getAllMembers();
-  //   const member = members.find(m => m.staffNo === refund.staffNo) || null;
-  //   setSelectedMember(member);
-  //   setInitialMember(member); 
-  // }
   if (refund.staffNo) {
-    // CHANGED — was MemberService.getAllMembers() + client-side .find(),
-    // pulling the entire members table on every page load just to resolve
-    // one staffNo. Replaced with the existing getMembersPaginated call
-    // (server-side search), asking for just 1 matching record. No changes
-    // made to Member.services.ts.
     const memberRes = await MemberService.getMembersPaginated({
       pageNumber: 1,
       pageSize: 1,
@@ -170,12 +159,12 @@ const popupHandlers = {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => {}, // no-op, field is disabled
+      onOpen: () => {}, 
     },
     designationId: {
       value: selectedDesignation?.name || "",
       actualValue: selectedDesignation?.designationId,
-      onOpen: () => {}, // no-op, field is disabled
+      onOpen: () => {}, 
     },
     branchNameOFTime: {
   value: selectedBranch?.name || "",
