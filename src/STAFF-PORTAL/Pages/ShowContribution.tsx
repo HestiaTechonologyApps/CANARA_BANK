@@ -101,7 +101,7 @@ const ShowContribution: React.FC = () => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Canara Bank Employees Union – Contribution Statement</title>
+          <title>Canara Bank Employees Union - Contribution Statement</title>
           <style>
             body { font-family: Arial, sans-serif; padding: 20px; }
             table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -120,17 +120,9 @@ const ShowContribution: React.FC = () => {
     setTimeout(() => document.body.removeChild(iframe), 1000);
   };
 
-  // const refundGrandTotal = refunds.reduce((s, r) => s + (r.amount || 0), 0);
-  // const netBalance = grandTotal - refundGrandTotal;
-
-  // CHANGED — was summing every refund regardless of approval state.
-  // Now only counts refunds that have been approved (approvedDate set
-  // AND isApproved true). Rejected and pending refunds no longer affect
-  // the total or Net Balance below.
   const refundGrandTotal = refunds
     .filter((r) => r.approvedDate && r.isApproved)
     .reduce((s, r) => s + (r.amount || 0), 0);
-  //const netBalance = grandTotal - refundGrandTotal;
 
   const handleRefundPrint = () => {
     if (!refundCardRef.current) return;
@@ -144,7 +136,7 @@ const ShowContribution: React.FC = () => {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Canara Bank Employees Union – Refund Contribution Statement</title>
+        <title>Canara Bank Employees Union - Refund Contribution Statement</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 20px; }
           table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -305,8 +297,6 @@ const ShowContribution: React.FC = () => {
                   </thead>
                   <tbody>
                     {refunds.map((r) => {
-                      // NEW — 3-state label derived from isApproved/approvedDate,
-                      // since isApproved alone (a boolean) can't represent "pending".
                       const statusLabel = !r.approvedDate
                         ? "Approval Pending"
                         : r.isApproved
@@ -365,21 +355,6 @@ const ShowContribution: React.FC = () => {
           </Card.Body>
         </Card>
       </div>
-      {/* {!loading && !refundLoading && (
-        <div className="mt-3">
-          <Card className="sc-card">
-            <Card.Body className="d-flex justify-content-between align-items-center">
-              <span className="fw-bold">Net Balance (Contribution − Refund)</span>
-              <span
-                className="fw-bold fs-5"
-                style={{ color: netBalance >= 0 ? "#0f2a55" : "#c0392b" }}
-              >
-                ₹{netBalance.toLocaleString("en-IN")}
-              </span>
-            </Card.Body>
-          </Card>
-        </div>
-      )} */}
     </>
   );
 };

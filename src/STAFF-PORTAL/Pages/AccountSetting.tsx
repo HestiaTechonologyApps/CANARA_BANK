@@ -30,7 +30,6 @@ const AccountSettings: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ inline edit state for User Name / Email / Phone Number
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [editValue, setEditValue] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -75,20 +74,17 @@ const AccountSettings: React.FC = () => {
     await UserService.changePassword(changePasswordData);
   };
 
-  // ✅ start editing a single field
   const startEdit = (field: EditableField) => {
     if (!currentUser) return;
     setEditingField(field);
     setEditValue(currentUser[field] || "");
   };
 
-  // ✅ cancel editing
   const cancelEdit = () => {
     setEditingField(null);
     setEditValue("");
   };
 
-  // ✅ save a single field via /update-partially
   const saveEdit = async () => {
     if (!currentUser || !editingField) return;
 
@@ -148,7 +144,6 @@ const AccountSettings: React.FC = () => {
     { name: "confirmPassword", rules: { type: "password", label: "Confirm Password", required: true, minLength: 6, placeholder: "Confirm new password", colWidth: 4 } },
   ];
 
-  // ✅ reusable renderer for an editable field (User Name / Email / Phone Number)
   const renderEditableField = (field: EditableField, colWidth: 3 | 2 | 4 = 3) => {
     const isEditing = editingField === field;
 
@@ -225,7 +220,6 @@ const AccountSettings: React.FC = () => {
         </h4>
         <hr />
 
-        {/* Display User Information as Read-Only / Inline-Editable Card */}
         <Card className="mb-4" style={{ backgroundColor: "#f8f9fa" }}>
           <Card.Body>
             <h6 className="fw-bold mb-3" style={{ color: "#1B3763" }}>
@@ -250,7 +244,6 @@ const AccountSettings: React.FC = () => {
           </Card.Body>
         </Card>
 
-        {/* Password Change Form using KiduCreate */}
         <h6 className="fw-bold " style={{ color: "#1B3763" }}>
           Change Password
         </h6>
