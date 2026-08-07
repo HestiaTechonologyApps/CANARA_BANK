@@ -108,7 +108,7 @@ const NavbarComponent: React.FC = () => {
 
           {/* Right */}
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <KiduYearSelector startYear={2023} onYearSelect={handleYearSelect} defaultYear={selectedYear} />
+            <KiduYearSelector startYear={2020} onYearSelect={handleYearSelect} defaultYear={selectedYear} />
 
             <div style={{ width: 1, height: 28, background: "#e2e8f0" }} />
 
