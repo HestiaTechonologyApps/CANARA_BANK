@@ -1,6 +1,6 @@
 // src/Pages/Claims/Claims.tsx
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "../Style/Claims.css";
 import StateService from "../../ADMIN-PORTAL/Services/Settings/State.services";
 import DesignationService from "../../ADMIN-PORTAL/Services/Settings/Designation.services";
@@ -22,6 +22,8 @@ interface ClaimsTableRow {
   total: number;
 }
 
+type ViewTab = "state" | "designation";
+
 const Claims: React.FC = () => {
   const [stateWiseClaims, setStateWiseClaims] = useState<ClaimsTableRow[]>([]);
   const [designationWiseClaims, setDesignationWiseClaims] = useState<ClaimsTableRow[]>([]);
@@ -29,6 +31,7 @@ const Claims: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState<PublicPage | null>(null);
   const [claimsStats, setClaimsStats] = useState<ClaimsSettledStats | null>(null);
+  const [activeTab, setActiveTab] = useState<ViewTab>("state");
 
   useEffect(() => {
     loadClaimsData();
@@ -37,7 +40,7 @@ const Claims: React.FC = () => {
   const loadClaimsData = async () => {
     try {
       setLoading(true);
-      const [deathClaims, states, designations, yearMasters, publicPageConfigs,] = await Promise.all([
+      const [deathClaims, states, designations, yearMasters, publicPageConfigs] = await Promise.all([
         DeathClaimService.getAllDeathClaims(),
         StateService.getAllStates(),
         DesignationService.getAllDesignations(),
@@ -51,24 +54,14 @@ const Claims: React.FC = () => {
         console.error("Error loading claims settled stats:", statsError);
       }
 
-      // ---------- CMS (Public Page Content) ----------
-      const activeConfig = publicPageConfigs.find(
-        (item: PublicPage) => item.isActive === true
-      );
+      const activeConfig = publicPageConfigs.find((item: PublicPage) => item.isActive === true);
       setConfig(activeConfig || null);
 
-      //  Get years from Year Master API
-      const yearList = yearMasters
-        .map((y: YearMaster) => y.yearName.toString())
-        .sort();
+      const yearList = yearMasters.map((y: YearMaster) => y.yearName.toString()).sort();
       setYears(yearList);
-      // Process state-wise claims
-      const stateData = processStateWiseData(deathClaims, states);
-      setStateWiseClaims(stateData);
 
-      // Process designation-wise claims
-      const designationData = processDesignationWiseData(deathClaims, designations);
-      setDesignationWiseClaims(designationData);
+      setStateWiseClaims(processStateWiseData(deathClaims, states));
+      setDesignationWiseClaims(processDesignationWiseData(deathClaims, designations));
     } catch (error) {
       console.error("Error loading claims data:", error);
     } finally {
@@ -76,21 +69,11 @@ const Claims: React.FC = () => {
     }
   };
 
-  const processStateWiseData = (
-    deathClaims: DeathClaim[],
-    states: State[]
-  ): ClaimsTableRow[] => {
+  const processStateWiseData = (deathClaims: DeathClaim[], states: State[]): ClaimsTableRow[] => {
     const stateMap = new Map<number, ClaimsTableRow>();
-
-    // Initialize all states
     states.forEach((state) => {
-      stateMap.set(state.stateId, {
-        name: state.name,
-        yearlyData: {},
-        total: 0,
-      });
+      stateMap.set(state.stateId, { name: state.name, yearlyData: {}, total: 0 });
     });
-
     deathClaims.forEach((claim) => {
       const state = stateMap.get(claim.stateId);
       if (state) {
@@ -99,28 +82,18 @@ const Claims: React.FC = () => {
         state.total += 1;
       }
     });
-    // return Array.from(stateMap.values()).filter((state) => state.total > 0);
-    // return Array.from(stateMap.values());
-    return Array.from(stateMap.values()).sort((a, b) =>
-      a.name.localeCompare(b.name));
-
+    // Only show places that actually have a claim on record — nobody needs
+    // to scroll past a long list of zeros to find the ones that matter.
+    return Array.from(stateMap.values())
+      .filter((state) => state.total > 0)
+      .sort((a, b) => b.total - a.total);
   };
 
-  const processDesignationWiseData = (
-    deathClaims: DeathClaim[],
-    designations: Designation[]
-  ): ClaimsTableRow[] => {
+  const processDesignationWiseData = (deathClaims: DeathClaim[], designations: Designation[]): ClaimsTableRow[] => {
     const designationMap = new Map<number, ClaimsTableRow>();
-
-    // Initialize all designations
     designations.forEach((designation) => {
-      designationMap.set(designation.designationId, {
-        name: designation.name,
-        yearlyData: {},
-        total: 0,
-      });
+      designationMap.set(designation.designationId, { name: designation.name, yearlyData: {}, total: 0 });
     });
-
     deathClaims.forEach((claim) => {
       const designation = designationMap.get(claim.designationId);
       if (designation) {
@@ -129,109 +102,103 @@ const Claims: React.FC = () => {
         designation.total += 1;
       }
     });
-    // return Array.from(designationMap.values()).filter((des) => des.total > 0);
-    // return Array.from(designationMap.values());
-    return Array.from(designationMap.values()).sort((a, b) =>
-      a.name.localeCompare(b.name));
-
+    return Array.from(designationMap.values())
+      .filter((des) => des.total > 0)
+      .sort((a, b) => b.total - a.total);
   };
 
   const claims = config
     ? {
-
-      // stats: [
-      //   {
-      //     icon: config?.claimsStat1Icon,
-      //     value: config?.claimsStat1Value,
-      //     label: config?.claimsStat1Label,
-      //   },
-      //   {
-      //     icon: config?.claimsStat2Icon,
-      //     value: config?.claimsStat2Value,
-      //     label: config.claimsStat2Label,
-      //   },
-      //   {
-      //     icon: config?.claimsStat3Icon,
-      //     value: config?.claimsStat3Value,
-      //     label: config?.claimsStat3Label,
-      //   },
-      // ],
-      stats: [
-        {
-          icon: config?.claimsStat1Icon,
-          value: claimsStats?.totalClaimsSettled ?? config?.claimsStat1Value,
-          label: config?.claimsStat1Label,
-        },
-        {
-          icon: config?.claimsStat2Icon,
-          value: claimsStats?.totalAmountDisbursed ?? config.claimsStat2Value,
-          label: config.claimsStat2Label,
-        },
-        {
-          icon: config?.claimsStat3Icon,
-          value: claimsStats?.activeMembers ?? config?.claimsStat3Value,
-          label: config?.claimsStat3Label,
-        },
-      ],
-    }
+        stats: [
+          {
+            icon: "check",
+            value: claimsStats?.totalClaimsSettled ?? config?.claimsStat1Value,
+            label: config?.claimsStat1Label,
+          },
+          {
+            icon: "rupee",
+            value: claimsStats?.totalAmountDisbursed ?? config.claimsStat2Value,
+            label: config.claimsStat2Label,
+          },
+          {
+            icon: "users",
+            value: claimsStats?.activeMembers ?? config?.claimsStat3Value,
+            label: config?.claimsStat3Label,
+          },
+        ],
+      }
     : null;
 
+  const glyphFor = (icon: string) => {
+    if (icon === "check") return "✓";
+    if (icon === "rupee") return "₹";
+    if (icon === "users") return "◈";
+    return "•";
+  };
 
   return (
-    <>
-      {/* Hero Section */}
-      <section className="claims-hero py-4">
+    <div className="claims-page">
+      {/* Compact header + stats in one short band */}
+      <section className="claims-header">
         <Container>
-          <h2 className="claims-title">{config?.claimsHeroTitle}</h2>
-          <p className="claims-subtitle">{config?.claimsHeroSubTitle}</p>
+          <Row className="align-items-center g-4">
+            <Col lg={5}>
+              <h1 className="claims-header-title">{config?.claimsHeroTitle || "Claims Register"}</h1>
+              <p className="claims-header-subtitle">
+                {config?.claimsHeroSubTitle || "A public record of claims settled for our members and their families."}
+              </p>
+            </Col>
+            <Col lg={7}>
+              <div className="claims-stats-row">
+                {claims?.stats.map((stat, index) => (
+                  <div className="claims-stat" key={index}>
+                    <span className="claims-stat-glyph">{glyphFor(stat.icon)}</span>
+                    <div>
+                      <div className="claims-stat-value">{stat.value}</div>
+                      <div className="claims-stat-label">{stat.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Col>
+          </Row>
         </Container>
       </section>
-      {/* Stats Cards */}
-      <Container className="claims-stats">
-        <Row className="g-4">
-          {claims?.stats.map((stat, index) => (
-            <Col md={4} key={index}>
-              <Card className="claims-stat-card">
-                <div className="stat-icon">
-                  {stat.icon === "check" && "✔"}
-                  {stat.icon === "rupee" && "₹"}
-                  {stat.icon === "users" && "👥"}
-                </div>
-                <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Container>
 
-      {/* Tables */}
-      <Container fluid className="claims-tables">
+      {/* Tabs — one table on screen at a time */}
+      <Container className="claims-body">
+        <div className="claims-tabs" role="tablist" aria-label="Claims breakdown">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "state"}
+            className={`claims-tab ${activeTab === "state" ? "is-active" : ""}`}
+            onClick={() => setActiveTab("state")}
+          >
+            State Wise
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "designation"}
+            className={`claims-tab ${activeTab === "designation" ? "is-active" : ""}`}
+            onClick={() => setActiveTab("designation")}
+          >
+            Designation Wise
+          </button>
+        </div>
+
         {loading ? (
-          <div className="text-center py-5 claims-loader">
-            <div className="loader-icon mb-3">
-              <span className="pulse-icon">⏳</span>
-            </div>
-            <h5 className="mb-1">Loading</h5>
-            <p className="text-muted small">Please wait a moment…</p>
+          <div className="claims-loader">
+            <p>Loading claims data&hellip;</p>
           </div>
-
+        ) : activeTab === "state" ? (
+          <ClaimsTable title="Claims — State Wise" data={stateWiseClaims} years={years} />
         ) : (
-          <>
-            <ClaimsTable
-              title="CLAIMS - STATE WISE"
-              data={stateWiseClaims}
-              years={years}
-            />
-            <ClaimsTable
-              title="CLAIMS - DESIGNATION WISE"
-              data={designationWiseClaims}
-              years={years}
-            />
-          </>
+          <ClaimsTable title="Claims — Designation Wise" data={designationWiseClaims} years={years} />
         )}
       </Container>
-    </>
+    </div>
   );
 };
 
