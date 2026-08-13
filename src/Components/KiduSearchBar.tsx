@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 interface KiduSearchBarProps {
   placeholder?: string;
@@ -23,6 +23,11 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
     if (e.key === "Enter") handleSearch();
   };
 
+  const handleClear = () => {
+    setValue("");
+    onSearch("");
+  };
+
   return (
     <div style={{ width, maxWidth: "100%" }} className="mb-3">
       <InputGroup>
@@ -39,6 +44,22 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
             fontFamily: "Urbanist",
           }}
         />
+ {value && (
+          <Button
+            onClick={handleClear}
+            style={{
+              backgroundColor: "#fff",
+              border: "1px solid #dee2e6",
+              borderLeft: "none",
+              borderRight: "none",
+              color: "#6c757d",
+            }}
+            title="Clear search"
+          >
+            <FaTimes size={13} className="mb-1" />
+          </Button>
+        )}
+
         <Button
           onClick={handleSearch}
           style={{
