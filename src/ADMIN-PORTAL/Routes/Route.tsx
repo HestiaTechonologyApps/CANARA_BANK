@@ -163,6 +163,11 @@ import ContributionMasterEdit from '../Pages/Contributions/MonthlyContribution/E
 import ContributionMasterApprovalList from '../Pages/Approval/List';
 import ContributionMasterApprovalView from '../Pages/Approval/View';
 import UserApprovalView from '../Pages/Approval/UserView';
+import ExpenseTypeList from '../Pages/Administration/Expense Type/List';
+import ExpenseTypeCreate from '../Pages/Administration/Expense Type/Create';
+import ExpenseTypeEdit from '../Pages/Administration/Expense Type/Edit';
+import ExpenseTypeView from '../Pages/Administration/Expense Type/View';
+import ExpenseMasterList from '../Pages/Administration/Expense Master/List';
 
 
 export const adminRoutes = (
@@ -321,7 +326,18 @@ export const adminRoutes = (
       <Route path="approval-list" element={<ContributionMasterApprovalList />} />
       <Route path="contributions/approval-view/:masterId" element={<ContributionMasterApprovalView/>} />
       <Route path="approval/user-view/:userId" element={<UserApprovalView/>}/>
-     
+
+      {/* Administration */}
+      <Route path="administration/expensemaster-list" element={<ExpenseMasterList />} />
+      {/* <Route path="administration/expensemaster-create" element={< />} />
+      <Route path="administration/expensemaster-edit/:id" element={< />} />
+      <Route path="administration/expensemaster-view/:id" element={< />} /> */}
+
+
+      <Route path="administration/expensetype-list" element={<ExpenseTypeList />} />
+      <Route path="administration/expensetype-create" element={<ExpenseTypeCreate />} />
+      <Route path="administration/expensetype-edit/:id" element={<ExpenseTypeEdit />} />
+      <Route path="administration/expensetype-view/:id" element={<ExpenseTypeView />} />
 
       <Route path="notifications" element={<Notifications />} />
     </Route>
