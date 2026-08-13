@@ -53,7 +53,10 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
               borderLeft: "none",
               borderRight: "none",
               color: "#6c757d",
+              transition: "transform 0.15s ease",
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.15)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
             title="Clear search"
           >
             <FaTimes size={13} className="mb-1" />
@@ -66,8 +69,17 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
             backgroundColor: "#1B3763",
             border: "none",
             color: "white",
+            transition: "transform 0.15s ease, box-shadow 0.15s ease",
             // paddingLeft: "1rem",
             // paddingRight: "1rem",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.boxShadow = "0 2px 6px rgba(27, 55, 99, 0.4)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "none";
           }}
         >
           <FaSearch size={13} className="mb-1"/>
