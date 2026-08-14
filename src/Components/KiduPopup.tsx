@@ -1,13 +1,3 @@
-// KiduPopup.tsx - Fixed to match POS project (client-side filtering)
-// UPDATED: added optional serverSidePagination mode. Existing callers
-// (DesignationPopup, CategoryPopup, MonthPopup, YearMasterPopup, etc.)
-// are completely unaffected — they never pass serverSidePagination,
-// so isServerSide stays false and every code path below behaves
-// exactly as it did before this change.
-// UPDATED (popup sizing): Modal.Body height increased to 560px so all
-// 10 rows are visible without an inner scrollbar; Modal.Header padding
-// and title size reduced; export button disabled on the internal
-// KiduServerTable for popup usage (rows-per-page selector kept).
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import type { CustomResponse } from "../Types/ApiTypes";
@@ -15,27 +5,12 @@ import HttpService from "../Services/Http.services";
 import KiduServerTable from "./KiduServerTable";
 import { getNextModalZIndex } from "../ADMIN-PORTAL/Utils/modalZIndex";
 
-// NEW — server-side lookup config. When provided, KiduPopup skips
-// the "fetch everything up front" behavior and instead calls this
-// endpoint for search + pagination, server-side.
-// export interface KiduServerSideLookupConfig<T> {
-//   /** API endpoint accepting entityName/pageNumber/pageSize/searchTerm/lookupMasterId query params */
-//   endpoint: string;
-//   entityName: string;
-//   lookupMasterId?: number;
-//   /** Map one raw item from the API's `data` array into the component's T shape */
-//   mapItem: (raw: any) => T;
-//   pageSize?: number;
-// }
 export interface KiduServerSideLookupConfig<T> {
-  /** API endpoint accepting entityName/pageNumber/pageSize/searchTerm/lookupMasterId query params */
   endpoint: string;
   entityName: string;
   lookupMasterId?: number;
-  /** Map one raw item from the API's `data` array into the component's T shape */
   mapItem: (raw: any) => T;
   pageSize?: number;
-  // NEW — static extra filters forwarded as query params (e.g. { status: "Active" })
   extraParams?: Record<string, string | number | boolean>;
 }
 
@@ -43,7 +18,6 @@ interface KiduPopupProps<T> {
   show: boolean;
   handleClose: () => void;
   title: string;
-  // NOTE: fetchEndpoint is now optional — required only in client-side mode
   fetchEndpoint?: string;
   columns: { key: keyof T; label: string; type?: 'text' | 'checkbox' | 'image' | 'rating' | 'date'; render?: (value: unknown) => React.ReactNode }[];
   onSelect?: (item: T) => void;
@@ -57,7 +31,6 @@ interface KiduPopupProps<T> {
   searchKeys?: (keyof T)[]; 
   showAddButton?: boolean; 
   filterData?: (items: T[]) => T[];
-  // NEW — opt-in server-side pagination. Omit to keep existing client-side behavior.
   serverSidePagination?: KiduServerSideLookupConfig<T>;
 }
 
@@ -74,20 +47,18 @@ function KiduPopup<T extends Record<string, any>>({
   searchKeys,
   showAddButton = true,
   filterData, 
-  serverSidePagination,   // NEW
+  serverSidePagination,   
 }: KiduPopupProps<T>) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [allData, setAllData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // NEW — mode flag. False for every existing caller.
   const isServerSide = !!serverSidePagination;
 
-  // Fetch ALL data once when modal opens (CLIENT-SIDE mode only — unchanged logic)
   useEffect(() => {
-    if (!show || isServerSide) { return; }   // ← NEW guard, skips entirely in server-side mode
-    if (!fetchEndpoint) return;              // ← safety since fetchEndpoint is now optional
+    if (!show || isServerSide) { return; } 
+    if (!fetchEndpoint) return;              
 
     setLoading(true);
     HttpService.callApi<CustomResponse<T[]>>(fetchEndpoint, "GET")
@@ -117,8 +88,7 @@ function KiduPopup<T extends Record<string, any>>({
       .finally(() => setLoading(false));
   }, [show, fetchEndpoint, refreshKey, isServerSide]);
 
-  // NEW — Server-side fetch function: calls the paged lookup API directly,
-  // server does search + pagination. Used only when serverSidePagination is set.
+ 
   const fetchServerData = useCallback(async (params: {
     pageNumber: number;
     pageSize: number;
@@ -127,15 +97,6 @@ function KiduPopup<T extends Record<string, any>>({
     if (!serverSidePagination) return { data: [], total: 0 };
 
     try {
-      // const query = new URLSearchParams({
-      //   entityName: serverSidePagination.entityName,
-      //   pageNumber: String(params.pageNumber),
-      //   pageSize: String(params.pageSize),
-      //   searchTerm: params.searchTerm ?? "",
-      //   lookupMasterId: String(serverSidePagination.lookupMasterId ?? 0),
-      // });
-
-      // const url = `${serverSidePagination.endpoint}?${query.toString()}`;
       const query = new URLSearchParams({
         entityName: serverSidePagination.entityName,
         pageNumber: String(params.pageNumber),
@@ -144,7 +105,6 @@ function KiduPopup<T extends Record<string, any>>({
         lookupMasterId: String(serverSidePagination.lookupMasterId ?? 0),
       });
 
-      // NEW — forward any static extra filters (e.g. status=Active)
       if (serverSidePagination.extraParams) {
         Object.entries(serverSidePagination.extraParams).forEach(([key, value]) => {
           query.set(key, String(value));
@@ -166,7 +126,6 @@ function KiduPopup<T extends Record<string, any>>({
     }
   }, [serverSidePagination]);
 
-  // Client-side fetch function for KiduServerTable (UNCHANGED from original)
   const fetchClientData = useCallback(async (params: {
     pageNumber: number;
     pageSize: number;
@@ -179,21 +138,18 @@ function KiduPopup<T extends Record<string, any>>({
       const searchLower = params.searchTerm.toLowerCase();
       
       filteredData = allData.filter(item => {
-        // If searchKeys provided, search only in those fields
         if (searchKeys && searchKeys.length > 0) {
           return searchKeys.some(key => 
             item[key] && String(item[key]).toLowerCase().includes(searchLower)
           );
         }
         
-        // Otherwise search in all fields
         return Object.values(item).some(val => 
           String(val).toLowerCase().includes(searchLower)
         );
       });
     }
     
-    // Client-side pagination
     const startIndex = (params.pageNumber - 1) * params.pageSize;
     const endIndex = startIndex + params.pageSize;
     const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -204,7 +160,6 @@ function KiduPopup<T extends Record<string, any>>({
     };
   }, [allData, searchKeys]);
 
-  // NEW — pick the right fetcher based on mode
   const fetchData = isServerSide ? fetchServerData : fetchClientData;
 
   const handleRowClick = (item: T) => {
@@ -214,19 +169,15 @@ function KiduPopup<T extends Record<string, any>>({
 
   const handleAddNew = (newItem: T) => {
     setShowAddModal(false);
-    // Add new item to data
     setAllData(prev => [newItem, ...prev]);
-    // Trigger refresh to reload the table
     setRefreshKey(prev => prev + 1);
   };
 
   const handleModalClose = () => {
     handleClose();
-    // Reset search when closing
     setRefreshKey(prev => prev + 1);
   };
 
-  // inside the KiduPopup function component, before the return
 const zIndexRef = useRef<number | null>(null);
 if (show && zIndexRef.current === null) {
   zIndexRef.current = getNextModalZIndex();
@@ -265,9 +216,7 @@ const backdropClass = z ? `kdp-bd-${z}` : undefined;
         </Modal.Header>
 
         <Modal.Body style={{ height: '560px', overflow: 'hidden', padding: 0 }}>
-          {/* NEW — the loading spinner guard only applies to client-side mode's
-              upfront fetch; server-side mode's KiduServerTable manages its own
-              per-page loading state via fetchData, so we skip this gate for it. */}
+       
           {(!isServerSide && loading && allData.length === 0) ? (
             <div className="text-center py-5">
               <Spinner animation="border" /> <span className="ms-2">Loading...</span>
@@ -286,7 +235,7 @@ const backdropClass = z ? `kdp-bd-${z}` : undefined;
                 showActions={false}
                 showSearch={true}
                 showTitle={false}
-                showKiduPopupButton={showAddButton && !!AddModalComponent} // Only show if both enabled
+                showKiduPopupButton={showAddButton && !!AddModalComponent}
                 addRoute={showAddButton && AddModalComponent ? "#" : undefined}
                 addButtonLabel={title.replace("Select ", "")}
                 onRowClick={handleRowClick}

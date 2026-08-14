@@ -534,6 +534,26 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     const fieldPlaceholder = placeholder || `Enter ${rules.label.toLowerCase()}`;
 
     switch (type) {
+      // case "popup": {
+      //   const popup = popupHandlers[name];
+      //   return (
+      //     <InputGroup>
+      //       <Form.Control
+      //         //size="sm"
+      //         type="text"
+      //         value={popup?.value || ""}
+      //         placeholder={`Select ${rules.label}`}
+      //         readOnly
+      //         isInvalid={!!errors[name]}
+      //         disabled={rules.disabled}
+      //         // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
+      //             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}/>
+      //       <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
+      //         <BsSearch />
+      //       </Button>
+      //     </InputGroup>
+      //   );
+      // }
       case "popup": {
         const popup = popupHandlers[name];
         return (
@@ -546,9 +566,19 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               readOnly
               isInvalid={!!errors[name]}
               disabled={rules.disabled}
-              // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
-                  style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}/>
-            <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
+              onClick={!rules.disabled ? popup?.onOpen : undefined}
+              style={
+                rules.disabled
+                  ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" }
+                  : { fontSize: "15px", cursor: "pointer", backgroundColor: "#fff" }
+              }
+            />
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={popup?.onOpen}
+              disabled={rules.disabled}
+            >
               <BsSearch />
             </Button>
           </InputGroup>

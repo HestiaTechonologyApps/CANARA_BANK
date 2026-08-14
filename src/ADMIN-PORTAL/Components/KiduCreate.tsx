@@ -334,6 +334,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     switch (type) {
 
       /* ---------- POPUP ---------- */
+
       case "popup": {
         const popup = popupHandlers[name];
         return (
@@ -345,9 +346,18 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               readOnly
               isInvalid={!!errors[name]}
               disabled={rules.disabled}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
+              onClick={!rules.disabled ? popup?.onOpen : undefined}
+              style={
+                rules.disabled
+                  ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" }
+                  : { cursor: "pointer", backgroundColor: "#fff" }
+              }
             />
-            <Button variant="outline-secondary" onClick={popup?.onOpen}>
+            <Button
+              variant="outline-secondary"
+              onClick={popup?.onOpen}
+              disabled={rules.disabled}
+            >
               <BsSearch />
             </Button>
           </InputGroup>
