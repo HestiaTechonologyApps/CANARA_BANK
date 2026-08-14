@@ -19,6 +19,12 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
     onSearch(value.trim());
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    onSearch(newValue.trim());
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleSearch();
   };
@@ -35,7 +41,8 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
           type="text"
           placeholder={placeholder}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          //onChange={(e) => setValue(e.target.value)}
+          onChange={handleChange}
           onKeyPress={handleKeyPress}
           style={{
             borderRight: "none",
