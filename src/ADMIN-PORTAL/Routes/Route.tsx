@@ -168,6 +168,9 @@ import ExpenseTypeCreate from '../Pages/Administration/Expense Type/Create';
 import ExpenseTypeEdit from '../Pages/Administration/Expense Type/Edit';
 import ExpenseTypeView from '../Pages/Administration/Expense Type/View';
 import ExpenseMasterList from '../Pages/Administration/Expense Master/List';
+import ExpenseMasterCreate from '../Pages/Administration/Expense Master/Create';
+import ExpenseMasterEdit from '../Pages/Administration/Expense Master/Edit';
+import ExpenseMasterView from '../Pages/Administration/Expense Master/View';
 
 
 export const adminRoutes = (
@@ -329,9 +332,9 @@ export const adminRoutes = (
 
       {/* Administration */}
       <Route path="administration/expensemaster-list" element={<ExpenseMasterList />} />
-      {/* <Route path="administration/expensemaster-create" element={< />} />
-      <Route path="administration/expensemaster-edit/:id" element={< />} />
-      <Route path="administration/expensemaster-view/:id" element={< />} /> */}
+      <Route path="administration/expensemaster-create" element={<ExpenseMasterCreate/>} />
+      <Route path="administration/expensemaster-edit/:expenseMasterId" element={<ExpenseMasterEdit />} />
+      <Route path="administration/expensemaster-view/:expenseMasterId" element={<ExpenseMasterView />} />
 
 
       <Route path="administration/expensetype-list" element={<ExpenseTypeList />} />

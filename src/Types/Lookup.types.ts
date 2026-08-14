@@ -33,6 +33,7 @@ export interface LookupPagedResponse<T> {
 
 export interface ExpenseTypeLookupItem {
   expenseTypeId: number;
-  expenseTypeName: string;
+  name: string;
+  description: string;
   isSelected: boolean;
 }
