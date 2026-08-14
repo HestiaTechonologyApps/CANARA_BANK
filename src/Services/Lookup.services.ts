@@ -1,7 +1,7 @@
 // src/Services/Common/Lookup.services.ts
 
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
-import type { BranchLookupItem, LookupPagedParams, LookupPagedResponse, MemberLookupItem } from "../Types/Lookup.types";
+import type { BranchLookupItem, ExpenseTypeLookupItem, LookupPagedParams, LookupPagedResponse, MemberLookupItem } from "../Types/Lookup.types";
 import HttpService from "./Http.services";
 
 
@@ -48,7 +48,14 @@ const LookupService = {
       entityName: "branch",
     }),
 
+  getExpenseTypes: (params: Omit<LookupPagedParams, "entityName">) =>
+    fetchPagedLookup<ExpenseTypeLookupItem>({
+      ...params,
+      entityName: "expensetype",
+    }),
+
   get: <T>(params: LookupPagedParams) => fetchPagedLookup<T>(params),
 };
+
 
 export default LookupService;
