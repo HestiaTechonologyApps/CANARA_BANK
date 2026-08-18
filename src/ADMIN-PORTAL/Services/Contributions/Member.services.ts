@@ -49,7 +49,7 @@ const MemberService = {
   },
 
 
-  async createMember(
+async createMember(
     data: Omit<Member, "memberId" | "auditLogs">
   ): Promise<Member> {
     const response = await HttpService.callApi<CustomResponse<Member>>(
@@ -57,11 +57,14 @@ const MemberService = {
       "POST",
       data
     );
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to create member");
+    }
     return response.value;
   },
 
 
-  async updateMember(
+async updateMember(
     id: number,
     data: Partial<Omit<Member, "memberId" | "auditLogs">>
   ): Promise<Member> {
@@ -70,8 +73,11 @@ const MemberService = {
       "PUT",
       data
     );
+    if (!response.isSucess) {
+      throw new Error(response.error || "Failed to update member");
+    }
     return response.value;
-  },
+  },  
 
 
   async updateCurrentStaffMember(

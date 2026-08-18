@@ -3,6 +3,7 @@ import type { AuditTrails } from "../../../Types/AuditLog.types";
 export interface Member {
   memberId: number;
   staffNo: number;
+  oldStaffNo?: number;
   designationId: number;
   designationName?:string;
   categoryId: number;
