@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { LogOut } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import "../PUBLIC-PORTAL/Style/Auth.css";
 
 interface KiduLogoutModalProps {
@@ -22,7 +22,35 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
       backdrop="static"
       dialogClassName="auth-modal"
     >
-      <Modal.Body>
+      <Modal.Body style={{ position: "relative" }}>
+        {/* Close button */}
+                <button
+          type="button"
+          onClick={onCancel}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: 18,
+            right: 18,
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            border: "none",
+            background: "rgba(255,255,255,0.18)",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            zIndex: 10,
+            transition: "background 0.15s",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.32)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+        >
+          <X size={15} />
+        </button>
+
         {/* HEADER (same style as login) */}
         <div className="auth-div">
           <div className="auth-icon">
