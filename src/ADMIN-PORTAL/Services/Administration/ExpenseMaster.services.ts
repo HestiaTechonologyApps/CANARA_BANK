@@ -90,6 +90,15 @@ const ExpenseMasterService = {
       total: response.value.totalRecords,
     };
   },
+
+  async approveExpenseMaster(
+    id: number,
+    params: { approve: boolean; currentUserId: number }
+  ): Promise<ExpenseMaster> {
+    const url = `${API_ENDPOINTS.EXPENSE_MASTER.UPDATE_BY_APPROVE(id)}?approve=${params.approve}&currentUserId=${params.currentUserId}`;
+    const response = await HttpService.callApi<CustomResponse<ExpenseMaster>>(url, "PUT");
+    return response.value;
+  },
 };
 
 export default ExpenseMasterService;

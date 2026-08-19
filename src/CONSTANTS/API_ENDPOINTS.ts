@@ -273,6 +273,7 @@ REFUND_CONTRIBUTION: {
    UPDATE:(id:number)=>`${API_BASE_URL}/ExpenseMaster/${id}`,
    DELETE:(id:number)=>`${API_BASE_URL}/ExpenseMaster/${id}`,
    GET_ALL_PAGINATED:`${API_BASE_URL}/ExpenseMaster/paged`,
+   UPDATE_BY_APPROVE: (id: number) => `${API_BASE_URL}/ExpenseMaster/approve/${id}`,
   },
   EXPENSE_TYPE:{
    GET_ALL:`${API_BASE_URL}/ExpenseType`, 

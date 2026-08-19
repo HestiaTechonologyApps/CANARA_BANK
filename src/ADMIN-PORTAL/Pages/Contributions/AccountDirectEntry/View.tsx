@@ -72,7 +72,7 @@ const AccountDirectEntryView: React.FC = () => {
       auditLogConfig={{ tableName: "ACCOUNT_DIRECT_ENTRY", recordIdField: "accountsDirectEntryID" }}
       attachmentConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
       disableEditWhen={(data) => data.isApproved === true || data.status === "Approved"}
-       disableDeleteWhen={(data) => data.isApproved === true || data.status === "Approved"}
+      disableDeleteWhen={(data) => data.isApproved === true || data.status === "Approved"}
     />
   );
 };

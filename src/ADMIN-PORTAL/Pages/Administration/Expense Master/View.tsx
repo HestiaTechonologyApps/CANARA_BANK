@@ -16,6 +16,11 @@ const ExpenseMasterView: React.FC = () => {
     { key: "referenceNo", label: "Reference No" },
     { key: "paymentMode", label: "Payment Mode" },
     { key: "description", label: "Description" },
+    {
+      key: "isApproved",
+      label: "Approval Status",
+      formatter: (value) => (value ? "Approved" : "Pending"),
+    },
   ];
 
   const handleFetch = async (id: string) => {
@@ -31,7 +36,7 @@ const ExpenseMasterView: React.FC = () => {
   };
 
   return (
-    <KiduView
+        <KiduView
       title="Expense Details"
       fields={fields}
       onFetch={handleFetch}
@@ -43,6 +48,8 @@ const ExpenseMasterView: React.FC = () => {
       auditLogConfig={{ tableName: "EXPENSE_MASTER", recordIdField: "expenseMasterId" }}
       themeColor="#1B3763"
       deleteConfirmMessage="Are you sure you want to delete this expense record?"
+      disableEditWhen={(data) => data.isApproved === true || data.status === "Approved"}
+      disableDeleteWhen={(data) => data.isApproved === true || data.status === "Approved"}
     />
   );
 };

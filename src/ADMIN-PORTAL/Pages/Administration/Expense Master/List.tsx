@@ -10,6 +10,7 @@ const ExpenseMasterList: React.FC = () => {
     { key: "amount", label: "Amount", enableSorting: true },
     { key: "paidTo", label: "Paid To", enableSorting: false },
     { key: "paymentMode", label: "Payment Mode", enableSorting: false },
+    { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" as const },
   ];
 
 
@@ -33,12 +34,18 @@ const ExpenseMasterList: React.FC = () => {
   );
 
   return (
-    <KiduServerTableList
+        <KiduServerTableList
       title="Expense Master"
       subtitle="Manage administration expenses."
       columns={columns}
       idKey="expenseMasterId"
       paginatedFetchService={paginatedFetchService}
+      transformData={(data) =>
+        data.map((item) => ({
+          ...item,
+          _disableEdit: item.isApproved === true,
+        }))
+      }
       showAddButton
       addButtonLabel="Add New"
       addRoute="/dashboard/administration/expensemaster-create"

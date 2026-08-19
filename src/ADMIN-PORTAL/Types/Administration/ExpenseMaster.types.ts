@@ -9,6 +9,10 @@ export interface ExpenseMaster {
   paymentMode: string;
   description: string;
   isDeleted: boolean;
+  isApproved: boolean;
+  approvedBy?: string;
+  approvedDate?: string;
+  approvedDateString?: string;
   auditLogs?: any[];
 }
 
@@ -35,4 +39,9 @@ export interface ExpenseMasterPagedParams {
   pageNumber: number;
   pageSize: number;
   getAll?: boolean;
+}
+
+export interface ApproveExpenseMasterParams {
+  approve: boolean;
+  currentUserId: number;
 }
