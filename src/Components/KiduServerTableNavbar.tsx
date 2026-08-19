@@ -323,7 +323,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                 </Button>
               </>
             )} */}
-            {showExportButtons && (
+            {/* {showExportButtons && (
               <Dropdown as={ButtonGroup}>
                 <Dropdown.Toggle size="sm" variant="outline" style={{
                   color: "#1B3763",
@@ -334,8 +334,8 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                }}>
-                  <FaDownload /> Export
+                }}> */}
+                  {/* <FaDownload /> Export
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{
                   color: "#1B3763",
@@ -343,8 +343,8 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   fontSize: "13px",
                   fontWeight: 600,
                   borderColor: "#1B3763",
-                }}>
-                  <Dropdown.Item onClick={handleCopy}>
+                }}> */}
+                  {/* <Dropdown.Item onClick={handleCopy}>
                   <span className="text-primary">  <FaCopy /></span> Copy
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handleCSV}>
@@ -361,6 +361,86 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+            )} */}
+                        {showExportButtons && (
+              <Dropdown as={ButtonGroup}>
+                <Dropdown.Toggle size="sm" variant="outline" className="kidu-export-toggle" style={{
+                  color: "#1B3763",
+                  fontFamily: "Urbanist",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  borderColor: "#1B3763",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}>
+                  <FaDownload /> Export
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="kidu-export-menu">
+                  {/* <Dropdown.Item onClick={handleCopy} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#eef2ff", color: "#4f46e5" }}>
+                      <FaCopy size={13} />
+                    </span>
+                    <span>Copy</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleCSV} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#fef9e7", color: "#c9930a" }}>
+                      <BsFiletypeCsv size={14} />
+                    </span>
+                    <span>CSV</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleExcel} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#e9f9ef", color: "#1e8e4e" }}>
+                      <FaFileExcel size={13} />
+                    </span>
+                    <span>Excel</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handlePDF} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#fdeceb", color: "#dc3545" }}>
+                      <BsFiletypePdf size={14} />
+                    </span>
+                    <span>PDF</span>
+                  </Dropdown.Item>
+                  <Dropdown.Divider className="kidu-export-divider" />
+                  <Dropdown.Item onClick={handlePrint} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#eef2f7", color: "#1B3763" }}>
+                      <BsPrinter size={13} />
+                    </span>
+                    <span>Print</span>
+                  </Dropdown.Item> */}
+                                    <Dropdown.Item onClick={handleCopy} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#eef2ff", color: "#4f46e5" }}>
+                      <FaCopy size={11} />
+                    </span>
+                    <span>Copy</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleCSV} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#fef9e7", color: "#c9930a" }}>
+                      <BsFiletypeCsv size={12} />
+                    </span>
+                    <span>CSV</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleExcel} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#e9f9ef", color: "#1e8e4e" }}>
+                      <FaFileExcel size={11} />
+                    </span>
+                    <span>Excel</span>
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handlePDF} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#fdeceb", color: "#dc3545" }}>
+                      <BsFiletypePdf size={12} />
+                    </span>
+                    <span>PDF</span>
+                  </Dropdown.Item>
+                  <Dropdown.Divider className="kidu-export-divider" />
+                  <Dropdown.Item onClick={handlePrint} className="kidu-export-item">
+                    <span className="kidu-export-icon" style={{ background: "#eef2f7", color: "#1B3763" }}>
+                      <BsPrinter size={11} />
+                    </span>
+                    <span>Print</span>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             )}
 
 
@@ -373,6 +453,47 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
           </Col>
         )}
       </Row>
+
+            <style>{`
+        .kidu-export-menu {
+          padding: 4px;
+          border-radius: 6px;
+          border: 1px solid #1B3763;
+          box-shadow: 0 4px 10px rgba(27, 55, 99, 0.15);
+          min-width: 140px;
+        }
+        .kidu-export-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 10px;
+          margin-bottom: 2px;
+          border-radius: 4px;
+          font-family: 'Urbanist', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          color: #1B3763;
+        }
+        .kidu-export-item:last-child {
+          margin-bottom: 0;
+        }
+        .kidu-export-item:hover,
+        .kidu-export-item:focus {
+          background-color: #eef2f7;
+          color: #1B3763;
+        }
+        .kidu-export-icon {
+          width: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .kidu-export-divider {
+          margin: 4px 2px;
+          border-color: #eef1f6;
+        }
+      `}</style>
 
       {/* ✅ Toast container */}
       <ToastContainer />
