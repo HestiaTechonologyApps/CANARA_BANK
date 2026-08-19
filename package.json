@@ -13,7 +13,8 @@
     "start-staff": "vite --mode staff",
     "build-admin": "tsc && vite build --mode admin",
     "build-public": "tsc && vite build --mode public",
-    "build-staff": "tsc && vite build --mode staff"
+    "build-staff": "tsc && vite build --mode staff",
+    "deploy:smarterasp": "node scripts/deploy-ftp.mjs"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
@@ -53,6 +54,7 @@
     "@types/react-csv": "^1.1.10",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "basic-ftp": "^6.2.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
