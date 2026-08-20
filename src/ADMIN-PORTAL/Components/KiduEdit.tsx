@@ -58,6 +58,15 @@ export interface AttachmentConfig {
   tableName: string;
   recordIdField: string;
 }
+export interface ApprovalConfig {
+  onApprove: (id: string, formData: Record<string, any>) => Promise<void | any>;
+  onReject: (id: string, formData: Record<string, any>) => Promise<void | any>;
+  approveLabel?: string;
+  rejectLabel?: string;
+  confirmApproveText?: string;
+  confirmRejectText?: string;
+  showWhen?: (formData: Record<string, any>) => boolean;
+}
 export interface KiduEditProps {
   title: string;
   subtitle?: string;
@@ -76,6 +85,7 @@ export interface KiduEditProps {
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
   attachmentConfig?: AttachmentConfig;
+  approvalConfig?: ApprovalConfig;
   themeColor?: string;
   paramName?: string;
   navigateBackPath?: string;
@@ -103,6 +113,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   imageConfig,
   auditLogConfig,
   attachmentConfig,
+  approvalConfig,
   themeColor = "#882626ff",
   paramName = "id",
   navigateBackPath,
@@ -183,6 +194,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
 
   const attachmentsRef = useRef<AttachmentsHandle>(null);
   const [hasPendingAttachments, setHasPendingAttachments] = useState(false);
+  const [isApproveRejectSubmitting, setIsApproveRejectSubmitting] = useState<"approve" | "reject" | null>(null);
 
   const hasChanges = () => {
     const formDataChanged = JSON.stringify(formData) !== JSON.stringify(initialData);
@@ -523,6 +535,63 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
       setIsSubmitting(false);
     }
   };
+    const handleApprove = async () => {
+    if (!approvalConfig || !recordId) return;
+
+    const confirm = await Swal.fire({
+      icon: "question",
+      title: "Approve this record?",
+      text: approvalConfig.confirmApproveText || "This action will mark the record as approved.",
+      showCancelButton: true,
+      confirmButtonColor: themeColor,
+      confirmButtonText: "Yes, approve",
+    });
+    if (!confirm.isConfirmed) return;
+
+    setIsApproveRejectSubmitting("approve");
+    try {
+      await approvalConfig.onApprove(recordId, formData);
+      await Swal.fire({
+        icon: "success",
+        title: "Approved!",
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK",
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to approve");
+    } finally {
+      setIsApproveRejectSubmitting(null);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!approvalConfig || !recordId) return;
+
+    const confirm = await Swal.fire({
+      icon: "warning",
+      title: "Reject this record?",
+      text: approvalConfig.confirmRejectText || "This action will mark the record as rejected.",
+      showCancelButton: true,
+      confirmButtonColor: "#dc3545",
+      confirmButtonText: "Yes, reject",
+    });
+    if (!confirm.isConfirmed) return;
+
+    setIsApproveRejectSubmitting("reject");
+    try {
+      await approvalConfig.onReject(recordId, formData);
+      await Swal.fire({
+        icon: "success",
+        title: "Rejected",
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK",
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to reject");
+    } finally {
+      setIsApproveRejectSubmitting(null);
+    }
+  };
   const togglePasswordVisibility = (fieldName: string) => {
     setShowPasswords(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
   };
@@ -778,6 +847,27 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 {title}
               </h5>
             </div>
+                        {approvalConfig && (approvalConfig.showWhen ? approvalConfig.showWhen(formData) : true) && (
+              <div className="d-flex gap-2">
+                <Button
+                  size="sm"
+                  style={{ backgroundColor: themeColor, border: "none" }}
+                  disabled={isApproveRejectSubmitting !== null}
+                  onClick={handleApprove}
+                >
+                  {isApproveRejectSubmitting === "approve" ? "Approving..." : (approvalConfig.approveLabel || "Approve")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="danger"
+                  disabled={isApproveRejectSubmitting !== null}
+                  onClick={handleReject}
+                >
+                  {isApproveRejectSubmitting === "reject" ? "Rejecting..." : (approvalConfig.rejectLabel || "Reject")}
+                </Button>
+              </div>
+            )}
+
           </div>
           <hr />
           <Card.Body style={{ padding: "1.5rem" }}>
