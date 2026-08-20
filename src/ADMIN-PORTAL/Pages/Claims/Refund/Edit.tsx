@@ -81,16 +81,21 @@ const RefundContributionEdit: React.FC = () => {
       setInitialState(state);
     }
 
-    if (refund.staffNo) {
-      const memberRes = await MemberService.getMembersPaginated({
-        pageNumber: 1,
-        pageSize: 1,
-        searchTerm: String(refund.staffNo),
-      });
-      const member = memberRes?.data?.[0] || null;
-      setSelectedMember(member);
-      setInitialMember(member);
-    }
+    // if (refund.staffNo) {
+    //   const memberRes = await MemberService.getMembersPaginated({
+    //     pageNumber: 1,
+    //     pageSize: 1,
+    //     searchTerm: String(refund.staffNo),
+    //   });
+    //   const member = memberRes?.data?.[0] || null;
+    //   setSelectedMember(member);
+    //   setInitialMember(member);
+    // }
+    if (refund.memberId) {
+  const member = (await MemberService.getMemberById(refund.memberId)).value;
+  setSelectedMember(member);
+  setInitialMember(member);
+}
 
     if (refund.designationId) {
       const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
