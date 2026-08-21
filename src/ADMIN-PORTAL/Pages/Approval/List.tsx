@@ -7,11 +7,6 @@ import UserRegistrationService from "../../Services/UserRegistration/UserRegsitr
 type TabKey = "monthlyContribution" | "user";
 
 const ContributionMasterApprovalList: React.FC = () => {
-  // Active tab is persisted in the URL (?tab=user) rather than local state,
-  // so it survives the unmount/remount that happens when navigating to the
-  // View page and back — plain useState always reset to the default tab
-  // on return, which is why closing the User view always dropped back to
-  // Monthly Contribution.
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get("tab") as TabKey) || "monthlyContribution";
 
@@ -19,9 +14,6 @@ const ContributionMasterApprovalList: React.FC = () => {
     setSearchParams(tab === "monthlyContribution" ? {} : { tab });
   };
 
-  // Fetch-once, filter/search/paginate-locally cache — same pattern
-  // KiduServerTableList used internally, now inlined since we're calling
-  // KiduServerTable directly.
   const contributionCacheRef = useRef<any[] | null>(null);
 
   const fetchContributionData = useCallback(
@@ -33,7 +25,6 @@ const ContributionMasterApprovalList: React.FC = () => {
     }) => {
       if (!contributionCacheRef.current) {
         const allData = await ContributionMasterService.getAll();
-        // Latest first. No wrapper reversing this time, so descending is final.
         contributionCacheRef.current = [...allData].sort(
           (a, b) => b.contributionMasterId - a.contributionMasterId
         );
@@ -70,7 +61,6 @@ const ContributionMasterApprovalList: React.FC = () => {
     []
   );
 
-  // Fetch-once cache for pending user registrations, same pattern as contributions
  const userCacheRef = useRef<any[] | null>(null);
 
   const fetchUserData = useCallback(
@@ -144,18 +134,14 @@ const ContributionMasterApprovalList: React.FC = () => {
             { key: "monthName", label: "Month", type: "text" },
             { key: "year", label: "Year", type: "text" },
             { key: "circle", label: "Circle", type: "text" },
-            {
-              key: "contributionStatus", label: "Status", type: "select", options: [
+            { key: "contributionStatus", label: "Status", type: "select", options: [
                 { value: "FORWARD", label: "Forward" },
                 { value: "Processed", label: "Processed" },
-              ]
-            },
-            {
-              key: "isApproved", label: "Approved", type: "select", options: [
+              ] },
+            { key: "isApproved", label: "Approved", type: "select", options: [
                 { value: "true", label: "Approved" },
                 { value: "false", label: "Not Approved" },
-              ]
-            },
+              ] },
           ]}
           idKey="contributionMasterId"
           title="Monthly Contribution Approval List"

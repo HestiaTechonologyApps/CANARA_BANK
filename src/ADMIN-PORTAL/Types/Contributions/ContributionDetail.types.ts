@@ -1,4 +1,3 @@
-// ── Single detail response (GET_BY_DETAIL_ID) ─────────────────────
 export interface ContributionDetailItem {
   contributionDetailId: number;
   fullString:           string;
@@ -18,12 +17,10 @@ export interface ContributionDetailItem {
   total:                string;
 }
 
-// ── Park request body ─────────────────────────────────────────────
 export interface ParkPayload {
   parkReason: string;
 }
 
-// ── Unpark query params ───────────────────────────────────────────
 export interface UnparkParams {
   detailId:      number;
   currentUserId: number;

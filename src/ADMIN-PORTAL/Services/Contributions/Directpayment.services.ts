@@ -3,7 +3,6 @@ import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ApproveDirectPaymentParams, DirectPayment } from "../../Types/Contributions/Directpayment.types";
 
-
 const DirectPaymentService = {
  
   async getAllDirectPayments(): Promise<DirectPayment[]> {

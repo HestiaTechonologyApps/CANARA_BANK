@@ -1,12 +1,9 @@
-// src/Services/CMS/PublicPage.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { PublicPage } from "../../Types/CMS/PublicPage.types";
 
 const PublicPageService = {
-  /* ===================== GET ALL ===================== */
   async getAllPublicPages(): Promise<PublicPage[]> {
     const response = await HttpService.callApi<CustomResponse<PublicPage[]>>(
       API_ENDPOINTS.PUBLIC_PAGE.GET_ALL,
@@ -15,16 +12,14 @@ const PublicPageService = {
     return response.value;
   },
 
-  /* ===================== GET BY ID (✅ FIXED) ===================== */
   async getPublicPageById(id: number): Promise<PublicPage> {
     const response = await HttpService.callApi<CustomResponse<PublicPage>>(
       API_ENDPOINTS.PUBLIC_PAGE.GET_BY_ID(id),
       "GET"
     );
-    return response.value; // ✅ FIX
+    return response.value; 
   },
 
-  /* ===================== CREATE ===================== */
   async createPublicPage(
     data: Omit<PublicPage, "publicPageId" | "auditLogs">
   ): Promise<PublicPage> {
@@ -36,7 +31,6 @@ const PublicPageService = {
     return response.value;
   },
 
-  /* ===================== UPDATE ===================== */
   async updatePublicPage(
     id: number,
     data: Omit<PublicPage, "publicPageId" | "auditLogs">
@@ -49,7 +43,6 @@ const PublicPageService = {
     return response.value;
   },
 
-  /* ===================== DELETE ===================== */
   async deletePublicPage(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.PUBLIC_PAGE.DELETE(id),

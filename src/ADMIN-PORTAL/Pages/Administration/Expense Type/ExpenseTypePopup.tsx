@@ -23,9 +23,6 @@ const ExpenseTypePopup: React.FC<ExpenseTypePopupProps> = ({
     { key: "description" as keyof ExpenseType, label: "Description" },
   ];
 
-  // Same order as DesignationPopup returns from the backend, but sorted
-  // client-side by ID as a belt-and-braces guarantee — mirrors what the
-  // Designation "get all" endpoint appears to already do server-side.
   const filterData = (items: ExpenseType[]) =>
     [...items].sort((a, b) => a.expenseTypeId - b.expenseTypeId);
 

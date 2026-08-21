@@ -4,7 +4,6 @@ import type { Field } from "../../../../Components/KiduCreateModal";
 import ExpenseTypeService from "../../../Services/Administration/ExpenseType.services";
 import KiduCreateModal from "../../../../Components/KiduCreateModal";
 
-
 interface ExpenseTypeCreateModalProps {
   show: boolean;
   handleClose: () => void;

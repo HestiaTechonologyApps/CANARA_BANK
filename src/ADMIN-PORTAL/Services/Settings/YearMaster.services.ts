@@ -1,12 +1,9 @@
-// src/services/Settings/YearMaster.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 
 const YearMasterService = {
-  // Get all Year Masters
   async getAllYearMasters(): Promise<YearMaster[]> {
     const response = await HttpService.callApi<CustomResponse<YearMaster[]>>(
       API_ENDPOINTS.YEAR_MASTER.GET_ALL,
@@ -15,7 +12,6 @@ const YearMasterService = {
     return response.value;
   },
 
-  
   async getYearMasterById(id: number): Promise<CustomResponse<YearMaster>> {
     const response = await HttpService.callApi<CustomResponse<YearMaster>>(
       API_ENDPOINTS.YEAR_MASTER.GET_BY_ID(id),

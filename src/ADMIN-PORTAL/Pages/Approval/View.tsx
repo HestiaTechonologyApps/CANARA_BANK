@@ -1,4 +1,3 @@
-// src/Pages/Approval/View.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";

@@ -1,4 +1,3 @@
-// src/ADMIN-PORTAL/Services/Settings/UserRoleRight.services.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -18,7 +17,6 @@ const UserRoleRightService = {
       API_ENDPOINTS.USER_ROLE_RIGHT.GET_BY_ID(id),
       "GET"
     );
-    // Return full CustomResponse to match your other *ById services
     return response;
   },
 

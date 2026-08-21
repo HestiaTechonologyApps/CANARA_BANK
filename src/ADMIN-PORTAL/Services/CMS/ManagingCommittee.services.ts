@@ -60,7 +60,7 @@ const ManagingCommitteeService = {
       const idToUse = managingComiteeId ?? 0;
 
       formData.append("ManagingComiteeId", idToUse.toString());
-      formData.append("Image", file); // change key if backend expects different name
+      formData.append("Image", file); 
 
       const token = AuthService.getToken();
       if (!token) {

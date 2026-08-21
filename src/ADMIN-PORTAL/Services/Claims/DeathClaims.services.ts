@@ -3,7 +3,6 @@ import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ApproveDeathClaimParams, DeathClaim } from "../../Types/Claims/DeathClaims.type";
 
-
 const DeathClaimService = {
   async getAllDeathClaims(): Promise<DeathClaim[]> {
     const response = await HttpService.callApi<CustomResponse<DeathClaim[]>>(

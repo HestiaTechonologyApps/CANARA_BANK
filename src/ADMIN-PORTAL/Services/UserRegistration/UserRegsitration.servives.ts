@@ -3,7 +3,6 @@ import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { UserRegistrationDetail, UserRegistrationListItem } from "../../Types/UserRegistration/UserRegistration.types";
 
-
 const UserRegistrationService = {
   async getPending(): Promise<UserRegistrationListItem[]> {
     const response = await HttpService.callApi<CustomResponse<UserRegistrationListItem[]>>(

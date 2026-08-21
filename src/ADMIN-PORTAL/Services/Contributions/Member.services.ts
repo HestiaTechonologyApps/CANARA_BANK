@@ -1,8 +1,7 @@
-// src/Services/Contributions/Member.services.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import AuthService from "../../../Services/Auth.services";
 import HttpService from "../../../Services/Http.services";
-import { createPaginatedService } from "../../../Services/Pagination.services"; // ✅ Import helper
+import { createPaginatedService } from "../../../Services/Pagination.services"; 
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { Member } from "../../Types/Contributions/Member.types";
 

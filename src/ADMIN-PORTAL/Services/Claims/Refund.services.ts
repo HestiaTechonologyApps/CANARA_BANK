@@ -3,7 +3,6 @@ import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ApproveRefundContributionParams, RefundContribution } from "../../Types/Claims/Refund.types";
 
-
 const RefundContributionService = {
   async getAllRefundContributions(): Promise<RefundContribution[]> {
     const response = await HttpService.callApi<CustomResponse<RefundContribution[]>>(

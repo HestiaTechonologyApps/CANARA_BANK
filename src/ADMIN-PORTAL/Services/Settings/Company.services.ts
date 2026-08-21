@@ -1,5 +1,3 @@
-// src/services/Settings/Company.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import AuthService from "../../../Services/Auth.services";
 import HttpService from "../../../Services/Http.services";
@@ -120,7 +118,6 @@ const CompanyService = {
 
       
       if (typeof result === 'object') {
-        // Try different possible property names
         return result.value || 
                result.fileName || 
                result.filePath || 

@@ -5,14 +5,8 @@ import type { ExpenseTypePayload } from "../../../Types/Administration/ExpenseTy
 
 const ExpenseTypeCreate: React.FC = () => {
   const fields: Field[] = [
-    {
-      name: "name",
-      rules: { type: "text", label: "Name", required: true, maxLength: 100, colWidth: 6 },
-    },
-    {
-      name: "description",
-      rules: { type: "textarea", label: "Description", required: true, maxLength: 500, colWidth: 12 },
-    },
+    { name: "name", rules: { type: "text", label: "Name", required: true, maxLength: 100, colWidth: 6 }, },
+    { name: "description", rules: { type: "textarea", label: "Description", required: true, maxLength: 500, colWidth: 12 }, },
   ];
 
   const handleSubmit = async (formData: Record<string, any>) => {

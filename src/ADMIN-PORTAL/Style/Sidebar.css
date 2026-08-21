@@ -1,7 +1,3 @@
-/* ========================================
-   SIDEBAR RESPONSIVE STYLES
-   ======================================== */
-
 /* Sidebar Container - Desktop */
 .sidebar-container {
   width: 70px;
@@ -199,10 +195,6 @@
   color: #dc3545;
 }
 
-/* ========================================
-   BOTTOM NAVBAR (MOBILE) STYLES
-   ======================================== */
-
 .bottom-navbar {
   position: fixed;
   bottom: 0;
@@ -241,10 +233,6 @@
 .bottom-navbar-item.active .nav-label {
   color: #ffc107;
 }
-
-/* ========================================
-   NAVBAR RESPONSIVE STYLES
-   ======================================== */
 
 .admin-navbar {
   height: 60px;
@@ -344,10 +332,6 @@
 .navbar-chevron.rotated {
   transform: rotate(180deg);
 }
-
-/* ========================================
-   RESPONSIVE BREAKPOINTS
-   ======================================== */
 
 /* Extra Small Devices (Portrait Phones, less than 576px) */
 @media (max-width: 575.98px) {
@@ -498,10 +482,6 @@
   }
 }
 
-/* ========================================
-   ADDITIONAL RESPONSIVE UTILITIES
-   ======================================== */
-
 /* Hide sidebar on mobile */
 @media (max-width: 767.98px) {
   .d-md-flex {
@@ -523,10 +503,6 @@
     display: none !important;
   }
 }
-
-/* ========================================
-   ORIENTATION SPECIFIC STYLES
-   ======================================== */
 
 /* Portrait Mode */
 @media (orientation: portrait) and (max-width: 767.98px) {
@@ -575,10 +551,6 @@
   }
 }
 
-/* ========================================
-   TOUCH DEVICE OPTIMIZATION
-   ======================================== */
-
 @media (hover: none) and (pointer: coarse) {
   /* Increase touch targets for mobile */
   .sidebar-nav-item,
@@ -602,10 +574,6 @@
     background-color: transparent;
   }
 }
-
-/* ========================================
-   ACCESSIBILITY ENHANCEMENTS
-   ======================================== */
 
 /* Focus styles for keyboard navigation */
 .sidebar-nav-item:focus,
@@ -631,10 +599,6 @@
   }
 }
 
-/* ========================================
-   PRINT STYLES
-   ======================================== */
-
 @media print {
   .sidebar-container,
   .bottom-navbar,
@@ -646,10 +610,6 @@
     margin-left: 0 !important;
   }
 }
-
-/* ========================================
-   HIGH CONTRAST MODE
-   ======================================== */
 
 @media (prefers-contrast: high) {
   .sidebar-container {
@@ -666,18 +626,10 @@
   }
 }
 
-/* ========================================
-   DARK MODE SUPPORT (IF NEEDED)
-   ======================================== */
-
 @media (prefers-color-scheme: dark) {
   /* Add dark mode styles if needed in the future */
   /* Currently the sidebar has a dark theme by default */
 }
-
-/* ========================================
-   CUSTOM UTILITIES
-   ======================================== */
 
 /* Smooth scrolling for sidebar */
 .admin-sidebar-scroll {
@@ -710,10 +662,6 @@
   transition: transform 0.3s ease;
 }
 
-/* ========================================
-   Z-INDEX MANAGEMENT
-   ======================================== */
-
 .sidebar-container {
   z-index: 1000;
 }
@@ -731,10 +679,6 @@
 .modal {
   z-index: 1050;
 }
-
-/* ========================================
-   PERFORMANCE OPTIMIZATIONS
-   ======================================== */
 
 /* Use GPU acceleration for animations */
 .sidebar-container,

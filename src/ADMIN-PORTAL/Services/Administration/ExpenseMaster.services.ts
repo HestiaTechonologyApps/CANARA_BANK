@@ -1,14 +1,10 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type {
-  ExpenseMaster,
-  ExpenseMasterPayload,
-  ExpenseMasterPagedParams,
+import type { ExpenseMaster, ExpenseMasterPayload, ExpenseMasterPagedParams,
 } from "../../Types/Administration/ExpenseMaster.types";
 
 const ExpenseMasterService = {
-  // GET /api/ExpenseMaster
   async getAll(): Promise<ExpenseMaster[]> {
     const response = await HttpService.callApi<CustomResponse<ExpenseMaster[]>>(
       API_ENDPOINTS.EXPENSE_MASTER.GET_ALL,
@@ -17,7 +13,6 @@ const ExpenseMasterService = {
     return response.value;
   },
 
-  // GET /api/ExpenseMaster/{id}
   async getById(id: number): Promise<ExpenseMaster> {
     const response = await HttpService.callApi<CustomResponse<ExpenseMaster>>(
       API_ENDPOINTS.EXPENSE_MASTER.GET_BY_ID(id),
@@ -26,7 +21,6 @@ const ExpenseMasterService = {
     return response.value;
   },
 
-  // POST /api/ExpenseMaster
   async create(data: ExpenseMasterPayload): Promise<ExpenseMaster> {
     const response = await HttpService.callApi<CustomResponse<ExpenseMaster>>(
       API_ENDPOINTS.EXPENSE_MASTER.CREATE,
@@ -36,7 +30,6 @@ const ExpenseMasterService = {
     return response.value;
   },
 
-  // PUT /api/ExpenseMaster/{id}
   async update(id: number, data: ExpenseMasterPayload): Promise<ExpenseMaster> {
     const response = await HttpService.callApi<CustomResponse<ExpenseMaster>>(
       API_ENDPOINTS.EXPENSE_MASTER.UPDATE(id),
@@ -46,7 +39,6 @@ const ExpenseMasterService = {
     return response.value;
   },
 
-  // DELETE /api/ExpenseMaster/{id}
   async delete(id: number): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.EXPENSE_MASTER.DELETE(id),
@@ -54,7 +46,6 @@ const ExpenseMasterService = {
     );
   },
 
-  // GET /api/ExpenseMaster/paged
   async getPaged(
     params: ExpenseMasterPagedParams
   ): Promise<{ data: ExpenseMaster[]; total: number }> {
