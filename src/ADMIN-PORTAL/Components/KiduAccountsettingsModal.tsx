@@ -37,7 +37,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-  // 🔹 image upload refs & state
+  //  image upload refs & state
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
