@@ -694,9 +694,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                   onReset={() => {
                     setResetKey(prev => prev + 1);
 
-                    // Image preview/selectedFile live outside formData, so
-                    // KiduReset's setFormData(initialValues) never clears
-                    // them — reset them here explicitly.
                     if (typeof previewUrl === "string" && previewUrl.startsWith("blob:")) {
                       URL.revokeObjectURL(previewUrl);
                     }

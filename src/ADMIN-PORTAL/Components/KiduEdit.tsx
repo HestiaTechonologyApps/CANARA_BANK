@@ -125,38 +125,10 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const navigate = useNavigate();
   const params = useParams();
   const recordId = params[paramName];
-  // const regularFields = fields.filter(f => f.rules.type !== "toggle");
-  // const toggleFields = fields.filter(f => f.rules.type === "toggle");
-  // const initialValues: Record<string, any> = {};
-  // const initialErrors: Record<string, string> = {};
 
-  // fields.forEach(f => {
-  //   if (f.rules.type === "rowbreak") return;
-
-  //   if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-  //     initialValues[f.name] = false;
-  //   } else if (f.rules.type === "radio" && options[f.name]?.length) {
-  //     const firstOption = options[f.name][0];
-  //     initialValues[f.name] = typeof firstOption === "object" ? firstOption.value : firstOption;
-  //   } else {
-  //     initialValues[f.name] = "";
-  //   }
-  //   initialErrors[f.name] = "";
-  // });
-
-  // if (imageConfig) {
-  //   initialValues[imageConfig.fieldName] = "";
-  // }
-
-  // const [formData, setFormData] = useState<Record<string, any>>(initialValues);
-  // const [initialData, setInitialData] = useState<Record<string, any>>(initialValues);
-  // const [errors, setErrors] = useState<Record<string, string>>(initialErrors);
   const regularFields = fields.filter(f => f.rules.type !== "toggle");
   const toggleFields = fields.filter(f => f.rules.type === "toggle");
 
-  // Computed once via useState's lazy initializer instead of on every
-  // render — this loop only needs to run on mount since its result is
-  // only ever consumed as the initial value below.
   const buildInitialState = () => {
     const values: Record<string, any> = {};
     const errs: Record<string, string> = {};
@@ -255,12 +227,6 @@ console.log("RAW DATE VALUES:", {
             const dateValue = data[f.name];
             if (dateValue) {
               formattedData[f.name] = String(dateValue).split('T')[0];
-    //           const date = new Date(dateValue);
-    //            const year = date.getUTCFullYear();
-    // const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    // const day = String(date.getUTCDate()).padStart(2, "0");
-    // formattedData[f.name] = `${year}-${month}-${day}`;
-    //           // formattedData[f.name] = date.toISOString().split('T')[0];
             } else {
               formattedData[f.name] = "";
             }
@@ -466,23 +432,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         delete submitData.auditLogs;
       }
 
-      // const updateResult = await onUpdate(recordId!, submitData);
-
-      // let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
-
-      // fields.forEach(f => {
-      //   if (f.rules.type === "popup" && popupHandlers[f.name]?.actualValue !== undefined) {
-      //     updatedData = { ...updatedData, [f.name]: popupHandlers[f.name].actualValue };
-      //   }
-      // });
-
-      // if (imageConfig && selectedFile) {
-      //   updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
-      // }
-
-      // setInitialData(updatedData);
-      // setFormData(updatedData);
-      // setSelectedFile(null);
       const updateResult = await onUpdate(recordId!, submitData);
 
       let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
@@ -497,8 +446,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
       }
 
-      // NEW — record update succeeded, now actually send any staged
-      // attachments, same order as Create's AttachmentsStaging.uploadAll()
       if (attachmentConfig && attachmentsRef.current?.hasPendingFiles()) {
         const attachmentRecordId = updatedData[attachmentConfig.recordIdField] ?? recordId;
         await attachmentsRef.current.uploadPendingFiles(
@@ -603,26 +550,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     const fieldPlaceholder = placeholder || `Enter ${rules.label.toLowerCase()}`;
 
     switch (type) {
-      // case "popup": {
-      //   const popup = popupHandlers[name];
-      //   return (
-      //     <InputGroup>
-      //       <Form.Control
-      //         //size="sm"
-      //         type="text"
-      //         value={popup?.value || ""}
-      //         placeholder={`Select ${rules.label}`}
-      //         readOnly
-      //         isInvalid={!!errors[name]}
-      //         disabled={rules.disabled}
-      //         // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
-      //             style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}/>
-      //       <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
-      //         <BsSearch />
-      //       </Button>
-      //     </InputGroup>
-      //   );
-      // }
       case "popup": {
         const popup = popupHandlers[name];
         return (
@@ -689,7 +616,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
               style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           >
             <option value="">Select {rules.label}</option>
@@ -788,7 +714,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
             disabled={rules.disabled}
-            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
               style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           />
         );
@@ -873,7 +798,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
           <Card.Body style={{ padding: "1.5rem" }}>
             <Form onSubmit={handleSubmit}>
               <Row className="mb-4">
-                {/* ✅ Image Upload Section - Same as KiduCreate */}
+                {/* Image Upload Section - Same as KiduCreate */}
                 {imageConfig && (
                   <Col xs={12}>
                     <div className="card mb-4">
@@ -982,16 +907,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
               {children}
 
-              {/* {attachmentConfig && formData[attachmentConfig.recordIdField] && (
-                <Row className="mb-3">
-                  <Col xs={12}>
-                    <Attachments
-                      tableName={attachmentConfig.tableName}
-                      recordId={formData[attachmentConfig.recordIdField]}
-                    />
-                  </Col>
-                </Row>
-              )} */}
               {attachmentConfig && formData[attachmentConfig.recordIdField] && (
                 <Row className="mb-3">
                   <Col xs={12}>
@@ -1007,24 +922,12 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               )}
 
               <div className="d-flex justify-content-end gap-2 mt-4 me-2">
-                {/* {showResetButton && (
-                  <KiduReset
-                    initialValues={initialData}
-                    setFormData={setFormData}
-                    setErrors={setErrors}
-                    onReset={onReset}
-                  />
-                )} */}
                 {showResetButton && (
                   <KiduReset
                     initialValues={initialData}
                     setFormData={setFormData}
                     setErrors={setErrors}
                     onReset={() => {
-                      // Image preview/selectedFile live outside formData, so
-                      // KiduReset's setFormData(initialData) never clears
-                      // them — reset them here explicitly, back to the
-                      // originally-fetched image rather than the default.
                       if (previewUrl && previewUrl.startsWith("blob:")) {
                         URL.revokeObjectURL(previewUrl);
                       }

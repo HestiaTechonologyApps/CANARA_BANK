@@ -226,35 +226,6 @@ const KiduView: React.FC<KiduViewProps> = ({
           </div>
 
           <div className="d-flex gap-2">
-            {/* {showEditButton && editRoute && (
-              <Button
-                className="d-flex align-items-center gap-2"
-                style={{
-                  backgroundColor: themeColor,
-                  border: "none",
-                  fontWeight: 500,
-                }}
-                onClick={handleEdit}
-              >
-                <FaEdit /> Edit
-              </Button>
-            )} */}
-            {/* {showEditButton && editRoute && (
-              <Button
-                className="d-flex align-items-center gap-2"
-                style={{
-                  backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
-                  border: "none",
-                  fontWeight: 500,
-                  cursor: isEditDisabled ? "not-allowed" : "pointer",
-                }}
-                onClick={handleEdit}
-                disabled={isEditDisabled}
-                title={isEditDisabled ? disabledEditTooltip : undefined}
-              >
-                <FaEdit /> Edit
-              </Button>
-            )} */}
             {showEditButton && editRoute && (
               <span title={isEditDisabled ? disabledEditTooltip : undefined}>
                 <Button
@@ -274,29 +245,6 @@ const KiduView: React.FC<KiduViewProps> = ({
                 </Button>
               </span>
             )}
-
-            {/* {showDeleteButton && onDelete && (
-              <Button
-                variant="danger"
-                className="d-flex align-items-center gap-2"
-                style={{ fontWeight: 500 }}
-                onClick={() => setShowConfirm(true)}
-              >
-                <FaTrash size={12} /> Delete
-              </Button>
-            )} */}
-            {/* {showDeleteButton && onDelete && (
-              <Button
-                variant={isDeleteDisabled ? "secondary" : "danger"}
-                className="d-flex align-items-center gap-2"
-                style={{ fontWeight: 500, cursor: isDeleteDisabled ? "not-allowed" : "pointer" }}
-                onClick={() => setShowConfirm(true)}
-                disabled={isDeleteDisabled}
-                title={isDeleteDisabled ? disabledDeleteTooltip : undefined}
-              >
-                <FaTrash size={12} /> Delete
-              </Button>
-            )} */}
             {showDeleteButton && onDelete && (
               <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
                 <Button
