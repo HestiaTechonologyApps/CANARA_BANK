@@ -13,7 +13,6 @@ const ExpenseMasterList: React.FC = () => {
     { key: "isApproved", label: "Approved", enableSorting: true, type: "checkbox" as const },
   ];
 
-
   const paginatedFetchService = useCallback(
     async (params: {
       pageNumber: number;

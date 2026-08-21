@@ -50,8 +50,6 @@ const ExpenseMasterEdit: React.FC = () => {
 
   const handleFetch = async (id: string) => {
     const res = await ExpenseMasterService.getById(Number(id));
-    // KiduEdit expects a CustomResponse-shaped object with isSucess/value —
-    // getById already unwraps to the raw ExpenseMaster, so re-wrap it here.
     const wrapped = { isSucess: true, value: res } as any;
 
     if (res) {

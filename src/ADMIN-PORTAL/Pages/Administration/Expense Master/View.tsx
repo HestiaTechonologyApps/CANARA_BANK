@@ -7,27 +7,16 @@ const ExpenseMasterView: React.FC = () => {
   const fields: ViewField[] = [
     { key: "expenseTypeName", label: "Expense Type" },
     { key: "expenseDate", label: "Expense Date", isDate: true },
-    {
-      key: "amount",
-      label: "Amount",
-      formatter: (value) => `₹${Number(value).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`,
-    },
+    { key: "amount", label: "Amount", formatter: (value) => `₹${Number(value).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`,},
     { key: "paidTo", label: "Paid To" },
     { key: "referenceNo", label: "Reference No" },
     { key: "paymentMode", label: "Payment Mode" },
     { key: "description", label: "Description" },
-    {
-      key: "isApproved",
-      label: "Approval Status",
-      formatter: (value) => (value ? "Approved" : "Pending"),
-    },
+    { key: "isApproved", label: "Approval Status", formatter: (value) => (value ? "Approved" : "Pending"),},
   ];
 
   const handleFetch = async (id: string) => {
     const res = await ExpenseMasterService.getById(Number(id));
-    // KiduView expects a CustomResponse-shaped object with isSucess/value —
-    // getById already unwraps to the raw ExpenseMaster, so re-wrap it here
-    // (same adapter pattern used in ExpenseMasterEdit's handleFetch).
     return { isSucess: true, value: res } as any;
   };
 

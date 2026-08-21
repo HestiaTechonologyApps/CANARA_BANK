@@ -8,7 +8,6 @@ import ExpenseTypePopup from "../Expense Type/ExpenseTypePopup";
 import type { AttachmentsStagingHandle } from "../../../../Components/KiduCreateAttachment";
 import AttachmentsStaging from "../../../../Components/KiduCreateAttachment";
 
-
 const paymentModeOptions = [
   { value: "Cash", label: "Cash" },
   { value: "Cheque", label: "Cheque" },
@@ -67,8 +66,6 @@ const ExpenseMasterCreate: React.FC = () => {
 
     const created = await ExpenseMasterService.create(payload);
 
-    // Record now has a real ID — send any staged attachments,
-    // same flow as AccountDirectEntryCreate.handleSubmit
     if (attachmentsRef.current?.hasFiles() && created?.expenseMasterId) {
       await attachmentsRef.current.uploadAll(
         "ExpenseMaster",
