@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import Swal from "sweetalert2";
+//import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+//import Swal from "sweetalert2";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import DirectPaymentService from "../../../Services/Contributions/Directpayment.services";
@@ -10,19 +10,16 @@ import type { Member } from "../../../Types/Contributions/Member.types";
 import MemberPopup from "../Member/MemberPopup";
 import AuthService from "../../../../Services/Auth.services";
 
-const THEME_COLOR = "#1B3763";
+//const THEME_COLOR = "#1B3763";
 
 const DirectPaymentEdit: React.FC = () => {
-  const { directPaymentId } = useParams();
+  const navigate = useNavigate();
+ // const { directPaymentId } = useParams();
 
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
   const [initialMember, setInitialMember] = useState<Member | null>(null);
-
-  const [isApproving, setIsApproving] = useState(false);
-  const [isRejecting, setIsRejecting] = useState(false);
-  const [isApproved, setIsApproved] = useState<boolean>(false);
 
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
@@ -45,7 +42,6 @@ const handleFetch = async (id: string) => {
 
     setSelectedMember(member);
     setInitialMember(member);
-    setIsApproved(payment.isApproved);
   }
 
   return {
@@ -90,84 +86,18 @@ const getCurrentUserId = (): number => {
   return user.userId;
 };
 
-const handleApprove = async () => {
-  if (!directPaymentId) return;
-
-  const result = await Swal.fire({
-    title: "Approve Payment?",
-    text: "Are you sure you want to approve this payment?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: THEME_COLOR,
-    confirmButtonText: "Yes, Approve",
-  });
-
-  if (!result.isConfirmed) return;
-
-  setIsApproving(true);
-  try {
-    const currentUserId = getCurrentUserId();
-    await DirectPaymentService.approveDirectPayment(
-      Number(directPaymentId),
-      { approve: true, currentUserId }
-    );
-    setIsApproved(true);
-    await Swal.fire({
-      icon: "success",
-      title: "Approved!",
-      text: "Payment has been approved successfully.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } catch (err: any) {
-    await Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: err.message || "Failed to approve payment.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } finally {
-    setIsApproving(false);
-  }
+// KiduEdit now owns the confirm dialog + success/error alerts + loading
+// state for approval — these just do the actual service call.
+const handleApprove = async (id: string) => {
+  const currentUserId = getCurrentUserId();
+  await DirectPaymentService.approveDirectPayment(Number(id), { approve: true, currentUserId });
+  navigate("/dashboard/contributions/directpayment-list");
 };
 
-const handleReject = async () => {
-  if (!directPaymentId) return;
-
-  const result = await Swal.fire({
-    title: "Reject Payment?",
-    text: "Are you sure you want to reject this payment?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#dc3545",
-    confirmButtonText: "Yes, Reject",
-  });
-
-  if (!result.isConfirmed) return;
-
-  setIsRejecting(true);
-  try {
-    const currentUserId = getCurrentUserId();
-    await DirectPaymentService.approveDirectPayment(
-      Number(directPaymentId),
-      { approve: false, currentUserId }
-    );
-    setIsApproved(true);
-    await Swal.fire({
-      icon: "success",
-      title: "Rejected!",
-      text: "Payment has been rejected successfully.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } catch (err: any) {
-    await Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: err.message || "Failed to reject payment.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } finally {
-    setIsRejecting(false);
-  }
+const handleReject = async (id: string) => {
+  const currentUserId = getCurrentUserId();
+  await DirectPaymentService.approveDirectPayment(Number(id), { approve: false, currentUserId });
+  navigate("/dashboard/contributions/directpayment-list");
 };
 
   const popupHandlers = {
@@ -191,28 +121,6 @@ const handleReject = async () => {
   ]
  return (
     <>
-      <div className="d-flex justify-content-end gap-2 px-3 pt-3">
-        <Button
-          onClick={handleApprove}
-          disabled={isApproving || isRejecting || isApproved}
-          style={{
-            backgroundColor: isApproved ? "#6c757d" : THEME_COLOR,
-            border: "none",
-            cursor: isApproved ? "not-allowed" : "pointer",
-          }}
-        >
-          {isApproving ? "Approving..." : "Approve"}
-        </Button>
-        <Button
-          onClick={handleReject}
-          disabled={isApproving || isRejecting || isApproved}
-          variant={isApproved ? "secondary" : "danger"}
-          style={{ cursor: isApproved ? "not-allowed" : "pointer" }}
-        >
-          {isRejecting ? "Rejecting..." : "Reject"}
-        </Button>
-      </div>
-
       <KiduEdit
         title="Edit Direct Payment"
         fields={fields}
@@ -229,6 +137,13 @@ const handleReject = async () => {
         popupHandlers={popupHandlers}
         options={{ paymentMode: paymentModeOptions, }}
         onReset={handleReset}
+        approvalConfig={{
+          onApprove: handleApprove,
+          onReject: handleReject,
+          confirmApproveText: "Are you sure you want to approve this payment?",
+          confirmRejectText: "Are you sure you want to reject this payment?",
+          showWhen: (formData) => !formData.isApproved,
+        }}
       />
       <MemberPopup
         show={showMemberPopup}

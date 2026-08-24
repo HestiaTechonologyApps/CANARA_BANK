@@ -18,7 +18,6 @@ export interface User {
   auditLogs?: AuditTrails[];
 }
 
-
 export interface ChangePasswordRequest {
   userId: number;
   oldPassword: string;

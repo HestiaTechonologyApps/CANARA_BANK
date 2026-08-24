@@ -1,4 +1,3 @@
-// src/Services/ContributionMaster.services.ts
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -14,25 +13,6 @@ import type { ContributionDetail,
 
 export default class MonthlyContributionMasterService {
 
-  // ── Upload and Save ──────────────────────────────────────────────
-  // static async uploadAndSave(
-  //   payload: ContributionUploadPayload
-  // ): Promise<ContributionUploadResponse> {
-  //   const formData = new FormData();
-  //   formData.append("MonthCode",        String(payload.MonthCode));
-  //   formData.append("YearOf",           String(payload.YearOf));
-  //   formData.append("ContributionFile", payload.ContributionFile);
-
-  //   const response = await HttpService.callApi<CustomResponse<ContributionUploadResponse>>(
-  //     API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.CREATE,
-  //     "POST",
-  //     formData,
-  //     false,
-  //     true   // isFormData
-  //   );
-
-  //   return response.value;
-  // }
   static async uploadAndSave(
   payload: ContributionUploadPayload
 ): Promise<ContributionUploadResponse> {
@@ -49,7 +29,6 @@ export default class MonthlyContributionMasterService {
     true
   );
 
-  // ── Throw if API reports failure so KiduCreate shows error ──
   if (!response.isSucess && !response.isSuccess) {
     throw new Error(response.customMessage || response.error || "Upload failed");
   }
@@ -57,7 +36,6 @@ export default class MonthlyContributionMasterService {
   return response.value;
 }
 
-  // ── Get All Masters ──────────────────────────────────────────────
   static async getAll(): Promise<MonthlyContributionMaster[]> {
     const response = await HttpService.callApi<CustomResponse<MonthlyContributionMaster[]>>(
       API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_ALL,
@@ -68,7 +46,6 @@ export default class MonthlyContributionMasterService {
     return Array.isArray(result) ? result : [];
   }
 
-  // ── Get Details by Master ID (paginated) ─────────────────────────
   static async getById(
     params: ContributionDetailParams
   ): Promise<ContributionDetailPaginatedResponse> {
@@ -86,7 +63,6 @@ export default class MonthlyContributionMasterService {
       SortDescending,
     } = params;
 
-    // ── Build query string ──
     const query = new URLSearchParams();
     query.append("PageNumber",    String(PageNumber));
     query.append("PageSize",      String(PageSize));
@@ -119,7 +95,6 @@ export default class MonthlyContributionMasterService {
     };
   }
 
-  // ── Get All Details (no pagination) ─────────────────────────────
   static async getAllDetails(id: number): Promise<ContributionDetail[]> {
     const result = await MonthlyContributionMasterService.getById({
       id,
@@ -130,7 +105,6 @@ export default class MonthlyContributionMasterService {
     return result.data;
   }
 
-  // ── Get Report by Master ID ──────────────────────────────────────
 static async getReport(
   params: ContributionReportParams
 ): Promise<ContributionDetailPaginatedResponse> {
@@ -166,26 +140,6 @@ static async getReport(
   };
 }
 
-// ── Update Contribution ──────────────────────────────────────────
-
-// static async update(
-//   payload: ContributionUpdatePayload
-// ): Promise<ContributionUpdateResponse> {
-//   const formData = new FormData();
-//   formData.append("MonthCode",        String(payload.MonthCode));
-//   formData.append("YearOf",           String(payload.YearOf));
-//   formData.append("ContributionFile", payload.ContributionFile);
-
-//   const response = await HttpService.callApi<CustomResponse<ContributionUpdateResponse>>(
-//     API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.UPDATE(payload.id),
-//     "PUT",
-//     formData,
-//     false,
-//     true
-//   );
-
-//   return response.value;  
-// }
 static async update(
   payload: ContributionUpdatePayload
 ): Promise<ContributionUpdateResponse> {
@@ -202,7 +156,6 @@ static async update(
     true
   );
 
-  // ── Throw if API reports failure ──
   if (!response.isSucess && !response.isSuccess) {
     throw new Error(response.customMessage || response.error || "Update failed");
   }

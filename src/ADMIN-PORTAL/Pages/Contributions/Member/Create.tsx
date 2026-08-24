@@ -39,6 +39,7 @@ const MemberCreate: React.FC = () => {
 
   const fields: Field[] = [
     { name: "staffNo", rules: { type: "number", label: "Staff No", required: true, colWidth: 4 } },
+    { name: "oldStaffNo", rules: { type: "number", label: "Old Staff No", colWidth: 4 } },
     { name: "name", rules: { type: "text", label: "Name", required: true, minLength: 2, maxLength: 150, colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
     { name: "genderId", rules: { type: "select", label: "Gender", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
@@ -64,6 +65,7 @@ const MemberCreate: React.FC = () => {
 
     const payload = {
       staffNo: Number(formData.staffNo),
+      oldStaffNo: formData.oldStaffNo ? Number(formData.oldStaffNo) : undefined,
       name: formData.name.trim(),
       genderId: Number(formData.genderId),
       designationId: selectedDesignation.designationId,

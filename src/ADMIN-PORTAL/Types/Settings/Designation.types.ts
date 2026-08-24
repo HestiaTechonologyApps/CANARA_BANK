@@ -1,4 +1,3 @@
-// src/Types/Settings/Designation.ts
 import type { AuditTrails } from "../../../Types/AuditLog.types";
 
 export interface Designation {
@@ -8,16 +7,12 @@ export interface Designation {
   auditLogs?: AuditTrails[];
 }
 
-
 export interface DesignationPaginationParams {
-  
   pageNumber: number;
   pageSize: number;
   searchTerm?: string;
   sortBy?: string;
   sortDescending?: boolean;
-  
-  
   designationId?: number;
   name?: string;
   description?: string;

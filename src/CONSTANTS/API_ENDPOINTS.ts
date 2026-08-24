@@ -266,6 +266,22 @@ REFUND_CONTRIBUTION: {
     UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
   },
+  EXPENSE_MASTER:{
+   GET_ALL:`${API_BASE_URL}/ExpenseMaster`,
+   GET_BY_ID:(id:number)=>`${API_BASE_URL}/ExpenseMaster/${id}`,
+   CREATE:`${API_BASE_URL}/ExpenseMaster`,
+   UPDATE:(id:number)=>`${API_BASE_URL}/ExpenseMaster/${id}`,
+   DELETE:(id:number)=>`${API_BASE_URL}/ExpenseMaster/${id}`,
+   GET_ALL_PAGINATED:`${API_BASE_URL}/ExpenseMaster/paged`,
+   UPDATE_BY_APPROVE: (id: number) => `${API_BASE_URL}/ExpenseMaster/approve/${id}`,
+  },
+  EXPENSE_TYPE:{
+   GET_ALL:`${API_BASE_URL}/ExpenseType`, 
+   GET_BY_ID:(id:number)=>`${API_BASE_URL}/ExpenseType/${id}`,
+   CREATE:`${API_BASE_URL}/ExpenseType`,
+   UPDATE:(id:number)=>`${API_BASE_URL}/ExpenseType/${id}`,
+   DELETE:(id:number)=>`${API_BASE_URL}/ExpenseType/${id}`,
+  },
   DASHBOARD:{
    GET_ALL:`${API_BASE_URL}/Dashboard`,
    GET_OVERVIEW:`${API_BASE_URL}/Dashboard/overview`,

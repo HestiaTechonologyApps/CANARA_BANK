@@ -1,10 +1,8 @@
-// types/memberAccountsDetails.types.ts
-
 export interface MemberAccountDetail {
   accountId: number;
   circleId: number;
   branchId: number;
-  memeberId: number; // Note: typo in API response (memeber instead of member)
+  memeberId: number; 
   monthCode: number;
   yearOf: number;
   amount: number;

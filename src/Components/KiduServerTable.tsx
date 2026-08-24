@@ -521,12 +521,85 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
         </Col>
       </Row>
 
-      {totalPages > 1 && (
+      {/* {totalPages > 1 && (
         <div className="d-flex justify-content-between align-items-center mt-3">
           <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "15px" }}>
             Page {currentPage} of {totalPages} (Total: {total} records)
           </span>
-          <Pagination className="m-0" size="sm">
+          <Pagination className="m-0" size="sm"> */}
+                {totalPages > 1 && (
+        <div className="d-flex justify-content-between align-items-center mt-3">
+          <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "15px" }}>
+            Page {currentPage} of {totalPages} (Total: {total} records)
+          </span>
+          {/* <style>{`
+            .kidu-pagination .page-item.active .page-link {
+              background-color: #1B3763 !important;
+              border-color: #1B3763 !important;
+              color: #ffffff !important;
+            }
+            .kidu-pagination .page-item .page-link {
+              color: #1B3763;
+              border-color: #1B3763;
+            }
+            .kidu-pagination .page-item .page-link:hover {
+              background-color: #eef2f7;
+              color: #1B3763;
+            }
+            .kidu-pagination .page-item.disabled .page-link {
+              color: #a9b4c4;
+              border-color: #dbe1ea;
+            }
+          `}</style> */}
+                    <style>{`
+            .kidu-pagination {
+              gap: 6px;
+            }
+            .kidu-pagination .page-item {
+              margin: 0;
+            }
+            .kidu-pagination .page-item .page-link {
+              color: #1B3763;
+              border: 1.5px solid #e2e8f0;
+              border-radius: 8px !important;
+              background-color: #ffffff;
+              font-weight: 600;
+              font-family: 'Urbanist', sans-serif;
+              min-width: 34px;
+              text-align: center;
+              padding: 6px 10px;
+              box-shadow: 0 1px 2px rgba(15,42,85,0.04);
+              transition: all 0.15s ease;
+            }
+            .kidu-pagination .page-item .page-link:hover {
+              background-color: #eef2f7;
+              border-color: #1B3763;
+              color: #1B3763;
+              transform: translateY(-1px);
+              box-shadow: 0 3px 8px rgba(15,42,85,0.12);
+            }
+            .kidu-pagination .page-item.active .page-link {
+              background-color: #1B3763 !important;
+              border-color: #1B3763 !important;
+              color: #ffffff !important;
+              box-shadow: 0 3px 10px rgba(27,55,99,0.28);
+            }
+            .kidu-pagination .page-item.active .page-link:hover {
+              transform: none;
+            }
+            .kidu-pagination .page-item.disabled .page-link {
+              color: #b7c0cf;
+              border-color: #edf1f6;
+              background-color: #f8fafc;
+              box-shadow: none;
+              cursor: not-allowed;
+            }
+            .kidu-pagination .page-item.disabled .page-link:hover {
+              transform: none;
+              box-shadow: none;
+            }
+          `}</style>
+          <Pagination className="m-0 kidu-pagination" size="sm">
             <Pagination.First disabled={currentPage === 1} onClick={() => handlePageChange(1)} />
             <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
@@ -535,10 +608,16 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
               else if (currentPage <= 3) pageNum = i + 1;
               else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
               else pageNum = currentPage - 2 + i;
-              return (
+              // return (
+              //   <Pagination.Item key={pageNum} active={pageNum === currentPage}
+              //     onClick={() => handlePageChange(pageNum)}
+              //     style={{ backgroundColor: pageNum === currentPage ? "#1B3763" : "transparent", borderColor: "#1B3763", color: pageNum === currentPage ? "white" : "#1B3763" }}>
+              //     {pageNum}
+              //   </Pagination.Item>
+              // );
+                            return (
                 <Pagination.Item key={pageNum} active={pageNum === currentPage}
-                  onClick={() => handlePageChange(pageNum)}
-                  style={{ backgroundColor: pageNum === currentPage ? "#1B3763" : "transparent", borderColor: "#1B3763", color: pageNum === currentPage ? "white" : "#1B3763" }}>
+                  onClick={() => handlePageChange(pageNum)}>
                   {pageNum}
                 </Pagination.Item>
               );

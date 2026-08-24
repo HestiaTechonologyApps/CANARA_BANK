@@ -58,7 +58,7 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
       />
 
       <Dropdown.Menu
-      ref={menuRef}
+        ref={menuRef}
         className="border-0"
         style={{
           minWidth: "240px",
@@ -76,7 +76,7 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
             padding: "16px",
           }}
         >
-           <button
+          <button
             onClick={() => onToggle(false)}
             aria-label="Close"
             className="d-flex align-items-center justify-content-center border-0"
@@ -96,7 +96,7 @@ const KiduNavbarDropdown: React.FC<KiduNavbarDropdownProps> = ({
           >
             <BsX size={16} />
           </button>
-          
+
           {avatarSrc ? (
             <img
               src={avatarSrc}

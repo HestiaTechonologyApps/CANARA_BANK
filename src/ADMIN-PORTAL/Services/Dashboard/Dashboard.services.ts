@@ -1,5 +1,3 @@
-// src/ADMIN-PORTAL/Services/Dashboard/Dashboard.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";

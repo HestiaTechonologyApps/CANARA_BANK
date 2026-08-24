@@ -52,26 +52,6 @@ const MonthlyContributionService = {
     );
   },
 
-  
-  // async uploadFile(file: File, monthlyContributionId: number): Promise<string> {
-  //   const formData = new FormData();
-  //   formData.append("MonthlyContributionId", monthlyContributionId.toString());
-  //   formData.append("File", file);
-
-  //   const response = await fetch(API_ENDPOINTS.MONTHLY_CONTRIBUTION.UPLOAD_FILE, {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-
-  //   if (!response.ok) {
-  //     const err = await response.text();
-  //     throw new Error(err || "File upload failed");
-  //   }
-
-  //   const result = await response.json();
-  //   return result.value || result.filePath || "";
-  // },
-
   async uploadFile(
     file: File,
     monthCode: number,
@@ -151,7 +131,5 @@ const MonthlyContributionService = {
     }
   },
 };
-
-
 
 export default MonthlyContributionService;

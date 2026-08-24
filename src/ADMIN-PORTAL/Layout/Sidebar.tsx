@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { BsGridFill, BsGearFill, BsCashStack, BsNewspaper, BsBarChart, BsChevronDown, BsBag, BsTicketPerforated } from "react-icons/bs";
+import { BsGridFill, BsGearFill, BsCashStack, BsNewspaper, BsBarChart, BsChevronDown, BsBag, BsTicketPerforated, BsBuildingFill } from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
@@ -54,6 +54,11 @@ const Sidebar: React.FC = () => {
     { label: "Managing Committee", path: "/dashboard/cms/manage-committe-list" },
     { label: "Public Page", path: "/dashboard/cms/publicpage-list" },
     { label: "Quotes", path: "/dashboard/cms/dayquote-list" }
+  ];
+
+  const AdministrationSubMenu = [
+    { label: "Expense Master", path: "/dashboard/administration/expensemaster-list" },
+    { label: "Expense Type", path: "/dashboard/administration/expensetype-list" },
   ];
 
   const navigate = useNavigate();
@@ -404,6 +409,49 @@ const Sidebar: React.FC = () => {
                 </>
               )}
             </NavLink>
+
+            {/* Administration Menu */}
+            <div>
+              <div
+                className={`d-flex align-items-center gap-2 w-100 ${hovered ? "ps-4 pe-3" : "justify-content-center"} rounded mt-2 sidebar-group-head`}
+                style={{ fontSize: "14px", textDecoration: "none", cursor: "pointer", padding: "8px 0" }}
+                onClick={() => handleMenuToggle('Administration')}
+              >
+                <BsBuildingFill className="text-white" style={{ fontSize: "20px", minWidth: "20px", opacity: 0.85 }} />
+                {hovered && (
+                  <>
+                    <span className="text-white fw-bold flex-grow-1">Administration</span>
+                    <BsChevronDown
+                      className="text-white"
+                      style={{
+                        fontSize: "13px",
+                        opacity: 0.7,
+                        transition: "transform 0.3s",
+                        transform: openMenu === 'cms' ? "rotate(180deg)" : "rotate(0deg)",
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+
+              <Collapse in={openMenu === 'Administration' && hovered}>
+                <div className="flex-column text-light mt-2">
+                  {AdministrationSubMenu.map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      end
+                      className={({ isActive }) =>
+                        `d-block p-2 ms-4 me-3 mb-1 rounded ${isActive ? "sidebar-sub-active" : "text-white"}`
+                      }
+                      style={{ fontSize: "13px", textDecoration: "none" }}
+                    >
+                      <span className="fw-bold">{sub.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              </Collapse>
+            </div>
 
             {/* Logout */}
             <p

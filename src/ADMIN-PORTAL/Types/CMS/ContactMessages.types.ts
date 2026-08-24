@@ -13,6 +13,5 @@ export interface ContactMessage {
   adminNotes?: string | null;
   repliedAt?: Date | string | null;
   ipAddress: string;
-
   auditLogs?: AuditTrails[];
 }

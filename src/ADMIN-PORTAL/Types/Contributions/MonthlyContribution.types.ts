@@ -1,5 +1,3 @@
-// MonthlyContribution Types
-
 export interface MonthlyContribution {
   monthlyContributionId?: number;
   fileName?: string;

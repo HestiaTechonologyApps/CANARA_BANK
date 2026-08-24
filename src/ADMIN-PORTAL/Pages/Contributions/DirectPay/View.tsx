@@ -42,6 +42,8 @@ const handleFetch = async (id: string) => {
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this Payment? This action cannot be undone."
+      disableEditWhen={(data) => data.isApproved === true || data.status === "Approved"}
+      disableDeleteWhen={(data) => data.isApproved === true || data.status === "Approved"}
     />
   );
 };

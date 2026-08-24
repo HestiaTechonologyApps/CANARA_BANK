@@ -3,7 +3,6 @@ import { Accordion, Table, Card, Spinner, Alert } from "react-bootstrap";
 import AuditLogService from "../Services/AuditLog.services";
 import type { AuditTrails } from "../Types/AuditLog.types";
  
- 
 interface AuditTrailsProps {
   tableName: string;
   recordId: string | number;

@@ -3,7 +3,6 @@ import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
 import type { ReportType } from "../../Types/Settings/ReportType.types";
 
-
 const ReportTypeService = {
   async getAllReportTypes(): Promise<ReportType[]> {
     const response = await HttpService.callApi<CustomResponse<ReportType[]>>(

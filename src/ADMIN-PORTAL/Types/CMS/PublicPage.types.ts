@@ -36,13 +36,11 @@ export interface PublicPage {
   homeSecondaryBtnRoute: string;
   homeHeroImageUrl: string;
   homeHeroImageAlt: string;
-
   homeFeatureHeading: string;
   homeFeatureLabel: string;
   homeFeatureTitle: string;
   homeFeatureSubTitle: string;
   homeFeatureItemsJson: string;
-
   homeAboutLabel: string;
   homeAboutTitle: string;
   homeAboutParagraph: string;
@@ -110,8 +108,8 @@ export interface PublicPage {
   committeeHeaderTitle: string;
   committeeHeaderSubTitle: string;
   committeeMembersJson: string;
-  managingcommitteheadertitle:string;//
-  managingcommitteheadersubtitle:string;//
+  managingcommitteheadertitle:string;
+  managingcommitteheadersubtitle:string;
 
 
   // Claims Page
@@ -184,7 +182,7 @@ export interface PublicPage {
   footerEmailValue: string;
   footerQuickLinksJson: string;
   footerOfficeHoursJson: string;
-  footerQuickHead :string;//
+  footerQuickHead :string;
   footerCopyrightText: string;
 
   // Privacy Page

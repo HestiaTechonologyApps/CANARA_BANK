@@ -1,5 +1,3 @@
-// ── Primitives ──────────────────────────────────────────
-
 export interface DashboardOverview {
   totalMembers: number;
   totalMembersGrowth: number;
@@ -55,8 +53,6 @@ export interface ContributionTrend {
   amount: number;
 }
 
-// ── Combined (GET_ALL response) ──────────────────────────
-
 export interface DashboardData {
   overview: DashboardOverview;
   monthlyContributionVsClaims: MonthlyContributionVsClaims[];
@@ -67,9 +63,6 @@ export interface DashboardData {
   monthlyFinancialComparison: MonthlyFinancialComparison[];
   contributionTrends: ContributionTrend[];
 }
-
-// ── Per-endpoint response wrappers ───────────────────────
-// Matches your API pattern: { value: T }
 
 export interface ApiResponse<T> {
   value: T;

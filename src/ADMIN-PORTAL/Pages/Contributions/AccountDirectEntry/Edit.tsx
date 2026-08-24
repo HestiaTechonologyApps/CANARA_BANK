@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useNavigate} from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Member } from "../../../Types/Contributions/Member.types";
@@ -22,7 +20,8 @@ import AuthService from "../../../../Services/Auth.services";
 const THEME_COLOR = "#1B3763";
 
 const AccountDirectEntryEdit: React.FC = () => {
-  const { accountsDirectEntryID } = useParams();
+  const navigate = useNavigate();
+ // const { accountsDirectEntryID } = useParams();
 
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
@@ -39,18 +38,13 @@ const AccountDirectEntryEdit: React.FC = () => {
   const [initialMonth, setInitialMonth] = useState<Month | null>(null);
   const [initialYearMaster, setInitialYearMaster] = useState<YearMaster | null>(null);
 
-  const [isApproving, setIsApproving] = useState(false);
-  const [isRejecting, setIsRejecting] = useState(false);
-
-  const [isApproved, setIsApproved] = useState<boolean>(false);
-
   const fields: Field[] = [
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "monthCode", rules: { type: "popup", label: "Month", required: true, colWidth: 4 } },
     { name: "yearOf", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "ddIba", rules: { type: "text", label: "DD / IBA", required: true, colWidth: 4 } },
-    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4,min: new Date().toISOString().split("T")[0], } },
+    { name: "ddIbaDate", rules: { type: "date", label: "DD / IBA Date", required: true, colWidth: 4, min: new Date().toISOString().split("T")[0] } },
     { name: "amt", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     { name: "status", rules: { type: "text", label: "Status", disabled: true, colWidth: 4 } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
@@ -64,8 +58,6 @@ const AccountDirectEntryEdit: React.FC = () => {
     const response = await AccountDirectEntryService.getAccountDirectEntryById(Number(id));
     const entry = response.value;
     if (!entry) return response;
-
-    setIsApproved(entry.isApproved);
 
     if (entry.memberId) {
       const member = (await MemberService.getMemberById(entry.memberId)).value;
@@ -141,84 +133,16 @@ const AccountDirectEntryEdit: React.FC = () => {
     return user.userId;
   };
 
-  const handleApprove = async () => {
-    if (!accountsDirectEntryID) return;
-
-    const result = await Swal.fire({
-      title: "Approve Entry?",
-      text: "Are you sure you want to approve this entry?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: THEME_COLOR,
-      confirmButtonText: "Yes, Approve",
-    });
-
-    if (!result.isConfirmed) return;
-
-    setIsApproving(true);
-    try {
-      const currentUserId = getCurrentUserId();
-      await AccountDirectEntryService.approveAccountDirectEntry(
-        Number(accountsDirectEntryID),
-        { approve: true, currentUserId }
-      );
-      setIsApproved(true);
-      await Swal.fire({
-        icon: "success",
-        title: "Approved!",
-        text: "Entry has been approved successfully.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } catch (err: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: err.message || "Failed to approve entry.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } finally {
-      setIsApproving(false);
-    }
+  const handleApprove = async (id: string) => {
+    const currentUserId = getCurrentUserId();
+    await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: true, currentUserId });
+    navigate("/dashboard/contributions/accountDirectEntry-list");
   };
 
-  const handleReject = async () => {
-    if (!accountsDirectEntryID) return;
-
-    const result = await Swal.fire({
-      title: "Reject Entry?",
-      text: "Are you sure you want to reject this entry?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#dc3545",
-      confirmButtonText: "Yes, Reject",
-    });
-
-    if (!result.isConfirmed) return;
-
-    setIsRejecting(true);
-    try {
-      const currentUserId = getCurrentUserId();
-      await AccountDirectEntryService.approveAccountDirectEntry(
-        Number(accountsDirectEntryID),
-        { approve: false, currentUserId }
-      );
-      setIsApproved(true);
-      await Swal.fire({
-        icon: "success",
-        title: "Rejected!",
-        text: "Entry has been rejected successfully.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } catch (err: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: err.message || "Failed to reject entry.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } finally {
-      setIsRejecting(false);
-    }
+  const handleReject = async (id: string) => {
+    const currentUserId = getCurrentUserId();
+    await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: false, currentUserId });
+    navigate("/dashboard/contributions/accountDirectEntry-list");
   };
 
   const popupHandlers = {
@@ -230,29 +154,6 @@ const AccountDirectEntryEdit: React.FC = () => {
 
   return (
     <>
-      {/* Approve / Reject buttons above KiduEdit */}
-      <div className="d-flex justify-content-end gap-2 px-3 pt-3">
-  <Button
-    onClick={handleApprove}
-    disabled={isApproving || isRejecting || isApproved} 
-    style={{
-      backgroundColor: isApproved ? "#6c757d" : THEME_COLOR, 
-      border: "none",
-      cursor: isApproved ? "not-allowed" : "pointer",
-    }}
-  >
-    {isApproving ? "Approving..." : "Approve"}
-  </Button>
-  <Button
-    onClick={handleReject}
-    disabled={isApproving || isRejecting || isApproved} 
-    variant={isApproved ? "secondary" : "danger"} 
-    style={{ cursor: isApproved ? "not-allowed" : "pointer" }}
-  >
-    {isRejecting ? "Rejecting..." : "Reject"}
-  </Button>
-</div>
-
       <KiduEdit
         title="Edit Account Direct Entry"
         fields={fields}
@@ -266,6 +167,13 @@ const AccountDirectEntryEdit: React.FC = () => {
         showResetButton
         attachmentConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
         onReset={handleReset}
+        approvalConfig={{
+          onApprove: handleApprove,
+          onReject: handleReject,
+          confirmApproveText: "Are you sure you want to approve this entry?",
+          confirmRejectText: "Are you sure you want to reject this entry?",
+          showWhen: (formData) => !formData.isApproved,
+        }}
       />
 
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />

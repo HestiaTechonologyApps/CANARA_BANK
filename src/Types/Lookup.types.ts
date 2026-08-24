@@ -1,6 +1,6 @@
 // src/Types/Common/Lookup.types.ts
 
-export type LookupEntityName = "member" | "branch";
+export type LookupEntityName = "member" | "branch" | "expensetype";
 
 export interface MemberLookupItem {
   memberId: number;
@@ -29,4 +29,11 @@ export interface LookupPagedParams {
 export interface LookupPagedResponse<T> {
   total: number;
   data: T[];
+}
+
+export interface ExpenseTypeLookupItem {
+  expenseTypeId: number;
+  name: string;
+  description: string;
+  isSelected: boolean;
 }

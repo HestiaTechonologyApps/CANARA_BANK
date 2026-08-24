@@ -21,6 +21,7 @@ const MONTH_NAMES = [
 interface MemberDetail {
   memberId?: number;
   staffNo?: string;
+  oldStaffNo?: number;
   name?: string;
   gender?: string;
   designationName?: string;
@@ -420,6 +421,7 @@ const MemberView: React.FC = () => {
           <InfoRow icon="bi-gender-ambiguous" label="Gender" value={member.gender} />
           <InfoRow icon="bi-calendar" label="Date of Birth" value={member.dobString} />
           <InfoRow icon="bi-hash" label="DP Code" value={member.dpCode} />
+          <InfoRow icon="bi-person-badge" label="Old Staff No" value={member.oldStaffNo} />
         </SectionCard>
 
         <SectionCard title="Employment Details" icon="bi-briefcase">

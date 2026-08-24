@@ -1,5 +1,3 @@
-// src/services/Settings/Designation.services.ts
-
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
@@ -17,7 +15,6 @@ const DesignationService = {
     );
     return response.value;
   },
-
   
   async getPagedDesignations(params: {
     pageNumber: number;

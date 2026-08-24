@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { Container, Image, Navbar } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import profile from "../Assets/Images/profile.jpg";
 import { useYear } from "./YearContext";
 import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
@@ -32,6 +32,9 @@ const NavbarComponent: React.FC = () => {
   const { selectedYear, setSelectedYear } = useYear();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isDashboardHome = location.pathname === "/dashboard";
 
   useEffect(() => {
     try {
@@ -108,9 +111,13 @@ const NavbarComponent: React.FC = () => {
 
           {/* Right */}
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+             {isDashboardHome && (
+              <>
             <KiduYearSelector startYear={2020} onYearSelect={handleYearSelect} defaultYear={selectedYear} />
 
             <div style={{ width: 1, height: 28, background: "#e2e8f0" }} />
+            </>
+             )}
 
             <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
               <Image

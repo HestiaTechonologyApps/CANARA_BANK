@@ -24,7 +24,7 @@ const ProgressBar: React.FC = () => {
             <div className="mb-3">
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
-                  <div 
+                  <div
                     className="rounded d-flex align-items-center justify-content-center"
                     style={{
                       width: "28px",
@@ -63,7 +63,7 @@ const ProgressBar: React.FC = () => {
             <div className="mb-3">
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
-                  <div 
+                  <div
                     className="rounded d-flex align-items-center justify-content-center"
                     style={{
                       width: "28px",
@@ -102,7 +102,7 @@ const ProgressBar: React.FC = () => {
             <div className="mb-3">
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
-                  <div 
+                  <div
                     className="rounded d-flex align-items-center justify-content-center"
                     style={{
                       width: "28px",
@@ -141,7 +141,7 @@ const ProgressBar: React.FC = () => {
             <div className="mb-2">
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
-                  <div 
+                  <div
                     className="rounded d-flex align-items-center justify-content-center"
                     style={{
                       width: "28px",
@@ -186,11 +186,11 @@ const ProgressBar: React.FC = () => {
             <Card.Title className="fw-bold fs-6 mb-4 head-font" style={{ color: PRIMARY_COLOR }}>
               Recent Activities
             </Card.Title>
-            
+
             <div className="d-flex flex-column gap-3">
               {/* Activity 1 */}
               <div className="d-flex align-items-start gap-3 pb-3 border-bottom">
-                <div 
+                <div
                   className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{
                     width: "40px",
@@ -217,7 +217,7 @@ const ProgressBar: React.FC = () => {
 
               {/* Activity 2 */}
               <div className="d-flex align-items-start gap-3 pb-3 border-bottom">
-                <div 
+                <div
                   className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{
                     width: "40px",
@@ -244,7 +244,7 @@ const ProgressBar: React.FC = () => {
 
               {/* Activity 3 */}
               <div className="d-flex align-items-start gap-3 pb-2">
-                <div 
+                <div
                   className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{
                     width: "40px",

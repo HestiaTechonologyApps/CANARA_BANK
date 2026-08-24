@@ -20,7 +20,6 @@ export interface ContributionMaster {
   yearOf:               number;
 }
 
-// ── Single parked detail item (from GET_PARKED items array) ──────────
 export interface ParkedDetailItem {
   contributionDetailId: number;
   contributionMasterId: number;
@@ -37,7 +36,6 @@ export interface ParkedDetailItem {
   parkReason:           string;
 }
  
-// ── Paginated response for GET_PARKED ────────────────────────────────
 export interface ParkedItemsResponse {
   masterId:    number;
   totalCount:  number;
@@ -47,21 +45,18 @@ export interface ParkedItemsResponse {
   items:       ParkedDetailItem[];
 }
  
-// ── Query params for GET_PARKED ──────────────────────────────────────
 export interface ParkedItemsParams {
   masterId:    number;
   pageNumber?: number;
   pageSize?:   number;
 }
 
-// ── Approve params ───────────────────────────────────────────────────
 export interface ApproveParams {
-  masterId:      number;   // path param (int64)
-  approve?:      boolean;  // query param
-  currentUserId?: number;  // query param (int32)
+  masterId:      number;   
+  approve?:      boolean;  
+  currentUserId?: number;  
 }
 
-// ── Approve response ─────────────────────────────────────────────────
 export interface ApproveResponse {
   message:       string;
   approvedCount: number;

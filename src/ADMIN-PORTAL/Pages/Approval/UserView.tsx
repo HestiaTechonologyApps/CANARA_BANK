@@ -2,10 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Badge, Button, Spinner } from "react-bootstrap";
-import {
-  ArrowLeft, CheckCircle2, XCircle, User as UserIcon, Mail, Phone,
-  MapPin, Building2, ShieldCheck, Hash, Clock, CalendarPlus,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, User as UserIcon, Mail, Phone,
+  MapPin, Building2, ShieldCheck, Hash, Clock, CalendarPlus,} from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import type { UserRegistrationDetail } from "../../Types/UserRegistration/UserRegistration.types";
 import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
@@ -29,7 +27,6 @@ const initials = (name?: string) =>
     .slice(0, 2)
     .join("");
 
-// ── Small presentational helper — one labeled field with an icon ──
 const InfoRow: React.FC<{ icon: React.ReactNode; label: string; value: React.ReactNode }> = ({
   icon,
   label,
@@ -84,8 +81,6 @@ const UserApprovalView: React.FC = () => {
       try {
         const u = await UserRegistrationService.getById(Number(userId));
         setUser(u);
-        // Registration DTO doesn't currently carry a companyId, so this
-        // stays "—" unless the backend DTO is extended to include one.
       } catch (err) {
         toast.error("Failed to load registration details");
       } finally {
@@ -215,7 +210,6 @@ const UserApprovalView: React.FC = () => {
           </div>
         </div>
 
-        {/* Approve / Reject actions — only shown while still pending */}
         {isPending && (
           <div className="d-flex gap-2">
             <Button

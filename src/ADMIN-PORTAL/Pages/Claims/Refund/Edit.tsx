@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
@@ -25,11 +23,8 @@ import BranchPopup from "../../Branch/BranchPopup";
 const THEME_COLOR = "#1B3763";
 
 const RefundContributionEdit: React.FC = () => {
-  const { refundContributionId } = useParams();
-
-  const [isApproving, setIsApproving] = useState(false);
-  const [isRejecting, setIsRejecting] = useState(false);
-  const [isApproved, setIsApproved] = useState<boolean>(false);
+  const navigate = useNavigate();
+ // const { refundContributionId } = useParams();
 
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -49,7 +44,7 @@ const RefundContributionEdit: React.FC = () => {
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
-  const [presetValues, setPresetValues] = useState<Record<string, any>>({}); 
+  const [presetValues, setPresetValues] = useState<Record<string, any>>({});
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
@@ -75,150 +70,83 @@ const RefundContributionEdit: React.FC = () => {
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
-const handleFetch = async (id: string) => {
-  const response = await RefundContributionService.getRefundContributionById(Number(id));
-  console.log("DEBUG - refund response:", response.value);
-  const refund = response.value;
-  if (!refund) return response;
+  const handleFetch = async (id: string) => {
+    const response = await RefundContributionService.getRefundContributionById(Number(id));
+    const refund = response.value;
+    if (!refund) return response;
 
-  if (refund.stateId) {
-    const state = (await StateService.getStateById(refund.stateId)).value;
-    setSelectedState(state);
-    setInitialState(state); 
-  }
+    if (refund.stateId) {
+      const state = (await StateService.getStateById(refund.stateId)).value;
+      setSelectedState(state);
+      setInitialState(state);
+    }
 
-  if (refund.staffNo) {
-    
-    const memberRes = await MemberService.getMembersPaginated({
-      pageNumber: 1,
-      pageSize: 1,
-      searchTerm: String(refund.staffNo),
-    });
-    const member = memberRes?.data?.[0] || null;
-    setSelectedMember(member);
-    setInitialMember(member);
-  }
-
-  if (refund.designationId) {
-    const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
-    setSelectedDesignation(designation);
-    setInitialDesignation(designation); 
-  }
-
-  if (refund.branchNameOFTime) {
-  const branchFromSnapshot = {
-    branchId: 0,
-    dpCode: Number(refund.dpcodeOfTime) || 0,
-    name: refund.branchNameOFTime,
-  } as Branch;
-  setSelectedBranch(branchFromSnapshot);
-  setInitialBranch(branchFromSnapshot);
+    // if (refund.staffNo) {
+    //   const memberRes = await MemberService.getMembersPaginated({
+    //     pageNumber: 1,
+    //     pageSize: 1,
+    //     searchTerm: String(refund.staffNo),
+    //   });
+    //   const member = memberRes?.data?.[0] || null;
+    //   setSelectedMember(member);
+    //   setInitialMember(member);
+    // }
+    if (refund.memberId) {
+  const member = (await MemberService.getMemberById(refund.memberId)).value;
+  setSelectedMember(member);
+  setInitialMember(member);
 }
 
-  if (refund.yearOF) {
-    const year = (await YearMasterService.getYearMasterById(refund.yearOF)).value;
-    setSelectedYearMaster(year);
-    setInitialYearMaster(year); 
-  }
+    if (refund.designationId) {
+      const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
+      setSelectedDesignation(designation);
+      setInitialDesignation(designation);
+    }
 
-setIsApproved(refund.isApproved);
+    if (refund.branchNameOFTime) {
+      const branchFromSnapshot = {
+        branchId: 0,
+        dpCode: Number(refund.dpcodeOfTime) || 0,
+        name: refund.branchNameOFTime,
+      } as Branch;
+      setSelectedBranch(branchFromSnapshot);
+      setInitialBranch(branchFromSnapshot);
+    }
 
-  return {
-    ...response,
-    value: {
-      ...refund,
-      dddate: refund.dddate ? String(refund.dddate).split("T")[0] : "", 
-    },
+    if (refund.yearOF) {
+      const year = (await YearMasterService.getYearMasterById(refund.yearOF)).value;
+      setSelectedYearMaster(year);
+      setInitialYearMaster(year);
+    }
+
+    return {
+      ...response,
+      value: {
+        ...refund,
+        dddate: refund.dddate ? String(refund.dddate).split("T")[0] : "",
+      },
+    };
   };
-};
 
-const getCurrentUserId = (): number => {
-  const user = AuthService.getCurrentUser();
-  if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-  return user.userId;
-};
+  const getCurrentUserId = (): number => {
+    const user = AuthService.getCurrentUser();
+    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+    return user.userId;
+  };
 
-const handleApprove = async () => {
-  if (!refundContributionId) return;
-
-  const result = await Swal.fire({
-    title: "Approve Refund?",
-    text: "Are you sure you want to approve this refund contribution?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: THEME_COLOR,
-    confirmButtonText: "Yes, Approve",
-  });
-
-   if (!result.isConfirmed) return;
-
-  setIsApproving(true);
-  try {
+  const handleApprove = async (id: string) => {
     const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(
-      Number(refundContributionId),
-      { approve: true, currentUserId }
-    );
-    setIsApproved(true);
-    await Swal.fire({
-      icon: "success",
-      title: "Approved!",
-      text: "Refund has been approved successfully.",
-      confirmButtonColor: THEME_COLOR,
-    });
-     } catch (err: any) {
-    await Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: err.message || "Failed to approve refund.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } finally {
-    setIsApproving(false);
-  }
-};
+    await RefundContributionService.approveRefundContribution(Number(id), { approve: true, currentUserId });
+    navigate("/dashboard/claims/refundcontribution-list");
+  };
 
-const handleReject = async () => {
-  if (!refundContributionId) return;
-
-  const result = await Swal.fire({
-    title: "Reject Refund?",
-    text: "Are you sure you want to reject this refund contribution?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#dc3545",
-    confirmButtonText: "Yes, Reject",
-  });
-
-  if (!result.isConfirmed) return;
-
-  setIsRejecting(true);
-  try {
+  const handleReject = async (id: string) => {
     const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(
-      Number(refundContributionId),
-      { approve: false, currentUserId }
-    );
-    setIsApproved(true);
-    await Swal.fire({
-      icon: "success",
-      title: "Rejected!",
-      text: "Refund has been rejected successfully.",
-      confirmButtonColor: THEME_COLOR,
-    });
-    } catch (err: any) {
-    await Swal.fire({
-      icon: "error",
-      title: "Error!",
-      text: err.message || "Failed to reject refund.",
-      confirmButtonColor: THEME_COLOR,
-    });
-  } finally {
-    setIsRejecting(false);
-  }
-};
+    await RefundContributionService.approveRefundContribution(Number(id), { approve: false, currentUserId });
+    navigate("/dashboard/claims/refundcontribution-list");
+  };
 
- const handleReset = () => {    
+  const handleReset = () => {
     setSelectedState(initialState);
     setSelectedMember(initialMember);
     setSelectedDesignation(initialDesignation);
@@ -228,17 +156,16 @@ const handleReject = async () => {
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedState || !selectedMember || !selectedDesignation ||! selectedYearMaster || !selectedBranch) {
+    if (!selectedState || !selectedMember || !selectedDesignation || !selectedYearMaster || !selectedBranch) {
       throw new Error("Please select all required values");
     }
     const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
-      refundContributionId: Number(id), 
+      refundContributionId: Number(id),
       staffNo: selectedMember.staffNo,
       stateId: selectedState.stateId,
       memberId: selectedMember.memberId,
       designationId: selectedDesignation.designationId,
       refundNO: String(formData.refundNO || "").trim(),
-      //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
       branchNameOFTime: selectedBranch.name,
       dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
       type: formData.type,
@@ -273,46 +200,23 @@ const handleReject = async () => {
       onOpen: () => setShowDesignationPopup(true),
     },
     branchNameOFTime: {
-  value: selectedBranch?.name || "",
-  actualValue: selectedBranch?.name,
-  onOpen: () => setShowBranchPopup(true),
-},
-     yearOF: {
-    value: selectedYearMaster
-      ? String(selectedYearMaster.yearName) 
-      : "",
-    actualValue: selectedYearMaster?.yearOf,
-    onOpen: () => setShowYearMasterPopup(true),
-  },
+      value: selectedBranch?.name || "",
+      actualValue: selectedBranch?.name,
+      onOpen: () => setShowBranchPopup(true),
+    },
+    yearOF: {
+      value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
+    },
   };
-   return (
-    <>
-      <div className="d-flex justify-content-end gap-2 px-3 pt-3">
-        <Button
-          onClick={handleApprove}
-          disabled={isApproving || isRejecting || isApproved}
-          style={{
-            backgroundColor: isApproved ? "#6c757d" : THEME_COLOR,
-            border: "none",
-            cursor: isApproved ? "not-allowed" : "pointer",
-          }}
-        >
-          {isApproving ? "Approving..." : "Approve"}
-        </Button>
-        <Button
-          onClick={handleReject}
-           disabled={isApproving || isRejecting || isApproved}
-          variant={isApproved ? "secondary" : "danger"}
-          style={{ cursor: isApproved ? "not-allowed" : "pointer" }}
-        >
-          {isRejecting ? "Rejecting..." : "Reject"}
-        </Button>
-      </div>
 
+  return (
+    <>
       <KiduEdit
         title="Edit Refund Contribution"
         fields={fields}
-         onFetch={handleFetch}
+        onFetch={handleFetch}
         onUpdate={handleUpdate}
         submitButtonText="Update Refund"
         showResetButton
@@ -324,57 +228,64 @@ const handleReject = async () => {
         auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
-        themeColor="#1B3763"
+        //themeColor="#1B3763"
+        themeColor={THEME_COLOR}
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
         presetValues={presetValues}
+        approvalConfig={{
+          onApprove: handleApprove,
+          onReject: handleReject,
+          confirmApproveText: "Are you sure you want to approve this refund contribution?",
+          confirmRejectText: "Are you sure you want to reject this refund contribution?",
+          showWhen: (formData) => !formData.isApproved,
+        }}
       />
       <StatePopup
-       show={showStatePopup} 
-       handleClose={() => setShowStatePopup(false)} 
-       onSelect={setSelectedState} 
-       />
-      <MemberPopup 
-       show={showMemberPopup} 
-       handleClose={() => setShowMemberPopup(false)} 
-       onSelect={async (m) => {
-        
-         setSelectedMember(m);
-         setShowMemberPopup(false);
+        show={showStatePopup}
+        handleClose={() => setShowStatePopup(false)}
+        onSelect={setSelectedState}
+      />
+      <MemberPopup
+        show={showMemberPopup}
+        handleClose={() => setShowMemberPopup(false)}
+        onSelect={async (m) => {
+          setSelectedMember(m);
+          setShowMemberPopup(false);
 
-         try {
-           const fullMember = (await MemberService.getMemberById(m.memberId)).value;
-           if (fullMember?.designationId) {
-             const designation = (await DesignationService.getDesignationById(fullMember.designationId)).value;
-             setSelectedDesignation(designation);
-           }
-           setPresetValues({ dpcodeOfTime: fullMember?.dpCode || "" });
-         } catch (err) {
-           console.error("Failed to auto-fill designation/DP code:", err);
-         }
-       }} 
-       />
-      <DesignationPopup 
-       show={showDesignationPopup} 
-       handleClose={() => setShowDesignationPopup(false)} 
-       onSelect={setSelectedDesignation} 
-       />
-       <BranchPopup
-  show={showBranchPopup}
-  handleClose={() => setShowBranchPopup(false)}
-  onSelect={(b) => {
-    setSelectedBranch(b);
-    setShowBranchPopup(false);
-  }}
-/>
-        <YearMasterPopup
-       show={showYearMasterPopup}
-       handleClose={() => setShowYearMasterPopup(false)}
-       onSelect={(y) => {
-        setSelectedYearMaster(y);
-        setShowYearMasterPopup(false);
-     }}
-     />
+          try {
+            const fullMember = (await MemberService.getMemberById(m.memberId)).value;
+            if (fullMember?.designationId) {
+              const designation = (await DesignationService.getDesignationById(fullMember.designationId)).value;
+              setSelectedDesignation(designation);
+            }
+            setPresetValues({ dpcodeOfTime: fullMember?.dpCode || "" });
+          } catch (err) {
+            console.error("Failed to auto-fill designation/DP code:", err);
+          }
+        }}
+      />
+      <DesignationPopup
+        show={showDesignationPopup}
+        handleClose={() => setShowDesignationPopup(false)}
+        onSelect={setSelectedDesignation}
+      />
+      <BranchPopup
+        show={showBranchPopup}
+        handleClose={() => setShowBranchPopup(false)}
+        onSelect={(b) => {
+          setSelectedBranch(b);
+          setShowBranchPopup(false);
+        }}
+      />
+      <YearMasterPopup
+        show={showYearMasterPopup}
+        handleClose={() => setShowYearMasterPopup(false)}
+        onSelect={(y) => {
+          setSelectedYearMaster(y);
+          setShowYearMasterPopup(false);
+        }}
+      />
     </>
   );
 };

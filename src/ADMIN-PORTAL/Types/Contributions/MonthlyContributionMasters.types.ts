@@ -1,11 +1,9 @@
-// ── Upload payload (multipart/form-data) ─────────────────────────
 export interface ContributionUploadPayload {
   MonthCode: number;
   YearOf:    number;
   ContributionFile: File;
 }
 
-// ── Upload response (after upload-and-save) ───────────────────────
 export interface ContributionUploadResponse {
   monthlyContributionId: number;
   contributionMasterId:  number;
@@ -16,7 +14,6 @@ export interface ContributionUploadResponse {
   errorLines:            string[];
 }
 
-// ── Contribution master list item (GET_ALL) ───────────────────────
 export interface MonthlyContributionMaster {
   contributionMasterId:  number;
   fileName:              string;
@@ -37,7 +34,6 @@ export interface MonthlyContributionMaster {
   isApproved:            boolean;
 }
 
-// ── Contribution detail item (GET_BY_ID paginated) ────────────────
 export interface ContributionDetail {
   contributionDetailId:  number;
   fullString:            string;
@@ -57,7 +53,6 @@ export interface ContributionDetail {
   total:                 string;
 }
 
-// ── Paginated response wrapper for details ────────────────────────
 export interface ContributionDetailPaginatedResponse {
   data:          ContributionDetail[];
   totalRecords:  number;
@@ -68,7 +63,6 @@ export interface ContributionDetailPaginatedResponse {
   hasNext:       boolean;
 }
 
-// ── Query params for GET_BY_ID paginated ─────────────────────────
 export interface ContributionDetailParams {
   id:             number;
   PageNumber?:    number;
@@ -83,7 +77,6 @@ export interface ContributionDetailParams {
   SortDescending?: boolean;
 }
 
-// ── Report type enum ──────────────────────────────────────────────
 export type ContributionReportType =
   | "NEWMEMBERS"
   | "WRONGBRANCH"
@@ -92,7 +85,6 @@ export type ContributionReportType =
   | "ALL"
   | "DEFAULTER";
 
-// ── Query params for GET_BY_REPORT ────────────────────────────────
 export interface ContributionReportParams {
   id:          number;
   reportType:  ContributionReportType;
@@ -100,7 +92,6 @@ export interface ContributionReportParams {
   pageSize?:   number;
 }
 
-// ── Update payload (multipart/form-data) ─────────────────────────
 export interface ContributionUpdatePayload {
   id:               number;   // path param
   MonthCode:        number;
@@ -108,7 +99,6 @@ export interface ContributionUpdatePayload {
   ContributionFile: File;
 }
 
-// ── Update response ───────────────────────────────────────────────
 export interface ContributionUpdateResponse {
   contributionMasterId: number;
   totalEntry:           number;
@@ -119,7 +109,4 @@ export interface ContributionUpdateResponse {
   errorLines:           string[];
 }
 
-// ── Report response reuses the same paginated wrapper ─────────────
-// ContributionDetailPaginatedResponse already covers this — no new type needed.
-// Re-export as alias for clarity if desired:
 export type ContributionReportResponse = ContributionDetailPaginatedResponse;

@@ -58,6 +58,15 @@ export interface AttachmentConfig {
   tableName: string;
   recordIdField: string;
 }
+export interface ApprovalConfig {
+  onApprove: (id: string, formData: Record<string, any>) => Promise<void | any>;
+  onReject: (id: string, formData: Record<string, any>) => Promise<void | any>;
+  approveLabel?: string;
+  rejectLabel?: string;
+  confirmApproveText?: string;
+  confirmRejectText?: string;
+  showWhen?: (formData: Record<string, any>) => boolean;
+}
 export interface KiduEditProps {
   title: string;
   subtitle?: string;
@@ -76,6 +85,7 @@ export interface KiduEditProps {
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
   attachmentConfig?: AttachmentConfig;
+  approvalConfig?: ApprovalConfig;
   themeColor?: string;
   paramName?: string;
   navigateBackPath?: string;
@@ -103,6 +113,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   imageConfig,
   auditLogConfig,
   attachmentConfig,
+  approvalConfig,
   themeColor = "#882626ff",
   paramName = "id",
   navigateBackPath,
@@ -114,38 +125,10 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   const navigate = useNavigate();
   const params = useParams();
   const recordId = params[paramName];
-  // const regularFields = fields.filter(f => f.rules.type !== "toggle");
-  // const toggleFields = fields.filter(f => f.rules.type === "toggle");
-  // const initialValues: Record<string, any> = {};
-  // const initialErrors: Record<string, string> = {};
 
-  // fields.forEach(f => {
-  //   if (f.rules.type === "rowbreak") return;
-
-  //   if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
-  //     initialValues[f.name] = false;
-  //   } else if (f.rules.type === "radio" && options[f.name]?.length) {
-  //     const firstOption = options[f.name][0];
-  //     initialValues[f.name] = typeof firstOption === "object" ? firstOption.value : firstOption;
-  //   } else {
-  //     initialValues[f.name] = "";
-  //   }
-  //   initialErrors[f.name] = "";
-  // });
-
-  // if (imageConfig) {
-  //   initialValues[imageConfig.fieldName] = "";
-  // }
-
-  // const [formData, setFormData] = useState<Record<string, any>>(initialValues);
-  // const [initialData, setInitialData] = useState<Record<string, any>>(initialValues);
-  // const [errors, setErrors] = useState<Record<string, string>>(initialErrors);
   const regularFields = fields.filter(f => f.rules.type !== "toggle");
   const toggleFields = fields.filter(f => f.rules.type === "toggle");
 
-  // Computed once via useState's lazy initializer instead of on every
-  // render — this loop only needs to run on mount since its result is
-  // only ever consumed as the initial value below.
   const buildInitialState = () => {
     const values: Record<string, any> = {};
     const errs: Record<string, string> = {};
@@ -183,6 +166,7 @@ const KiduEdit: React.FC<KiduEditProps> = ({
 
   const attachmentsRef = useRef<AttachmentsHandle>(null);
   const [hasPendingAttachments, setHasPendingAttachments] = useState(false);
+  const [isApproveRejectSubmitting, setIsApproveRejectSubmitting] = useState<"approve" | "reject" | null>(null);
 
   const hasChanges = () => {
     const formDataChanged = JSON.stringify(formData) !== JSON.stringify(initialData);
@@ -218,11 +202,11 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
 
-       const data = response.value;
-console.log("RAW DATE VALUES:", {
-  dateFrom: data.dateFrom,
-  dateTo: data.dateTo,
-});
+        const data = response.value;
+        console.log("RAW DATE VALUES:", {
+          dateFrom: data.dateFrom,
+          dateTo: data.dateTo,
+        });
 
         const formattedData: Record<string, any> = {};
         fields.forEach(f => {
@@ -243,12 +227,6 @@ console.log("RAW DATE VALUES:", {
             const dateValue = data[f.name];
             if (dateValue) {
               formattedData[f.name] = String(dateValue).split('T')[0];
-    //           const date = new Date(dateValue);
-    //            const year = date.getUTCFullYear();
-    // const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    // const day = String(date.getUTCDate()).padStart(2, "0");
-    // formattedData[f.name] = `${year}-${month}-${day}`;
-    //           // formattedData[f.name] = date.toISOString().split('T')[0];
             } else {
               formattedData[f.name] = "";
             }
@@ -341,7 +319,7 @@ console.log("RAW DATE VALUES:", {
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
+    fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -454,23 +432,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         delete submitData.auditLogs;
       }
 
-      // const updateResult = await onUpdate(recordId!, submitData);
-
-      // let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
-
-      // fields.forEach(f => {
-      //   if (f.rules.type === "popup" && popupHandlers[f.name]?.actualValue !== undefined) {
-      //     updatedData = { ...updatedData, [f.name]: popupHandlers[f.name].actualValue };
-      //   }
-      // });
-
-      // if (imageConfig && selectedFile) {
-      //   updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
-      // }
-
-      // setInitialData(updatedData);
-      // setFormData(updatedData);
-      // setSelectedFile(null);
       const updateResult = await onUpdate(recordId!, submitData);
 
       let updatedData = (updateResult && typeof updateResult === 'object') ? updateResult : submitData;
@@ -485,8 +446,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
         updatedData = { ...updatedData, [imageConfig.fieldName]: previewUrl };
       }
 
-      // NEW — record update succeeded, now actually send any staged
-      // attachments, same order as Create's AttachmentsStaging.uploadAll()
       if (attachmentConfig && attachmentsRef.current?.hasPendingFiles()) {
         const attachmentRecordId = updatedData[attachmentConfig.recordIdField] ?? recordId;
         await attachmentsRef.current.uploadPendingFiles(
@@ -509,7 +468,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
     } catch (err: any) {
       const errorMsg = err.message || errorMessage || "An error occurred";
-    
+
       toast.error(errorMsg);
 
       await Swal.fire({
@@ -521,6 +480,63 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+  const handleApprove = async () => {
+    if (!approvalConfig || !recordId) return;
+
+    const confirm = await Swal.fire({
+      icon: "question",
+      title: "Approve this record?",
+      text: approvalConfig.confirmApproveText || "This action will mark the record as approved.",
+      showCancelButton: true,
+      confirmButtonColor: themeColor,
+      confirmButtonText: "Yes, approve",
+    });
+    if (!confirm.isConfirmed) return;
+
+    setIsApproveRejectSubmitting("approve");
+    try {
+      await approvalConfig.onApprove(recordId, formData);
+      await Swal.fire({
+        icon: "success",
+        title: "Approved!",
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK",
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to approve");
+    } finally {
+      setIsApproveRejectSubmitting(null);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!approvalConfig || !recordId) return;
+
+    const confirm = await Swal.fire({
+      icon: "warning",
+      title: "Reject this record?",
+      text: approvalConfig.confirmRejectText || "This action will mark the record as rejected.",
+      showCancelButton: true,
+      confirmButtonColor: "#dc3545",
+      confirmButtonText: "Yes, reject",
+    });
+    if (!confirm.isConfirmed) return;
+
+    setIsApproveRejectSubmitting("reject");
+    try {
+      await approvalConfig.onReject(recordId, formData);
+      await Swal.fire({
+        icon: "success",
+        title: "Rejected",
+        confirmButtonColor: themeColor,
+        confirmButtonText: "OK",
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to reject");
+    } finally {
+      setIsApproveRejectSubmitting(null);
     }
   };
   const togglePasswordVisibility = (fieldName: string) => {
@@ -546,9 +562,19 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               readOnly
               isInvalid={!!errors[name]}
               disabled={rules.disabled}
-              // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
-                  style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}/>
-            <Button variant="outline-secondary" size="sm" onClick={popup?.onOpen}>
+              onClick={!rules.disabled ? popup?.onOpen : undefined}
+              style={
+                rules.disabled
+                  ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" }
+                  : { fontSize: "15px", cursor: "pointer", backgroundColor: "#fff" }
+              }
+            />
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={popup?.onOpen}
+              disabled={rules.disabled}
+            >
               <BsSearch />
             </Button>
           </InputGroup>
@@ -590,8 +616,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           >
             <option value="">Select {rules.label}</option>
             {fieldOptions.map((opt: any, idx: number) => {
@@ -689,8 +714,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
             disabled={rules.disabled}
-            // style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           />
         );
     }
@@ -748,12 +772,33 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 {title}
               </h5>
             </div>
+            {approvalConfig && (approvalConfig.showWhen ? approvalConfig.showWhen(formData) : true) && (
+              <div className="d-flex gap-2">
+                <Button
+                  size="sm"
+                  style={{ backgroundColor: themeColor, border: "none" }}
+                  disabled={isApproveRejectSubmitting !== null}
+                  onClick={handleApprove}
+                >
+                  {isApproveRejectSubmitting === "approve" ? "Approving..." : (approvalConfig.approveLabel || "Approve")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="danger"
+                  disabled={isApproveRejectSubmitting !== null}
+                  onClick={handleReject}
+                >
+                  {isApproveRejectSubmitting === "reject" ? "Rejecting..." : (approvalConfig.rejectLabel || "Reject")}
+                </Button>
+              </div>
+            )}
+
           </div>
           <hr />
           <Card.Body style={{ padding: "1.5rem" }}>
             <Form onSubmit={handleSubmit}>
               <Row className="mb-4">
-                {/* ✅ Image Upload Section - Same as KiduCreate */}
+                {/* Image Upload Section - Same as KiduCreate */}
                 {imageConfig && (
                   <Col xs={12}>
                     <div className="card mb-4">
@@ -862,16 +907,6 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
               {children}
 
-              {/* {attachmentConfig && formData[attachmentConfig.recordIdField] && (
-                <Row className="mb-3">
-                  <Col xs={12}>
-                    <Attachments
-                      tableName={attachmentConfig.tableName}
-                      recordId={formData[attachmentConfig.recordIdField]}
-                    />
-                  </Col>
-                </Row>
-              )} */}
               {attachmentConfig && formData[attachmentConfig.recordIdField] && (
                 <Row className="mb-3">
                   <Col xs={12}>
@@ -887,32 +922,20 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
               )}
 
               <div className="d-flex justify-content-end gap-2 mt-4 me-2">
-                {/* {showResetButton && (
-                  <KiduReset
-                    initialValues={initialData}
-                    setFormData={setFormData}
-                    setErrors={setErrors}
-                    onReset={onReset}
-                  />
-                )} */}
                 {showResetButton && (
                   <KiduReset
                     initialValues={initialData}
                     setFormData={setFormData}
                     setErrors={setErrors}
                     onReset={() => {
-                      // Image preview/selectedFile live outside formData, so
-                      // KiduReset's setFormData(initialData) never clears
-                      // them — reset them here explicitly, back to the
-                      // originally-fetched image rather than the default.
                       if (previewUrl && previewUrl.startsWith("blob:")) {
                         URL.revokeObjectURL(previewUrl);
                       }
                       setSelectedFile(null);
                       setPreviewUrl(
                         (imageConfig && initialData[imageConfig.fieldName]) ||
-                          imageConfig?.defaultImage ||
-                          ""
+                        imageConfig?.defaultImage ||
+                        ""
                       );
 
                       onReset?.();
@@ -921,7 +944,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 )}
                 <Button
                   type="submit"
-                  style={{ backgroundColor: themeColor, border: "none", fontSize: "14px", padding: "6px 14px"}}
+                  style={{ backgroundColor: themeColor, border: "none", fontSize: "14px", padding: "6px 14px" }}
                   disabled={isSubmitting || !hasChanges()} >
                   {isSubmitting ? "Updating..." : submitButtonText}
                 </Button>
