@@ -12,8 +12,12 @@ const DirectPaymentList: React.FC = () => {
         return payments.map(p => ({
           ...p,
           paymentDatestring: p.paymentDatestring
-            ? new Date(p.paymentDatestring).toLocaleDateString("en-IN")
-            : "",
+  ? new Date(p.paymentDatestring).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  : "",
         }));
       }}
       transformData={(data) =>
