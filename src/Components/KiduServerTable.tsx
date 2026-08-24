@@ -301,12 +301,12 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
             );
           }
           case 'date': {
-            try {
-              const date = new Date(String(rawValue));
-              if (!isNaN(date.getTime())) return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            } catch (e) { /* fall through */ }
-            break;
-          }
+  try {
+    const date = new Date(String(rawValue));
+    if (!isNaN(date.getTime())) return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  } catch (e) { /* fall through */ }
+  break;
+}
           case 'text':
           default:
             return String(rawValue);

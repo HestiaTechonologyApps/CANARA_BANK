@@ -154,22 +154,36 @@ const KiduView: React.FC<KiduViewProps> = ({
       return value ? "Yes" : "No";
     }
     // Date
+    // if (field.isDate) {
+    //   try {
+    //     const date = new Date(value);
+    //     if (!isNaN(date.getTime())) {
+    //       return date.toLocaleDateString("en-US", {
+    //         year: "numeric",
+    //         month: "long",
+    //         day: "numeric",
+    //         hour: "2-digit",
+    //         minute: "2-digit",
+    //       });
+    //     }
+    //   } catch (e) {
+    //     return String(value);
+    //   }
+    // }
     if (field.isDate) {
-      try {
-        const date = new Date(value);
-        if (!isNaN(date.getTime())) {
-          return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          });
-        }
-      } catch (e) {
-        return String(value);
-      }
+  try {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
     }
+  } catch (e) {
+    return String(value);
+  }
+}
 
     return String(value);
   };
