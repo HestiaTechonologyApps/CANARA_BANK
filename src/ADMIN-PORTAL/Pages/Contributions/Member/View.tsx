@@ -367,8 +367,54 @@ const MemberView: React.FC = () => {
         .mv-contrib-loading .mv-spinner { width: 20px; height: 20px; border-width: 2px; }
 
         .mv-monthly-section { background: #fff; border-radius: 12px; border: 1px solid #E5E9F0; overflow: hidden; margin-top: 20px; margin-bottom: 20px; }
-        .mv-monthly-table th, .mv-monthly-table td { text-align: right; }
-        .mv-monthly-table th:first-child, .mv-monthly-table td:first-child { text-align: left; }
+        .mv-monthly-table { table-layout: fixed; width: 100%; }
+.mv-monthly-table th, .mv-monthly-table td { text-align: center; padding-right: 0; padding-left: 0; }
+.mv-monthly-table th:first-child, .mv-monthly-table td:first-child { text-align: left; padding-left: 16px; }
+.mv-monthly-table th:last-child, .mv-monthly-table td:last-child { padding-right: 16px; }
+
+/* Nudge month name headers right to sit centered over amounts below */
+.mv-monthly-table thead th:not(:first-child):not(:last-child) {
+  padding-left: 10px;
+}
+
+/* Highlight month headers — these stay bold/colored */
+.mv-monthly-table thead th {
+  font-size: 13px;
+  font-weight: 700;
+  color: ${THEME};
+  background: ${THEME_SOFT};
+}
+
+/* Year column as a badge */
+.mv-year-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: ${THEME};
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+/* Regular month amounts — visible but quieter than headers/total */
+.mv-monthly-table tbody td {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #3D4A5C;
+}
+.mv-empty-cell { color: #C7CDD6 !important; font-weight: 400 !important; }
+.mv-empty-cell { color: #C7CDD6; }
+
+/* Total column — the one thing besides Year that should stand out */
+.mv-monthly-table thead th:last-child {
+  background: ${THEME};
+  color: #fff;
+}
+.mv-monthly-table tbody td:last-child {
+  font-weight: 800;
+  color: ${THEME};
+  background: ${THEME_SOFT};
+}
       `}</style>
 
       <div className="mv-topbar">
@@ -487,6 +533,13 @@ const MemberView: React.FC = () => {
         ) : (
           <div className="mv-table-wrap">
             <table className="mv-table mv-monthly-table">
+              <colgroup>
+                <col style={{ width: "90px" }} />
+                {MONTH_NAMES.slice(1).map((m) => (
+                  <col key={m} style={{ width: "7.4%" }} />
+                ))}
+                <col style={{ width: "110px" }} />
+              </colgroup>
               <thead>
                 <tr>
                   <th>Year</th>
@@ -502,17 +555,17 @@ const MemberView: React.FC = () => {
                   const yearTotal = Object.values(yearData).reduce((sum, amt) => sum + amt, 0);
                   return (
                     <tr key={year}>
-                      <td style={{ fontWeight: 700, color: THEME }}>{year}</td>
+                      <td><span className="mv-year-badge">{year}</span></td>
                       {MONTH_NAMES.slice(1).map((_, idx) => {
                         const monthCode = idx + 1;
                         const amt = yearData[monthCode];
                         return (
-                          <td key={monthCode} className={amt ? "mv-amount" : ""}>
+                          <td key={monthCode} className={!amt ? "mv-empty-cell" : ""}>
                             {amt ? formatCurrency(amt) : "—"}
                           </td>
                         );
                       })}
-                      <td style={{ fontWeight: 800, color: THEME }}>{formatCurrency(yearTotal)}</td>
+                      <td>{formatCurrency(yearTotal)}</td>
                     </tr>
                   );
                 })}
