@@ -21,9 +21,11 @@ const ExpenseMasterList: React.FC = () => {
       sortBy?: string;
       sortOrder?: "asc" | "desc";
     }) => {
+      const isAll = params.pageSize === -1;
       return ExpenseMasterService.getPaged({
         pageNumber: params.pageNumber,
-        pageSize: params.pageSize,
+        pageSize: isAll ? 1 : params.pageSize,
+        ...(isAll ? { getAll: true } : {}),
         searchTerm: params.searchTerm,
         sortBy: params.sortBy,
         sortDescending: params.sortOrder === "desc",
