@@ -129,64 +129,64 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
   //   }
   // };
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!currentUser) {
-    toast.error("User information not found. Please login again.");
-    return;
-  }
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    toast.error("Please fill all password fields");
-    return;
-  }
-  if (newPassword !== confirmPassword) {
-    toast.error("New password and confirm password do not match");
-    return;
-  }
-  if (currentPassword === newPassword) {
-    toast.error("New password must be different from current password");
-    return;
-  }
-  if (newPassword.length < 8) {
-    toast.error("Password must be at least 8 characters");
-    return;
-  }
-  if (!/[A-Z]/.test(newPassword)) {
-    toast.error("New password must contain at least one uppercase letter");
-    return;
-  }
-  if (!/[a-z]/.test(newPassword)) {
-    toast.error("New password must contain at least one lowercase letter");
-    return;
-  }
-  if (!/[0-9]/.test(newPassword)) {
-    toast.error("New password must contain at least one number");
-    return;
-  }
-  if (!/[@$!%*?&#^()_\-+=]/.test(newPassword)) {
-    toast.error("New password must contain at least one special character (@$!%*?&#)");
-    return;
-  }
-  try {
-    setLoading(true);
+    if (!currentUser) {
+      toast.error("User information not found. Please login again.");
+      return;
+    }
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("Please fill all password fields");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match");
+      return;
+    }
+    if (currentPassword === newPassword) {
+      toast.error("New password must be different from current password");
+      return;
+    }
+    if (newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      toast.error("New password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[a-z]/.test(newPassword)) {
+      toast.error("New password must contain at least one lowercase letter");
+      return;
+    }
+    if (!/[0-9]/.test(newPassword)) {
+      toast.error("New password must contain at least one number");
+      return;
+    }
+    if (!/[@$!%*?&#^()_\-+=]/.test(newPassword)) {
+      toast.error("New password must contain at least one special character (@$!%*?&#)");
+      return;
+    }
+    try {
+      setLoading(true);
 
-    const payload = {
-      userId: currentUser.userId,
-      oldPassword: currentPassword,
-      newPassword: newPassword,
-    };
-    await UserService.changePassword(payload);
+      const payload = {
+        userId: currentUser.userId,
+        oldPassword: currentPassword,
+        newPassword: newPassword,
+      };
+      await UserService.changePassword(payload);
 
-    toast.success("Password changed successfully");
-    resetForm();
-  } catch (error: any) {
-    toast.error(
-      error?.message || "Failed to change password. Please check your current password."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      toast.success("Password changed successfully");
+      resetForm();
+    } catch (error: any) {
+      toast.error(
+        error?.message || "Failed to change password. Please check your current password."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // IMAGE SELECT
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -253,7 +253,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
           }}>
           
           <Tab eventKey="photo" title="Profile Photo"> */}
-          <Tabs
+        <Tabs
           activeKey={key}
           onSelect={(k) => setKey(k || (currentUser?.memberId ? "photo" : "password"))}
           className="mb-4"
@@ -265,87 +265,87 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
           }}>
           {/* ---------------- PROFILE PHOTO ---------------- */}
           {currentUser?.memberId && (
-          <Tab eventKey="photo" title="Profile Photo">
-            <div className="d-flex flex-column align-items-center gap-3 mt-3">
-              <div className="position-relative">
-                <div
-                  className="rounded-circle d-flex align-items-center justify-content-center shadow"
-                  style={{
-                    width: 100,
-                    height: 100,
-                    backgroundColor: NAVY,
-                    color: "white",
-                    fontSize: "33px",
-                    fontWeight: 600,
-                  }}>
-                  {preview ? (
-                    <img
-                      src={preview}
-                      alt="profile"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
-                  ) : (
-                    <div
-                      className="d-flex h-100 align-items-center justify-content-center text-white"
-                      style={{ fontSize: 33, fontWeight: 600 }}
-                    >
-                      {currentUser?.userName?.charAt(0).toUpperCase() || "U"}
-                    </div>
-                  )}
+            <Tab eventKey="photo" title="Profile Photo">
+              <div className="d-flex flex-column align-items-center gap-3 mt-3">
+                <div className="position-relative">
+                  <div
+                    className="rounded-circle d-flex align-items-center justify-content-center shadow"
+                    style={{
+                      width: 100,
+                      height: 100,
+                      backgroundColor: NAVY,
+                      color: "white",
+                      fontSize: "33px",
+                      fontWeight: 600,
+                    }}>
+                    {preview ? (
+                      <img
+                        src={preview}
+                        alt="profile"
+                        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
+                    ) : (
+                      <div
+                        className="d-flex h-100 align-items-center justify-content-center text-white"
+                        style={{ fontSize: 33, fontWeight: 600 }}
+                      >
+                        {currentUser?.userName?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    className="position-absolute bottom-0 end-0 border-0 rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      backgroundColor: RED,
+                      color: WHITE,
+                    }}
+                    onClick={() => {
+                      setPreview(null);
+                      setSelectedFile(null);
+                    }}>
+                    <Trash2 size={12} />
+                  </button>
                 </div>
 
-                <button
-                  className="position-absolute bottom-0 end-0 border-0 rounded-circle d-flex align-items-center justify-content-center"
+                <div className="text-center">
+                  <h6 className="mb-0 fw-semibold">{currentUser?.userName}</h6>
+                  <small className="text-muted">{currentUser?.userEmail}</small>
+                </div>
+
+                <div
+                  className="w-100 text-center p-2 rounded"
                   style={{
-                    width: 30,
-                    height: 30,
-                    backgroundColor: RED,
-                    color: WHITE,
+                    border: "2px dashed #dee2e6",
+                    cursor: "pointer",
                   }}
-                  onClick={() => {
-                    setPreview(null);
-                    setSelectedFile(null);
-                  }}>
-                  <Trash2 size={12} />
-                </button>
+                  onClick={() => fileInputRef.current?.click()}>
+                  <Upload className="mb-2 text-muted" />
+                  <p className="mb-0 fw-medium">Click to upload new photo</p>
+                  <small className="text-muted">PNG, JPG up to 5MB</small>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleFileChange} />
+                <div className="d-flex justify-content-end gap-2 w-100">
+                  <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
+                    Cancel
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}
+                    onClick={handleSavePhoto}
+                    disabled={loading}
+                  >
+                    Save Photo
+                    {/* {loading ? "Saving..." : "Save Photo"} */}
+                  </Button>
+                </div>
               </div>
-
-              <div className="text-center">
-                <h6 className="mb-0 fw-semibold">{currentUser?.userName}</h6>
-                <small className="text-muted">{currentUser?.userEmail}</small>
-              </div>
-
-              <div
-                className="w-100 text-center p-2 rounded"
-                style={{
-                  border: "2px dashed #dee2e6",
-                  cursor: "pointer",
-                }}
-                onClick={() => fileInputRef.current?.click()}>
-                <Upload className="mb-2 text-muted" />
-                <p className="mb-0 fw-medium">Click to upload new photo</p>
-                <small className="text-muted">PNG, JPG up to 5MB</small>
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleFileChange}/>
-              <div className="d-flex justify-content-end gap-2 w-100">
-                <Button variant="outline-secondary" onClick={resetForm} style={{ fontSize: "13px" }}>
-                  Cancel
-                </Button>
-                <Button
-                  style={{ backgroundColor: GOLD, borderColor: GOLD, color: NAVY, fontSize: "13px" }}
-                  onClick={handleSavePhoto}
-                  disabled={loading}
-                >
-                  Save Photo
-                  {/* {loading ? "Saving..." : "Save Photo"} */}
-                </Button>
-              </div>
-            </div>
-          </Tab>
+            </Tab>
           )}
 
           {/* ---------------- RESET PASSWORD ---------------- */}
@@ -376,7 +376,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     type={showNew ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter your new password"/>
+                    placeholder="Enter your new password" />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
                     style={{ cursor: "pointer" }}
@@ -393,7 +393,7 @@ const KiduAccountsettingsModal: React.FC<KiduAccountsettingsModalProps> = ({
                     type={showConfirm ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"/>
+                    placeholder="Confirm your password" />
                   <span
                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
                     style={{ cursor: "pointer" }}

@@ -29,7 +29,7 @@ export interface AuditLogConfig {
   tableName: string;
   recordIdField: string;
 }
-export interface AttachmentConfig  {
+export interface AttachmentConfig {
   tableName: string;
   recordIdField: string;
 }
@@ -43,7 +43,7 @@ export interface KiduViewProps {
   paramName?: string;
   imageConfig?: ImageConfig;
   auditLogConfig?: AuditLogConfig;
-  attachmentConfig?:AttachmentConfig;
+  attachmentConfig?: AttachmentConfig;
   themeColor?: string;
   loadingText?: string;
   showEditButton?: boolean;
@@ -202,8 +202,8 @@ const KiduView: React.FC<KiduViewProps> = ({
   const displayId = imageConfig?.showIdField
     ? data[imageConfig.showIdField]
     : auditLogConfig?.recordIdField
-    ? data[auditLogConfig.recordIdField]
-    : null;
+      ? data[auditLogConfig.recordIdField]
+      : null;
 
   return (
     <div

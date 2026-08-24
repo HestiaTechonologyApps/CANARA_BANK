@@ -99,7 +99,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
   const initialErrors: Record<string, string> = {};
 
   fields.forEach(f => {
-    if (f.rules.type === "rowbreak") return; 
+    if (f.rules.type === "rowbreak") return;
 
     if (f.rules.type === "toggle" || f.rules.type === "checkbox") {
       initialValues[f.name] = f.name === "isActive" ? true : false;
@@ -182,7 +182,7 @@ const KiduCreate: React.FC<KiduCreateProps> = ({
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
+    fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -242,7 +242,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isValid = false;
           }
         }
-        return; 
+        return;
       }
 
       if (rule.required) {
@@ -428,7 +428,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}/>
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}} />
         );
 
       /* ---------- RADIO ---------- */
@@ -448,7 +448,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                   label={optLabel}
                   value={optValue}
                   checked={formData[name] === optValue}
-                  onChange={handleChange}/>
+                  onChange={handleChange} />
               );
             })}
           </div>
@@ -464,7 +464,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             name={name}
             label={rules.label}
             checked={!!formData[name]}
-            onChange={handleChange}/>
+            onChange={handleChange} />
         );
 
       /* ---------- DATE ---------- */
@@ -479,21 +479,21 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isInvalid={!!errors[name]}
             min={rules.min}
             max={rules.max}
-            />
+          />
         );
 
       /* ---------- FILE ---------- */
       case "file":
         return (
           <Form.Control
-          key={resetKey} 
+            key={resetKey}
             type="file"
             name={name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const file = e.target.files?.[0] || null;
               setFormData(prev => ({ ...prev, [name]: file }));
             }}
-            isInvalid={!!errors[name]}/>
+            isInvalid={!!errors[name]} />
         );
 
       /* ---------- DEFAULT ---------- */
@@ -591,7 +591,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                               }}
                               onError={(e: any) => {
                                 e.target.src = imageConfig.defaultImage;
-                              }}/>
+                              }} />
                           ) : (
                             <div
                               style={{
@@ -618,7 +618,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                             id={imageConfig.fieldName}
                             accept="image/*"
                             onChange={handleFileChange}
-                            style={{ display: "none" }}/>
+                            style={{ display: "none" }} />
 
                           <label
                             htmlFor={imageConfig.fieldName}

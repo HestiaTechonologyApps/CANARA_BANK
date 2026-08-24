@@ -202,11 +202,11 @@ const KiduEdit: React.FC<KiduEditProps> = ({
           throw new Error(response?.customMessage || response?.error || "Failed to load data");
         }
 
-       const data = response.value;
-console.log("RAW DATE VALUES:", {
-  dateFrom: data.dateFrom,
-  dateTo: data.dateTo,
-});
+        const data = response.value;
+        console.log("RAW DATE VALUES:", {
+          dateFrom: data.dateFrom,
+          dateTo: data.dateTo,
+        });
 
         const formattedData: Record<string, any> = {};
         fields.forEach(f => {
@@ -319,7 +319,7 @@ console.log("RAW DATE VALUES:", {
     }
 
     setFormData(prev => ({ ...prev, [name]: updatedValue }));
-fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
+    fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
     }
@@ -468,7 +468,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
 
     } catch (err: any) {
       const errorMsg = err.message || errorMessage || "An error occurred";
-    
+
       toast.error(errorMsg);
 
       await Swal.fire({
@@ -482,7 +482,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
       setIsSubmitting(false);
     }
   };
-    const handleApprove = async () => {
+  const handleApprove = async () => {
     if (!approvalConfig || !recordId) return;
 
     const confirm = await Swal.fire({
@@ -616,7 +616,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             onBlur={() => handleBlur(name)}
             isInvalid={!!errors[name]}
             disabled={rules.disabled}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           >
             <option value="">Select {rules.label}</option>
             {fieldOptions.map((opt: any, idx: number) => {
@@ -714,7 +714,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
             isInvalid={!!errors[name]}
             maxLength={rules.maxLength}
             disabled={rules.disabled}
-              style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
+            style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed", fontSize: "15px" } : { fontSize: "15px" }}
           />
         );
     }
@@ -772,7 +772,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 {title}
               </h5>
             </div>
-                        {approvalConfig && (approvalConfig.showWhen ? approvalConfig.showWhen(formData) : true) && (
+            {approvalConfig && (approvalConfig.showWhen ? approvalConfig.showWhen(formData) : true) && (
               <div className="d-flex gap-2">
                 <Button
                   size="sm"
@@ -934,8 +934,8 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                       setSelectedFile(null);
                       setPreviewUrl(
                         (imageConfig && initialData[imageConfig.fieldName]) ||
-                          imageConfig?.defaultImage ||
-                          ""
+                        imageConfig?.defaultImage ||
+                        ""
                       );
 
                       onReset?.();
@@ -944,7 +944,7 @@ fieldChangeHandlers?.[name]?.(updatedValue, setFormData);
                 )}
                 <Button
                   type="submit"
-                  style={{ backgroundColor: themeColor, border: "none", fontSize: "14px", padding: "6px 14px"}}
+                  style={{ backgroundColor: themeColor, border: "none", fontSize: "14px", padding: "6px 14px" }}
                   disabled={isSubmitting || !hasChanges()} >
                   {isSubmitting ? "Updating..." : submitButtonText}
                 </Button>

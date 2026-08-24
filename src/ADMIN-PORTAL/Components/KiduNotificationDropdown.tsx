@@ -20,11 +20,11 @@ interface Notification {
 }
 
 const notifications: Notification[] = [
-  { id: "1", title: "New Member Registration", message: "John Doe has registered as a new member", time: "5 min ago", type: "member", read: false,},
-  { id: "2", title: "Contribution Received", message: "₹5,000 contribution from Staff #12345", time: "1 hour ago", type: "payment", read: false,},
-  { id: "3", title: "Claim Approved", message: "Claim #CLM-2024-001 has been approved", time: "2 hours ago", type: "success", read: false,},
-  { id: "4", title: "System Update", message: "System maintenance scheduled for tonight", time: "5 hours ago", type: "warning", read: true,},
-  { id: "5", title: "Monthly Report Ready", message: "January 2024 report is now available", time: "1 day ago", type: "info", read: true,},
+  { id: "1", title: "New Member Registration", message: "John Doe has registered as a new member", time: "5 min ago", type: "member", read: false, },
+  { id: "2", title: "Contribution Received", message: "₹5,000 contribution from Staff #12345", time: "1 hour ago", type: "payment", read: false, },
+  { id: "3", title: "Claim Approved", message: "Claim #CLM-2024-001 has been approved", time: "2 hours ago", type: "success", read: false, },
+  { id: "4", title: "System Update", message: "System maintenance scheduled for tonight", time: "5 hours ago", type: "warning", read: true, },
+  { id: "5", title: "Monthly Report Ready", message: "January 2024 report is now available", time: "1 day ago", type: "info", read: true, },
 ];
 
 const getNotificationIcon = (type: Notification["type"]) => {
@@ -129,7 +129,7 @@ const AdminNotificationDropdown: React.FC = () => {
                       width: 8,
                       height: 8,
                       backgroundColor: GOLD,
-                    }}/>
+                    }} />
                 </Dropdown.Item>
               ))}
             </>
