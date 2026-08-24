@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import type { PublicPage } from "../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 import PublicPageConfigService from "../Services/Publicpage.services";
 import { PublicService } from "../../Services/PublicService";
+import { APP_VERSION } from "../../CONSTANTS/Version";
 
 // =================API needed - fields needed====================
 
@@ -106,13 +107,13 @@ const Footer: React.FC = () => {
       </Container>
 
       {/* Bottom Bar */}
-      <div className="footer-bottom text-white py-3 px-3">
+      {/* <div className="footer-bottom text-white py-3 px-3">
         <Container className="d-flex justify-content-between flex-wrap text-center">
           <div className="small">
             {config?.footerCopyrightText}
-          </div>
+          </div> */}
           {/* ===========API new filed needed========= */}
-          <div className="small footer-links d-flex gap-3">
+          {/* <div className="small footer-links d-flex gap-3">
             <div className="small footer-links d-flex gap-3">
               {footerr.bottomBar.links.map((link, index) => (
                 <span key={index} onClick={() => navigate(link.route)}>
@@ -122,7 +123,29 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </Container>
+      </div> */}
+      {/* Bottom Bar */}
+<div className="footer-bottom text-white py-3 px-3">
+  <Container className="d-flex justify-content-between align-items-center flex-wrap text-center gap-2">
+    <div className="d-flex align-items-center gap-2 small">
+  <span>{config?.footerCopyrightText}</span>
+  <span className="footer-version-text">
+    <span className="footer-version-label">Version</span>
+    <span className="footer-version-number">{APP_VERSION}</span>
+  </span>
+</div>
+    {/* ===========API new filed needed========= */}
+    <div className="small footer-links d-flex gap-3">
+      <div className="small footer-links d-flex gap-3">
+        {footerr.bottomBar.links.map((link, index) => (
+          <span key={index} onClick={() => navigate(link.route)}>
+            {link.label}
+          </span>
+        ))}
       </div>
+    </div>
+  </Container>
+</div>
     </footer>
   );
 };

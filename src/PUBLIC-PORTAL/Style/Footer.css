@@ -61,3 +61,21 @@
 .footer-bottom .footer-links span:hover {
   color: #e8b500;
 }
+
+.footer-version-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 12.5px;
+  color: #9aa9c4;
+}
+
+.footer-version-text .footer-version-label {
+  color: #9aa9c4;
+  font-weight: 400;
+}
+
+.footer-version-text .footer-version-number {
+  color: #dbe4f0;
+  font-weight: 600;
+}
