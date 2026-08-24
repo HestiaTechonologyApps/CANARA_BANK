@@ -367,14 +367,18 @@ const MemberView: React.FC = () => {
         .mv-contrib-loading .mv-spinner { width: 20px; height: 20px; border-width: 2px; }
 
         .mv-monthly-section { background: #fff; border-radius: 12px; border: 1px solid #E5E9F0; overflow: hidden; margin-top: 20px; margin-bottom: 20px; }
-        .mv-monthly-table { table-layout: fixed; width: 100%; }
-.mv-monthly-table th, .mv-monthly-table td { text-align: center; padding-right: 0; padding-left: 0; }
-.mv-monthly-table th:first-child, .mv-monthly-table td:first-child { text-align: left; padding-left: 16px; }
-.mv-monthly-table th:last-child, .mv-monthly-table td:last-child { padding-right: 16px; }
-
-/* Nudge month name headers right to sit centered over amounts below */
-.mv-monthly-table thead th:not(:first-child):not(:last-child) {
-  padding-left: 10px;
+        .mv-monthly-table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+.mv-monthly-table th, .mv-monthly-table td {
+  box-sizing: border-box;
+  text-align: center;
+  padding: 10px 4px;
+}
+.mv-monthly-table th:first-child, .mv-monthly-table td:first-child {
+  text-align: center;
+  padding-left: 22px;
+}
+.mv-monthly-table th:last-child, .mv-monthly-table td:last-child {
+  padding-right: 16px;
 }
 
 /* Highlight month headers — these stay bold/colored */
@@ -533,13 +537,20 @@ const MemberView: React.FC = () => {
         ) : (
           <div className="mv-table-wrap">
             <table className="mv-table mv-monthly-table">
-              <colgroup>
+              {/* <colgroup>
                 <col style={{ width: "90px" }} />
                 {MONTH_NAMES.slice(1).map((m) => (
                   <col key={m} style={{ width: "7.4%" }} />
                 ))}
                 <col style={{ width: "110px" }} />
-              </colgroup>
+              </colgroup> */}
+              <colgroup>
+  <col style={{ width: "90px" }} />
+  {MONTH_NAMES.slice(1).map((m) => (
+    <col key={m} />
+  ))}
+  <col style={{ width: "110px" }} />
+</colgroup>
               <thead>
                 <tr>
                   <th>Year</th>
