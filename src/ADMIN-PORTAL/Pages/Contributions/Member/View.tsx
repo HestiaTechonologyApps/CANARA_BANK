@@ -381,15 +381,27 @@ const MemberView: React.FC = () => {
   padding-right: 16px;
 }
 
-/* Highlight month headers — these stay bold/colored */
+/* Header row now plain — the label itself carries the highlight via .mv-header-badge */
 .mv-monthly-table thead th {
   font-size: 13px;
   font-weight: 700;
-  color: ${THEME};
-  background: ${THEME_SOFT};
+  background: #fff;
+  letter-spacing: 0.03em;
 }
 
-/* Year column as a badge */
+/* Individual badge for each header label (Year, JAN, FEB, ...) */
+.mv-header-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: ${THEME};
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* Year column as a badge (body rows — unchanged) */
 .mv-year-badge {
   display: inline-block;
   padding: 4px 12px;
@@ -551,7 +563,7 @@ const MemberView: React.FC = () => {
   ))}
   <col style={{ width: "110px" }} />
 </colgroup>
-              <thead>
+              {/* <thead>
                 <tr>
                   <th>Year</th>
                   {MONTH_NAMES.slice(1).map((m) => (
@@ -559,7 +571,16 @@ const MemberView: React.FC = () => {
                   ))}
                   <th>Total</th>
                 </tr>
-              </thead>
+              </thead> */}
+              <thead>
+  <tr>
+    <th><span className="mv-header-badge">Year</span></th>
+    {MONTH_NAMES.slice(1).map((m) => (
+      <th key={m}><span className="mv-header-badge">{m.slice(0, 3)}</span></th>
+    ))}
+    <th>Total</th>
+  </tr>
+</thead>
               <tbody>
                 {monthlyYears.map((year) => {
                   const yearData = monthlyPivot[year] || {};
