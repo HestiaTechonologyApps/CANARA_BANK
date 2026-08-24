@@ -82,7 +82,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   showNavbar = true,
   showNavbarExportButtons = true,
   showRowsPerPageSelector = true,
-  rowsPerPageOptions = [10, 25, 50, 100],
+  rowsPerPageOptions = [10, 25, 50, 100, -1],
   navbarAdditionalButtons,
   showFilter = false,
   filterColumns = [],
@@ -112,7 +112,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState<Record<string, any>>({});
 
-  const totalPages = Math.ceil(total / rowsPerPage);
+  const totalPages = rowsPerPage === -1 ? 1 : Math.ceil(total / rowsPerPage);
 
   // ✅ Keep fetchDataRef in sync when fetchData prop changes
   useEffect(() => {

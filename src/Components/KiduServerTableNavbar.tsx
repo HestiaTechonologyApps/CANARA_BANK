@@ -248,7 +248,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
             )}
            {showRowsPerPageSelector && (
   <Dropdown as={ButtonGroup}>
-    <Dropdown.Toggle size="sm" variant="outline" style={{
+       <Dropdown.Toggle size="sm" variant="outline" style={{
       color: "#1B3763",
       fontFamily: "Urbanist",
       fontSize: "13px",
@@ -258,7 +258,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
       alignItems: "center",
       gap: "6px",
     }}>
-      <FaColumns />  Show {rowsPerPage} rows
+      <FaColumns />  {rowsPerPage === -1 ? "Show All rows" : `Show ${rowsPerPage} rows`}
     </Dropdown.Toggle>
     <Dropdown.Menu style={{
       fontFamily: "Urbanist",
@@ -295,8 +295,8 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                 e.currentTarget.style.backgroundColor = "transparent";
               }
             }}
-          >
-            {opt} rows
+                   >
+            {opt === -1 ? "All" : `${opt} rows`}
           </Dropdown.Item>
         );
       })}
