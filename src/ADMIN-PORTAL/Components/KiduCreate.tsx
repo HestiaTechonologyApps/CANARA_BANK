@@ -12,6 +12,7 @@ import KiduSubmit from "./KiduSubmit";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
 // ==================== TYPES ====================
 export interface FieldRule {
   type: "text" | "number" | "email" | "password" | "select" | "textarea" | "popup" | "date" | "radio" | "url" | "checkbox" | "toggle" | "rowbreak" | "dropdown" | "file";
