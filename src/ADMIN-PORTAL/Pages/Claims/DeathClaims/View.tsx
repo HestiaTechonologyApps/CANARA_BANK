@@ -26,7 +26,11 @@ const DeathClaimView: React.FC = () => {
 
 const formatDateOnly = (value?: string | Date) => {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("en-IN");
+  return new Date(value).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 };
 
   const handleFetch = async (id: string) => {
