@@ -17,9 +17,14 @@ const DirectPaymentView: React.FC = () => {
 const handleFetch = async (id: string) => {
   const response = await DirectPaymentService.getDirectPaymentById(Number(id));
   if (response.value?.paymentDatestring) {
-    response.value.paymentDatestring =
-      new Date(response.value.paymentDatestring).toLocaleDateString("en-IN");
-  }
+  response.value.paymentDatestring = new Date(
+    response.value.paymentDatestring
+  ).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
 
   return response;
 };

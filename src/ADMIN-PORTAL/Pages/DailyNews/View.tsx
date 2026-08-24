@@ -21,8 +21,12 @@ const handleFetch = async (id: string) => {
     value: {
       ...res.value,
       newsDate: res.value.newsDate
-        ? new Date(res.value.newsDate).toLocaleDateString("en-GB")
-        : "",
+  ? new Date(res.value.newsDate).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  : "",
       isActive: res.value.isActive ? "Yes" : "No",
     },
   };

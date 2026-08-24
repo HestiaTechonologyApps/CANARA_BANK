@@ -21,9 +21,13 @@ const DailyNewsList: React.FC = () => {
         return news.map((n: DailyNews) => ({
           ...n,
           companyName: companyMap.get(n.companyId) ?? "-",
-          newsDate: n.newsDate
-            ? new Date(n.newsDate).toLocaleDateString("en-GB")
-            : "",
+         newsDate: n.newsDate
+  ? new Date(n.newsDate).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+  : "",
         }));
       }}
 

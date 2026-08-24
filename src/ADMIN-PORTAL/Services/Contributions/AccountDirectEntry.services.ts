@@ -87,16 +87,18 @@ async approveAccountDirectEntry(
   return response.value;
 },
 
-  async getPagedAccountDirectEntries(params: {
+    async getPagedAccountDirectEntries(params: {
     pageNumber: number;
     pageSize: number;
     searchTerm?: string;
     sortBy?: string;
     sortOrder?: "asc" | "desc";
   }): Promise<{ data: AccountDirectEntry[]; total: number }> {
+    const isAll = params.pageSize === -1;
     const queryParams = new URLSearchParams();
     queryParams.append("PageNumber", String(params.pageNumber));
-    queryParams.append("PageSize", String(params.pageSize));
+    queryParams.append("PageSize", String(isAll ? 1 : params.pageSize));
+    if (isAll) queryParams.append("GetAll", "true");
     if (params.searchTerm) queryParams.append("SearchTerm", params.searchTerm);
     if (params.sortBy) queryParams.append("SortBy", params.sortBy);
     if (params.sortOrder) queryParams.append("SortDescending", String(params.sortOrder === "desc"));

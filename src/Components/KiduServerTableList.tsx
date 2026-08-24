@@ -143,11 +143,12 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
           console.log(`🔎 [${title}] After search: ${filteredData.length} records`);
         }
 
+        const isAll = params.pageSize === -1;
         const start = (params.pageNumber - 1) * params.pageSize;
         const end = start + params.pageSize;
-        const sliced = filteredData.slice(start, end);
+        const sliced = isAll ? filteredData : filteredData.slice(start, end);
 
-        console.log(`📄 [${title}] Page ${params.pageNumber}: slice [${start}..${end}] → ${sliced.length} rows | total=${filteredData.length}`);
+        console.log(`📄 [${title}] Page ${params.pageNumber}: ${isAll ? "ALL rows" : `slice [${start}..${end}]`} → ${sliced.length} rows | total=${filteredData.length}`);
 
         return { data: sliced, total: filteredData.length };
 

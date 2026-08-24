@@ -35,6 +35,7 @@ const StateList: React.FC = () => {
       showSearch={true}
       showActions={true}
       rowsPerPage={10}
+      
     />
   );
 };

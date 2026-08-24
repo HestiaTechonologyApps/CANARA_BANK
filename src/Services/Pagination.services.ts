@@ -27,7 +27,7 @@ export interface PaginatedResponse<T> {
 export const createPaginatedService = <T>(baseEndpoint: string) => {
   return async (params: PaginationParams): Promise<PaginatedResult<T>> => {
     try {
-      const {
+            const {
         pageNumber = 1,
         pageSize = 10,
         searchTerm = '',
@@ -35,10 +35,16 @@ export const createPaginatedService = <T>(baseEndpoint: string) => {
         sortOrder = 'asc'
       } = params;
 
+      const isAll = pageSize === -1;
+
       const queryParams = new URLSearchParams({
         PageNumber: pageNumber.toString(),
-        PageSize: pageSize.toString(),
+        PageSize: (isAll ? 1 : pageSize).toString(),
       });
+
+      if (isAll) {
+        queryParams.append('GetAll', 'true');
+      }
 
       if (searchTerm?.trim()) {
         queryParams.append('SearchTerm', searchTerm.trim());
