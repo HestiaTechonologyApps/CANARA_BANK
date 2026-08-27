@@ -20,9 +20,19 @@ const UserView: React.FC = () => {
     { key: "islocked", label: "Is Locked", icon: "bi-lock", isBoolean: true },
   ];
 
- const formatDateOnly = (value?: string | Date | null) => {
+//  const formatDateOnly = (value?: string | Date | null) => {
+//   if (!value) return "";
+//   return new Date(value).toLocaleDateString("en-IN");
+// };
+const formatDateOnly = (value?: string | Date | null) => {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("en-IN");
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 };
 
 const handleFetch = async (userId: string) => {
