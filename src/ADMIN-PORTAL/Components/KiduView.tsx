@@ -259,7 +259,7 @@ const KiduView: React.FC<KiduViewProps> = ({
                 </Button>
               </span>
             )}
-            {showDeleteButton && onDelete && (
+            {/* {showDeleteButton && onDelete && (
               <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
                 <Button
                   variant={isDeleteDisabled ? "secondary" : "danger"}
@@ -271,7 +271,25 @@ const KiduView: React.FC<KiduViewProps> = ({
                   <FaTrash size={12} /> Delete
                 </Button>
               </span>
-            )}
+            )} */}
+            {showDeleteButton && onDelete && (
+  <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
+    <Button
+      variant={isDeleteDisabled ? "secondary" : "danger"}
+      className="d-flex align-items-center gap-2"
+      style={{
+        fontWeight: 500,
+        fontSize: "14px",
+        padding: "6px 14px",
+        cursor: isDeleteDisabled ? "not-allowed" : "pointer",
+      }}
+      onClick={() => setShowConfirm(true)}
+      disabled={isDeleteDisabled}
+    >
+      <FaTrash size={12} /> Delete
+    </Button>
+  </span>
+)}
           </div>
         </div>
 
