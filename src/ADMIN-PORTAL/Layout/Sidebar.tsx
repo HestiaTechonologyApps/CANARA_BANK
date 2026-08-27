@@ -3,10 +3,11 @@ import { Nav, Navbar, Container, Collapse } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { BsGridFill, BsGearFill, BsCashStack, BsNewspaper, BsBarChart, BsChevronDown, BsBag, BsTicketPerforated, BsBuildingFill } from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa6";
-import { BiLogOut } from "react-icons/bi";
+//import { BiLogOut } from "react-icons/bi";
 import AuthService from "../../Services/Auth.services";
 import KiduLogoutModal from "../../Components/KiduLogoutModal";
 import "../Style/Sidebar.css"
+import { LogOut } from "lucide-react";
 
 const Sidebar: React.FC = () => {
   const [hovered, setHovered] = useState(false);
@@ -465,7 +466,8 @@ const Sidebar: React.FC = () => {
                 cursor: "pointer",
               }}
             >
-              <BiLogOut style={{ fontSize: "20px", color: "#f87171" }} />
+              {/* <BiLogOut style={{ fontSize: "20px", color: "#f87171" }} /> */}
+              <LogOut size={20} color="#f87171" />
               {hovered && <span className="ms-2" style={{ color: "#f87171" }}>Logout</span>}
             </p>
           </Nav>
