@@ -26,6 +26,7 @@ import type {
 import MonthlyContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
 import UserService from "../../../Services/Settings/User.services";
+import KiduServerTableNavbar from "../../../../Components/KiduServerTableNavbar";
 
 const fmt = (n: number | string) => {
   const num = typeof n === "string" ? parseFloat(n) : n;
@@ -177,6 +178,24 @@ const STYLE_TAG = `
   .delete-master-btn:hover { background:rgba(239,68,68,0.2)!important;border-color:rgba(239,68,68,0.65)!important; }
   .del-confirm-yes:hover { background:#b91c1c!important;transform:translateY(-1px)!important; }
   .del-confirm-no:hover { background:#334155!important;transform:translateY(-1px)!important; }
+
+.cmv-export-wrap { display: flex; align-items: center; height: 32px; }
+.cmv-export-wrap,
+.cmv-export-wrap * {
+  margin: 0 !important;
+}
+.cmv-export-wrap button {
+  height: 32px !important;
+  box-sizing: border-box !important;
+  padding: 0 12px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  font-family: 'Sora', sans-serif !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
 `;
 
 const REPORT_TABS: Array<{
@@ -195,6 +214,16 @@ const REPORT_TABS: Array<{
     { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution." },
     { type: "ALL", label: "All Records", icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
   ];
+
+const ENTRY_EXPORT_COLUMNS = [
+  { key: "name", label: "Name" },
+  { key: "staffNo", label: "Staff No" },
+  { key: "dpCode", label: "DP Code" },
+  { key: "circle", label: "Circle" },
+  { key: "month", label: "Month" },
+  { key: "year", label: "Year" },
+  { key: "amount", label: "Amount" },
+];
 
 const ParkReasonModal: React.FC<{
   row: ContributionDetail;
@@ -371,17 +400,17 @@ const UnparkConfirmModal: React.FC<{
           )}
         </div>
 
-        
+
         <div style={{ padding: "14px 18px 18px" }}>
 
-        
+
           {checking && (
             <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", textAlign: "center", padding: "10px 0" }}>
               Please wait a moment…
             </p>
           )}
 
-          
+
           {!checking && issues.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {issues.map((issue, idx) => (
@@ -400,7 +429,7 @@ const UnparkConfirmModal: React.FC<{
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${issue.accent}0d`; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#fff"; }}
                 >
-                  
+
                   <div style={{
                     width: 28, height: 28, borderRadius: "50%",
                     background: issue.accent, color: "#fff",
@@ -408,7 +437,7 @@ const UnparkConfirmModal: React.FC<{
                     fontSize: 13, fontWeight: 800, flexShrink: 0,
                   }}>{idx + 1}</div>
 
-                  
+
                   <div style={{ flex: 1 }}>
                     <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: issue.accent }}>
                       {issue.icon} {issue.label}
@@ -422,7 +451,7 @@ const UnparkConfirmModal: React.FC<{
                 </button>
               ))}
 
-              
+
               <button
                 onClick={onClose}
                 style={{
@@ -437,7 +466,7 @@ const UnparkConfirmModal: React.FC<{
             </div>
           )}
 
-        
+
           {!checking && issues.length === 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {row.parkReason && (
@@ -566,7 +595,7 @@ const ModalShell: React.FC<{
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "center",
-        overflowY: "scroll",   
+        overflowY: "scroll",
         padding: "40px 16px 60px",
         boxSizing: "border-box",
       }}
@@ -586,7 +615,7 @@ const ModalShell: React.FC<{
         }}
         onClick={(e) => e.stopPropagation()}
       >
-      
+
         <div style={{
           background: "#1B3763",
           borderRadius: "20px 20px 0 0",
@@ -609,10 +638,10 @@ const ModalShell: React.FC<{
           </button>
         </div>
 
-       
+
         {/* <div style={{ padding: "24px 28px" }}>
           {successMsg && ( */}
-          <div style={{ padding: "24px 28px", overflowY: "auto", flex: "1 1 auto", minHeight: 0 }}>
+        <div style={{ padding: "24px 28px", overflowY: "auto", flex: "1 1 auto", minHeight: 0 }}>
           {successMsg && (
             <div style={{ background: "#dcfce7", border: "1.5px solid #86efac", borderRadius: 10, padding: "12px 16px", marginBottom: 18, color: "#166534", fontSize: 13, fontWeight: 600 }}>
               ✅ {successMsg}
@@ -626,7 +655,7 @@ const ModalShell: React.FC<{
           {children}
         </div>
 
-       
+
         <div style={{
           padding: "16px 28px 24px",
           display: "flex", gap: 10, justifyContent: "flex-end",
@@ -732,7 +761,8 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
     if (!staffNo || !name || !genderId || !selectedBranch || !selectedDesignation || !selectedCategory || !selectedStatus || !dob || !doj || !dojtoScheme) { setErrorMsg("Please fill all required fields."); return; }
     setSubmitting(true); setErrorMsg("");
     try {
-      await MemberService.createMember({ staffNo: Number(staffNo), name: name.trim(), genderId: Number(genderId), designationId: selectedDesignation.designationId, categoryId: selectedCategory.categoryId, branchId: selectedBranch.branchId, statusId: selectedStatus.statusId, dob: toIso(dob), dobString: toIso(dob), doj: toIso(doj), dojString: toIso(doj), dojtoScheme: toIso(dojtoScheme), dojtoSchemeString: toIso(dojtoScheme), isRegCompleted, nominee: nominee.trim(), nomineeRelation, nomineeIDentity: nomineeIdentity.trim(), profileImageSrc: "", unionMember, 
+      await MemberService.createMember({
+        staffNo: Number(staffNo), name: name.trim(), genderId: Number(genderId), designationId: selectedDesignation.designationId, categoryId: selectedCategory.categoryId, branchId: selectedBranch.branchId, statusId: selectedStatus.statusId, dob: toIso(dob), dobString: toIso(dob), doj: toIso(doj), dojString: toIso(doj), dojtoScheme: toIso(dojtoScheme), dojtoSchemeString: toIso(dojtoScheme), isRegCompleted, nominee: nominee.trim(), nomineeRelation, nomineeIDentity: nomineeIdentity.trim(), profileImageSrc: "", unionMember,
       } as Omit<Member, "memberId" | "auditLogs">);
       setSuccessMsg("Member created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
@@ -912,7 +942,7 @@ const MasterPanel: React.FC<{
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-    const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = () => {
     if (master.isApproved) {
       showToast(
         "Cannot Delete",
@@ -937,7 +967,7 @@ const MasterPanel: React.FC<{
   const totalAmount = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
   const totalEntry = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
-  
+
   const isAlreadyForwarded =
     master.contributionStatus === "FORWARD" ||
     master.contributionStatus === "Forwarded" ||
@@ -1180,7 +1210,7 @@ const ReportRow: React.FC<{
 
     return (
       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
-       
+
         {actionLabel && (
           <button className="rpt-action-btn" onClick={() => onAction(row)}
             style={{ background: accent, color: "#fff", border: "none", borderRadius: 7, padding: "5px 9px", fontSize: 10, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
@@ -1189,7 +1219,7 @@ const ReportRow: React.FC<{
         )}
 
         {row.isParked ? (
-          
+
           <>
             <span style={{ background: "#fef9c3", color: "#854d0e", fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 99, whiteSpace: "nowrap", border: "1px solid #fde68a" }}>
               🅿️ Parked
@@ -1266,13 +1296,13 @@ const ReportPanel: React.FC<{
 
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
-  
+
   const loadTabCounts = useCallback(async () => {
     setCountsLoading(true);
     try {
       const results = await Promise.all(
         REPORT_TABS.map(tab => {
-        
+
           if (tab.blocksForward) {
             return MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
               .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
@@ -1462,7 +1492,7 @@ const ContributionMasterView: React.FC = () => {
     setCountsLoading(true);
     try {
       const results = await Promise.all(
-        
+
         REPORT_TABS.filter(t => t.blocksForward).map(tab =>
           MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
             .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
@@ -1649,12 +1679,35 @@ const ContributionMasterView: React.FC = () => {
                   <ForwardGateBanner blockers={forwardBlockers} onGoToReport={handleGoToReport} />
                 )}
 
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
+                {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
                   <div>
                     <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.4px" }}>Contribution Entries</h2>
                     <p style={{ margin: "3px 0 0", fontSize: 13, color: "#64748b" }}>Individual staff records from the uploaded file</p>
                   </div>
                   <span style={{ background: "#e8edf5", color: "#1B3763", fontWeight: 700, fontSize: 13, padding: "6px 16px", borderRadius: 99 }}>{total.toLocaleString()} entries</span>
+                </div> */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.4px" }}>Contribution Entries</h2>
+                    <p style={{ margin: "3px 0 0", fontSize: 13, color: "#64748b" }}>Individual staff records from the uploaded file</p>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <span style={{ background: "#e8edf5", color: "#1B3763", fontWeight: 700, fontSize: 13, padding: "6px 16px", borderRadius: 99 }}>{total.toLocaleString()} entries</span>
+                    {/* <KiduServerTableNavbar
+      data={rows}
+      columns={ENTRY_EXPORT_COLUMNS}
+      title={`Contribution_${master?.month ?? ""}_${master?.year ?? ""}`}
+      showExportButtons={true}
+      showRowsPerPageSelector={false}
+      rowsPerPage={PAGE_SIZE}
+      onRowsPerPageChange={() => {}}
+      rowsPerPageOptions={[PAGE_SIZE]}
+      showFilter={false}
+      filterColumns={[]}
+      onFilterChange={() => {}}
+      initialFilters={{}}
+    /> */}
+                  </div>
                 </div>
 
                 <div style={{ display: "flex", gap: 10, marginBottom: 18, flexWrap: "wrap" }}>
@@ -1686,6 +1739,16 @@ const ContributionMasterView: React.FC = () => {
                     style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 12px", border: "1.5px solid #e2e8f0", borderRadius: 10, background: "#f8fafc", color: "#475569", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
                     <span>{sortDesc ? "↓" : "↑"}</span>{sortDesc ? "Newest first" : "Oldest first"}
                   </button>
+                  {/* <div style={{ display: "flex", gap: 3, background: "#f1f5f9", borderRadius: 10, padding: 3 }}>
+                    {(["grid", "list"] as const).map(v => (
+                      <button key={v} className="cmv-tab" onClick={() => setActiveTab(v)}
+                        style={{ padding: "6px 11px", border: "none", borderRadius: 8, fontSize: 12, fontWeight: activeTab === v ? 700 : 500, cursor: "pointer", transition: "all 0.15s", background: activeTab === v ? "#fff" : "transparent", color: activeTab === v ? "#1B3763" : "#64748b", boxShadow: activeTab === v ? "0 1px 4px rgba(0,0,0,0.09)" : "none", fontFamily: "'Sora',sans-serif" }}>
+                        {v === "grid" ? "⊞ Grid" : "≡ List"}
+                      </button>
+                    ))}
+                  </div> */}
+
+
                   <div style={{ display: "flex", gap: 3, background: "#f1f5f9", borderRadius: 10, padding: 3 }}>
                     {(["grid", "list"] as const).map(v => (
                       <button key={v} className="cmv-tab" onClick={() => setActiveTab(v)}
@@ -1694,6 +1757,25 @@ const ContributionMasterView: React.FC = () => {
                       </button>
                     ))}
                   </div>
+
+                  {activeTab === "list" && (
+                    <div className="cmv-export-wrap">
+                      <KiduServerTableNavbar
+                        data={rows}
+                        columns={ENTRY_EXPORT_COLUMNS}
+                        title={`Contribution_${master?.month ?? ""}_${master?.year ?? ""}`}
+                        showExportButtons={true}
+                        showRowsPerPageSelector={false}
+                        rowsPerPage={PAGE_SIZE}
+                        onRowsPerPageChange={() => { }}
+                        rowsPerPageOptions={[PAGE_SIZE]}
+                        showFilter={false}
+                        filterColumns={[]}
+                        onFilterChange={() => { }}
+                        initialFilters={{}}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {loading ? (
