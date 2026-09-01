@@ -3,8 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import KiduServerTable from "../../../Components/KiduServerTable";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
 import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
+import DirectPaymentService from "../../Services/Contributions/Directpayment.services";
 
-type TabKey = "monthlyContribution" | "user";
+type TabKey = "monthlyContribution" | "user" | "directPayment";
 
 const ContributionMasterApprovalList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -88,11 +89,51 @@ const ContributionMasterApprovalList: React.FC = () => {
     []
   );
 
+  const directPaymentCacheRef = useRef<any[] | null>(null);
+
+const fetchDirectPaymentData = useCallback(
+  async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+    if (!directPaymentCacheRef.current) {
+      const all = await DirectPaymentService.getAllDirectPayments();
+      directPaymentCacheRef.current = all
+        .filter((p: any) => p.isApproved !== true)
+        .map((p: any) => ({
+          ...p,
+          paymentDatestring: p.paymentDatestring
+            ? new Date(p.paymentDatestring).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })
+            : "",
+        }))
+        .sort((a: any, b: any) => b.directPaymentId - a.directPaymentId);
+    }
+
+    let filtered = [...directPaymentCacheRef.current];
+
+    if (params.searchTerm) {
+      const searchLower = params.searchTerm.toLowerCase();
+      filtered = filtered.filter((item) =>
+        Object.values(item).some(
+          (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+        )
+      );
+    }
+
+    const start = (params.pageNumber - 1) * params.pageSize;
+    const end = start + params.pageSize;
+
+    return { data: filtered.slice(start, end), total: filtered.length };
+  },
+  []
+);
+
   return (
     <div>
       {/* Tabs */}
       <div className="d-flex gap-2 mb-3" style={{ borderBottom: "2px solid #dee2e6" }}>
-        {(["monthlyContribution", "user"] as TabKey[]).map((tab) => (
+        {(["monthlyContribution", "user", "directPayment"] as TabKey[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -109,7 +150,11 @@ const ContributionMasterApprovalList: React.FC = () => {
               marginBottom: "-2px",
             }}
           >
-            {tab === "monthlyContribution" ? "Monthly Contribution" : "User"}
+            {tab === "monthlyContribution"
+      ? "Monthly Contribution"
+      : tab === "user"
+      ? "User"
+      : "Direct Payment"}
           </button>
         ))}
       </div>
@@ -177,6 +222,29 @@ const ContributionMasterApprovalList: React.FC = () => {
           rowsPerPage={10}
         />
       )}
+
+      {activeTab === "directPayment" && (
+  <KiduServerTable
+    fetchData={fetchDirectPaymentData}
+    columns={[
+      { key: "directPaymentId", label: "Direct Payment ID", enableSorting: true, type: "text" },
+      { key: "memberName", label: "Member", enableSorting: true, type: "text" },
+      { key: "amount", label: "Amount", enableSorting: true, type: "text" },
+      { key: "paymentDatestring", label: "Payment Date", enableSorting: true, type: "text" },
+      { key: "paymentMode", label: "Mode", enableSorting: true, type: "text" },
+      { key: "referenceNo", label: "Reference No", enableSorting: true, type: "text" },
+    ]}
+    idKey="directPaymentId"
+    title="Direct Payment Approval List"
+    subtitle="Direct payments awaiting admin approval. Review details and take action."
+    editRoute="/dashboard/contributions/directpayment-approve"
+    showAddButton={false}
+    showExport={true}
+    showSearch={true}
+    showActions={true}
+    rowsPerPage={10}
+  />
+)}
     </div>
   );
 };

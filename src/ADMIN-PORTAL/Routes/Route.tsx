@@ -160,8 +160,8 @@ import ContributionMasterView from '../Pages/Contributions/MonthlyContribution/V
 import ContributionMasterEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 
 //Approval
-import ContributionMasterApprovalList from '../Pages/Approval/List';
-import ContributionMasterApprovalView from '../Pages/Approval/View';
+import ContributionMasterApprovalList from '../Pages/Approval/MonthlyContributionList';
+import ContributionMasterApprovalView from '../Pages/Approval/MonthlyContributionView';
 import UserApprovalView from '../Pages/Approval/UserView';
 import ExpenseTypeList from '../Pages/Administration/Expense Type/List';
 import ExpenseTypeCreate from '../Pages/Administration/Expense Type/Create';
@@ -171,6 +171,7 @@ import ExpenseMasterList from '../Pages/Administration/Expense Master/List';
 import ExpenseMasterCreate from '../Pages/Administration/Expense Master/Create';
 import ExpenseMasterEdit from '../Pages/Administration/Expense Master/Edit';
 import ExpenseMasterView from '../Pages/Administration/Expense Master/View';
+import DirectPaymentApprovalEdit from '../Pages/Approval/DirectPaymentEdit';
 
 
 export const adminRoutes = (
@@ -262,6 +263,7 @@ export const adminRoutes = (
       <Route path="contributions/directpayment-create" element={<DirectPaymentCreate />} />
       <Route path="contributions/directpayment-edit/:directPaymentId" element={<DirectPaymentEdit />} />
       <Route path="contributions/directpayment-view/:directPaymentId" element={<DirectPaymentView />} />
+      <Route path="contributions/directpayment-approve/:directPaymentId" element={<DirectPaymentApprovalEdit />} />
 
       <Route path="contributions/member-list" element={<MemberList />} />
       <Route path="contributions/member-create" element={<MemberCreate />} />
