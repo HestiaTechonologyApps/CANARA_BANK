@@ -24,10 +24,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Show deploy target
+        run: |
+          echo "Deploying to host: ${{ vars.SMARTERASP_HOST }}"
+          echo "Server directory:  ./"
+          echo "Protocol:          ftps"
+
       - name: Deploy over FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.SMARTERASP_HOST }}
+          server: ${{ vars.SMARTERASP_HOST }}
           username: ${{ secrets.SMARTERASP_USER }}
           password: ${{ secrets.SMARTERASP_PASSWORD }}
           protocol: ftps
