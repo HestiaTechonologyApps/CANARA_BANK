@@ -4,8 +4,9 @@ import KiduServerTable from "../../../Components/KiduServerTable";
 import ContributionMasterService from "../../Services/Contributions/ContributionMaster.services";
 import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
 import DirectPaymentService from "../../Services/Contributions/Directpayment.services";
+import AccountDirectEntryService from "../../Services/Contributions/AccountDirectEntry.services";
 
-type TabKey = "monthlyContribution" | "user" | "directPayment";
+type TabKey = "monthlyContribution" | "user" | "accountDirectEntry" |"directPayment";
 
 const ContributionMasterApprovalList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -129,11 +130,41 @@ const fetchDirectPaymentData = useCallback(
   []
 );
 
+const accountDirectEntryCacheRef = useRef<any[] | null>(null);
+
+ const fetchAccountDirectEntryData = useCallback(
+   async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+     if (!accountDirectEntryCacheRef.current) {
+       const all = await AccountDirectEntryService.getAllAccountDirectEntries();
+       accountDirectEntryCacheRef.current = all
+         .filter((e: any) => e.isApproved !== true)
+         .sort((a: any, b: any) => b.accountsDirectEntryID - a.accountsDirectEntryID);
+     }
+
+     let filtered = [...accountDirectEntryCacheRef.current];
+
+     if (params.searchTerm) {
+       const searchLower = params.searchTerm.toLowerCase();
+       filtered = filtered.filter((item) =>
+         Object.values(item).some(
+           (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+         )
+       );
+     }
+
+     const start = (params.pageNumber - 1) * params.pageSize;
+     const end = start + params.pageSize;
+
+     return { data: filtered.slice(start, end), total: filtered.length };
+   },
+   []
+ );
+
   return (
     <div>
       {/* Tabs */}
       <div className="d-flex gap-2 mb-3" style={{ borderBottom: "2px solid #dee2e6" }}>
-        {(["monthlyContribution", "user", "directPayment"] as TabKey[]).map((tab) => (
+        {(["monthlyContribution", "user","accountDirectEntry", "directPayment"] as TabKey[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -154,6 +185,8 @@ const fetchDirectPaymentData = useCallback(
       ? "Monthly Contribution"
       : tab === "user"
       ? "User"
+      : tab === "accountDirectEntry"
+     ? "Account Direct Entry"
       : "Direct Payment"}
           </button>
         ))}
@@ -222,6 +255,30 @@ const fetchDirectPaymentData = useCallback(
           rowsPerPage={10}
         />
       )}
+
+      {activeTab === "accountDirectEntry" && (
+       <KiduServerTable
+         fetchData={fetchAccountDirectEntryData}
+         columns={[
+           { key: "accountsDirectEntryID", label: "Account Direct Entry ID", enableSorting: true, type: "text" },
+           { key: "memberName", label: "Member", enableSorting: true, type: "text" },
+           { key: "branchName", label: "Branch", enableSorting: true, type: "text" },
+           { key: "monthName", label: "Month", enableSorting: true, type: "text" },
+           { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+           { key: "amt", label: "Amount", enableSorting: true, type: "text" },
+           { key: "status", label: "Status", enableSorting: true, type: "text" },
+         ]}
+         idKey="accountsDirectEntryID"
+         title="Account Direct Entry Approval List"
+         subtitle="Account direct entries awaiting admin approval. Review details and take action."
+         editRoute="/dashboard/contributions/accountDirectEntry-approve"
+         showAddButton={false}
+         showExport={true}
+        showSearch={true}
+        showActions={true}
+         rowsPerPage={10}
+          />
+     )}
 
       {activeTab === "directPayment" && (
   <KiduServerTable

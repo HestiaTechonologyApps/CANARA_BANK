@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate} from "react-router-dom";
+//import { useNavigate} from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import type { Member } from "../../../Types/Contributions/Member.types";
@@ -15,12 +15,12 @@ import BranchService from "../../../Services/Settings/Branch.services";
 import MonthService from "../../../Services/Settings/Month.services";
 import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import AccountDirectEntryService from "../../../Services/Contributions/AccountDirectEntry.services";
-import AuthService from "../../../../Services/Auth.services";
+//import AuthService from "../../../../Services/Auth.services";
 
 const THEME_COLOR = "#1B3763";
 
 const AccountDirectEntryEdit: React.FC = () => {
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
  // const { accountsDirectEntryID } = useParams();
 
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -127,23 +127,23 @@ const AccountDirectEntryEdit: React.FC = () => {
     await AccountDirectEntryService.updateAccountDirectEntry(Number(id), payload);
   };
 
-  const getCurrentUserId = (): number => {
-    const user = AuthService.getCurrentUser();
-    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-    return user.userId;
-  };
+  // const getCurrentUserId = (): number => {
+  //   const user = AuthService.getCurrentUser();
+  //   if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+  //   return user.userId;
+  // };
 
-  const handleApprove = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: true, currentUserId });
-    navigate("/dashboard/contributions/accountDirectEntry-list");
-  };
+  // const handleApprove = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: true, currentUserId });
+  //   navigate("/dashboard/contributions/accountDirectEntry-list");
+  // };
 
-  const handleReject = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: false, currentUserId });
-    navigate("/dashboard/contributions/accountDirectEntry-list");
-  };
+  // const handleReject = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await AccountDirectEntryService.approveAccountDirectEntry(Number(id), { approve: false, currentUserId });
+  //   navigate("/dashboard/contributions/accountDirectEntry-list");
+  // };
 
   const popupHandlers = {
     memberId: { value: selectedMember?.name || "", actualValue: selectedMember?.memberId, onOpen: () => setShowMemberPopup(true) },
@@ -167,13 +167,13 @@ const AccountDirectEntryEdit: React.FC = () => {
         showResetButton
         attachmentConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
         onReset={handleReset}
-        approvalConfig={{
-          onApprove: handleApprove,
-          onReject: handleReject,
-          confirmApproveText: "Are you sure you want to approve this entry?",
-          confirmRejectText: "Are you sure you want to reject this entry?",
-          showWhen: (formData) => !formData.isApproved,
-        }}
+        // approvalConfig={{
+        //   onApprove: handleApprove,
+        //   onReject: handleReject,
+        //   confirmApproveText: "Are you sure you want to approve this entry?",
+        //   confirmRejectText: "Are you sure you want to reject this entry?",
+        //   showWhen: (formData) => !formData.isApproved,
+        // }}
       />
 
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />

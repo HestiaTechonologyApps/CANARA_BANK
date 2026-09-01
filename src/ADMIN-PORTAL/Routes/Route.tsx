@@ -172,6 +172,7 @@ import ExpenseMasterCreate from '../Pages/Administration/Expense Master/Create';
 import ExpenseMasterEdit from '../Pages/Administration/Expense Master/Edit';
 import ExpenseMasterView from '../Pages/Administration/Expense Master/View';
 import DirectPaymentApprovalEdit from '../Pages/Approval/DirectPaymentEdit';
+import AccountDirectEntryApprovalEdit from '../Pages/Approval/AccountDirectEntryEdit';
 
 
 export const adminRoutes = (
@@ -258,6 +259,7 @@ export const adminRoutes = (
       <Route path="contributions/accountDirectEntry-create" element={<AccountDirectEntryCreate />} />
       <Route path="contributions/accountDirectEntry-edit/:accountsDirectEntryID" element={<AccountDirectEntryEdit />} />
       <Route path="contributions/accountDirectEntry-view/:accountsDirectEntryID" element={<AccountDirectEntryView />} />
+      <Route path="contributions/accountDirectEntry-approve/:accountsDirectEntryID" element={<AccountDirectEntryApprovalEdit />} />
 
       <Route path="contributions/directpayment-list" element={<DirectPaymentList />} />
       <Route path="contributions/directpayment-create" element={<DirectPaymentCreate />} />
