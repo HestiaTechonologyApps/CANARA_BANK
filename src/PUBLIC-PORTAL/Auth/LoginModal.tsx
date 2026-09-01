@@ -240,7 +240,7 @@ if (!response.isSucess || !response.value || lockedFromValue) {
           return;
         }
 
-        toast.success(`Welcome ${response.value.user.userName}!`);
+        toast.success(`Welcome ${response.value.user.userName}!`, { duration: 5000 });
         setTimeout(() => {
           onClose();
           navigate(dashboardRoute, { replace: true });

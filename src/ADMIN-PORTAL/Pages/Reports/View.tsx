@@ -18,16 +18,29 @@ const ReportsView: React.FC = () => {
     { key: "isActive", label: "Active", icon: "bi-check-circle", isBoolean: true },
   ];
 
-  // ✅ Safe Date Formatter
+  // // ✅ Safe Date Formatter
+  // const formatDateOnly = (value?: string | Date | null) => {
+  //   if (!value) return "N/A";
+
+  //   const date = value instanceof Date ? value : new Date(value);
+
+  //   if (isNaN(date.getTime())) return "N/A";
+
+  //   return date.toLocaleDateString("en-IN");
+  // };
   const formatDateOnly = (value?: string | Date | null) => {
-    if (!value) return "N/A";
+  if (!value) return "N/A";
 
-    const date = value instanceof Date ? value : new Date(value);
+  const date = value instanceof Date ? value : new Date(value);
 
-    if (isNaN(date.getTime())) return "N/A";
+  if (isNaN(date.getTime())) return "N/A";
 
-    return date.toLocaleDateString("en-IN");
-  };
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
 
   const handleFetch = async (id: string) => {
     const res = await ReportService.getReportById(Number(id));

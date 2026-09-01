@@ -45,20 +45,35 @@ const KiduAuditLogs: React.FC<AuditTrailsProps> = ({ tableName, recordId }) => {
     console.log("Updated history:", history);
   }, [history]);
  
-  const formatDateSafe = (isoOrAny?: string) => {
-    if (!isoOrAny) return "—";
-    const d = new Date(isoOrAny);
-    if (isNaN(d.getTime())) return isoOrAny;
+  // const formatDateSafe = (isoOrAny?: string) => {
+  //   if (!isoOrAny) return "—";
+  //   const d = new Date(isoOrAny);
+  //   if (isNaN(d.getTime())) return isoOrAny;
  
-    return d.toLocaleString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
+  //   return d.toLocaleString("en-GB", {
+  //     day: "2-digit",
+  //     month: "long",
+  //     year: "numeric",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //     hour12: true,
+  //   });
+  // };
+
+  const formatDateSafe = (isoOrAny?: string) => {
+  if (!isoOrAny) return "—";
+  const d = new Date(isoOrAny);
+  if (isNaN(d.getTime())) return isoOrAny;
+
+  return d.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
  
   return (
     <>

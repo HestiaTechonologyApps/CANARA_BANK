@@ -242,7 +242,7 @@ const KiduView: React.FC<KiduViewProps> = ({
           <div className="d-flex gap-2">
             {showEditButton && editRoute && (
               <span title={isEditDisabled ? disabledEditTooltip : undefined}>
-                <Button
+                {/* <Button
                   className="d-flex align-items-center gap-2"
                   style={{
                     backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
@@ -256,10 +256,25 @@ const KiduView: React.FC<KiduViewProps> = ({
                   disabled={isEditDisabled}
                 >
                   <FaEdit /> Edit
-                </Button>
+                </Button> */}
+                <Button
+  className="d-flex align-items-center gap-2"
+  style={{
+    backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
+    border: `1px solid ${isEditDisabled ? "#adb5bd" : themeColor}`,
+    fontWeight: 500,
+    fontSize: "14px",
+    padding: "6px 14px",
+    cursor: isEditDisabled ? "not-allowed" : "pointer",
+  }}
+  onClick={handleEdit}
+  disabled={isEditDisabled}
+>
+  <FaEdit /> Edit
+</Button>
               </span>
             )}
-            {showDeleteButton && onDelete && (
+            {/* {showDeleteButton && onDelete && (
               <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
                 <Button
                   variant={isDeleteDisabled ? "secondary" : "danger"}
@@ -271,7 +286,25 @@ const KiduView: React.FC<KiduViewProps> = ({
                   <FaTrash size={12} /> Delete
                 </Button>
               </span>
-            )}
+            )} */}
+            {showDeleteButton && onDelete && (
+  <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
+    <Button
+      variant={isDeleteDisabled ? "secondary" : "danger"}
+      className="d-flex align-items-center gap-2"
+      style={{
+        fontWeight: 500,
+        fontSize: "14px",
+        padding: "6px 14px",
+        cursor: isDeleteDisabled ? "not-allowed" : "pointer",
+      }}
+      onClick={() => setShowConfirm(true)}
+      disabled={isDeleteDisabled}
+    >
+      <FaTrash size={12} /> Delete
+    </Button>
+  </span>
+)}
           </div>
         </div>
 

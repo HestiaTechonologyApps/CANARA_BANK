@@ -242,6 +242,7 @@ const backdropClass = z ? `kdp-bd-${z}` : undefined;
                 onAddClick={() => setShowAddModal(true)}
                 rowsPerPage={serverSidePagination?.pageSize ?? rowsPerPage}
                 showNavbarExportButtons={false}
+                rowsPerPageOptions={[10, 25, 50, 100]}
               />
             </div>
           )}
