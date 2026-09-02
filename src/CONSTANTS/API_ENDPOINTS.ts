@@ -221,6 +221,7 @@ REFUND_CONTRIBUTION: {
       `${API_BASE_URL}/RefundContribution/member-eligibility/${memberId}${
         excludeRefundContributionId ? `?excludeRefundContributionId=${excludeRefundContributionId}` : ""
       }`,
+    GET_NUM: (stateId: number) =>`${API_BASE_URL}/RefundContribution/next-refund-no/${stateId}`,
   },
   //CMS
   ATTACHMENT: {

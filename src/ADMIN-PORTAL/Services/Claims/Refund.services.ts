@@ -112,6 +112,14 @@ async deleteRefundContribution(id: number): Promise<void> {
   );
   return response;
 },
+
+async getNextRefundNumber(stateId: number): Promise<CustomResponse<string>> {
+    const response = await HttpService.callApi<CustomResponse<string>>(
+      API_ENDPOINTS.REFUND_CONTRIBUTION.GET_NUM(stateId),
+      "GET"
+    );
+    return response;
+  },
 };
 
 export default RefundContributionService;

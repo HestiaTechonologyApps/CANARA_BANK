@@ -37,6 +37,31 @@ const MemberRefundContributionCreate: React.FC = () => {
   const [eligibilityLoading, setEligibilityLoading] = useState(false);
   const [eligibilityError, setEligibilityError] = useState<string | null>(null);
 
+  // Auto-generated refund number for the selected state
+  const [nextRefundNo, setNextRefundNo] = useState<string>("");
+  const [refundNoLoading, setRefundNoLoading] = useState(false);
+  const [refundNoError, setRefundNoError] = useState<string | null>(null);
+
+  const loadNextRefundNo = async (stateId: number) => {
+    setRefundNoLoading(true);
+    setRefundNoError(null);
+    try {
+      const res = await RefundContributionService.getNextRefundNumber(stateId);
+      if (res.isSucess) {
+        setNextRefundNo(res.value);
+        setPresetValues(prev => ({ ...prev, refundNO: res.value }));
+      } else {
+        setNextRefundNo("");
+        setRefundNoError(res.error || "Unable to generate refund number for this state.");
+      }
+    } catch (err: any) {
+      setNextRefundNo("");
+      setRefundNoError(err?.message || "Unable to generate refund number for this state.");
+    } finally {
+      setRefundNoLoading(false);
+    }
+  };
+
   const loadEligibility = async (memberId: number) => {
     setEligibilityLoading(true);
     setEligibilityError(null);
@@ -94,11 +119,13 @@ const MemberRefundContributionCreate: React.FC = () => {
     setSelectedYearMaster(null);
     attachmentsRef.current?.clear();
     setSelectedBranch(null);
+    setNextRefundNo("");
+    setRefundNoError(null);
   };
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
-    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
+    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4, disabled: true } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4, disabled: true } },
     { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
@@ -133,13 +160,18 @@ const MemberRefundContributionCreate: React.FC = () => {
       );
     }
 
+    if (!nextRefundNo) {
+      throw new Error("Refund number could not be generated. Please reselect the state.");
+    }
+
     const payload = {
       staffNo: selectedMember.staffNo,
       stateId: selectedState.stateId,
       memberId: selectedMember.memberId,
       designationId: selectedDesignation.designationId,
       refundContribution: formData.type,
-      refundNO: String(formData.refundNO || "").trim(),
+      refundNO: nextRefundNo,
+      //refundNO: String(formData.refundNO || "").trim(),
       //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
       branchNameOFTime: selectedBranch.name,
       dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
@@ -225,6 +257,17 @@ const MemberRefundContributionCreate: React.FC = () => {
           onReset={handleReset}
           presetValues={presetValues}
         >
+          {refundNoLoading && (
+            <div className="ms-1 mb-2 text-muted" style={{ fontSize: "13px" }}>
+              Generating refund number…
+            </div>
+          )}
+          {refundNoError && (
+            <div className="ms-1 mb-2 text-danger" style={{ fontSize: "13px" }}>
+              {refundNoError}
+            </div>
+          )}
+          
           {selectedMember && (
             <div className="row mb-3 ms-1">
               {eligibilityLoading && (
@@ -301,6 +344,7 @@ const MemberRefundContributionCreate: React.FC = () => {
         onSelect={(s) => {
           setSelectedState(s);
           setShowStatePopup(false);
+          loadNextRefundNo(s.stateId);
         }}
       />
       <YearMasterPopup

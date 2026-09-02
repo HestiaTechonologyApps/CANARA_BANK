@@ -41,6 +41,29 @@ const MemberRefundContributionEdit: React.FC = () => {
   const [eligibilityLoading, setEligibilityLoading] = useState(false);
   const [eligibilityError, setEligibilityError] = useState<string | null>(null);
 
+  // Auto-generated refund number — only regenerated when the user picks a (new)
+  // state via the popup, never on the initial fetch of the existing record.
+  const [presetValues, setPresetValues] = useState<Record<string, any>>({});
+  const [refundNoLoading, setRefundNoLoading] = useState(false);
+  const [refundNoError, setRefundNoError] = useState<string | null>(null);
+
+  const regenerateRefundNo = async (stateId: number) => {
+    setRefundNoLoading(true);
+    setRefundNoError(null);
+    try {
+      const res = await RefundContributionService.getNextRefundNumber(stateId);
+      if (res.isSucess) {
+        setPresetValues(prev => ({ ...prev, refundNO: res.value }));
+      } else {
+        setRefundNoError(res.error || "Unable to generate refund number for this state.");
+      }
+    } catch (err: any) {
+      setRefundNoError(err?.message || "Unable to generate refund number for this state.");
+    } finally {
+      setRefundNoLoading(false);
+    }
+  };
+
   const loadEligibility = async (memberId: number, excludeId?: number) => {
     setEligibilityLoading(true);
     setEligibilityError(null);
@@ -62,7 +85,7 @@ const MemberRefundContributionEdit: React.FC = () => {
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
-    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
+    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4, disabled: true } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4, disabled: true } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4, disabled: true } },
     { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
@@ -148,6 +171,8 @@ const MemberRefundContributionEdit: React.FC = () => {
     setSelectedDesignation(initialDesignation);
     setSelectedYearMaster(initialYearMaster);
     setSelectedBranch(initialBranch);
+    setPresetValues({});
+    setRefundNoError(null);
     if (initialMember?.memberId) {
       loadEligibility(initialMember.memberId, currentRefundId ?? undefined);
     }
@@ -199,12 +224,12 @@ const MemberRefundContributionEdit: React.FC = () => {
     memberId: {
       value: selectedMember?.name || "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => {},
+      onOpen: () => { },
     },
     designationId: {
       value: selectedDesignation?.name || "",
       actualValue: selectedDesignation?.designationId,
-      onOpen: () => {},
+      onOpen: () => { },
     },
     branchNameOFTime: {
       value: selectedBranch?.name || "",
@@ -250,7 +275,18 @@ const MemberRefundContributionEdit: React.FC = () => {
           themeColor="#1B3763"
           attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
           onReset={handleReset}
+          presetValues={presetValues}
         >
+          {refundNoLoading && (
+            <div className="ms-1 mb-2 text-muted" style={{ fontSize: "13px" }}>
+              Generating new refund number…
+            </div>
+          )}
+          {refundNoError && (
+            <div className="ms-1 mb-2 text-danger" style={{ fontSize: "13px" }}>
+              {refundNoError}
+            </div>
+          )}
           {selectedMember && (
             <div className="row mb-3 ms-1">
               {eligibilityLoading && (
@@ -319,7 +355,16 @@ const MemberRefundContributionEdit: React.FC = () => {
         </KiduEdit>
       </div>
 
-      <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={setSelectedState} />
+      {/* <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={setSelectedState} /> */}
+      <StatePopup
+        show={showStatePopup}
+        handleClose={() => setShowStatePopup(false)}
+        onSelect={(s) => {
+          setSelectedState(s);
+          setShowStatePopup(false);
+          regenerateRefundNo(s.stateId);
+        }}
+      />
       <YearMasterPopup
         show={showYearMasterPopup}
         handleClose={() => setShowYearMasterPopup(false)}
