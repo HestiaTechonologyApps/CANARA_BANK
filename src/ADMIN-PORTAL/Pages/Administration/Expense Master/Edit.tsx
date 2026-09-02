@@ -4,10 +4,10 @@ import type { Field } from "../../../Components/KiduEdit";
 import ExpenseMasterService from "../../../Services/Administration/ExpenseMaster.services";
 import type { ExpenseMasterPayload } from "../../../Types/Administration/ExpenseMaster.types";
 import ExpenseTypePopup from "../Expense Type/ExpenseTypePopup";
-import { useParams } from "react-router-dom";
-import AuthService from "../../../../Services/Auth.services";
-import Swal from "sweetalert2";
-import { Button } from "react-bootstrap";
+//import { useParams } from "react-router-dom";
+//import AuthService from "../../../../Services/Auth.services";
+//import Swal from "sweetalert2";
+//import { Button } from "react-bootstrap";
 
 const THEME_COLOR = "#1B3763";
 
@@ -24,15 +24,15 @@ const paymentModeOptions = [
 ];
 
 const ExpenseMasterEdit: React.FC = () => {
-  const { expenseMasterId } = useParams();
+  //const { expenseMasterId } = useParams();
   
   const [showExpenseTypePopup, setShowExpenseTypePopup] = useState(false);
   const [selectedExpenseType, setSelectedExpenseType] = useState<ExpenseTypeSelection | null>(null);
   const [initialExpenseType, setInitialExpenseType] = useState<ExpenseTypeSelection | null>(null);
 
-  const [isApproving, setIsApproving] = useState(false);
-  const [isRejecting, setIsRejecting] = useState(false);
-  const [isApproved, setIsApproved] = useState<boolean>(false);
+  // const [isApproving, setIsApproving] = useState(false);
+  // const [isRejecting, setIsRejecting] = useState(false);
+  // const [isApproved, setIsApproved] = useState<boolean>(false);
 
   const fields: Field[] = [
     { name: "expenseTypeId", rules: { type: "popup", label: "Expense Type", required: true, colWidth: 4 } },
@@ -59,7 +59,7 @@ const ExpenseMasterEdit: React.FC = () => {
       };
       setSelectedExpenseType(expenseType);
       setInitialExpenseType(expenseType);
-      setIsApproved(!!res.isApproved);
+     // setIsApproved(!!res.isApproved);
     }
 
     return wrapped;
@@ -89,91 +89,91 @@ const ExpenseMasterEdit: React.FC = () => {
     await ExpenseMasterService.update(Number(id), payload);
   };
   
-  const getCurrentUserId = (): number => {
-    const user = AuthService.getCurrentUser();
-    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-    return user.userId;
-  };
+  // const getCurrentUserId = (): number => {
+  //   const user = AuthService.getCurrentUser();
+  //   if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+  //   return user.userId;
+  // };
 
-  const handleApprove = async () => {
-    if (!expenseMasterId) return;
+  // const handleApprove = async () => {
+  //   if (!expenseMasterId) return;
 
-    const result = await Swal.fire({
-      title: "Approve Expense?",
-      text: "Are you sure you want to approve this expense?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: THEME_COLOR,
-      confirmButtonText: "Yes, Approve",
-    });
+  //   const result = await Swal.fire({
+  //     title: "Approve Expense?",
+  //     text: "Are you sure you want to approve this expense?",
+  //     icon: "question",
+  //     showCancelButton: true,
+  //     confirmButtonColor: THEME_COLOR,
+  //     confirmButtonText: "Yes, Approve",
+  //   });
 
-    if (!result.isConfirmed) return;
+    // if (!result.isConfirmed) return;
 
-    setIsApproving(true);
-    try {
-      const currentUserId = getCurrentUserId();
-      await ExpenseMasterService.approveExpenseMaster(
-        Number(expenseMasterId),
-        { approve: true, currentUserId }
-      );
-      setIsApproved(true);
-      await Swal.fire({
-        icon: "success",
-        title: "Approved!",
-        text: "Expense has been approved successfully.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } catch (err: any) {
-      await Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: err.message || "Failed to approve expense.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } finally {
-      setIsApproving(false);
-    }
-  };
+    // setIsApproving(true);
+    // try {
+    //   const currentUserId = getCurrentUserId();
+    //   await ExpenseMasterService.approveExpenseMaster(
+    //     Number(expenseMasterId),
+    //     { approve: true, currentUserId }
+    //   );
+  //     setIsApproved(true);
+  //     await Swal.fire({
+  //       icon: "success",
+  //       title: "Approved!",
+  //       text: "Expense has been approved successfully.",
+  //       confirmButtonColor: THEME_COLOR,
+  //     });
+  //   } catch (err: any) {
+  //     await Swal.fire({
+  //       icon: "error",
+  //       title: "Error!",
+  //       text: err.message || "Failed to approve expense.",
+  //       confirmButtonColor: THEME_COLOR,
+  //     });
+  //   } finally {
+  //     setIsApproving(false);
+  //   }
+  // };
 
-  const handleReject = async () => {
-    if (!expenseMasterId) return;
+  // const handleReject = async () => {
+  //   if (!expenseMasterId) return;
 
-    const result = await Swal.fire({
-      title: "Reject Expense?",
-      text: "Are you sure you want to reject this expense?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#dc3545",
-      confirmButtonText: "Yes, Reject",
-    });
+  //   const result = await Swal.fire({
+  //     title: "Reject Expense?",
+  //     text: "Are you sure you want to reject this expense?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#dc3545",
+  //     confirmButtonText: "Yes, Reject",
+  //   });
 
-    if (!result.isConfirmed) return;
+    // if (!result.isConfirmed) return;
 
-    setIsRejecting(true);
-    try {
-      const currentUserId = getCurrentUserId();
-      await ExpenseMasterService.approveExpenseMaster(
-        Number(expenseMasterId),
-        { approve: false, currentUserId }
-      );
-      setIsApproved(true);
-      await Swal.fire({
-        icon: "success",
-        title: "Rejected!",
-        text: "Expense has been rejected successfully.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } catch (err: any) {
-      await Swal.fire({
-         icon: "error",
-        title: "Error!",
-        text: err.message || "Failed to reject expense.",
-        confirmButtonColor: THEME_COLOR,
-      });
-    } finally {
-      setIsRejecting(false);
-    }
-  };
+    // setIsRejecting(true);
+    // try {
+    //   const currentUserId = getCurrentUserId();
+    //   await ExpenseMasterService.approveExpenseMaster(
+    //     Number(expenseMasterId),
+    //     { approve: false, currentUserId }
+    //   );
+    //   setIsApproved(true);
+    //   await Swal.fire({
+    //     icon: "success",
+    //     title: "Rejected!",
+    //     text: "Expense has been rejected successfully.",
+    //     confirmButtonColor: THEME_COLOR,
+    //   });
+  //   } catch (err: any) {
+  //     await Swal.fire({
+  //        icon: "error",
+  //       title: "Error!",
+  //       text: err.message || "Failed to reject expense.",
+  //       confirmButtonColor: THEME_COLOR,
+  //     });
+  //   } finally {
+  //     setIsRejecting(false);
+  //   }
+  // };
 
   const popupHandlers = {
     expenseTypeId: {
@@ -185,7 +185,7 @@ const ExpenseMasterEdit: React.FC = () => {
 
    return (
     <>
-      <div className="d-flex justify-content-end gap-2 px-3 pt-3">
+      {/* <div className="d-flex justify-content-end gap-2 px-3 pt-3">
         <Button
           onClick={handleApprove}
           disabled={isApproving || isRejecting || isApproved}
@@ -205,7 +205,7 @@ const ExpenseMasterEdit: React.FC = () => {
         >
           {isRejecting ? "Rejecting..." : "Reject"}
         </Button>
-      </div>
+      </div> */}
 
       <KiduEdit
         title="Edit Expense"
@@ -223,7 +223,7 @@ const ExpenseMasterEdit: React.FC = () => {
         navigateBackPath="/dashboard/administration/expensemaster-list"
         auditLogConfig={{ tableName: "EXPENSE_MASTER", recordIdField: "expenseMasterId" }}
         attachmentConfig={{ tableName: "ExpenseMaster", recordIdField: "expenseMasterId" }}
-        themeColor="#1B3763"
+        themeColor={THEME_COLOR}
         onReset={handleReset}
       />
 

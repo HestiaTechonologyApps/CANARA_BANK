@@ -7,8 +7,9 @@ import DirectPaymentService from "../../Services/Contributions/Directpayment.ser
 import AccountDirectEntryService from "../../Services/Contributions/AccountDirectEntry.services";
 import RefundContributionService from "../../Services/Claims/Refund.services";
 import DeathClaimService from "../../Services/Claims/DeathClaims.services";
+import ExpenseMasterService from "../../Services/Administration/ExpenseMaster.services";
 
-type TabKey = "monthlyContribution" | "user" | "accountDirectEntry" |"directPayment" | "deathClaim" | "refund";
+type TabKey = "monthlyContribution" | "user" | "accountDirectEntry" |"directPayment" | "deathClaim" | "refund" | "expenseMaster";
 
 const ContributionMasterApprovalList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -222,11 +223,41 @@ const fetchRefundData = useCallback(
   []
 );
 
+const expenseMasterCacheRef = useRef<any[] | null>(null);
+
+const fetchExpenseMasterData = useCallback(
+  async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+    if (!expenseMasterCacheRef.current) {
+      const all = await ExpenseMasterService.getAll();
+      expenseMasterCacheRef.current = all
+        .filter((e: any) => e.isApproved !== true)
+        .sort((a: any, b: any) => b.expenseMasterId - a.expenseMasterId);
+    }
+
+    let filtered = [...expenseMasterCacheRef.current];
+
+    if (params.searchTerm) {
+      const searchLower = params.searchTerm.toLowerCase();
+      filtered = filtered.filter((item) =>
+        Object.values(item).some(
+          (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+        )
+      );
+    }
+
+    const start = (params.pageNumber - 1) * params.pageSize;
+    const end = start + params.pageSize;
+
+    return { data: filtered.slice(start, end), total: filtered.length };
+  },
+  []
+);
+
   return (
     <div>
       {/* Tabs */}
       <div className="d-flex gap-2 mb-3" style={{ borderBottom: "2px solid #dee2e6" }}>
-        {(["monthlyContribution", "user","accountDirectEntry", "directPayment", "deathClaim", "refund"] as TabKey[]).map((tab) => (
+        {(["monthlyContribution", "user","accountDirectEntry", "directPayment", "deathClaim", "refund", "expenseMaster"] as TabKey[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -251,9 +282,11 @@ const fetchRefundData = useCallback(
      ? "Account Direct Entry"
       : tab === "directPayment"
       ? "Direct Payment"
-      : tab === "deathClaim"
+     : tab === "deathClaim"
       ? "Death Claim"
-      : "Refund"}
+      : tab === "refund"
+      ? "Refund"
+      : "Expense Master"}
           </button>
         ))}
       </div>
@@ -407,6 +440,29 @@ const fetchRefundData = useCallback(
     title="Refund Approval List"
     subtitle="Refund contributions awaiting admin approval. Review details and take action."
     editRoute="/dashboard/claims/refundcontribution-approve"
+    showAddButton={false}
+    showExport={true}
+    showSearch={true}
+    showActions={true}
+    rowsPerPage={10}
+  />
+)}
+
+{activeTab === "expenseMaster" && (
+  <KiduServerTable
+    fetchData={fetchExpenseMasterData}
+    columns={[
+      { key: "expenseMasterId", label: "Expense ID", enableSorting: true, type: "text" },
+      { key: "expenseTypeName", label: "Expense Type", enableSorting: true, type: "text" },
+      { key: "expenseDate", label: "Expense Date", enableSorting: true, type: "text" },
+      { key: "amount", label: "Amount", enableSorting: true, type: "text" },
+      { key: "paidTo", label: "Paid To", enableSorting: true, type: "text" },
+      { key: "paymentMode", label: "Payment Mode", enableSorting: true, type: "text" },
+    ]}
+     idKey="expenseMasterId"
+    title="Expense Master Approval List"
+    subtitle="Expense records awaiting admin approval. Review details and take action."
+    editRoute="/dashboard/administration/expensemaster-approve"
     showAddButton={false}
     showExport={true}
     showSearch={true}
