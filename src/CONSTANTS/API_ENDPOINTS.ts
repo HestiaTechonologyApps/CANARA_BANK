@@ -283,6 +283,7 @@ REFUND_CONTRIBUTION: {
     CREATE: `${API_BASE_URL}/SupportTicket`,
     UPDATE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
     DELETE: (id: number) => `${API_BASE_URL}/SupportTicket/${id}`,
+    GET_NUMBER:`${API_BASE_URL}/SupportTicket/next-ticket-num`,
   },
   //ADMINISTRATIONS
   EXPENSE_MASTER:{

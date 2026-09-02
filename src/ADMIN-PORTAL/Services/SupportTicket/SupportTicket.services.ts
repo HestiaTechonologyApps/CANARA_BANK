@@ -51,6 +51,14 @@ const SupportTicketService = {
       "DELETE"
     );
   },
+
+  async getNextTicketNumber(): Promise<CustomResponse<string>> {
+    const response = await HttpService.callApi<CustomResponse<string>>(
+      API_ENDPOINTS.SUPPORT_TICKET.GET_NUMBER,
+      "GET"
+    );
+    return response;
+  },
 };
 
 export default SupportTicketService;

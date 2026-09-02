@@ -6,7 +6,7 @@ import KiduEdit from "../../Components/KiduEdit";
 
 const SupportTicketEdit: React.FC = () => {
   const fields: Field[] = [
-    { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4 } },
+    { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4, disabled: true } },
     { name: "priority", rules: { type: "select", label: "Priority", required: true, colWidth: 4 } },
     { name: "duration", rules: { type: "text", label: "Duration", required: true, colWidth: 4 } },
     { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
