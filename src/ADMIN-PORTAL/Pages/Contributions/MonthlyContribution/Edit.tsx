@@ -63,6 +63,7 @@ const ContributionMasterEdit: React.FC = () => {
         MonthCode: master.month,
         YearOf: master.year,
         ContributionFile: null,
+        MonthlyContributionId: master.contributionMasterId,
       },
     };
   };
@@ -128,6 +129,7 @@ const ContributionMasterEdit: React.FC = () => {
         successMessage="Contribution updated successfully!"
         errorMessage="Failed to update contribution. Please try again."
         navigateBackPath="/dashboard/contributions/monthlyContribution-list"
+        auditLogConfig={{ tableName: "MONTHLYCONTRIBUTION", recordIdField: "MonthlyContributionId" }}
         popupHandlers={popupHandlers}
         themeColor="#1B3763"
         onReset={handleReset}
