@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import DeathClaimService from "../../../Services/Claims/DeathClaims.services";
@@ -16,12 +16,12 @@ import MemberPopup from "../../Contributions/Member/MemberPopup";
 import StatePopup from "../../Settings/State/StatePopup";
 import DesignationPopup from "../../Settings/Designation/DesignationPopup";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-import AuthService from "../../../../Services/Auth.services";
+//import AuthService from "../../../../Services/Auth.services";
 
 const THEME_COLOR = "#1B3763";
 
 const DeathClaimEdit: React.FC = () => {
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
  // const { deathClaimId } = useParams();
 
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -99,23 +99,23 @@ const DeathClaimEdit: React.FC = () => {
     };
   };
 
-  const getCurrentUserId = (): number => {
-    const user = AuthService.getCurrentUser();
-    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-    return user.userId;
-  };
+  // const getCurrentUserId = (): number => {
+  //   const user = AuthService.getCurrentUser();
+  //   if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+  //   return user.userId;
+  // };
 
-  const handleApprove = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await DeathClaimService.approveDeathClaim(Number(id), { approve: true, currentUserId });
-    navigate("/dashboard/claims/deathclaims-list");
-  };
+  // const handleApprove = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await DeathClaimService.approveDeathClaim(Number(id), { approve: true, currentUserId });
+  //   navigate("/dashboard/claims/deathclaims-list");
+  // };
 
-  const handleReject = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await DeathClaimService.approveDeathClaim(Number(id), { approve: false, currentUserId });
-    navigate("/dashboard/claims/deathclaims-list");
-  };
+  // const handleReject = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await DeathClaimService.approveDeathClaim(Number(id), { approve: false, currentUserId });
+  //   navigate("/dashboard/claims/deathclaims-list");
+  // };
 
   const handleReset = () => {
     setSelectedState(initialState);
@@ -207,13 +207,13 @@ const DeathClaimEdit: React.FC = () => {
           recordIdField: "deathClaimId",
         }}
         onReset={handleReset}
-        approvalConfig={{
-          onApprove: handleApprove,
-          onReject: handleReject,
-          confirmApproveText: "Are you sure you want to approve this death claim?",
-          confirmRejectText: "Are you sure you want to reject this death claim?",
-          showWhen: (formData) => !formData.isApproved,
-        }}
+        // approvalConfig={{
+        //   onApprove: handleApprove,
+        //   onReject: handleReject,
+        //   confirmApproveText: "Are you sure you want to approve this death claim?",
+        //   confirmRejectText: "Are you sure you want to reject this death claim?",
+        //   showWhen: (formData) => !formData.isApproved,
+        // }}
       />
 
       <StatePopup

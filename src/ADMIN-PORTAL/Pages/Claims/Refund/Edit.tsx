@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
@@ -16,14 +16,14 @@ import DesignationService from "../../../Services/Settings/Designation.services"
 import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-import AuthService from "../../../../Services/Auth.services";
+//import AuthService from "../../../../Services/Auth.services";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import BranchPopup from "../../Branch/BranchPopup";
 
 const THEME_COLOR = "#1B3763";
 
 const RefundContributionEdit: React.FC = () => {
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
  // const { refundContributionId } = useParams();
 
   const [showStatePopup, setShowStatePopup] = useState(false);
@@ -128,23 +128,23 @@ const RefundContributionEdit: React.FC = () => {
     };
   };
 
-  const getCurrentUserId = (): number => {
-    const user = AuthService.getCurrentUser();
-    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-    return user.userId;
-  };
+  // const getCurrentUserId = (): number => {
+  //   const user = AuthService.getCurrentUser();
+  //   if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
+  //   return user.userId;
+  // };
 
-  const handleApprove = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(Number(id), { approve: true, currentUserId });
-    navigate("/dashboard/claims/refundcontribution-list");
-  };
+  // const handleApprove = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await RefundContributionService.approveRefundContribution(Number(id), { approve: true, currentUserId });
+  //   navigate("/dashboard/claims/refundcontribution-list");
+  // };
 
-  const handleReject = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(Number(id), { approve: false, currentUserId });
-    navigate("/dashboard/claims/refundcontribution-list");
-  };
+  // const handleReject = async (id: string) => {
+  //   const currentUserId = getCurrentUserId();
+  //   await RefundContributionService.approveRefundContribution(Number(id), { approve: false, currentUserId });
+  //   navigate("/dashboard/claims/refundcontribution-list");
+  // };
 
   const handleReset = () => {
     setSelectedState(initialState);
@@ -233,13 +233,13 @@ const RefundContributionEdit: React.FC = () => {
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
         presetValues={presetValues}
-        approvalConfig={{
-          onApprove: handleApprove,
-          onReject: handleReject,
-          confirmApproveText: "Are you sure you want to approve this refund contribution?",
-          confirmRejectText: "Are you sure you want to reject this refund contribution?",
-          showWhen: (formData) => !formData.isApproved,
-        }}
+        // approvalConfig={{
+        //   onApprove: handleApprove,
+        //   onReject: handleReject,
+        //   confirmApproveText: "Are you sure you want to approve this refund contribution?",
+        //   confirmRejectText: "Are you sure you want to reject this refund contribution?",
+        //   showWhen: (formData) => !formData.isApproved,
+        // }}
       />
       <StatePopup
         show={showStatePopup}

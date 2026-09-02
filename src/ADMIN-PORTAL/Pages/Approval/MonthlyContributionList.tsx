@@ -5,8 +5,10 @@ import ContributionMasterService from "../../Services/Contributions/Contribution
 import UserRegistrationService from "../../Services/UserRegistration/UserRegsitration.servives";
 import DirectPaymentService from "../../Services/Contributions/Directpayment.services";
 import AccountDirectEntryService from "../../Services/Contributions/AccountDirectEntry.services";
+import RefundContributionService from "../../Services/Claims/Refund.services";
+import DeathClaimService from "../../Services/Claims/DeathClaims.services";
 
-type TabKey = "monthlyContribution" | "user" | "accountDirectEntry" |"directPayment";
+type TabKey = "monthlyContribution" | "user" | "accountDirectEntry" |"directPayment" | "deathClaim" | "refund";
 
 const ContributionMasterApprovalList: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -160,11 +162,71 @@ const accountDirectEntryCacheRef = useRef<any[] | null>(null);
    []
  );
 
+ const deathClaimCacheRef = useRef<any[] | null>(null);
+
+const fetchDeathClaimData = useCallback(
+  async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+    if (!deathClaimCacheRef.current) {
+      const all = await DeathClaimService.getAllDeathClaims();
+      deathClaimCacheRef.current = all
+        .filter((d: any) => d.isApproved !== true)
+        .sort((a: any, b: any) => b.deathClaimId - a.deathClaimId);
+    }
+
+    let filtered = [...deathClaimCacheRef.current];
+
+    if (params.searchTerm) {
+      const searchLower = params.searchTerm.toLowerCase();
+      filtered = filtered.filter((item) =>
+        Object.values(item).some(
+          (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+        )
+      );
+    }
+
+    const start = (params.pageNumber - 1) * params.pageSize;
+    const end = start + params.pageSize;
+
+    return { data: filtered.slice(start, end), total: filtered.length };
+  },
+  []
+);
+
+const refundCacheRef = useRef<any[] | null>(null);
+
+const fetchRefundData = useCallback(
+  async (params: { pageNumber: number; pageSize: number; searchTerm: string }) => {
+    if (!refundCacheRef.current) {
+      const all = await RefundContributionService.getAllRefundContributions();
+      refundCacheRef.current = all
+        .filter((r: any) => r.isApproved !== true)
+        .sort((a: any, b: any) => b.refundContributionId - a.refundContributionId);
+    }
+
+    let filtered = [...refundCacheRef.current];
+
+    if (params.searchTerm) {
+      const searchLower = params.searchTerm.toLowerCase();
+      filtered = filtered.filter((item) =>
+        Object.values(item).some(
+          (value) => value !== null && value !== undefined && String(value).toLowerCase().includes(searchLower)
+        )
+      );
+    }
+
+    const start = (params.pageNumber - 1) * params.pageSize;
+    const end = start + params.pageSize;
+
+    return { data: filtered.slice(start, end), total: filtered.length };
+  },
+  []
+);
+
   return (
     <div>
       {/* Tabs */}
       <div className="d-flex gap-2 mb-3" style={{ borderBottom: "2px solid #dee2e6" }}>
-        {(["monthlyContribution", "user","accountDirectEntry", "directPayment"] as TabKey[]).map((tab) => (
+        {(["monthlyContribution", "user","accountDirectEntry", "directPayment", "deathClaim", "refund"] as TabKey[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -187,7 +249,11 @@ const accountDirectEntryCacheRef = useRef<any[] | null>(null);
       ? "User"
       : tab === "accountDirectEntry"
      ? "Account Direct Entry"
-      : "Direct Payment"}
+      : tab === "directPayment"
+      ? "Direct Payment"
+      : tab === "deathClaim"
+      ? "Death Claim"
+      : "Refund"}
           </button>
         ))}
       </div>
@@ -295,6 +361,52 @@ const accountDirectEntryCacheRef = useRef<any[] | null>(null);
     title="Direct Payment Approval List"
     subtitle="Direct payments awaiting admin approval. Review details and take action."
     editRoute="/dashboard/contributions/directpayment-approve"
+    showAddButton={false}
+    showExport={true}
+    showSearch={true}
+    showActions={true}
+    rowsPerPage={10}
+  />
+)}
+
+{activeTab === "deathClaim" && (
+  <KiduServerTable
+    fetchData={fetchDeathClaimData}
+    columns={[
+      { key: "deathClaimId", label: "Death Claim ID", enableSorting: true, type: "text" },
+      { key: "memberName", label: "Member", enableSorting: true, type: "text" },
+      { key: "stateName", label: "State", enableSorting: true, type: "text" },
+      { key: "designationName", label: "Designation", enableSorting: true, type: "text" },
+      { key: "amount", label: "Amount", enableSorting: true, type: "text" },
+      { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+    ]}
+    idKey="deathClaimId"
+    title="Death Claim Approval List"
+    subtitle="Death claims awaiting admin approval. Review details and take action."
+    editRoute="/dashboard/claims/deathclaims-approve"
+    showAddButton={false}
+    showExport={true}
+    showSearch={true}
+    showActions={true}
+    rowsPerPage={10}
+  />
+)}
+
+{activeTab === "refund" && (
+  <KiduServerTable
+    fetchData={fetchRefundData}
+    columns={[
+      { key: "refundContributionId", label: "Refund ID", enableSorting: true, type: "text" },
+      { key: "memberName", label: "Member", enableSorting: true, type: "text" },
+      { key: "designationName", label: "Designation", enableSorting: true, type: "text" },
+      { key: "refundNO", label: "Refund No", enableSorting: true, type: "text" },
+      { key: "amount", label: "Amount", enableSorting: true, type: "text" },
+      { key: "yearName", label: "Year", enableSorting: true, type: "text" },
+    ]}
+    idKey="refundContributionId"
+    title="Refund Approval List"
+    subtitle="Refund contributions awaiting admin approval. Review details and take action."
+    editRoute="/dashboard/claims/refundcontribution-approve"
     showAddButton={false}
     showExport={true}
     showSearch={true}

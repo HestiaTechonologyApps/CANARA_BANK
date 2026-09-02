@@ -173,6 +173,8 @@ import ExpenseMasterEdit from '../Pages/Administration/Expense Master/Edit';
 import ExpenseMasterView from '../Pages/Administration/Expense Master/View';
 import DirectPaymentApprovalEdit from '../Pages/Approval/DirectPaymentEdit';
 import AccountDirectEntryApprovalEdit from '../Pages/Approval/AccountDirectEntryEdit';
+import DeathClaimApprovalEdit from '../Pages/Approval/DeathClaimEdit';
+import RefundContributionApprovalEdit from '../Pages/Approval/RefundEdit';
 
 
 export const adminRoutes = (
@@ -266,6 +268,8 @@ export const adminRoutes = (
       <Route path="contributions/directpayment-edit/:directPaymentId" element={<DirectPaymentEdit />} />
       <Route path="contributions/directpayment-view/:directPaymentId" element={<DirectPaymentView />} />
       <Route path="contributions/directpayment-approve/:directPaymentId" element={<DirectPaymentApprovalEdit />} />
+      <Route path="claims/deathclaims-approve/:deathClaimId" element={<DeathClaimApprovalEdit />} />
+      <Route path="claims/refundcontribution-approve/:refundContributionId" element={<RefundContributionApprovalEdit />} />
 
       <Route path="contributions/member-list" element={<MemberList />} />
       <Route path="contributions/member-create" element={<MemberCreate />} />
