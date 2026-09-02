@@ -67,7 +67,7 @@ const DirectPaymentApprovalEdit: React.FC = () => {
     memberId: {
       value: selectedMember?.name ?? "",
       actualValue: selectedMember?.memberId,
-      onOpen: () => {},
+      onOpen: () => { },
     },
   };
 

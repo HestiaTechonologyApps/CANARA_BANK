@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Member } from "../../Types/Contributions/Member.types";
 import type { Branch } from "../../Types/Settings/Branch.types";
-//import type Month from "react-datepicker/dist/dist/month.js";
 import type { YearMaster } from "../../Types/Settings/YearMaster.types";
 import type { Field } from "../../Components/KiduEdit";
 import AccountDirectEntryService from "../../Services/Contributions/AccountDirectEntry.services";
@@ -19,7 +18,6 @@ const THEME_COLOR = "#1B3763";
 
 const AccountDirectEntryApprovalEdit: React.FC = () => {
   const navigate = useNavigate();
- // const { accountsDirectEntryID } = useParams();
 
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
@@ -37,9 +35,9 @@ const AccountDirectEntryApprovalEdit: React.FC = () => {
     { name: "status", rules: { type: "text", label: "Status", disabled: true, colWidth: 4 } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4, disabled: true } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4, disabled: true } },
-    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4, disabled: true } },
-    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4, disabled: true } },
-    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4, disabled: true } },
+    //{ name: "f9", rules: { type: "text", label: "F9", colWidth: 4, disabled: true } },
+    //{ name: "f10", rules: { type: "text", label: "F10", colWidth: 4, disabled: true } },
+    //{ name: "f11", rules: { type: "text", label: "F11", colWidth: 4, disabled: true } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -74,8 +72,6 @@ const AccountDirectEntryApprovalEdit: React.FC = () => {
     };
   };
 
-  // No-op: this page never submits field changes. If KiduEdit requires
-  // onUpdate to be supplied, this guards against any accidental write.
   const handleUpdate = async () => {
     throw new Error("This record is read-only. Use Approve or Reject.");
   };
@@ -99,11 +95,10 @@ const AccountDirectEntryApprovalEdit: React.FC = () => {
   };
 
   const popupHandlers = {
-    // Read-only: none of these open their popups here.
-    memberId: { value: selectedMember?.name || "", actualValue: selectedMember?.memberId, onOpen: () => {} },
-    branchId: { value: selectedBranch?.name || "", actualValue: selectedBranch?.branchId, onOpen: () => {} },
-    monthCode: { value: selectedMonth?.monthName || "", actualValue: selectedMonth?.monthCode, onOpen: () => {} },
-    yearOf: { value: selectedYearMaster ? String(selectedYearMaster.yearName) : "", actualValue: selectedYearMaster?.yearOf, onOpen: () => {} },
+    memberId: { value: selectedMember?.name || "", actualValue: selectedMember?.memberId, onOpen: () => { } },
+    branchId: { value: selectedBranch?.name || "", actualValue: selectedBranch?.branchId, onOpen: () => { } },
+    monthCode: { value: selectedMonth?.monthName || "", actualValue: selectedMonth?.monthCode, onOpen: () => { } },
+    yearOf: { value: selectedYearMaster ? String(selectedYearMaster.yearName) : "", actualValue: selectedYearMaster?.yearOf, onOpen: () => { } },
   };
 
   return (
