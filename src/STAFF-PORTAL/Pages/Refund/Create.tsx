@@ -138,22 +138,22 @@ const MemberRefundContributionCreate: React.FC = () => {
     { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4, disabled: true } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
-    { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
-    { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
+    //{ name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
+    //{ name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
     // "lastContribution" intentionally removed from here — rendered as a read-only block below,
     // populated from the eligibility API on load.
-    { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
+    //{ name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
   ];
 
-  const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
+  //const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
   const handleSubmit = async (formData: Record<string, any>) => {
     if (!selectedState) throw new Error("Please select State");
     if (!selectedMember) throw new Error("Please select Member");
     if (!selectedDesignation) throw new Error("Please select Designation");
-    if (!selectedYearMaster) throw new Error("Please select Year");
+    //if (!selectedYearMaster) throw new Error("Please select Year");
     if (!selectedBranch) throw new Error("Please select Branch");
 
     const requestedAmount = Number(formData.amount);
@@ -175,6 +175,8 @@ const MemberRefundContributionCreate: React.FC = () => {
       throw new Error("Refund number could not be generated. Please reselect the state.");
     }
 
+    const currentYear = new Date().getFullYear();
+
     const payload = {
       staffNo: selectedMember.staffNo,
       stateId: selectedState.stateId,
@@ -188,13 +190,17 @@ const MemberRefundContributionCreate: React.FC = () => {
       dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
       type: formData.type,
       remark: String(formData.remark || "").trim(),
-      ddno: String(formData.ddno || "").trim(),
-      dddate: toIso(formData.dddate),
-      dddateString: toIso(formData.dddate),
+      //ddno: String(formData.ddno || "").trim(),
+      //dddate: toIso(formData.dddate),
+      //dddateString: toIso(formData.dddate),
+      ddno:"",
+      dddate:null,
+      dddateString:"",
       amount: requestedAmount,
       lastContribution: eligibility.lastContributionAmount,
-      yearOF: selectedYearMaster.yearOf,
-      deathDate: "",
+      //yearOF: selectedYearMaster.yearOf,
+      yearOF: currentYear,
+      deathDate: null,
       deathDateString: "",
     };
 
