@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import MemberService from "../../../Services/Contributions/Member.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import defaultProfileImage from "../../../Assets/Images/profile.jpg";
+import MemberStatusCards from "./StatusCard";
 
 const MemberList: React.FC = () => {
+
+  const [selectedStatusId, setSelectedStatusId] = useState<number | null>(null);
+  
   return (
+    <>
+     <MemberStatusCards selectedStatusId={selectedStatusId} onSelect={setSelectedStatusId} />
+     
     <KiduServerTableList
       paginatedFetchService={async ({ pageNumber, pageSize, searchTerm }) => {
         const response = await MemberService.getMembersPaginated({
@@ -61,6 +68,7 @@ const MemberList: React.FC = () => {
       showActions={true}
       rowsPerPage={10}
     />
+    </>
   );
 };
 

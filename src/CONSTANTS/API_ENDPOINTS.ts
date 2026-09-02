@@ -165,6 +165,7 @@ LOOKUP: {
     DELETE: (id: number) => `${API_BASE_URL}/Member/${id}`,
     UPLOAD_PROFILE_PIC: `${API_BASE_URL}/Member/upload-profile-pic`,
     GET_ALL_PAGINETED: `${API_BASE_URL}/Member/paged`,
+    GET_STATUS_FILTER:`${API_BASE_URL}/Member/statuses`,
   },
   MONTHLY_CONTRIBUTION:{
     GET_ALL:`${API_BASE_URL}/MonthlyContribution`,
