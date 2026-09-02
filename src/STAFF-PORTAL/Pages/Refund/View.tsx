@@ -20,6 +20,9 @@ const MemberRefundContributionView: React.FC = () => {
     { key: "dddateString", label: "DD Date", icon: "bi-calendar-event" },
     { key: "amount", label: "Amount", icon: "bi-currency-rupee" },
     { key: "lastContribution", label: "Last Contribution", icon: "bi-cash-stack" },
+    { key: "approvedAmount", label: "Total Approved Refund Amount", icon: "bi-check-circle" },
+    { key: "pendingAmount", label: "Total Pending/Rejected Refund Amount", icon: "bi-hourglass-split" },
+    { key: "availableAmount", label: "Available For Refund", icon: "bi-wallet2" },
     { key: "yearName", label: "Year", icon: "bi-calendar" },
   ];
 
@@ -29,13 +32,24 @@ const MemberRefundContributionView: React.FC = () => {
   };
 
   const handleFetch = async (id: string) => {
-    const response = await RefundContributionService.getRefundContributionById(
-      Number(id)
-    );
+    const response = await RefundContributionService.getRefundContributionById(Number(id));
 
     if (response.value) {
       response.value.deathDateString = formatDateOnly(response.value.deathDateString);
       response.value.dddateString = formatDateOnly(response.value.dddateString);
+
+      if (response.value.memberId) {
+        try {
+          const eligibilityRes = await RefundContributionService.getMemberEligibility(response.value.memberId);
+          if (eligibilityRes.isSucess && eligibilityRes.value) {
+            (response.value as any).approvedAmount = eligibilityRes.value.approvedAmount;
+            (response.value as any).pendingAmount = eligibilityRes.value.pendingAmount;
+            (response.value as any).availableAmount = eligibilityRes.value.availableAmount;
+          }
+        } catch (err) {
+          console.error("Failed to fetch refund eligibility:", err);
+        }
+      }
     }
 
     return response;
@@ -52,11 +66,9 @@ const MemberRefundContributionView: React.FC = () => {
       onFetch={handleFetch}
       onDelete={handleDelete}
       paramName="refundContributionId"
-      //   listRoute="/dashboard/claims/refundcontribution-list"
-      //   editRoute="/dashboard/claims/refundcontribution-edit"
       listRoute="/staff-portal/refund-list"
       editRoute="/staff-portal/refund-list/MemberRefundContribution-edit"
-      auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId", }}
+      auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
       attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
       themeColor="#1B3763"
       loadingText="Loading Refund details..."
