@@ -51,6 +51,10 @@ const RefundContributionEdit: React.FC = () => {
   const [refundNoLoading, setRefundNoLoading] = useState(false);
   const [refundNoError, setRefundNoError] = useState<string | null>(null);
 
+  // Live-tracked amount value, used to warn the user as they type (before submit)
+  const [amountValue, setAmountValue] = useState<string>("");
+  const [currentAmountAtFetch, setCurrentAmountAtFetch] = useState<string>("");
+
   const regenerateRefundNo = async (stateId: number) => {
     setRefundNoLoading(true);
     setRefundNoError(null);
@@ -87,6 +91,9 @@ const RefundContributionEdit: React.FC = () => {
     }
   };
 
+  const isAmountExceeding =
+    !!eligibility && amountValue !== "" && Number(amountValue) > eligibility.availableAmount;
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4, disabled: true } },
@@ -117,6 +124,9 @@ const RefundContributionEdit: React.FC = () => {
     if (!refund) return response;
 
     setCurrentRefundId(Number(id));
+    const fetchedAmount = refund.amount != null ? String(refund.amount) : "";
+    setAmountValue(fetchedAmount);
+    setCurrentAmountAtFetch(fetchedAmount);
 
     if (refund.stateId) {
       const state = (await StateService.getStateById(refund.stateId)).value;
@@ -170,6 +180,7 @@ const RefundContributionEdit: React.FC = () => {
     setSelectedBranch(initialBranch);
     setPresetValues({});
     setRefundNoError(null);
+    setAmountValue(currentAmountAtFetch);
     if (initialMember?.memberId) {
       loadEligibility(initialMember.memberId, currentRefundId ?? undefined);
     }
@@ -183,9 +194,13 @@ const RefundContributionEdit: React.FC = () => {
     const requestedAmount = Number(formData.amount);
 
     if (eligibility && requestedAmount > eligibility.availableAmount) {
-      throw new Error(
+      // Silent: the inline highlighted warning already tells the user this —
+      // no toast/Swal popup needed for this specific case.
+      const err: any = new Error(
         `Amount (${requestedAmount}) exceeds the available refund balance (${eligibility.availableAmount}) for this member.`
       );
+      err.silent = true;
+      throw err;
     }
 
     const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
@@ -261,6 +276,9 @@ const RefundContributionEdit: React.FC = () => {
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
         presetValues={presetValues}
+        fieldChangeHandlers={{
+          amount: (value) => setAmountValue(value),
+        }}
       >
 
         {refundNoLoading && (
@@ -273,7 +291,7 @@ const RefundContributionEdit: React.FC = () => {
             {refundNoError}
           </div>
         )}
-        
+
         {selectedMember && (
           <div className="row mb-3 ms-1">
             {eligibilityLoading && (
@@ -335,13 +353,30 @@ const RefundContributionEdit: React.FC = () => {
                     {eligibility.availableAmount}
                   </span>
                 </div>
+                {isAmountExceeding && (
+                  <div className="col-12 mt-2">
+                    <span
+                      className="fw-bold d-inline-block"
+                      style={{
+                        fontSize: "13px",
+                        color: "#b45309",
+                        background: "#fffbeb",
+                        border: "1px solid #fcd34d",
+                        borderRadius: "6px",
+                        padding: "4px 10px",
+                      }}
+                    >
+                      ⚠ Amount ({amountValue}) exceeds the available refund balance ({eligibility.availableAmount}).
+                    </span>
+                  </div>
+                )}
               </>
             )}
           </div>
         )}
       </KiduEdit>
       {/* <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={setSelectedState} /> */}
-            <StatePopup
+      <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
         onSelect={(s) => {

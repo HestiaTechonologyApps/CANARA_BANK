@@ -42,6 +42,9 @@ const MemberRefundContributionCreate: React.FC = () => {
   const [refundNoLoading, setRefundNoLoading] = useState(false);
   const [refundNoError, setRefundNoError] = useState<string | null>(null);
 
+  // Live-tracked amount value, used to warn the user as they type (before submit)
+  const [amountValue, setAmountValue] = useState<string>("");
+
   const loadNextRefundNo = async (stateId: number) => {
     setRefundNoLoading(true);
     setRefundNoError(null);
@@ -121,7 +124,11 @@ const MemberRefundContributionCreate: React.FC = () => {
     setSelectedBranch(null);
     setNextRefundNo("");
     setRefundNoError(null);
+    setAmountValue("");
   };
+
+  const isAmountExceeding =
+    !!eligibility && amountValue !== "" && Number(amountValue) > eligibility.availableAmount;
 
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
@@ -155,9 +162,13 @@ const MemberRefundContributionCreate: React.FC = () => {
       throw new Error("Your refund eligibility could not be verified. Please reload the page.");
     }
     if (requestedAmount > eligibility.availableAmount) {
-      throw new Error(
+      // Silent: the inline highlighted warning already tells the user this —
+      // no toast/Swal popup needed for this specific case.
+      const err: any = new Error(
         `Amount (${requestedAmount}) exceeds your available refund balance (${eligibility.availableAmount}).`
       );
+      err.silent = true;
+      throw err;
     }
 
     if (!nextRefundNo) {
@@ -256,6 +267,9 @@ const MemberRefundContributionCreate: React.FC = () => {
           themeColor="#1B3763"
           onReset={handleReset}
           presetValues={presetValues}
+          fieldChangeHandlers={{
+            amount: (value) => setAmountValue(value),
+          }}
         >
           {refundNoLoading && (
             <div className="ms-1 mb-2 text-muted" style={{ fontSize: "13px" }}>
@@ -267,7 +281,7 @@ const MemberRefundContributionCreate: React.FC = () => {
               {refundNoError}
             </div>
           )}
-          
+
           {selectedMember && (
             <div className="row mb-3 ms-1">
               {eligibilityLoading && (
@@ -329,6 +343,23 @@ const MemberRefundContributionCreate: React.FC = () => {
                       {eligibility.availableAmount}
                     </span>
                   </div>
+                  {isAmountExceeding && (
+                    <div className="col-12 mt-2">
+                      <span
+                        className="fw-bold d-inline-block"
+                        style={{
+                          fontSize: "13px",
+                          color: "#b45309",
+                          background: "#fffbeb",
+                          border: "1px solid #fcd34d",
+                          borderRadius: "6px",
+                          padding: "4px 10px",
+                        }}
+                      >
+                        ⚠ Amount ({amountValue}) exceeds your available refund balance ({eligibility.availableAmount}).
+                      </span>
+                    </div>
+                  )}
                 </>
               )}
             </div>

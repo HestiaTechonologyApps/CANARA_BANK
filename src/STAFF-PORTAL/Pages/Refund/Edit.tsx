@@ -47,6 +47,10 @@ const MemberRefundContributionEdit: React.FC = () => {
   const [refundNoLoading, setRefundNoLoading] = useState(false);
   const [refundNoError, setRefundNoError] = useState<string | null>(null);
 
+  // Live-tracked amount value, used to warn the user as they type (before submit)
+  const [amountValue, setAmountValue] = useState<string>("");
+  const [currentAmountAtFetch, setCurrentAmountAtFetch] = useState<string>("");
+
   const regenerateRefundNo = async (stateId: number) => {
     setRefundNoLoading(true);
     setRefundNoError(null);
@@ -83,6 +87,9 @@ const MemberRefundContributionEdit: React.FC = () => {
     }
   };
 
+  const isAmountExceeding =
+    !!eligibility && amountValue !== "" && Number(amountValue) > eligibility.availableAmount;
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
     { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4, disabled: true } },
@@ -113,6 +120,9 @@ const MemberRefundContributionEdit: React.FC = () => {
     if (!refund) return response;
 
     setCurrentRefundId(Number(id));
+    const fetchedAmount = refund.amount != null ? String(refund.amount) : "";
+    setAmountValue(fetchedAmount);
+    setCurrentAmountAtFetch(fetchedAmount);
 
     if (refund.stateId) {
       const state = (await StateService.getStateById(refund.stateId)).value;
@@ -173,6 +183,7 @@ const MemberRefundContributionEdit: React.FC = () => {
     setSelectedBranch(initialBranch);
     setPresetValues({});
     setRefundNoError(null);
+    setAmountValue(currentAmountAtFetch);
     if (initialMember?.memberId) {
       loadEligibility(initialMember.memberId, currentRefundId ?? undefined);
     }
@@ -186,9 +197,13 @@ const MemberRefundContributionEdit: React.FC = () => {
     const requestedAmount = Number(formData.amount);
 
     if (eligibility && requestedAmount > eligibility.availableAmount) {
-      throw new Error(
+      // Silent: the inline highlighted warning already tells the user this —
+      // no toast/Swal popup needed for this specific case.
+      const err: any = new Error(
         `Amount (${requestedAmount}) exceeds your available refund balance (${eligibility.availableAmount}).`
       );
+      err.silent = true;
+      throw err;
     }
 
     const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
@@ -276,6 +291,9 @@ const MemberRefundContributionEdit: React.FC = () => {
           attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
           onReset={handleReset}
           presetValues={presetValues}
+          fieldChangeHandlers={{
+            amount: (value) => setAmountValue(value),
+          }}
         >
           {refundNoLoading && (
             <div className="ms-1 mb-2 text-muted" style={{ fontSize: "13px" }}>
@@ -348,6 +366,23 @@ const MemberRefundContributionEdit: React.FC = () => {
                       {eligibility.availableAmount}
                     </span>
                   </div>
+                  {isAmountExceeding && (
+                    <div className="col-12 mt-2">
+                      <span
+                        className="fw-bold d-inline-block"
+                        style={{
+                          fontSize: "13px",
+                          color: "#b45309",
+                          background: "#fffbeb",
+                          border: "1px solid #fcd34d",
+                          borderRadius: "6px",
+                          padding: "4px 10px",
+                        }}
+                      >
+                        ⚠ Amount ({amountValue}) exceeds your available refund balance ({eligibility.availableAmount}).
+                      </span>
+                    </div>
+                  )}
                 </>
               )}
             </div>
