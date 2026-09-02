@@ -21,8 +21,8 @@ import YearMasterPopup from "../../YearMaster/YearMasterPopup";
 const THEME_COLOR = "#1B3763";
 
 const DeathClaimEdit: React.FC = () => {
- // const navigate = useNavigate();
- // const { deathClaimId } = useParams();
+  // const navigate = useNavigate();
+  // const { deathClaimId } = useParams();
 
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -207,13 +207,13 @@ const DeathClaimEdit: React.FC = () => {
           recordIdField: "deathClaimId",
         }}
         onReset={handleReset}
-        // approvalConfig={{
-        //   onApprove: handleApprove,
-        //   onReject: handleReject,
-        //   confirmApproveText: "Are you sure you want to approve this death claim?",
-        //   confirmRejectText: "Are you sure you want to reject this death claim?",
-        //   showWhen: (formData) => !formData.isApproved,
-        // }}
+      // approvalConfig={{
+      //   onApprove: handleApprove,
+      //   onReject: handleReject,
+      //   confirmApproveText: "Are you sure you want to approve this death claim?",
+      //   confirmRejectText: "Are you sure you want to reject this death claim?",
+      //   showWhen: (formData) => !formData.isApproved,
+      // }}
       />
 
       <StatePopup

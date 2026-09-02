@@ -20,8 +20,8 @@ import AccountDirectEntryService from "../../../Services/Contributions/AccountDi
 const THEME_COLOR = "#1B3763";
 
 const AccountDirectEntryEdit: React.FC = () => {
- // const navigate = useNavigate();
- // const { accountsDirectEntryID } = useParams();
+  // const navigate = useNavigate();
+  // const { accountsDirectEntryID } = useParams();
 
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showBranchPopup, setShowBranchPopup] = useState(false);
@@ -49,9 +49,9 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "status", rules: { type: "text", label: "Status", disabled: true, colWidth: 4 } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
-   // { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
-   // { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
-   // { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
+    // { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+    // { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+    // { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
   ];
 
   const handleFetch = async (id: string) => {
@@ -167,13 +167,13 @@ const AccountDirectEntryEdit: React.FC = () => {
         showResetButton
         attachmentConfig={{ tableName: "AccountDirectEntry", recordIdField: "accountsDirectEntryID" }}
         onReset={handleReset}
-        // approvalConfig={{
-        //   onApprove: handleApprove,
-        //   onReject: handleReject,
-        //   confirmApproveText: "Are you sure you want to approve this entry?",
-        //   confirmRejectText: "Are you sure you want to reject this entry?",
-        //   showWhen: (formData) => !formData.isApproved,
-        // }}
+      // approvalConfig={{
+      //   onApprove: handleApprove,
+      //   onReject: handleReject,
+      //   confirmApproveText: "Are you sure you want to approve this entry?",
+      //   confirmRejectText: "Are you sure you want to reject this entry?",
+      //   showWhen: (formData) => !formData.isApproved,
+      // }}
       />
 
       <MemberPopup show={showMemberPopup} handleClose={() => setShowMemberPopup(false)} onSelect={setSelectedMember} />

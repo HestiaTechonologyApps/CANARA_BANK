@@ -23,8 +23,8 @@ import BranchPopup from "../../Branch/BranchPopup";
 const THEME_COLOR = "#1B3763";
 
 const RefundContributionEdit: React.FC = () => {
- // const navigate = useNavigate();
- // const { refundContributionId } = useParams();
+  // const navigate = useNavigate();
+  // const { refundContributionId } = useParams();
 
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
@@ -92,10 +92,10 @@ const RefundContributionEdit: React.FC = () => {
     //   setInitialMember(member);
     // }
     if (refund.memberId) {
-  const member = (await MemberService.getMemberById(refund.memberId)).value;
-  setSelectedMember(member);
-  setInitialMember(member);
-}
+      const member = (await MemberService.getMemberById(refund.memberId)).value;
+      setSelectedMember(member);
+      setInitialMember(member);
+    }
 
     if (refund.designationId) {
       const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
@@ -233,13 +233,13 @@ const RefundContributionEdit: React.FC = () => {
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
         presetValues={presetValues}
-        // approvalConfig={{
-        //   onApprove: handleApprove,
-        //   onReject: handleReject,
-        //   confirmApproveText: "Are you sure you want to approve this refund contribution?",
-        //   confirmRejectText: "Are you sure you want to reject this refund contribution?",
-        //   showWhen: (formData) => !formData.isApproved,
-        // }}
+      // approvalConfig={{
+      //   onApprove: handleApprove,
+      //   onReject: handleReject,
+      //   confirmApproveText: "Are you sure you want to approve this refund contribution?",
+      //   confirmRejectText: "Are you sure you want to reject this refund contribution?",
+      //   showWhen: (formData) => !formData.isApproved,
+      // }}
       />
       <StatePopup
         show={showStatePopup}
