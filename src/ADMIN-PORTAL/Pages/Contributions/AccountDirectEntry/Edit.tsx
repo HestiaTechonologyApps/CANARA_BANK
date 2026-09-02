@@ -49,9 +49,9 @@ const AccountDirectEntryEdit: React.FC = () => {
     { name: "status", rules: { type: "text", label: "Status", disabled: true, colWidth: 4 } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 4 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 4 } },
-    { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
-    { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
-    { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
+   // { name: "f9", rules: { type: "text", label: "F9", colWidth: 4 } },
+   // { name: "f10", rules: { type: "text", label: "F10", colWidth: 4 } },
+   // { name: "f11", rules: { type: "text", label: "F11", colWidth: 4 } },
   ];
 
   const handleFetch = async (id: string) => {

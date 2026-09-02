@@ -60,9 +60,9 @@ const StaffAccountDirectEntryCreate: React.FC = () => {
     { name: "status", rules: { type: "select", label: "Status", colWidth: 3, required: true } },
     { name: "enrl", rules: { type: "text", label: "ENRL", colWidth: 3 } },
     { name: "fine", rules: { type: "text", label: "Fine", colWidth: 3 } },
-    { name: "f9", rules: { type: "text", label: "F9", colWidth: 2 } },
-    { name: "f10", rules: { type: "text", label: "F10", colWidth: 2 } },
-    { name: "f11", rules: { type: "text", label: "F11", colWidth: 2 } },
+    //{ name: "f9", rules: { type: "text", label: "F9", colWidth: 2 } },
+    //{ name: "f10", rules: { type: "text", label: "F10", colWidth: 2 } },
+    //{ name: "f11", rules: { type: "text", label: "F11", colWidth: 2 } },
   ];
 
   const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
