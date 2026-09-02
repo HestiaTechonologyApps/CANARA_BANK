@@ -25,41 +25,83 @@ const MemberStatusCards: React.FC<MemberStatusCardsProps> = ({ selectedStatusId,
 
   const cardStyle = (isActive: boolean): React.CSSProperties => ({
     cursor: "pointer",
-    minWidth: 120,
-    padding: "10px 16px",
-    borderRadius: 10,
+    minWidth: 100,
+    padding: "8px 16px",
+    borderRadius: 20,
     border: `1.5px solid ${isActive ? THEME_COLOR : "#e2e8f0"}`,
     background: isActive ? THEME_COLOR : "#fff",
-    color: isActive ? "#fff" : "#1e293b",
+    color: isActive ? "#fff" : "#475569",
     fontFamily: "Urbanist",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 13,
     textAlign: "center",
     transition: "all 0.15s",
   });
 
   return (
-    <div className="d-flex flex-wrap gap-2 mb-3">
-      <div className="shadow-sm" style={cardStyle(selectedStatusId === null)} onClick={() => handleClick(null)}>
-        All
+    <div
+      className="mb-3 p-3"
+      style={{
+        background: "#f8fafc",
+        border: "1.5px solid #e8edf5",
+        borderRadius: 12,
+      }}
+    >
+      <div className="d-flex align-items-center gap-2 mb-2">
+        <span style={{ fontSize: 16 }}>🔎</span>
+        <span
+          style={{
+            fontFamily: "Urbanist",
+            fontWeight: 800,
+            fontSize: 13,
+            color: THEME_COLOR,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}
+        >
+          Filter by Status
+        </span>
+        {selectedStatusId !== null && (
+          <button
+            onClick={() => onSelect(null)}
+            style={{
+              marginLeft: "auto",
+              background: "none",
+              border: "none",
+              color: "#64748b",
+              fontFamily: "Urbanist",
+              fontWeight: 600,
+              fontSize: 12,
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Clear filter
+          </button>
+        )}
       </div>
 
-      {loading && (
-        <div className="d-flex align-items-center text-muted" style={{ fontSize: 13 }}>
-          Loading statuses…
+      <div className="d-flex flex-wrap gap-2">
+        <div style={cardStyle(selectedStatusId === null)} onClick={() => handleClick(null)}>
+          All
         </div>
-      )}
 
-      {statuses.map((s) => (
-        <div
-          key={s.statusId}
-          className="shadow-sm"
-          style={cardStyle(selectedStatusId === s.statusId)}
-          onClick={() => handleClick(s.statusId)}
-        >
-          {s.name}
-        </div>
-      ))}
+        {loading && (
+          <div className="d-flex align-items-center text-muted" style={{ fontSize: 13 }}>
+            Loading statuses…
+          </div>
+        )}
+
+        {statuses.map((s) => (
+          <div
+            key={s.statusId}
+            style={cardStyle(selectedStatusId === s.statusId)}
+            onClick={() => handleClick(s.statusId)}
+          >
+            {s.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
