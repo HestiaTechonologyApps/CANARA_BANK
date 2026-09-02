@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "../../../CONSTANTS/API_ENDPOINTS";
 import HttpService from "../../../Services/Http.services";
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { ApproveRefundContributionParams, RefundContribution } from "../../Types/Claims/Refund.types";
+import type { ApproveRefundContributionParams, MemberRefundEligibility, RefundContribution } from "../../Types/Claims/Refund.types";
 
 const RefundContributionService = {
   async getAllRefundContributions(): Promise<RefundContribution[]> {
@@ -101,6 +101,17 @@ async deleteRefundContribution(id: number): Promise<void> {
       total: response.value.totalRecords,
     };
   },
+
+  async getMemberEligibility(
+  memberId: number,
+  excludeRefundContributionId?: number
+): Promise<CustomResponse<MemberRefundEligibility>> {
+  const response = await HttpService.callApi<CustomResponse<MemberRefundEligibility>>(
+    API_ENDPOINTS.REFUND_CONTRIBUTION.GET_MEMBER_ELIGIBILITY(memberId, excludeRefundContributionId),
+    "GET"
+  );
+  return response;
+},
 };
 
 export default RefundContributionService;

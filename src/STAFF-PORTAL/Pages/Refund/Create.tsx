@@ -5,6 +5,7 @@ import type { Member } from "../../../ADMIN-PORTAL/Types/Contributions/Member.ty
 import type { Designation } from "../../../ADMIN-PORTAL/Types/Settings/Designation.types";
 import type { YearMaster } from "../../../ADMIN-PORTAL/Types/Settings/YearMaster.types";
 import type { Field } from "../../../ADMIN-PORTAL/Components/KiduCreate";
+import type { MemberRefundEligibility } from "../../../ADMIN-PORTAL/Types/Claims/Refund.types";
 import RefundContributionService from "../../../ADMIN-PORTAL/Services/Claims/Refund.services";
 import KiduCreate from "../../../ADMIN-PORTAL/Components/KiduCreate";
 import AttachmentsStaging from "../../../Components/KiduCreateAttachment";
@@ -31,6 +32,30 @@ const MemberRefundContributionCreate: React.FC = () => {
   const [showBranchPopup, setShowBranchPopup] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
 
+  // Refund eligibility for the logged-in member
+  const [eligibility, setEligibility] = useState<MemberRefundEligibility | null>(null);
+  const [eligibilityLoading, setEligibilityLoading] = useState(false);
+  const [eligibilityError, setEligibilityError] = useState<string | null>(null);
+
+  const loadEligibility = async (memberId: number) => {
+    setEligibilityLoading(true);
+    setEligibilityError(null);
+    try {
+      const res = await RefundContributionService.getMemberEligibility(memberId);
+      if (res.isSucess) {
+        setEligibility(res.value);
+      } else {
+        setEligibility(null);
+        setEligibilityError(res.error || "Unable to fetch your refund eligibility.");
+      }
+    } catch (err: any) {
+      setEligibility(null);
+      setEligibilityError(err?.message || "Unable to fetch your refund eligibility.");
+    } finally {
+      setEligibilityLoading(false);
+    }
+  };
+
   // Auto-fill Member (from session), Designation and DP Code (from member's own record)
   useEffect(() => {
     const loadOwnDetails = async () => {
@@ -38,7 +63,7 @@ const MemberRefundContributionCreate: React.FC = () => {
       if (!storedUser) return;
       const user = JSON.parse(storedUser);
 
-    const memberRes = await MemberService.getMemberById(Number(user.memberId));
+      const memberRes = await MemberService.getMemberById(Number(user.memberId));
       const member = memberRes.value;
       if (!member) return;
 
@@ -57,6 +82,8 @@ const MemberRefundContributionCreate: React.FC = () => {
       }
 
       setPresetValues({ dpcodeOfTime: dpCode });
+
+      loadEligibility(member.memberId);
     };
 
     loadOwnDetails();
@@ -80,86 +107,89 @@ const MemberRefundContributionCreate: React.FC = () => {
     { name: "ddno", rules: { type: "text", label: "DD No", required: true, colWidth: 4 } },
     { name: "dddate", rules: { type: "date", label: "DD Date", required: true, colWidth: 4 } },
     { name: "amount", rules: { type: "number", label: "Amount", required: true, colWidth: 4 } },
-    { name: "lastContribution", rules: { type: "number", label: "Last Contribution", colWidth: 4 } },
+    // "lastContribution" intentionally removed from here — rendered as a read-only block below,
+    // populated from the eligibility API on load.
     { name: "yearOF", rules: { type: "popup", label: "Year", required: true, colWidth: 4 } },
     { name: "remark", rules: { type: "textarea", label: "Remark", colWidth: 4 } },
   ];
 
   const toIso = (val?: string) => (val ? `${val}T00:00:00` : "");
 
- const handleSubmit = async (formData: Record<string, any>) => {
-  if (!selectedState) throw new Error("Please select State");
-  if (!selectedMember) throw new Error("Please select Member");
-  if (!selectedDesignation) throw new Error("Please select Designation");
-  if(!selectedYearMaster) throw new Error("Please select Year");
-  if (!selectedBranch) throw new Error("Please select Branch");
+  const handleSubmit = async (formData: Record<string, any>) => {
+    if (!selectedState) throw new Error("Please select State");
+    if (!selectedMember) throw new Error("Please select Member");
+    if (!selectedDesignation) throw new Error("Please select Designation");
+    if (!selectedYearMaster) throw new Error("Please select Year");
+    if (!selectedBranch) throw new Error("Please select Branch");
 
-  const payload = {
-    staffNo: selectedMember.staffNo,
-    stateId: selectedState.stateId,
-    memberId: selectedMember.memberId,
-    designationId: selectedDesignation.designationId,
-    refundContribution: formData.type,
-    refundNO: String(formData.refundNO || "").trim(),
-    //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
-    branchNameOFTime: selectedBranch.name,
-    dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
-    type: formData.type,
-    remark: String(formData.remark || "").trim(),
-    ddno: String(formData.ddno || "").trim(),
-    dddate: toIso(formData.dddate),
-    dddateString: toIso(formData.dddate),
-    amount: Number(formData.amount),
-    lastContribution: Number(formData.lastContribution || 0),
-    yearOF: selectedYearMaster.yearOf,
-    deathDate: "",
-    deathDateString: "",
+    const requestedAmount = Number(formData.amount);
+
+    if (!eligibility) {
+      throw new Error("Your refund eligibility could not be verified. Please reload the page.");
+    }
+    if (requestedAmount > eligibility.availableAmount) {
+      throw new Error(
+        `Amount (${requestedAmount}) exceeds your available refund balance (${eligibility.availableAmount}).`
+      );
+    }
+
+    const payload = {
+      staffNo: selectedMember.staffNo,
+      stateId: selectedState.stateId,
+      memberId: selectedMember.memberId,
+      designationId: selectedDesignation.designationId,
+      refundContribution: formData.type,
+      refundNO: String(formData.refundNO || "").trim(),
+      //branchNameOFTime: String(formData.branchNameOFTime || "").trim(),
+      branchNameOFTime: selectedBranch.name,
+      dpcodeOfTime: String(formData.dpcodeOfTime || "").trim(),
+      type: formData.type,
+      remark: String(formData.remark || "").trim(),
+      ddno: String(formData.ddno || "").trim(),
+      dddate: toIso(formData.dddate),
+      dddateString: toIso(formData.dddate),
+      amount: requestedAmount,
+      lastContribution: eligibility.lastContributionAmount,
+      yearOF: selectedYearMaster.yearOf,
+      deathDate: "",
+      deathDateString: "",
+    };
+
+    const created = await RefundContributionService.createRefundContribution(payload as any);
+
+    if (attachmentsRef.current?.hasFiles() && created?.refundContributionId) {
+      await attachmentsRef.current.uploadAll("RefundContribution", created.refundContributionId);
+    }
   };
 
+  const popupHandlers = {
+    stateId: {
+      value: selectedState?.name || "",
+      actualValue: selectedState?.stateId,
+      onOpen: () => setShowStatePopup(true),
+    },
+    memberId: {
+      value: selectedMember?.name || "",
+      actualValue: selectedMember?.memberId,
+      onOpen: () => {},
+    },
+    designationId: {
+      value: selectedDesignation?.name || "",
+      actualValue: selectedDesignation?.designationId,
+      onOpen: () => {}, // no-op, field is disabled
+    },
+    branchNameOFTime: {
+      value: selectedBranch?.name || "",
+      actualValue: selectedBranch?.name,
+      onOpen: () => setShowBranchPopup(true),
+    },
+    yearOF: {
+      value: selectedYearMaster ? String(selectedYearMaster.yearName) : "",
+      actualValue: selectedYearMaster?.yearOf,
+      onOpen: () => setShowYearMasterPopup(true),
+    },
+  };
 
-const created = await RefundContributionService.createRefundContribution(
-    payload as any
-  );
-
-  if (attachmentsRef.current?.hasFiles() && created?.refundContributionId) {
-    await attachmentsRef.current.uploadAll(
-      "RefundContribution",           
-      created.refundContributionId
-    );
-  }
-};
-
-const popupHandlers = {
-  stateId: {
-    value: selectedState?.name || "",
-    actualValue: selectedState?.stateId,
-    onOpen: () => setShowStatePopup(true),
-  },
-  memberId: {
-    value: selectedMember?.name || "",
-    actualValue: selectedMember?.memberId,
-    onOpen: () => {}, 
-  },
-  designationId: {
-    value: selectedDesignation?.name || "",
-    actualValue: selectedDesignation?.designationId,
-    onOpen: () => {}, // no-op, field is disabled
-  },
-  branchNameOFTime: {
-  value: selectedBranch?.name || "",
-  actualValue: selectedBranch?.name,
-  onOpen: () => setShowBranchPopup(true),
-},
-  yearOF: {
-    value: selectedYearMaster
-      ? String(selectedYearMaster.yearName) 
-      : "",
-    actualValue: selectedYearMaster?.yearOf,
-    onOpen: () => setShowYearMasterPopup(true),
-  },
-};
-
-//type options
   const typeOptions = [
     { value: "Refund", label: "Refund" },
     { value: "Loan", label: "Loan" },
@@ -195,7 +225,73 @@ const popupHandlers = {
           onReset={handleReset}
           presetValues={presetValues}
         >
-           <AttachmentsStaging ref={attachmentsRef} />
+          {selectedMember && (
+            <div className="row mb-3 ms-1">
+              {eligibilityLoading && (
+                <div className="col-12 text-muted" style={{ fontSize: "13px" }}>
+                  Loading refund eligibility…
+                </div>
+              )}
+
+              {eligibilityError && (
+                <div className="col-12 text-danger" style={{ fontSize: "13px" }}>
+                  {eligibilityError}
+                </div>
+              )}
+
+              {eligibility && !eligibilityLoading && (
+                <>
+                  <div className="col-md-4 mb-2">
+                    <label className="fw-bold">Last Contribution</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      disabled
+                      value={
+                        eligibility.lastContributionMonth
+                          ? `${eligibility.lastContributionMonth}-${eligibility.lastContributionYear} - ${eligibility.lastContributionAmount}`
+                          : "No contribution found"
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4 mb-2">
+                    <label className="fw-bold">Total Approved Refund Amount</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      disabled
+                      value={eligibility.approvedAmount}
+                    />
+                  </div>
+                  <div className="col-md-4 mb-2">
+                    <label className="fw-bold">Total Pending/Rejected Refund Amount</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      readOnly
+                      disabled
+                      value={eligibility.pendingAmount}
+                    />
+                  </div>
+                  <div className="col-12">
+                    <span className="fw-bold" style={{ fontSize: "13px" }}>
+                      Available for refund:
+                    </span>{" "}
+                    <span
+                      style={{ fontSize: "13px" }}
+                      className={eligibility.availableAmount > 0 ? "text-success" : "text-danger"}
+                    >
+                      {eligibility.availableAmount}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          <AttachmentsStaging ref={attachmentsRef} />
         </KiduCreate>
       </div>
 
@@ -205,22 +301,24 @@ const popupHandlers = {
         onSelect={(s) => {
           setSelectedState(s);
           setShowStatePopup(false);
-        }} />
-     <YearMasterPopup
-       show={showYearMasterPopup}
-       handleClose={() => setShowYearMasterPopup(false)}
-       onSelect={(y) => {
-        setSelectedYearMaster(y);
-        setShowYearMasterPopup(false);
-     }} />
-     <BranchPopup
-  show={showBranchPopup}
-  handleClose={() => setShowBranchPopup(false)}
-  onSelect={(b) => {
-    setSelectedBranch(b);
-    setShowBranchPopup(false);
-  }}
-/>
+        }}
+      />
+      <YearMasterPopup
+        show={showYearMasterPopup}
+        handleClose={() => setShowYearMasterPopup(false)}
+        onSelect={(y) => {
+          setSelectedYearMaster(y);
+          setShowYearMasterPopup(false);
+        }}
+      />
+      <BranchPopup
+        show={showBranchPopup}
+        handleClose={() => setShowBranchPopup(false)}
+        onSelect={(b) => {
+          setSelectedBranch(b);
+          setShowBranchPopup(false);
+        }}
+      />
     </>
   );
 };

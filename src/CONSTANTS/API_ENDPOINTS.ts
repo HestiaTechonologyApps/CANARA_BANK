@@ -208,7 +208,7 @@ LOOKUP: {
     DELETE: (id: number) => `${API_BASE_URL}/DeathClaim/${id}`,
     UPDATE_BY_APPROVE: (id: number) => `${API_BASE_URL}/DeathClaim/approve/${id}`,
   },
-  REFUND_CONTRIBUTION: {
+REFUND_CONTRIBUTION: {
     GET_ALL: `${API_BASE_URL}/RefundContribution`,
     GET_PAGED: `${API_BASE_URL}/RefundContribution/paged`,
     GET_BY_ID: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
@@ -217,6 +217,10 @@ LOOKUP: {
     DELETE: (id: number) => `${API_BASE_URL}/RefundContribution/${id}`,
     GET_BY_MEMBER_ID:(id: number) => `${API_BASE_URL}/RefundContribution/RefundByMemberId/${id}`,
     UPDATE_BY_APPROVE:(id : number) => `${API_BASE_URL}/RefundContribution/approve/${id}`,
+    GET_MEMBER_ELIGIBILITY: (memberId: number, excludeRefundContributionId?: number) =>
+      `${API_BASE_URL}/RefundContribution/member-eligibility/${memberId}${
+        excludeRefundContributionId ? `?excludeRefundContributionId=${excludeRefundContributionId}` : ""
+      }`,
   },
   //CMS
   ATTACHMENT: {

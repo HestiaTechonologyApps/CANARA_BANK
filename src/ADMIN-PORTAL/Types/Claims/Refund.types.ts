@@ -34,3 +34,14 @@ export interface ApproveRefundContributionParams {
   approve: boolean;
   currentUserId: number;
 }
+
+export interface MemberRefundEligibility {
+  memberId: number;
+  lastContributionMonth: string;
+  lastContributionYear: number;
+  lastContributionAmount: number;
+  totalContribution: number;
+  approvedAmount: number;
+  pendingAmount: number;
+  availableAmount: number;
+}
