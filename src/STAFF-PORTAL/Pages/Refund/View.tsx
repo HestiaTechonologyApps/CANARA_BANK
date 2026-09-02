@@ -5,12 +5,12 @@ import KiduView from "../../../ADMIN-PORTAL/Components/KiduView";
 
 const MemberRefundContributionView: React.FC = () => {
   const fields: ViewField[] = [
-    { key: "refundNO", label: "Refund No", icon: "bi-receipt" },
     { key: "refundContributionId", label: "Refund Contribution ID", icon: "bi-hash" },
+    { key: "stateName", label: "State", icon: "bi-geo-alt" },
+    { key: "refundNO", label: "Refund No", icon: "bi-receipt" },
     { key: "staffNo", label: "Staff No", icon: "bi-123" },
     { key: "memberName", label: "Member", icon: "bi-person" },
     { key: "designationName", label: "Designation", icon: "bi-briefcase" },
-    { key: "stateName", label: "State", icon: "bi-geo-alt" },
     { key: "deathDateString", label: "Death Date", icon: "bi-calendar-x" },
     { key: "branchNameOFTime", label: "Branch (At Time)", icon: "bi-building" },
     { key: "dpcodeOfTime", label: "DP Code (At Time)", icon: "bi-upc" },
