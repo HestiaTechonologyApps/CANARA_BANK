@@ -13,12 +13,14 @@ const MemberList: React.FC = () => {
     <>
      <MemberStatusCards selectedStatusId={selectedStatusId} onSelect={setSelectedStatusId} />
      
-    <KiduServerTableList
+<KiduServerTableList
+      key={selectedStatusId ?? "all"}   // remounts table -> fresh fetchData closure + initial load
       paginatedFetchService={async ({ pageNumber, pageSize, searchTerm }) => {
         const response = await MemberService.getMembersPaginated({
           pageNumber,
           pageSize,
           searchTerm: searchTerm || "",
+          statusId: selectedStatusId ?? undefined,
         });
 
         return {
