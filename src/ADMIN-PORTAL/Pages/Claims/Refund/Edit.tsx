@@ -43,7 +43,6 @@ const RefundContributionEdit: React.FC = () => {
 
   const [currentRefundId, setCurrentRefundId] = useState<number | null>(null);
 
-  // Refund eligibility for the selected member
   const [eligibility, setEligibility] = useState<MemberRefundEligibility | null>(null);
   const [eligibilityLoading, setEligibilityLoading] = useState(false);
   const [eligibilityError, setEligibilityError] = useState<string | null>(null);
@@ -194,8 +193,6 @@ const RefundContributionEdit: React.FC = () => {
     const requestedAmount = Number(formData.amount);
 
     if (eligibility && requestedAmount > eligibility.availableAmount) {
-      // Silent: the inline highlighted warning already tells the user this —
-      // no toast/Swal popup needed for this specific case.
       const err: any = new Error(
         `Amount (${requestedAmount}) exceeds the available refund balance (${eligibility.availableAmount}) for this member.`
       );
