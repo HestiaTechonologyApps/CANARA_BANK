@@ -1,4 +1,3 @@
-// PUBLIC-PORTAL/Components/PublicNavbar.tsx
 import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Button, Offcanvas } from "react-bootstrap";
 import "../Style/Navbar.css";
@@ -30,10 +29,8 @@ const PublicNavbar: React.FC = () => {
         console.error("Failed to load navbar config:", error);
       }
     };
-
     loadNavbarConfig();
   }, []);
-
 
   const isActive = (path: string): string =>
     location.pathname === path ? "active-nav" : "";
@@ -128,7 +125,6 @@ const PublicNavbar: React.FC = () => {
         </Container>
       </div>
 
-      {/* Authentication Modals */}
       <LoginModal
         show={showLogin}
         onClose={() => setShowLogin(false)}
