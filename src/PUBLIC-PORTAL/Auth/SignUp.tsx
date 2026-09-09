@@ -44,7 +44,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ── Reset all fields every time the modal opens ──
   useEffect(() => {
     if (show) {
       setFormData(EMPTY_FORM);
