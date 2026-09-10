@@ -1,5 +1,4 @@
-// src/Components/ClaimsTable/ClaimsTable.tsx
-import React from "react";
+ import React from "react";
 import { Card, Table } from "react-bootstrap";
 import "../../Style/Claims.css";
 
