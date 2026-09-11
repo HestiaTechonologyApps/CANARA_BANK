@@ -7,6 +7,7 @@ import type { Company } from "../../Types/Settings/Company.types";
 import type { Member } from "../../Types/Contributions/Member.types";
 import CompanyPopup from "../Settings/Company/CompanyPopup";
 import MemberPopup from "../Contributions/Member/MemberPopup";
+import toast from "react-hot-toast";
 
 const UserCreate: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
@@ -64,20 +65,23 @@ const UserCreate: React.FC = () => {
   //   await UserService.createUser(userData);
   // };
 
-  const handleSubmit = async (formData: Record<string, any>) => {
+ const handleSubmit = async (formData: Record<string, any>) => {
     const trimmedUserName = formData.userName.trim();
 
     // Reject usernames that are entirely special characters —
     // must contain at least one letter or digit.
     const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmedUserName);
     if (!hasAlphanumeric) {
-      throw new Error("User Name must contain at least one letter or number, not only special characters");
+      toast.error("User Name cannot contain only special characters");
+      throw new Error("User Name cannot contain only special characters");
     }
 
     if (!selectedCompany) {
+      toast.error("Please select a company");
       throw new Error("Please select a company");
     }
     if (!selectedMember) {
+      toast.error("Please select a staff member");
       throw new Error("Please select a staff member");
     }
 
@@ -98,7 +102,7 @@ const UserCreate: React.FC = () => {
     };
     await UserService.createUser(userData);
   };
-  
+
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.comapanyName ?? "",
