@@ -156,9 +156,10 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     currentPageRef.current = page;
     setCurrentPage(page);
     loadData();
-    if (tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    // if (tableRef.current) {
+    //   tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    // }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [loadData]);
 
   const changeRowsPerPage = useCallback((newSize: number) => {
