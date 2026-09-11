@@ -15,7 +15,6 @@ const HeroSection: React.FC = () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
 
-        // pick the active config instead of data[0]
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
@@ -32,7 +31,6 @@ const HeroSection: React.FC = () => {
   return (
     <section id="home" className="hero-section position-relative d-flex align-items-center">
 
-      {/* Background Image */}
       <div className="hero-bg-wrapper">
         <img
           src={heroImage}
@@ -42,7 +40,6 @@ const HeroSection: React.FC = () => {
         <div className="hero-overlay"></div>
       </div>
 
-      {/* Content */}
       <Container className="position-relative text-white py-3 hero-content">
         <div className="hero-inner">
           <span className="hero-badge">
@@ -72,7 +69,6 @@ const HeroSection: React.FC = () => {
         </div>
       </Container>
 
-      {/* Bottom Fade Overlay */}
       <div className="hero-bottom-fade"></div>
 
     </section>

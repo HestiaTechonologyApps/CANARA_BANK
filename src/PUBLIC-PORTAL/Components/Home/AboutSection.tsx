@@ -5,18 +5,18 @@ import PublicPageConfigService from "../../Services/Publicpage.services";
 import type { PublicPage } from "../../../ADMIN-PORTAL/Types/CMS/PublicPage.types";
 
 const AboutSection: React.FC = () => {
-   const [config, setConfig] = useState<PublicPage | null>(null);
+  const [config, setConfig] = useState<PublicPage | null>(null);
 
   useEffect(() => {
     const loadAboutConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-       
-               const activeConfig = data.find(
-                 (item: PublicPage) => item.isActive === true
-               );
-       
-               setConfig(activeConfig || null);
+
+        const activeConfig = data.find(
+          (item: PublicPage) => item.isActive === true
+        );
+
+        setConfig(activeConfig || null);
       } catch (error) {
         console.error("Failed to load about config:", error);
       }
@@ -24,7 +24,7 @@ const AboutSection: React.FC = () => {
 
     loadAboutConfig();
   }, []);
-  
+
   const aboutStats = config?.aboutStatsJson
     ? JSON.parse(config.aboutStatsJson)
     : [];
@@ -61,7 +61,7 @@ const AboutSection: React.FC = () => {
           </Col>
           {/* RIGHT STATS */}
           <Col lg={6}>
-             <Row className="gy-4 mt-3">
+            <Row className="gy-4 mt-3">
               {aboutStats.map((stat: any, index: number) => (
                 <Col xs={6} key={index}>
                   <Card className="about-stat-card text-center shadow-sm border-0 p-4">
