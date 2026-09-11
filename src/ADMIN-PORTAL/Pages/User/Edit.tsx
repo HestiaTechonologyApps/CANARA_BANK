@@ -103,13 +103,44 @@ const handleReset = () => {
     setSelectedMember(initialMember);
   };
 
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  // const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  //   if (!selectedCompany) throw new Error("Please select a company");
+  //   if (!selectedMember) throw new Error("Please select a staff member");
+
+  //   const payload: Partial<Omit<User, "auditLogs">> = {
+  //     userId: Number(id),
+  //     userName: formData.userName.trim(),
+  //     userEmail: formData.userEmail.trim(),
+  //     staffNo: selectedMember.staffNo,
+  //     memberId: selectedMember.memberId,
+  //     phoneNumber: formData.phoneNumber.trim(),
+  //     address: formData.address?.trim() || "",
+  //     role: formData.role,
+  //     isActive: formData.isActive === true,
+  //     islocked: formData.islocked === true,
+  //     companyId: selectedCompany.companyId,
+  //   };
+
+  //   await UserService.updateUser(Number(id), payload);
+  //   return true;
+  // };
+
+const handleUpdate = async (id: string, formData: Record<string, any>) => {
+    const trimmedUserName = formData.userName.trim();
+
+    // Reject usernames that are entirely special characters —
+    // must contain at least one letter or digit.
+    const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmedUserName);
+    if (!hasAlphanumeric) {
+      throw new Error("User Name must contain at least one letter or number, not only special characters");
+    }
+
     if (!selectedCompany) throw new Error("Please select a company");
     if (!selectedMember) throw new Error("Please select a staff member");
 
     const payload: Partial<Omit<User, "auditLogs">> = {
       userId: Number(id),
-      userName: formData.userName.trim(),
+      userName: trimmedUserName,
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
       memberId: selectedMember.memberId,

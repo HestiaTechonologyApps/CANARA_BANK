@@ -38,7 +38,42 @@ const UserCreate: React.FC = () => {
     { value: "SystemAdmin", label: "SystemAdmin" }
   ];
 
+  // const handleSubmit = async (formData: Record<string, any>) => {
+  //   if (!selectedCompany) {
+  //     throw new Error("Please select a company");
+  //   }
+  //   if (!selectedMember) {
+  //     throw new Error("Please select a staff member");
+  //   }
+
+  //   const userData: Omit<User, "userId" | "auditLogs"> = {
+  //     userName: formData.userName.trim(),
+  //     userEmail: formData.userEmail.trim(),
+  //     staffNo: selectedMember.staffNo,
+  //     memberId: selectedMember.memberId, 
+  //     phoneNumber: formData.phoneNumber.trim(),
+  //     address: formData.address?.trim() || "",
+  //     passwordHash: formData.passwordHash,
+  //     isActive: Boolean(formData.isActive),
+  //     islocked: Boolean(formData.islocked),
+  //     createAt: new Date().toISOString(),
+  //     lastlogin: null,
+  //     role: formData.role.trim(),
+  //     companyId: selectedCompany.companyId,
+  //   };
+  //   await UserService.createUser(userData);
+  // };
+
   const handleSubmit = async (formData: Record<string, any>) => {
+    const trimmedUserName = formData.userName.trim();
+
+    // Reject usernames that are entirely special characters —
+    // must contain at least one letter or digit.
+    const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmedUserName);
+    if (!hasAlphanumeric) {
+      throw new Error("User Name must contain at least one letter or number, not only special characters");
+    }
+
     if (!selectedCompany) {
       throw new Error("Please select a company");
     }
@@ -47,7 +82,7 @@ const UserCreate: React.FC = () => {
     }
 
     const userData: Omit<User, "userId" | "auditLogs"> = {
-      userName: formData.userName.trim(),
+      userName: trimmedUserName,
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
       memberId: selectedMember.memberId, 
@@ -63,7 +98,7 @@ const UserCreate: React.FC = () => {
     };
     await UserService.createUser(userData);
   };
-
+  
   const popupHandlers = {
     companyId: {
       value: selectedCompany?.comapanyName ?? "",
