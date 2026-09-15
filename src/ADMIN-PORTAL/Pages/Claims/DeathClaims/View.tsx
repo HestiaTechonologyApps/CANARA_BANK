@@ -42,10 +42,15 @@ const formatDateOnly = (value?: string | Date) => {
   claim.deathDate = formatDateOnly(claim.deathDate);
   claim.dddate = formatDateOnly(claim.dddate);
 
-  if (claim.memberId) {
-    const members = await MemberService.getAllMembers();
-    const member = members.find(m => m.memberId === claim.memberId);
-    claim.memberName = member?.name || "N/A";
+  // if (claim.memberId) {
+  //   const members = await MemberService.getAllMembers();
+  //   const member = members.find(m => m.memberId === claim.memberId);
+  //   claim.memberName = member?.name || "N/A";
+  // }
+
+    if (claim.memberId) {
+    const memberRes = await MemberService.getMemberById(claim.memberId);
+    claim.memberName = memberRes?.value?.name || "N/A";
   }
 
   if (claim.stateId) {
