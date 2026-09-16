@@ -83,7 +83,7 @@ const buildMonthlyPivot = (data: MemberAccountDetail[]) => {
 
   const years = Object.keys(pivot)
     .map(Number)
-    .sort((a, b) => b - a);
+    .sort((a, b) => a - b);
 
   return { pivot, years };
 };
@@ -523,8 +523,8 @@ table.mv-summary-table tbody tr:last-child td { border-bottom: none; }
   background: ${THEME_SOFT};
 }
 
-.mv-summary-cell.is-paid { color: ${THEME}; font-weight: 700; }
-.mv-summary-cell.is-empty { color: #C7CDD6; font-weight: 500; }
+.mv-summary-cell.is-paid { color: ${THEME}; font-weight: 500; }
+.mv-summary-cell.is-empty { color: #C7CDD6; font-weight: 400; }
   
 `}</style>
 
