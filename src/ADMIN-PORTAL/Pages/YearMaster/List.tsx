@@ -8,7 +8,7 @@ const YearMasterList: React.FC = () => {
       fetchService={YearMasterService.getAllYearMasters}
 
       columns={[
-        { key: "yearOf", label: "Year", type: "text" },
+        //{ key: "yearOf", label: "Year", type: "text" },
         { key: "yearName", label: "Year Name", type: "text" },
       ]}
       filterColumns={[
