@@ -17,7 +17,7 @@ const YearMasterPopup: React.FC<YearMasterPopupProps> = ({
   showAddButton = true,
 }) => {
   const columns = [
-    { key: "yearOf" as keyof YearMaster, label: "Year Of" },
+   // { key: "yearOf" as keyof YearMaster, label: "Year Of" },
     { key: "yearName" as keyof YearMaster, label: "Year" },
   ];
 
