@@ -3,7 +3,7 @@ import AuthService from "../../../Services/Auth.services";
 import HttpService from "../../../Services/Http.services";
 import { createPaginatedService } from "../../../Services/Pagination.services"; 
 import type { CustomResponse } from "../../../Types/ApiTypes";
-import type { Member } from "../../Types/Contributions/Member.types";
+import type { Member, MemberStatus } from "../../Types/Contributions/Member.types";
 
 const MemberService = {
   
@@ -225,6 +225,14 @@ async updateMember(
 
 
   getMembersPaginated: createPaginatedService<Member>(API_ENDPOINTS.MEMBER.GET_ALL_PAGINETED),
+
+  async getStatusFilters(): Promise<MemberStatus[]> {
+    const response = await HttpService.callApi<CustomResponse<MemberStatus[]>>(
+      API_ENDPOINTS.MEMBER.GET_STATUS_FILTER,
+      "GET"
+    );
+    return response.value || [];
+  },
 
 };
 

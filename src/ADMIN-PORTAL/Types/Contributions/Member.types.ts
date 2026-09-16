@@ -54,4 +54,10 @@ export interface MemberPaginationParams {
   searchTerm?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  statusId?: number;
+}
+
+export interface MemberStatus {
+  statusId: number;
+  name: string;
 }

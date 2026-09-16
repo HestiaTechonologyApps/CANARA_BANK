@@ -120,7 +120,7 @@ const StaffSidebar = ({ open }: Props) => {
 
         <nav className="sidebar-nav">
           <NavLink to="/staff-portal" end><User size={ICON_SIZE} /> {open && "Profile"}</NavLink>
-          <NavLink to={`staff-edit/${memberId}`}><UserCog size={ICON_SIZE} /> {open && "Update Nominee"}</NavLink>
+          <NavLink to={`staff-edit/${memberId}`}><UserCog size={ICON_SIZE} /> {open && "Update Profile"}</NavLink>
           <NavLink to="contribution-list"><CreditCard size={ICON_SIZE} /> {open && "Direct Contribution"}</NavLink>
           <NavLink to="refund-list"><CreditCard size={ICON_SIZE} /> {open && "Refund"}</NavLink>
           <NavLink to="settings"><Settings size={ICON_SIZE} /> {open && "Account Settings"}</NavLink>

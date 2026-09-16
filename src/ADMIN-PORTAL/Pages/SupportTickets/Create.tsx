@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Field } from "../../Components/KiduCreate";
 import type { SupportTicket } from "../../Types/SupportTicket/SupportTicket.types";
 import SupportTicketService from "../../Services/SupportTicket/SupportTicket.services";
@@ -6,9 +6,17 @@ import KiduCreate from "../../Components/KiduCreate";
 
 const SupportTicketCreate: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [nextTicketNum, setNextTicketNum] = useState<string>("");
+  const [isFetchingTicketNum, setIsFetchingTicketNum] = useState(true);
+
+  useEffect(() => {
+    SupportTicketService.getNextTicketNumber()
+      .then((res) => setNextTicketNum(res.value))
+      .finally(() => setIsFetchingTicketNum(false));
+  }, []);
 
   const fields: Field[] = [
-    { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4 } },
+    { name: "supportTicketNum", rules: { type: "text", label: "Ticket Number", required: true, colWidth: 4, disabled: true } },
     { name: "priority", rules: { type: "select", label: "Priority", required: true, colWidth: 4 } },
     { name: "duration", rules: { type: "text", label: "Duration", required: true, colWidth: 4 } },
     { name: "description", rules: { type: "textarea", label: "Description", required: true, colWidth: 6 } },
@@ -27,7 +35,7 @@ const SupportTicketCreate: React.FC = () => {
     setIsLoading(true);
     try {
       const payload: Omit<SupportTicket, "supportTicketId" | "auditLogs"> = {
-        supportTicketNum: formData.supportTicketNum,
+        supportTicketNum: nextTicketNum,
         priority: formData.priority,
         duration: formData.duration,
         description: formData.description,
@@ -45,10 +53,11 @@ const SupportTicketCreate: React.FC = () => {
     <KiduCreate
       title="Create Support Ticket"
       fields={fields}
+      presetValues={{ supportTicketNum: nextTicketNum }}
       onSubmit={handleSubmit}
       submitButtonText="Create Ticket"
       showResetButton
-      loadingState={isLoading}
+      loadingState={isLoading || isFetchingTicketNum}
       successMessage="Support ticket created successfully!"
       errorMessage="Failed to create support ticket."
       navigateOnSuccess="/dashboard/supportTickets-list"

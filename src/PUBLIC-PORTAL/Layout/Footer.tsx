@@ -8,8 +8,6 @@ import PublicPageConfigService from "../Services/Publicpage.services";
 import { PublicService } from "../../Services/PublicService";
 import { APP_VERSION } from "../../CONSTANTS/Version";
 
-// =================API needed - fields needed====================
-
 const Footer: React.FC = () => {
   const navigate = useNavigate()
   const footerr = PublicService.footer
@@ -40,7 +38,6 @@ const Footer: React.FC = () => {
     <footer className="footer-wrapper mt-auto">
       <Container className="py-5">
         <Row className="g-4 text-white">
-          {/* Logo + About */}
           <Col md={4} sm={12}>
             <div className="d-flex align-items-center gap-2 mb-2">
               <img src={logo} className="footer-logo" alt={config?.footerLogoAlt} />
@@ -53,7 +50,6 @@ const Footer: React.FC = () => {
               {config?.footerBrandDescription}
             </p>
           </Col>
-          {/* Contact */}
           <Col md={4} sm={12}>
             <h6 className="fw-bold mb-3">{config?.contactHeaderTitle}</h6>
             <p className="mb-1 footer-light">
@@ -71,7 +67,6 @@ const Footer: React.FC = () => {
             </div>
           </Col>
 
-          {/* Quick Links */}
           <Col md={2} sm={6} xs={6}>
             <h6 className="fw-bold mb-3">{config?.newsSectionQuickLinksHead}</h6>
             <ul className="footer-links">
@@ -81,13 +76,10 @@ const Footer: React.FC = () => {
                 </li>
               ))}
             </ul>
-
           </Col>
 
-          {/* Office Hours */}
           <Col md={2} sm={6} xs={6}>
             <h6 className="fw-bold mb-3">{config?.officeHoursTitle}</h6>
-
             <div className="d-flex align-items-start gap-2 footer-light">
               <i className="bi bi-clock text-gold"></i>
               <div>
@@ -95,25 +87,26 @@ const Footer: React.FC = () => {
                 <strong>{config?.officeDay1Time}</strong>
               </div>
             </div>
-
             <div className="mt-3 footer-light">
               <i className="bi bi-clock text-gold me-2"></i>
               <span>{config?.contactOfficeDay2}</span><br />
               <strong className="ms-4">{config?.officeDay2Time}</strong>
             </div>
-            {/* <Button className="mt-3 schedule-btn">{config?.officeHours.actionButton.label}</Button> */}
           </Col>
         </Row>
       </Container>
 
       {/* Bottom Bar */}
-      {/* <div className="footer-bottom text-white py-3 px-3">
-        <Container className="d-flex justify-content-between flex-wrap text-center">
-          <div className="small">
-            {config?.footerCopyrightText}
-          </div> */}
-          {/* ===========API new filed needed========= */}
-          {/* <div className="small footer-links d-flex gap-3">
+      <div className="footer-bottom text-white py-3 px-3">
+        <Container className="d-flex justify-content-between align-items-center flex-wrap text-center gap-2">
+          <div className="d-flex align-items-center gap-2 small">
+            <span>{config?.footerCopyrightText}</span>
+            <span className="footer-version-text">
+              <span className="footer-version-label">Version</span>
+              <span className="footer-version-number">{APP_VERSION}</span>
+            </span>
+          </div>
+          <div className="small footer-links d-flex gap-3">
             <div className="small footer-links d-flex gap-3">
               {footerr.bottomBar.links.map((link, index) => (
                 <span key={index} onClick={() => navigate(link.route)}>
@@ -123,29 +116,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </Container>
-      </div> */}
-      {/* Bottom Bar */}
-<div className="footer-bottom text-white py-3 px-3">
-  <Container className="d-flex justify-content-between align-items-center flex-wrap text-center gap-2">
-    <div className="d-flex align-items-center gap-2 small">
-  <span>{config?.footerCopyrightText}</span>
-  <span className="footer-version-text">
-    <span className="footer-version-label">Version</span>
-    <span className="footer-version-number">{APP_VERSION}</span>
-  </span>
-</div>
-    {/* ===========API new filed needed========= */}
-    <div className="small footer-links d-flex gap-3">
-      <div className="small footer-links d-flex gap-3">
-        {footerr.bottomBar.links.map((link, index) => (
-          <span key={index} onClick={() => navigate(link.route)}>
-            {link.label}
-          </span>
-        ))}
       </div>
-    </div>
-  </Container>
-</div>
     </footer>
   );
 };

@@ -1,4 +1,3 @@
-// src/Components/ClaimsTable/ClaimsTable.tsx
 import React from "react";
 import { Card, Table } from "react-bootstrap";
 import "../../Style/Claims.css";
@@ -51,7 +50,7 @@ const ClaimsTable: React.FC<ClaimsTableProps> = ({ title, data, years }) => {
                   </td>
                 </tr>
               ) : (
-                 <>
+                <>
                   {/* Existing rows */}
                   {data.map((row, idx) => (
                     <tr key={idx}>

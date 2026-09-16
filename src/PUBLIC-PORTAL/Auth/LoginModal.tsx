@@ -1,4 +1,3 @@
-// PUBLIC-PORTAL/Auth/LoginModal.tsx
 import React, { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { LogIn, Lock, Mail, Eye, EyeOff, X } from "lucide-react";
@@ -29,7 +28,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  // ── Reset all fields every time the modal opens ──
   useEffect(() => {
     if (show) {
       setUserName("");
@@ -68,81 +66,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
     }
   };
 
-  // const handleSubmit = async (e: FormEvent): Promise<void> => {
-  //   e.preventDefault();
-  //   setSubmitted(true);
-
-  //   const userNameError = validateUserName(userName);
-  //   const passwordError = validatePassword(password);
-  //   setErrors({ userName: userNameError, password: passwordError });
-
-  //   if (!userNameError && !passwordError) {
-  //     setIsLoading(true);
-  //     try {
-  //       const response = await AuthService.login({ userName, password });
-  //       console.log("DEBUG 1 - response:", response);
-
-  //       if (!response.isSucess) {
-  //         console.log("DEBUG - failed at isSucess check");
-  //         toast.error("Invalid username or password");
-  //         return;
-  //       }
-
-  //       if (!response.value) {
-  //         console.log("DEBUG - failed at value check");
-  //         toast.error("Invalid username or password");
-  //         return;
-  //       }
-
-  //       const userRole = localStorage.getItem("user_role");
-  //       console.log("DEBUG 2 - userRole from localStorage:", userRole);
-  //       if (!userRole) {
-  //         console.log("DEBUG - failed at userRole check");
-  //         toast.error("Invalid user credentials. Please contact administrator.");
-  //         AuthService.logout();
-  //         return;
-  //       }
-
-  //       const dashboardRoute = AuthService.getDashboardRoute();
-  //       console.log("DEBUG 3 - dashboardRoute:", dashboardRoute);
-  //       if (dashboardRoute === "/login") {
-  //         console.log("DEBUG - failed at dashboardRoute check");
-  //         toast.error("Invalid user role. Please contact administrator.");
-  //         AuthService.logout();
-  //         return;
-  //       }
-
-  //       toast.success(`Welcome ${response.value.user.userName}!`);
-  //       setTimeout(() => {
-  //         onClose();
-  //         navigate(dashboardRoute, { replace: true });
-  //       }, 1000);
-
-  //     } catch (error: any) {
-  //       console.error("Login error:", error);
-
-  //       const status = error?.response?.status;
-  //       const serverMessage =
-  //         error?.response?.data?.customMessage ||
-  //         error?.response?.data?.error ||
-  //         error?.message;
-
-  //       if (status === 400 || status === 401) {
-  //         toast.error("Invalid username or password");
-  //       } else if (status) {
-  //         toast.error(serverMessage || "Something went wrong. Please try again.");
-  //       } else {
-  //         // No HTTP status = error happened AFTER login succeeded
-  //         // (localStorage read, getDashboardRoute, navigation, etc.)
-  //         // Do not blame credentials for this.
-  //         toast.error(serverMessage || "Login succeeded but something failed after. Check console.");
-  //       }
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
-
 const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     setSubmitted(true);
@@ -154,7 +77,6 @@ const handleSubmit = async (e: FormEvent): Promise<void> => {
     if (!userNameError && !passwordError) {
       setIsLoading(true);
       try {
-        // ── Step 1: attempt login. ANY failure here means bad credentials ──
         let response;
         try {
           response = await AuthService.login({ userName, password });
@@ -164,31 +86,8 @@ const handleSubmit = async (e: FormEvent): Promise<void> => {
           return;
         }
 
-        // console.log("DEBUG 1 - response:", response);
-
-        // if (!response.isSucess || !response.value) {
-        //   console.log("DEBUG - failed at isSucess/value check");
-        //   toast.error("Invalid username or password");
-        //   return;
-        // }
-        // console.log("DEBUG 1 - response:", response);
-
-        // if (!response.isSucess || !response.value) {
-        //   console.log("DEBUG - failed at isSucess/value check");
-
-        //   const serverMessage = (response.customMessage || response.error || "").toLowerCase();
-
-        //   if (serverMessage.includes("lock")) {
-        //     toast.error("Your account is locked. Please contact administrator.");
-        //   } else {
-        //     toast.error("Invalid username or password");
-        //   }
-        //   return;
-        // }
         console.log("DEBUG 1 - FULL response object:", JSON.stringify(response, null, 2));
 
-        // Check lock status first, regardless of isSucess, in case
-        // the backend still returns user data alongside a failure flag.
         const lockedFromValue = response.value?.user?.islocked === true;
 
 if (!response.isSucess || !response.value || lockedFromValue) {
@@ -212,9 +111,6 @@ if (!response.isSucess || !response.value || lockedFromValue) {
   return;
 }
 
-        // // ── Step 2: login succeeded, now handle post-login logic ──
-        // const userRole = localStorage.getItem("user_role");
-        // ── Step 2: login succeeded, now handle post-login logic ──
         if (response.value.user.islocked) {
           console.log("DEBUG - login succeeded but account is locked");
           toast.error("Your account is locked. Please contact administrator.");
@@ -247,7 +143,6 @@ if (!response.isSucess || !response.value || lockedFromValue) {
         }, 1000);
 
       } catch (error: any) {
-        // Anything thrown after a successful login (e.g. navigation errors)
         console.error("Post-login error:", error);
         toast.error(error?.message || "Login succeeded but something failed after. Check console.");
       } finally {
@@ -324,15 +219,12 @@ if (!response.isSucess || !response.value || lockedFromValue) {
             </div>
           </Form.Group>
 
-          {/* ── Password ── */}
          {/* ── Password ── */}
 <Form.Group className="mb-4">
   <Form.Label>
     Password <span className="text-danger">*</span>
   </Form.Label>
 
-  {/* Inner wrapper only contains the input + icons, so 50% centering
-      is never affected by the error text below */}
   <div style={{ position: "relative" }}>
     <Lock
       size={18}
@@ -382,8 +274,6 @@ if (!response.isSucess || !response.value || lockedFromValue) {
     </button>
   </div>
 
-  {/* Error text now lives OUTSIDE the relative wrapper, so it no longer
-      affects the 50% vertical centering of the icons above */}
   {submitted && errors.password && (
     <div className="invalid-feedback d-block"  style={{ marginTop: "2px", marginBottom: 0 }}>
       {errors.password}

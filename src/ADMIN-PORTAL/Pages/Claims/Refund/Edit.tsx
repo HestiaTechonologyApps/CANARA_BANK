@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import type { Field } from "../../../Components/KiduEdit";
 import KiduEdit from "../../../Components/KiduEdit";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
-import type { RefundContribution } from "../../../Types/Claims/Refund.types";
+import type { RefundContribution, MemberRefundEligibility } from "../../../Types/Claims/Refund.types";
 import type { State } from "../../../Types/Settings/States.types";
 import type { Designation } from "../../../Types/Settings/Designation.types";
 import type { Member } from "../../../Types/Contributions/Member.types";
@@ -16,16 +15,12 @@ import DesignationService from "../../../Services/Settings/Designation.services"
 import YearMasterService from "../../../Services/Settings/YearMaster.services";
 import type { YearMaster } from "../../../Types/Settings/YearMaster.types";
 import YearMasterPopup from "../../YearMaster/YearMasterPopup";
-import AuthService from "../../../../Services/Auth.services";
 import type { Branch } from "../../../Types/Settings/Branch.types";
 import BranchPopup from "../../Branch/BranchPopup";
 
 const THEME_COLOR = "#1B3763";
 
 const RefundContributionEdit: React.FC = () => {
-  const navigate = useNavigate();
- // const { refundContributionId } = useParams();
-
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showMemberPopup, setShowMemberPopup] = useState(false);
   const [showDesignationPopup, setShowDesignationPopup] = useState(false);
@@ -46,11 +41,63 @@ const RefundContributionEdit: React.FC = () => {
   const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
   const [presetValues, setPresetValues] = useState<Record<string, any>>({});
 
+  const [currentRefundId, setCurrentRefundId] = useState<number | null>(null);
+
+  const [eligibility, setEligibility] = useState<MemberRefundEligibility | null>(null);
+  const [eligibilityLoading, setEligibilityLoading] = useState(false);
+  const [eligibilityError, setEligibilityError] = useState<string | null>(null);
+
+  const [refundNoLoading, setRefundNoLoading] = useState(false);
+  const [refundNoError, setRefundNoError] = useState<string | null>(null);
+
+  // Live-tracked amount value, used to warn the user as they type (before submit)
+  const [amountValue, setAmountValue] = useState<string>("");
+  const [currentAmountAtFetch, setCurrentAmountAtFetch] = useState<string>("");
+
+  const regenerateRefundNo = async (stateId: number) => {
+    setRefundNoLoading(true);
+    setRefundNoError(null);
+    try {
+      const res = await RefundContributionService.getNextRefundNumber(stateId);
+      if (res.isSucess) {
+        setPresetValues(prev => ({ ...prev, refundNO: res.value }));
+      } else {
+        setRefundNoError(res.error || "Unable to generate refund number for this state.");
+      }
+    } catch (err: any) {
+      setRefundNoError(err?.message || "Unable to generate refund number for this state.");
+    } finally {
+      setRefundNoLoading(false);
+    }
+  };
+
+  const loadEligibility = async (memberId: number, excludeId?: number) => {
+    setEligibilityLoading(true);
+    setEligibilityError(null);
+    try {
+      const res = await RefundContributionService.getMemberEligibility(memberId, excludeId);
+      if (res.isSucess) {
+        setEligibility(res.value);
+      } else {
+        setEligibility(null);
+        setEligibilityError(res.error || "Unable to fetch member's refund eligibility.");
+      }
+    } catch (err: any) {
+      setEligibility(null);
+      setEligibilityError(err?.message || "Unable to fetch member's refund eligibility.");
+    } finally {
+      setEligibilityLoading(false);
+    }
+  };
+
+  const isAmountExceeding =
+    !!eligibility && amountValue !== "" && Number(amountValue) > eligibility.availableAmount;
+
   const fields: Field[] = [
     { name: "stateId", rules: { type: "popup", label: "State", required: true, colWidth: 4 } },
+    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4, disabled: true } },
     { name: "memberId", rules: { type: "popup", label: "Member", required: true, colWidth: 4 } },
     { name: "designationId", rules: { type: "popup", label: "Designation", required: true, colWidth: 4 } },
-    { name: "refundNO", rules: { type: "text", label: "Refund No", required: true, colWidth: 4 } },
     { name: "branchNameOFTime", rules: { type: "popup", label: "Branch Name (At the Time)", required: true, colWidth: 4 } },
     { name: "dpcodeOfTime", rules: { type: "text", label: "DP Code (At the Time)", required: true, colWidth: 4 } },
     { name: "type", rules: { type: "select", label: "Type", required: true, colWidth: 4 } },
@@ -75,27 +122,23 @@ const RefundContributionEdit: React.FC = () => {
     const refund = response.value;
     if (!refund) return response;
 
+    setCurrentRefundId(Number(id));
+    const fetchedAmount = refund.amount != null ? String(refund.amount) : "";
+    setAmountValue(fetchedAmount);
+    setCurrentAmountAtFetch(fetchedAmount);
+
     if (refund.stateId) {
       const state = (await StateService.getStateById(refund.stateId)).value;
       setSelectedState(state);
       setInitialState(state);
     }
 
-    // if (refund.staffNo) {
-    //   const memberRes = await MemberService.getMembersPaginated({
-    //     pageNumber: 1,
-    //     pageSize: 1,
-    //     searchTerm: String(refund.staffNo),
-    //   });
-    //   const member = memberRes?.data?.[0] || null;
-    //   setSelectedMember(member);
-    //   setInitialMember(member);
-    // }
     if (refund.memberId) {
-  const member = (await MemberService.getMemberById(refund.memberId)).value;
-  setSelectedMember(member);
-  setInitialMember(member);
-}
+      const member = (await MemberService.getMemberById(refund.memberId)).value;
+      setSelectedMember(member);
+      setInitialMember(member);
+      loadEligibility(refund.memberId, Number(id));
+    }
 
     if (refund.designationId) {
       const designation = (await DesignationService.getDesignationById(refund.designationId)).value;
@@ -128,24 +171,6 @@ const RefundContributionEdit: React.FC = () => {
     };
   };
 
-  const getCurrentUserId = (): number => {
-    const user = AuthService.getCurrentUser();
-    if (!user?.userId) throw new Error("Unable to get current user. Please login again.");
-    return user.userId;
-  };
-
-  const handleApprove = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(Number(id), { approve: true, currentUserId });
-    navigate("/dashboard/claims/refundcontribution-list");
-  };
-
-  const handleReject = async (id: string) => {
-    const currentUserId = getCurrentUserId();
-    await RefundContributionService.approveRefundContribution(Number(id), { approve: false, currentUserId });
-    navigate("/dashboard/claims/refundcontribution-list");
-  };
-
   const handleReset = () => {
     setSelectedState(initialState);
     setSelectedMember(initialMember);
@@ -153,12 +178,28 @@ const RefundContributionEdit: React.FC = () => {
     setSelectedYearMaster(initialYearMaster);
     setSelectedBranch(initialBranch);
     setPresetValues({});
+    setRefundNoError(null);
+    setAmountValue(currentAmountAtFetch);
+    if (initialMember?.memberId) {
+      loadEligibility(initialMember.memberId, currentRefundId ?? undefined);
+    }
   };
 
   const handleUpdate = async (id: string, formData: Record<string, any>) => {
     if (!selectedState || !selectedMember || !selectedDesignation || !selectedYearMaster || !selectedBranch) {
       throw new Error("Please select all required values");
     }
+
+    const requestedAmount = Number(formData.amount);
+
+    if (eligibility && requestedAmount > eligibility.availableAmount) {
+      const err: any = new Error(
+        `Amount (${requestedAmount}) exceeds the available refund balance (${eligibility.availableAmount}) for this member.`
+      );
+      err.silent = true;
+      throw err;
+    }
+
     const payload: Partial<Omit<RefundContribution, "auditLogs">> = {
       refundContributionId: Number(id),
       staffNo: selectedMember.staffNo,
@@ -173,7 +214,7 @@ const RefundContributionEdit: React.FC = () => {
       ddno: String(formData.ddno || "").trim(),
       dddate: toIso(formData.dddate),
       dddateString: toIso(formData.dddate),
-      amount: Number(formData.amount),
+      amount: requestedAmount,
       lastContribution: Number(formData.lastContribution || 0),
       yearOF: selectedYearMaster?.yearOf,
       deathDate: "",
@@ -228,23 +269,118 @@ const RefundContributionEdit: React.FC = () => {
         auditLogConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         popupHandlers={popupHandlers}
         options={{ type: typeOptions }}
-        //themeColor="#1B3763"
         themeColor={THEME_COLOR}
         attachmentConfig={{ tableName: "RefundContribution", recordIdField: "refundContributionId" }}
         onReset={handleReset}
         presetValues={presetValues}
-        approvalConfig={{
-          onApprove: handleApprove,
-          onReject: handleReject,
-          confirmApproveText: "Are you sure you want to approve this refund contribution?",
-          confirmRejectText: "Are you sure you want to reject this refund contribution?",
-          showWhen: (formData) => !formData.isApproved,
+        fieldChangeHandlers={{
+          amount: (value) => setAmountValue(value),
         }}
-      />
+      >
+
+        {refundNoLoading && (
+          <div className="ms-1 mb-2 text-muted" style={{ fontSize: "13px" }}>
+            Generating new refund number…
+          </div>
+        )}
+        {refundNoError && (
+          <div className="ms-1 mb-2 text-danger" style={{ fontSize: "13px" }}>
+            {refundNoError}
+          </div>
+        )}
+
+        {selectedMember && (
+          <div className="row mb-3 ms-1">
+            {eligibilityLoading && (
+              <div className="col-12 text-muted" style={{ fontSize: "13px" }}>
+                Loading refund eligibility…
+              </div>
+            )}
+
+            {eligibilityError && (
+              <div className="col-12 text-danger" style={{ fontSize: "13px" }}>
+                {eligibilityError}
+              </div>
+            )}
+
+            {eligibility && !eligibilityLoading && (
+              <>
+                <div className="col-md-4 mb-2">
+                  <label className="fw-bold">Last Contribution</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    readOnly
+                    disabled
+                    value={
+                      eligibility.lastContributionMonth
+                        ? `${eligibility.lastContributionMonth}-${eligibility.lastContributionYear} - ${eligibility.lastContributionAmount}`
+                        : "No contribution found"
+                    }
+                  />
+                </div>
+                <div className="col-md-4 mb-2">
+                  <label className="fw-bold">Total Approved Refund Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    readOnly
+                    disabled
+                    value={eligibility.approvedAmount}
+                  />
+                </div>
+                <div className="col-md-4 mb-2">
+                  <label className="fw-bold">Total Pending/Rejected Refund Amount</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    readOnly
+                    disabled
+                    value={eligibility.pendingAmount}
+                  />
+                </div>
+                <div className="col-12">
+                  <span className="fw-bold" style={{ fontSize: "13px" }}>
+                    Available for refund:
+                  </span>{" "}
+                  <span
+                    style={{ fontSize: "13px" }}
+                    className={eligibility.availableAmount > 0 ? "text-success" : "text-danger"}
+                  >
+                    {eligibility.availableAmount}
+                  </span>
+                </div>
+                {isAmountExceeding && (
+                  <div className="col-12 mt-2">
+                    <span
+                      className="fw-bold d-inline-block"
+                      style={{
+                        fontSize: "13px",
+                        color: "#b45309",
+                        background: "#fffbeb",
+                        border: "1px solid #fcd34d",
+                        borderRadius: "6px",
+                        padding: "4px 10px",
+                      }}
+                    >
+                      ⚠ Amount ({amountValue}) exceeds the available refund balance ({eligibility.availableAmount}).
+                    </span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </KiduEdit>
+      {/* <StatePopup show={showStatePopup} handleClose={() => setShowStatePopup(false)} onSelect={setSelectedState} /> */}
       <StatePopup
         show={showStatePopup}
         handleClose={() => setShowStatePopup(false)}
-        onSelect={setSelectedState}
+        onSelect={(s) => {
+          setSelectedState(s);
+          setShowStatePopup(false);
+          regenerateRefundNo(s.stateId);
+        }}
       />
       <MemberPopup
         show={showMemberPopup}
@@ -263,6 +399,8 @@ const RefundContributionEdit: React.FC = () => {
           } catch (err) {
             console.error("Failed to auto-fill designation/DP code:", err);
           }
+
+          loadEligibility(m.memberId, currentRefundId ?? undefined);
         }}
       />
       <DesignationPopup

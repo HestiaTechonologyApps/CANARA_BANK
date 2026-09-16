@@ -154,36 +154,20 @@ const KiduView: React.FC<KiduViewProps> = ({
       return value ? "Yes" : "No";
     }
     // Date
-    // if (field.isDate) {
-    //   try {
-    //     const date = new Date(value);
-    //     if (!isNaN(date.getTime())) {
-    //       return date.toLocaleDateString("en-US", {
-    //         year: "numeric",
-    //         month: "long",
-    //         day: "numeric",
-    //         hour: "2-digit",
-    //         minute: "2-digit",
-    //       });
-    //     }
-    //   } catch (e) {
-    //     return String(value);
-    //   }
-    // }
     if (field.isDate) {
-  try {
-    const date = new Date(value);
-    if (!isNaN(date.getTime())) {
-      return date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      });
+      try {
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          return date.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          });
+        }
+      } catch (e) {
+        return String(value);
+      }
     }
-  } catch (e) {
-    return String(value);
-  }
-}
 
     return String(value);
   };
@@ -242,11 +226,11 @@ const KiduView: React.FC<KiduViewProps> = ({
           <div className="d-flex gap-2">
             {showEditButton && editRoute && (
               <span title={isEditDisabled ? disabledEditTooltip : undefined}>
-                {/* <Button
+                <Button
                   className="d-flex align-items-center gap-2"
                   style={{
                     backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
-                    border: "none",
+                    border: `1px solid ${isEditDisabled ? "#adb5bd" : themeColor}`,
                     fontWeight: 500,
                     fontSize: "14px",
                     padding: "6px 14px",
@@ -256,55 +240,27 @@ const KiduView: React.FC<KiduViewProps> = ({
                   disabled={isEditDisabled}
                 >
                   <FaEdit /> Edit
-                </Button> */}
-                <Button
-  className="d-flex align-items-center gap-2"
-  style={{
-    backgroundColor: isEditDisabled ? "#adb5bd" : themeColor,
-    border: `1px solid ${isEditDisabled ? "#adb5bd" : themeColor}`,
-    fontWeight: 500,
-    fontSize: "14px",
-    padding: "6px 14px",
-    cursor: isEditDisabled ? "not-allowed" : "pointer",
-  }}
-  onClick={handleEdit}
-  disabled={isEditDisabled}
->
-  <FaEdit /> Edit
-</Button>
+                </Button>
               </span>
             )}
-            {/* {showDeleteButton && onDelete && (
+            {showDeleteButton && onDelete && (
               <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
                 <Button
                   variant={isDeleteDisabled ? "secondary" : "danger"}
                   className="d-flex align-items-center gap-2"
-                  style={{ fontWeight: 500, cursor: isDeleteDisabled ? "not-allowed" : "pointer" }}
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "14px",
+                    padding: "6px 14px",
+                    cursor: isDeleteDisabled ? "not-allowed" : "pointer",
+                  }}
                   onClick={() => setShowConfirm(true)}
                   disabled={isDeleteDisabled}
                 >
                   <FaTrash size={12} /> Delete
                 </Button>
               </span>
-            )} */}
-            {showDeleteButton && onDelete && (
-  <span title={isDeleteDisabled ? disabledDeleteTooltip : undefined}>
-    <Button
-      variant={isDeleteDisabled ? "secondary" : "danger"}
-      className="d-flex align-items-center gap-2"
-      style={{
-        fontWeight: 500,
-        fontSize: "14px",
-        padding: "6px 14px",
-        cursor: isDeleteDisabled ? "not-allowed" : "pointer",
-      }}
-      onClick={() => setShowConfirm(true)}
-      disabled={isDeleteDisabled}
-    >
-      <FaTrash size={12} /> Delete
-    </Button>
-  </span>
-)}
+            )}
           </div>
         </div>
 

@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import {
-  Mail,
-  Phone,
-  Calendar,
-  Shield,
-  MapPin,
-  Building,
-  ArrowLeft,
-  AlertCircle,
-  Wallet,
-  Receipt,
-  Landmark,
-} from "lucide-react";
+import { Mail, Phone, Calendar, Shield, MapPin, Building, ArrowLeft, AlertCircle, Wallet, Receipt, Landmark,} from "lucide-react";
 import type { Member } from "../Types/Contributions/Member.types";
 import MemberService from "../Services/Contributions/Member.services";
 import { getFullImageUrl } from "../../CONSTANTS/API_ENDPOINTS";
@@ -43,7 +31,6 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
 
-  // ── Contribution states ──────────────────────────────────────────
   const [showContribution, setShowContribution] = useState(false);
   const [contributions, setContributions] = useState<MemberAccountDetail[]>([]);
   const [contributionLoading, setContributionLoading] = useState(false);
@@ -89,7 +76,6 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
     fetchProfile();
   }, [show]);
 
-  // ── Fetch contributions ──────────────────────────────────────────
   const handleShowContribution = async () => {
     if (contributions.length > 0) {
       setShowContribution(true);
@@ -166,7 +152,6 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
           </div>
 
         ) : showContribution ? (
-          //  CONTRIBUTION VIEW
           contributionLoading ? (
             <div className="d-flex flex-column align-items-center justify-content-center py-5 gap-3">
               <Spinner animation="border" style={{ color: NAVY }} />
@@ -332,9 +317,7 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
           )
 
         ) : (
-          //  PROFILE VIEW
           <>
-            {/* Avatar + name */}
             <div className="d-flex flex-column align-items-center mb-4">
               <div
                 className="rounded-circle d-flex align-items-center justify-content-center"
@@ -431,7 +414,6 @@ const KiduProfileModal: React.FC<KiduProfileModalProps> = ({ show, onHide }) => 
               ))}
             </div>
 
-            {/* Last login */}
             <div className="mt-4 pt-3 text-center" style={{ borderTop: `1px dashed ${BORDER}` }}>
               <small className="text-muted">
                 Last login: {new Date(user.lastlogin).toLocaleString()}

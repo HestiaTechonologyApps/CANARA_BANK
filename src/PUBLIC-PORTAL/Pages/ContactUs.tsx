@@ -287,7 +287,8 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
             </Card>
             <Card className="office-hours-card p-4">
-              <h5 className="fw-bold mb-4 text-white">{config?.officeTitle}</h5>
+              {/* <h5 className="fw-bold mb-4 text-white">{config?.officeTitle || "Office Timing"}</h5> */}
+              <h5 className="fw-bold mb-4 text-white">Office Timing</h5>
               <Row className="mb-3">
                 <Col xs={6} className="text-white">
                   {config?.contactOfficeDay1}

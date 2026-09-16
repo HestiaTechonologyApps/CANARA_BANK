@@ -42,10 +42,15 @@ const formatDateOnly = (value?: string | Date) => {
   claim.deathDate = formatDateOnly(claim.deathDate);
   claim.dddate = formatDateOnly(claim.dddate);
 
-  if (claim.memberId) {
-    const members = await MemberService.getAllMembers();
-    const member = members.find(m => m.memberId === claim.memberId);
-    claim.memberName = member?.name || "N/A";
+  // if (claim.memberId) {
+  //   const members = await MemberService.getAllMembers();
+  //   const member = members.find(m => m.memberId === claim.memberId);
+  //   claim.memberName = member?.name || "N/A";
+  // }
+
+    if (claim.memberId) {
+    const memberRes = await MemberService.getMemberById(claim.memberId);
+    claim.memberName = memberRes?.value?.name || "N/A";
   }
 
   if (claim.stateId) {
@@ -88,7 +93,7 @@ const formatDateOnly = (value?: string | Date) => {
       showEditButton={true}
       showDeleteButton={true}
       deleteConfirmMessage="Are you sure you want to delete this death claim? This action cannot be undone."
-      attachmentConfig={{ tableName: "DeathClaim", recordIdField:"deathClaimId" }}
+      attachmentConfig={{ tableName: "DEATH_CLAIM", recordIdField:"deathClaimId" }}
        disableEditWhen={(data) => data.isApproved === true}
       disabledEditTooltip="This death claim has already been approved and cannot be edited"
       disableDeleteWhen={(data) => data.isApproved === true}

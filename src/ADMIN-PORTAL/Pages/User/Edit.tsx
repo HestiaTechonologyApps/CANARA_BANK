@@ -9,6 +9,7 @@ import type { Company } from "../../Types/Settings/Company.types";
 import type { Member } from "../../Types/Contributions/Member.types";
 import CompanyService from "../../Services/Settings/Company.services";
 import MemberService from "../../Services/Contributions/Member.services";
+import toast from "react-hot-toast";
 
 const UserEdit: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
@@ -103,13 +104,49 @@ const handleReset = () => {
     setSelectedMember(initialMember);
   };
 
-  const handleUpdate = async (id: string, formData: Record<string, any>) => {
-    if (!selectedCompany) throw new Error("Please select a company");
-    if (!selectedMember) throw new Error("Please select a staff member");
+  // const handleUpdate = async (id: string, formData: Record<string, any>) => {
+  //   if (!selectedCompany) throw new Error("Please select a company");
+  //   if (!selectedMember) throw new Error("Please select a staff member");
+
+  //   const payload: Partial<Omit<User, "auditLogs">> = {
+  //     userId: Number(id),
+  //     userName: formData.userName.trim(),
+  //     userEmail: formData.userEmail.trim(),
+  //     staffNo: selectedMember.staffNo,
+  //     memberId: selectedMember.memberId,
+  //     phoneNumber: formData.phoneNumber.trim(),
+  //     address: formData.address?.trim() || "",
+  //     role: formData.role,
+  //     isActive: formData.isActive === true,
+  //     islocked: formData.islocked === true,
+  //     companyId: selectedCompany.companyId,
+  //   };
+
+  //   await UserService.updateUser(Number(id), payload);
+  //   return true;
+  // };
+
+const handleUpdate = async (id: string, formData: Record<string, any>) => {
+    const trimmedUserName = formData.userName.trim();
+
+    const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmedUserName);
+    if (!hasAlphanumeric) {
+      toast.error("User Name cannot contain only special characters");
+      throw new Error("User Name cannot contain only special characters");
+    }
+
+    if (!selectedCompany) {
+      toast.error("Please select a company");
+      throw new Error("Please select a company");
+    }
+    if (!selectedMember) {
+      toast.error("Please select a staff member");
+      throw new Error("Please select a staff member");
+    }
 
     const payload: Partial<Omit<User, "auditLogs">> = {
       userId: Number(id),
-      userName: formData.userName.trim(),
+      userName: trimmedUserName,
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
       memberId: selectedMember.memberId,

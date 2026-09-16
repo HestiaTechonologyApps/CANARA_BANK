@@ -546,19 +546,19 @@ const KiduEdit: React.FC<KiduEditProps> = ({
   };
 
   const parseDateValue = (value?: string): Date | null => {
-  if (!value) return null;
-  const [y, m, d] = value.split("-").map(Number);
-  if (!y || !m || !d) return null;
-  return new Date(y, m - 1, d);
-};
+    if (!value) return null;
+    const [y, m, d] = value.split("-").map(Number);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d);
+  };
 
-const formatDateValue = (date: Date | null): string => {
-  if (!date) return "";
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-};
+  const formatDateValue = (date: Date | null): string => {
+    if (!date) return "";
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
 
   // ==================== RENDER FORM CONTROLS ====================
   const renderFormControl = (field: Field) => {
@@ -700,43 +700,27 @@ const formatDateValue = (date: Date | null): string => {
           />
         );
 
-      // case "date":
-      //   return (
-      //     <Form.Control
-      //       size="sm"
-      //       type="date"
-      //       name={name}
-      //       value={formData[name]}
-      //       onChange={handleChange}
-      //       onBlur={() => handleBlur(name)}
-      //       isInvalid={!!errors[name]}
-      //       disabled={rules.disabled}
-      //       min={rules.min}
-      //       max={rules.max}
-      //       style={rules.disabled ? { backgroundColor: "#f5f5f5", cursor: "not-allowed" } : {}}
-      //     />
-      //   );
       case "date":
-  return (
-    <DatePicker
-      selected={parseDateValue(formData[name])}
-      onChange={(date: Date | null) => {
-        const formatted = formatDateValue(date);
-        setFormData(prev => ({ ...prev, [name]: formatted }));
-        fieldChangeHandlers?.[name]?.(formatted, setFormData);
-        if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
-      }}
-      onBlur={() => handleBlur(name)}
-      dateFormat="dd MMM yyyy"
-      placeholderText={fieldPlaceholder}
-      disabled={rules.disabled}
-      minDate={parseDateValue(rules.min) || undefined}
-      maxDate={parseDateValue(rules.max) || undefined}
-      className={`form-control form-control-sm${errors[name] ? " is-invalid" : ""}`}
-      wrapperClassName="w-100"
-      autoComplete="off"
-    />
-  );
+        return (
+          <DatePicker
+            selected={parseDateValue(formData[name])}
+            onChange={(date: Date | null) => {
+              const formatted = formatDateValue(date);
+              setFormData(prev => ({ ...prev, [name]: formatted }));
+              fieldChangeHandlers?.[name]?.(formatted, setFormData);
+              if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
+            }}
+            onBlur={() => handleBlur(name)}
+            dateFormat="dd MMM yyyy"
+            placeholderText={fieldPlaceholder}
+            disabled={rules.disabled}
+            minDate={parseDateValue(rules.min) || undefined}
+            maxDate={parseDateValue(rules.max) || undefined}
+            className={`form-control form-control-sm${errors[name] ? " is-invalid" : ""}`}
+            wrapperClassName="w-100"
+            autoComplete="off"
+          />
+        );
 
       default:
         return (

@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import MemberService from "../../../Services/Contributions/Member.services";
 import KiduServerTableList from "../../../../Components/KiduServerTableList";
 import { getFullImageUrl } from "../../../../CONSTANTS/API_ENDPOINTS";
 import defaultProfileImage from "../../../Assets/Images/profile.jpg";
+import MemberStatusCards from "./StatusCard";
 
 const MemberList: React.FC = () => {
+
+  const [selectedStatusId, setSelectedStatusId] = useState<number | null>(null);
+  
   return (
-    <KiduServerTableList
+    <>
+     <MemberStatusCards selectedStatusId={selectedStatusId} onSelect={setSelectedStatusId} />
+     
+<KiduServerTableList
+      key={selectedStatusId ?? "all"}   // remounts table -> fresh fetchData closure + initial load
       paginatedFetchService={async ({ pageNumber, pageSize, searchTerm }) => {
         const response = await MemberService.getMembersPaginated({
           pageNumber,
           pageSize,
           searchTerm: searchTerm || "",
+          statusId: selectedStatusId ?? undefined,
         });
 
         return {
@@ -28,6 +37,7 @@ const MemberList: React.FC = () => {
       columns={[
         { key: "memberId", label: "Member ID", enableSorting: true, type: "text" },
         { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" },
+        { key: "oldStaffNo", label: "Old Staff No", enableSorting: true, type: "text" },
         { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" },
         { key: "name", label: "Name", enableSorting: true, type: "text" },
         { key: "designationName", label: "Designation", enableSorting: true, type: "text" },
@@ -40,6 +50,7 @@ const MemberList: React.FC = () => {
       filterColumns={[  
         { key: "memberId", label: "Member ID", type: "text" },
         { key: "staffNo", label: "Staff No", type: "text" },
+        { key: "oldStaffNo", label: "Old Staff No", type: "text" },
         { key: "name", label: "Name", type: "text" },
         { key: "designationName", label: "Designation", type: "text" },
         { key: "categoryname", label: "Category", type: "text" },
@@ -61,6 +72,7 @@ const MemberList: React.FC = () => {
       showActions={true}
       rowsPerPage={10}
     />
+    </>
   );
 };
 

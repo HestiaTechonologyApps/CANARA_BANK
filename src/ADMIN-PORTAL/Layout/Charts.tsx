@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  PieChart,
-  Pie,
-  Cell,
-  Area,
-  AreaChart,
+  Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, PieChart, Pie, Cell, Area, AreaChart,
 } from "recharts";
 import { TrendingUp, PieChart as PieIcon, BarChart3 } from "lucide-react";
 import KiduLoader from "../../Components/KiduLoader";

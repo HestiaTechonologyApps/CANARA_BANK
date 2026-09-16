@@ -1,4 +1,3 @@
-// ResetPasswordModal.tsx
 import React, { useState } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { ArrowLeft, KeyRound, Mail } from "lucide-react";
@@ -18,11 +17,9 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  //  Email validation
   const isValidEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-  //  Send reset link
   const handleForgotPassword = async () => {
     setError("");
 
@@ -38,7 +35,6 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
 
     try {
       setLoading(true);
-
       const response = await AuthService.forgotPassword({ email });
 
       if (response.isSucess) {
@@ -48,13 +44,12 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
           hideProgressBar: true,
         });
 
-        // Optional UX improvement
         setEmail("");
       } else {
         setError(
           response.customMessage ||
-            response.error ||
-            "Failed to send reset link"
+          response.error ||
+          "Failed to send reset link"
         );
       }
     } catch (err) {
@@ -99,7 +94,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
             </div>
           </Form.Group>
 
-        
+
           {error && <div className="text-danger mb-3">{error}</div>}
 
           <Button
@@ -142,7 +137,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
         </p>
       </Modal.Body>
 
-   
+
       <ToastContainer />
     </Modal>
   );

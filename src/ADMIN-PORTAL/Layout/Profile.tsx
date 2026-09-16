@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { BsUpload } from "react-icons/bs";
 
 const ProfileUpdate: React.FC = () => {
-  
+
     return (
         <div
             className="d-flex p-3 px-md-4 head-font"
@@ -19,14 +19,12 @@ const ProfileUpdate: React.FC = () => {
                 }}
             >
                 <Card.Body>
-                    {/* Profile Picture */}
                     <div className="d-flex flex-column align-items-center mb-1">
                         <div
                             className="position-relative"
                             style={{ width: "80px", height: "80px" }}
                         >
                             <img
-                                // src={preview}
                                 src=""
                                 alt="Profile"
                                 className="rounded-circle border border-2"
@@ -53,7 +51,6 @@ const ProfileUpdate: React.FC = () => {
                             />
                         </div>
                         <p className="mt-2 mb-0 fw-medium" style={{ fontSize: "15px" }}>username
-                            {/* {username} */}
                         </p>
                         <small className="text-muted">User</small>
                     </div>
@@ -82,9 +79,7 @@ const ProfileUpdate: React.FC = () => {
                                 <Form.Label className="fw-semibold" style={{ fontSize: "15px" }}>Old Password</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    //   value={oldPassword}
                                     value=""
-                                    //   onChange={(e) => setOldPassword(e.target.value)}
                                     style={{
                                         borderRadius: "6px",
                                         backgroundColor: "#ffffff",
@@ -100,8 +95,6 @@ const ProfileUpdate: React.FC = () => {
                                 <Form.Label className="fw-semibold" style={{ fontSize: "15px" }}>New Password</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    // value={newPassword}
-                                    // onChange={(e) => setNewPassword(e.target.value)}
 
                                     style={{
                                         borderRadius: "6px",
@@ -118,8 +111,6 @@ const ProfileUpdate: React.FC = () => {
                                 <Form.Label className="fw-semibold" style={{ fontSize: "15px" }}>Confirm Password</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    // value={confirmPassword}
-                                    // onChange={(e) => setConfirmPassword(e.target.value)}
                                     style={{
                                         borderRadius: "6px",
                                         backgroundColor: "white",
@@ -133,7 +124,6 @@ const ProfileUpdate: React.FC = () => {
                         {/* Save Button */}
                         <div className="text-center mt-3">
                             <Button
-                                // onClick={handleSave}
                                 className="fw-semibold px-4"
                                 style={{
                                     backgroundColor: "#1B3763",

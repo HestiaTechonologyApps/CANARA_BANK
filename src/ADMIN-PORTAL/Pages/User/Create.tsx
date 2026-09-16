@@ -7,6 +7,7 @@ import type { Company } from "../../Types/Settings/Company.types";
 import type { Member } from "../../Types/Contributions/Member.types";
 import CompanyPopup from "../Settings/Company/CompanyPopup";
 import MemberPopup from "../Contributions/Member/MemberPopup";
+import toast from "react-hot-toast";
 
 const UserCreate: React.FC = () => {
   const [showCompanyPopup, setShowCompanyPopup] = useState(false);
@@ -38,16 +39,54 @@ const UserCreate: React.FC = () => {
     { value: "SystemAdmin", label: "SystemAdmin" }
   ];
 
-  const handleSubmit = async (formData: Record<string, any>) => {
+  // const handleSubmit = async (formData: Record<string, any>) => {
+  //   if (!selectedCompany) {
+  //     throw new Error("Please select a company");
+  //   }
+  //   if (!selectedMember) {
+  //     throw new Error("Please select a staff member");
+  //   }
+
+  //   const userData: Omit<User, "userId" | "auditLogs"> = {
+  //     userName: formData.userName.trim(),
+  //     userEmail: formData.userEmail.trim(),
+  //     staffNo: selectedMember.staffNo,
+  //     memberId: selectedMember.memberId, 
+  //     phoneNumber: formData.phoneNumber.trim(),
+  //     address: formData.address?.trim() || "",
+  //     passwordHash: formData.passwordHash,
+  //     isActive: Boolean(formData.isActive),
+  //     islocked: Boolean(formData.islocked),
+  //     createAt: new Date().toISOString(),
+  //     lastlogin: null,
+  //     role: formData.role.trim(),
+  //     companyId: selectedCompany.companyId,
+  //   };
+  //   await UserService.createUser(userData);
+  // };
+
+ const handleSubmit = async (formData: Record<string, any>) => {
+    const trimmedUserName = formData.userName.trim();
+
+    // Reject usernames that are entirely special characters —
+    // must contain at least one letter or digit.
+    const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmedUserName);
+    if (!hasAlphanumeric) {
+      toast.error("User Name cannot contain only special characters");
+      throw new Error("User Name cannot contain only special characters");
+    }
+
     if (!selectedCompany) {
+      toast.error("Please select a company");
       throw new Error("Please select a company");
     }
     if (!selectedMember) {
+      toast.error("Please select a staff member");
       throw new Error("Please select a staff member");
     }
 
     const userData: Omit<User, "userId" | "auditLogs"> = {
-      userName: formData.userName.trim(),
+      userName: trimmedUserName,
       userEmail: formData.userEmail.trim(),
       staffNo: selectedMember.staffNo,
       memberId: selectedMember.memberId, 

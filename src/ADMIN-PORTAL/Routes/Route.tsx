@@ -160,8 +160,8 @@ import ContributionMasterView from '../Pages/Contributions/MonthlyContribution/V
 import ContributionMasterEdit from '../Pages/Contributions/MonthlyContribution/Edit';
 
 //Approval
-import ContributionMasterApprovalList from '../Pages/Approval/List';
-import ContributionMasterApprovalView from '../Pages/Approval/View';
+import ContributionMasterApprovalList from '../Pages/Approval/MonthlyContributionList';
+import ContributionMasterApprovalView from '../Pages/Approval/MonthlyContributionView';
 import UserApprovalView from '../Pages/Approval/UserView';
 import ExpenseTypeList from '../Pages/Administration/Expense Type/List';
 import ExpenseTypeCreate from '../Pages/Administration/Expense Type/Create';
@@ -171,6 +171,11 @@ import ExpenseMasterList from '../Pages/Administration/Expense Master/List';
 import ExpenseMasterCreate from '../Pages/Administration/Expense Master/Create';
 import ExpenseMasterEdit from '../Pages/Administration/Expense Master/Edit';
 import ExpenseMasterView from '../Pages/Administration/Expense Master/View';
+import DirectPaymentApprovalEdit from '../Pages/Approval/DirectPaymentEdit';
+import AccountDirectEntryApprovalEdit from '../Pages/Approval/AccountDirectEntryEdit';
+import DeathClaimApprovalEdit from '../Pages/Approval/DeathClaimEdit';
+import RefundContributionApprovalEdit from '../Pages/Approval/RefundEdit';
+import ExpenseMasterApprovalEdit from '../Pages/Approval/ExpenseMasterEdit';
 
 
 export const adminRoutes = (
@@ -257,6 +262,7 @@ export const adminRoutes = (
       <Route path="contributions/accountDirectEntry-create" element={<AccountDirectEntryCreate />} />
       <Route path="contributions/accountDirectEntry-edit/:accountsDirectEntryID" element={<AccountDirectEntryEdit />} />
       <Route path="contributions/accountDirectEntry-view/:accountsDirectEntryID" element={<AccountDirectEntryView />} />
+      <Route path="contributions/accountDirectEntry-approve/:accountsDirectEntryID" element={<AccountDirectEntryApprovalEdit />} />
 
       <Route path="contributions/directpayment-list" element={<DirectPaymentList />} />
       <Route path="contributions/directpayment-create" element={<DirectPaymentCreate />} />
@@ -329,6 +335,11 @@ export const adminRoutes = (
       <Route path="approval-list" element={<ContributionMasterApprovalList />} />
       <Route path="contributions/approval-view/:masterId" element={<ContributionMasterApprovalView/>} />
       <Route path="approval/user-view/:userId" element={<UserApprovalView/>}/>
+      <Route path="contributions/directpayment-approve/:directPaymentId" element={<DirectPaymentApprovalEdit />} />
+      <Route path="claims/deathclaims-approve/:deathClaimId" element={<DeathClaimApprovalEdit />} />
+      <Route path="claims/refundcontribution-approve/:refundContributionId" element={<RefundContributionApprovalEdit />} />
+      <Route path="administration/expensemaster-approve/:expenseMasterId" element={<ExpenseMasterApprovalEdit />} />
+
 
       {/* Administration */}
       <Route path="administration/expensemaster-list" element={<ExpenseMasterList />} />

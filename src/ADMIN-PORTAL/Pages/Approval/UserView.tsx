@@ -1,4 +1,3 @@
-// src/Pages/Settings/UserApprovalView.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Badge, Button, Spinner } from "react-bootstrap";
