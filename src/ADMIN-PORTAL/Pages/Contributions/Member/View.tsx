@@ -462,91 +462,69 @@ const MemberView: React.FC = () => {
     font-weight: 800;
     box-shadow: 0 1px 3px rgba(27,55,99,0.3);
   }
-/* ── Monthly summary: year cards ── */
-.mv-year-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px 20px 20px;
+/* ── Monthly summary: table (months across top, years down the side) ── */
+.mv-summary-table-wrap {
+  overflow-x: auto;
+  padding: 4px 4px 16px;
 }
 
-.mv-year-card {
-  border: 1px solid #E5E9F0;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #FCFDFE;
+table.mv-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  min-width: 900px; /* keeps 12 month columns + year/total legible; scrolls on narrow screens */
 }
 
-.mv-year-card-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+table.mv-summary-table thead th {
+  text-align: center;
+  padding: 10px 8px;
   background: ${THEME_SOFT};
-  border-bottom: 1px solid #E5E9F0;
+  color: ${THEME};
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid ${THEME}33;
+  white-space: nowrap;
 }
 
-.mv-year-meta {
-  font-size: 12px;
-  color: #64748B;
-  font-weight: 600;
-  margin-right: auto;
+table.mv-summary-table thead th.mv-summary-year-head {
+  text-align: left;
+  padding-left: 18px;
 }
 
-.mv-year-total {
-  font-size: 14px;
+table.mv-summary-table thead th.mv-summary-total-head {
+  background: ${THEME};
+  color: #fff;
+}
+
+table.mv-summary-table tbody td {
+  text-align: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid #F1F3F7;
+  white-space: nowrap;
+}
+
+table.mv-summary-table tbody tr:nth-child(even) { background: #FAFBFD; }
+table.mv-summary-table tbody tr:hover { background: ${THEME_SOFT}; }
+table.mv-summary-table tbody tr:last-child td { border-bottom: none; }
+
+.mv-summary-year-cell {
+  text-align: left !important;
+  padding-left: 18px !important;
   font-weight: 800;
   color: #fff;
   background: ${THEME};
-  padding: 5px 14px;
-  border-radius: 999px;
 }
 
-.mv-month-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
-  gap: 10px;
-  padding: 14px 16px 16px;
-}
-
-.mv-month-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 10px 6px;
-  border-radius: 10px;
-  text-align: center;
-  border: 1px solid transparent;
-}
-
-.mv-month-tile-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.mv-month-tile-amount {
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.mv-month-tile.is-paid {
+.mv-summary-total-cell {
+  font-weight: 800;
+  color: ${THEME};
   background: ${THEME_SOFT};
-  border-color: ${THEME}33;
 }
-.mv-month-tile.is-paid .mv-month-tile-label { color: ${THEME_ACCENT}; }
-.mv-month-tile.is-paid .mv-month-tile-amount { color: ${THEME}; }
 
-.mv-month-tile.is-empty {
-  background: #F7F8FA;
-  border-color: #EEF1F5;
-}
-.mv-month-tile.is-empty .mv-month-tile-label { color: #B7BFCA; }
-.mv-month-tile.is-empty .mv-month-tile-amount { color: #C7CDD6; font-weight: 500; }
- 
+.mv-summary-cell.is-paid { color: ${THEME}; font-weight: 700; }
+.mv-summary-cell.is-empty { color: #C7CDD6; font-weight: 500; }
   
 `}</style>
 
@@ -682,7 +660,6 @@ const MemberView: React.FC = () => {
       )}
     </div>
   </div>
-
   {contribLoading ? (
     <div className="mv-contrib-loading">
       <div className="mv-spinner" /> Loading contributions...
@@ -693,43 +670,43 @@ const MemberView: React.FC = () => {
       <span>No contributions recorded for this member yet.</span>
     </div>
   ) : (
-    <div className="mv-year-cards">
-      {monthlyYears.map((year) => {
-        const yearData = monthlyPivot[year] || {};
-        const yearTotal = Object.values(yearData).reduce((sum, amt) => sum + amt, 0);
-        const paidMonths = Object.keys(yearData).length;
+    <div className="mv-summary-table-wrap">
+      <table className="mv-summary-table">
+        <thead>
+          <tr>
+            <th className="mv-summary-year-head">Year</th>
+            {MONTH_NAMES.slice(1).map((m) => (
+              <th key={m}>{m.slice(0, 3)}</th>
+            ))}
+            <th className="mv-summary-total-head">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {monthlyYears.map((year) => {
+            const yearData = monthlyPivot[year] || {};
+            const yearTotal = Object.values(yearData).reduce((sum, amt) => sum + amt, 0);
 
-        return (
-          <div className="mv-year-card" key={year}>
-            <div className="mv-year-card-head">
-              <span className="mv-year-badge">{year}</span>
-              <span className="mv-year-meta">{paidMonths}/12 months paid</span>
-              <span className="mv-year-total">{formatCurrency(yearTotal)}</span>
-            </div>
-
-            <div className="mv-month-grid">
-              {MONTH_NAMES.slice(1).map((m, idx) => {
-                const monthCode = idx + 1;
-                const amt = yearData[monthCode];
-                return (
-                  <div
-                    key={m}
-                    className={`mv-month-tile ${amt ? "is-paid" : "is-empty"}`}
-                  >
-                    <span className="mv-month-tile-label">{m.slice(0, 3)}</span>
-                    <span className="mv-month-tile-amount">
+            return (
+              <tr key={year}>
+                <td className="mv-summary-year-cell">{year}</td>
+                {MONTH_NAMES.slice(1).map((m, idx) => {
+                  const monthCode = idx + 1;
+                  const amt = yearData[monthCode];
+                  return (
+                    <td key={m} className={`mv-summary-cell ${amt ? "is-paid" : "is-empty"}`}>
                       {amt ? formatCurrency(amt) : "—"}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
+                    </td>
+                  );
+                })}
+                <td className="mv-summary-total-cell">{formatCurrency(yearTotal)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   )}
-</div>
+</div>  
 
       <div className="mv-contrib-section">
         <div className="mv-contrib-header">
