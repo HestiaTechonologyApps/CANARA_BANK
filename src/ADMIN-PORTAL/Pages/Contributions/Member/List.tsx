@@ -37,6 +37,7 @@ const MemberList: React.FC = () => {
       columns={[
         { key: "memberId", label: "Member ID", enableSorting: true, type: "text" },
         { key: "staffNo", label: "Staff No", enableSorting: true, type: "text" },
+        { key: "oldStaffNo", label: "Old Staff No", enableSorting: true, type: "text" },
         { key: "profileImageSrc", label: "Photo", enableSorting: false, type: "image" },
         { key: "name", label: "Name", enableSorting: true, type: "text" },
         { key: "designationName", label: "Designation", enableSorting: true, type: "text" },
@@ -49,6 +50,7 @@ const MemberList: React.FC = () => {
       filterColumns={[  
         { key: "memberId", label: "Member ID", type: "text" },
         { key: "staffNo", label: "Staff No", type: "text" },
+        { key: "oldStaffNo", label: "Old Staff No", type: "text" },
         { key: "name", label: "Name", type: "text" },
         { key: "designationName", label: "Designation", type: "text" },
         { key: "categoryname", label: "Category", type: "text" },
