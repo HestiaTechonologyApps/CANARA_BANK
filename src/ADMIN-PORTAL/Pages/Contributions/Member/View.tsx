@@ -8,6 +8,7 @@ import defaultProfileImage from "../../../Assets/Images/profile.jpg";
 import MemberAccountsDetailsService from "../../../Services/Contributions/MemberAccountsDetails.services";
 import type { RefundContribution } from "../../../Types/Claims/Refund.types";
 import RefundContributionService from "../../../Services/Claims/Refund.services";
+import KiduServerTableNavbar from "../../../../Components/KiduServerTableNavbar";
 
 const THEME = "#1B3763";
 const THEME_SOFT = "#EEF1F7";
@@ -16,6 +17,22 @@ const THEME_ACCENT = "#3D5A80";
 const MONTH_NAMES = [
   "", "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
+];
+
+const CONTRIBUTION_HISTORY_EXPORT_COLUMNS = [
+  { key: "period", label: "Month / Year" },
+  { key: "circleName", label: "Circle" },
+  { key: "branchName", label: "Branch" },
+  { key: "amount", label: "Amount" },
+  { key: "transModeLabel", label: "Trans. Mode" },
+  { key: "reference", label: "Reference" },
+  { key: "remark", label: "Remark" },
+];
+
+const MONTHLY_SUMMARY_EXPORT_COLUMNS = [
+  { key: "year", label: "Year" },
+  { key: "month", label: "Month" },
+  { key: "amount", label: "Amount" },
 ];
 
 interface MemberDetail {
@@ -242,6 +259,27 @@ const MemberView: React.FC = () => {
   const lastContribution = contributions[0];
   const { pivot: monthlyPivot, years: monthlyYears } = buildMonthlyPivot(contributions);
 
+  // Flattened, export-friendly versions of the two tables
+  const contributionHistoryExportData = contributions.map((c) => ({
+    period: `${monthLabel(c.monthCode)} ${c.yearOf}`,
+    circleName: c.circleName || "—",
+    branchName: c.branchName || "—",
+    amount: c.amount || 0,
+    transModeLabel: `Mode ${c.transMode}`,
+    reference: c.reference || "—",
+    remark: c.remark || "—",
+  }));
+
+  const monthlySummaryExportData = monthlyYears.flatMap((year) =>
+    MONTH_NAMES.slice(1)
+      .map((m, idx) => {
+        const monthCode = idx + 1;
+        const amt = monthlyPivot[year]?.[monthCode];
+        return amt ? { year, month: m, amount: amt } : null;
+      })
+      .filter((row): row is { year: number; month: string; amount: number } => row !== null)
+  );
+
   if (loading) {
     return (
       <div className="mv-loading">
@@ -387,8 +425,16 @@ const MemberView: React.FC = () => {
   }
   .mv-empty-contrib i { font-size: 26px; }
 
-  .mv-contrib-loading { display: flex; align-items: center; gap: 8px; padding: 30px; color: ${THEME}; font-size: 13.5px; }
+    .mv-contrib-loading { display: flex; align-items: center; gap: 8px; padding: 30px; color: ${THEME}; font-size: 13.5px; }
   .mv-contrib-loading .mv-spinner { width: 20px; height: 20px; border-width: 2px; }
+
+  .mv-export-wrap { display: flex; align-items: center; height: 32px; }
+  .mv-export-wrap, .mv-export-wrap * { margin: 0 !important; }
+  .mv-export-wrap button {
+    height: 32px !important; box-sizing: border-box !important; padding: 0 12px !important;
+    border-radius: 10px !important; font-size: 12px !important; font-weight: 600 !important;
+    line-height: 1 !important; display: flex !important; align-items: center !important;
+  }
 
   /* ── Monthly summary table ── */
  
@@ -612,9 +658,29 @@ const MemberView: React.FC = () => {
     <div className="mv-contrib-header-title">
       <i className="bi bi-calendar3" /> Monthly Contribution Summary
     </div>
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
     {!contribLoading && monthlyYears.length > 0 && (
       <div className="mv-contrib-total">{formatCurrency(totalContribution)} total</div>
     )}
+    {!contribLoading && monthlySummaryExportData.length > 0 && (
+        <div className="mv-export-wrap">
+          <KiduServerTableNavbar
+            data={monthlySummaryExportData}
+            columns={MONTHLY_SUMMARY_EXPORT_COLUMNS}
+            title={`Monthly_Summary_${member.staffNo ?? member.memberId ?? ""}`}
+            showExportButtons={true}
+            showRowsPerPageSelector={false}
+            rowsPerPage={monthlySummaryExportData.length}
+            onRowsPerPageChange={() => {}}
+            rowsPerPageOptions={[monthlySummaryExportData.length]}
+            showFilter={false}
+            filterColumns={[]}
+            onFilterChange={() => {}}
+            initialFilters={{}}
+          />
+        </div>
+      )}
+    </div>
   </div>
 
   {contribLoading ? (
@@ -670,9 +736,29 @@ const MemberView: React.FC = () => {
           <div className="mv-contrib-header-title">
             <i className="bi bi-cash-stack" /> Contribution History
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {!contribLoading && contributions.length > 0 && (
             <div className="mv-contrib-total">{formatCurrency(totalContribution)} total</div>
           )}
+          {!contribLoading && contributionHistoryExportData.length > 0 && (
+              <div className="mv-export-wrap">
+                <KiduServerTableNavbar
+                  data={contributionHistoryExportData}
+                  columns={CONTRIBUTION_HISTORY_EXPORT_COLUMNS}
+                  title={`Contribution_History_${member.staffNo ?? member.memberId ?? ""}`}
+                  showExportButtons={true}
+                  showRowsPerPageSelector={false}
+                  rowsPerPage={contributionHistoryExportData.length}
+                  onRowsPerPageChange={() => {}}
+                  rowsPerPageOptions={[contributionHistoryExportData.length]}
+                  showFilter={false}
+                  filterColumns={[]}
+                  onFilterChange={() => {}}
+                  initialFilters={{}}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         {contribLoading ? (
