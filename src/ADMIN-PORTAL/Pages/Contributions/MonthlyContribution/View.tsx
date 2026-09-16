@@ -1044,7 +1044,7 @@ const MasterPanel: React.FC<{
                   className="delete-master-btn"
                   // onClick={() => setDeleteModalOpen(true)}
                   onClick={handleDeleteButtonClick}
-                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1px solid rgba(239,68,68,0.4)", background: "rgba(239,68,68,0.12)", color: "#fca5a5", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif" }}>
+                  style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 10, border: "1.5px solid #dc2626", background: "#ef4444", color: "#fff", fontSize: 13, fontWeight: 800, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Sora',sans-serif", boxShadow: "0 4px 14px rgba(239,68,68,0.45)" }}>
                   🗑️ Delete
                 </button>
                 {!master.isApproved && (
