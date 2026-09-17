@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import { LogIn, Lock, Mail, Eye, EyeOff, X } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../Services/Auth.services";
 
@@ -163,7 +163,7 @@ if (!response.isSucess || !response.value || lockedFromValue) {
 
   return (
     <Modal show={show} onHide={handleClose} centered className="auth-modal">
-      <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
+      {/* <Toaster position="top-right" toastOptions={{ duration: 2500 }} /> */}
       <div className="auth-header" style={{ position: "relative" }}>
 
         {/* ── Close button ── */}
