@@ -69,6 +69,8 @@ const STAFF_SIDEBAR_STYLE = `
   .staff-sidebar .sidebar-footer button {
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: left;
     gap: 10px;
     width: 100%;
     padding: 9px 12px;
@@ -76,10 +78,19 @@ const STAFF_SIDEBAR_STYLE = `
     border: 1px solid rgba(239,68,68,0.25);
     background: rgba(239,68,68,0.12);
     color: #fca5a5 !important;
+    font-family: 'Sora', sans-serif;
     font-size: 13px;
     font-weight: 600;
+    line-height: 1;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
     transition: background 0.15s;
+  }
+
+  .staff-sidebar .sidebar-footer button svg {
+    flex-shrink: 0;
   }
   .staff-sidebar .sidebar-footer button:hover {
     background: rgba(239,68,68,0.2);
