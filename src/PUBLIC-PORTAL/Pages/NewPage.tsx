@@ -15,7 +15,6 @@ const News: React.FC = () => {
   useEffect(() => {
     const loadNews = async () => {
       try {
-        
         const data = await PublicPageConfigService.getPublicPageConfig();
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
@@ -30,13 +29,11 @@ const News: React.FC = () => {
         setLoading(false);
       }
     };
-
     loadNews();
   }, []);
 
   return (
     <div className="news-page">
-      {/* Hero Section */}
       <section className="news-hero text-center py-4">
         <Container>
           <span className="news-tag"> {config?.newsSectionHeadingLabel}</span>
@@ -46,7 +43,6 @@ const News: React.FC = () => {
           </p>
         </Container>
       </section>
-      {/* News Cards Grid */}
       <section className="news-section">
         <Container>
           {loading ? (

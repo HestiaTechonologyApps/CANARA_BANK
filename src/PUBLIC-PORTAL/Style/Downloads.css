@@ -2,7 +2,6 @@
   background-color: #f4f6f9;
 }
 
-/* HEADER SECTION */
 .downloads-header {
   background-color: #0f2a55;
   color: white;
@@ -18,7 +17,6 @@
   opacity: 0.8;
 }
 
-/* MAIN CARD */
 .downloads-card {
   border-radius: 12px;
   border: none;
@@ -26,13 +24,11 @@
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* ICON IN HEADER */
 .icon-header {
   font-size: 22px;
   color: #0f2a55;
 }
 
-/* FILE CARD ITEM */
 .file-item-card {
   border: none;
   border-radius: 10px;
@@ -61,7 +57,6 @@
   color: #e8b500;
 }
 
-/* SUPPORT BUTTON */
 .support-btn {
   background: transparent;
   border: 2px solid #0f2a55;
@@ -76,19 +71,16 @@
   color: white;
 }
 
-/* Loader container */
 .downloads-loader {
   animation: fadeIn 0.6s ease-in-out;
 }
 
-/* Icon animation */
 .pulse-icon {
   font-size: 2.5rem;
   display: inline-block;
   animation: pulse 1.2s infinite ease-in-out;
 }
 
-/* Subtle pulse */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -104,7 +96,6 @@
   }
 }
 
-/* Fade in */
 @keyframes fadeIn {
   from {
     opacity: 0;

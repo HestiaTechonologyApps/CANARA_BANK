@@ -98,7 +98,6 @@
 .auth-link {
   border: none;
   background: none;
-  /* color: #f4c045; */
    color: #051d4ac0;
    text-decoration: underline;
   font-weight: 600;
@@ -131,7 +130,6 @@
   position: relative;
 }
 
-/* Left icon */
 .input-icon {
   position: absolute;
   left: 12px;
@@ -142,11 +140,9 @@
   font-size: "6px"
 }
 
-
 .input-icon-wrapper .form-control {
   padding-left: 40px;
 }
-
 
 .input-icon-wrapper .invalid-feedback {
   position: absolute;

@@ -47,7 +47,6 @@ const ManagingCommitteePublic: React.FC = () => {
       console.log('No imageLocation provided');
       return '';
     }
-
     console.log('Original imageLocation:', imageLocation);
 
     if (imageLocation.startsWith('http://') || imageLocation.startsWith('https://')) {
@@ -56,14 +55,10 @@ const ManagingCommitteePublic: React.FC = () => {
     }
 
     let baseUrl = API_BASE_URL;
-
     baseUrl = baseUrl.replace(/\/api\/?$/, '');
-
     const path = imageLocation.startsWith('/') ? imageLocation : '/' + imageLocation;
-
     const finalUrl = `${baseUrl}${path}`;
     console.log('Constructed URL:', finalUrl);
-
     return finalUrl;
   };
 

@@ -18,7 +18,6 @@ const Rules: React.FC = () => {
     const loadRulesConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-        // pick active config instead of data[0]
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
@@ -37,7 +36,6 @@ const Rules: React.FC = () => {
 
   return (
     <div className="rules-wrapper">
-      {/* HEADER SECTION */}
       <div className="rules-header text-center py-4">
         <h2 className="rules-title mt-2">
           {config?.rulesHeaderTitle || "Rules & Regulations"}
@@ -46,9 +44,7 @@ const Rules: React.FC = () => {
           {config?.rulesHeaderSubTitle || "Complete guidelines for the Golden Jubilee Family Welfare Scheme"}
         </p>
       </div>
-      {/* CONTENT */}
       <Container className="py-5">
-        {/* PREAMBLE CARD */}
         <Card className="rules-card p-4 mb-4">
           <h5 className="section-title">{config?.rulesPreambleTitle || "Preamble"}</h5>
           <p>{config?.rulesPreamblePara1}</p>
@@ -58,7 +54,6 @@ const Rules: React.FC = () => {
           <p>{config?.rulesPreamblePara5}</p>
           <p>{config?.rulesPreamblePara6}</p>
         </Card>
-        {/* MAIN RULE SECTIONS */}
         {sections.map((section) => {
           const parts = section.content.split("#");
           return (

@@ -1,4 +1,3 @@
-// PUBLIC-PORTAL/Routes/Route.tsx
 import { Route } from 'react-router-dom';
 import PublicLayout from '../Layout/Layout';
 import ContactUs from '../Pages/ContactUs';
@@ -13,7 +12,6 @@ import ManagingCommitteePublic from '../Pages/ManagingCommittee';
 
 export const publicRoutes = (
   <>
-    {/* Public routes with layout */}
     <Route path="/" element={<PublicLayout />}>
       <Route index element={<Home />} />
       <Route path="downloads" element={<Downloads />} />

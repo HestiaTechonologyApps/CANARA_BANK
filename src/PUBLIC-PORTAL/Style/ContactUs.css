@@ -2,7 +2,6 @@
   background-color: #f4f6f9;
 }
 
-/* HEADER SECTION */
 .contact-header {
   background-color: #0f2a55;
   color: white;
@@ -18,7 +17,6 @@
   opacity: 0.7;
 }
 
-/* CARD STYLES */
 .contact-card {
   background: #ffffff;
   border-radius: 12px;
@@ -26,7 +24,6 @@
   box-shadow: 0 3px 10px rgba(0,0,0,0.07);
 }
 
-/* ICON CIRCLES */
 .icon-circle {
   width: 45px;
   height: 45px;
@@ -39,7 +36,6 @@
   color: #b08600;
 }
 
-/* SEND BUTTON */
 .send-btn {
   background-color: #e8b500;
   border: none;
@@ -53,7 +49,6 @@
   background-color: #d39e00;
 }
 
-/* OFFICE HOURS CARD */
 .office-hours-card {
   background-color: #0f2a55;
   border-radius: 12px;

@@ -12,7 +12,6 @@ const PublicAttachmentService = {
       API_ENDPOINTS.PUBLIC.GET_ALL_ATTACHMENTS,
       "GET"
     );
-
     return response.value;
   },
 
@@ -27,7 +26,6 @@ const PublicAttachmentService = {
     if (!response.ok) {
       throw new Error("Download failed");
     }
-
     return response.blob();
   },
 };

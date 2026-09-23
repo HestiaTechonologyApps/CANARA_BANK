@@ -1,4 +1,3 @@
-// src/PUBLIC-PORTAL/Pages/Unauthorized.tsx
 import React from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import { ShieldAlert, Home, LogOut } from 'lucide-react';
@@ -15,7 +14,7 @@ const Unauthorized: React.FC = () => {
 
   const handleLogout = () => {
     AuthService.logout();
-    navigate('/', { state: { showLogin: true } }); 
+    navigate('/', { state: { showLogin: true } });
   };
 
   return (

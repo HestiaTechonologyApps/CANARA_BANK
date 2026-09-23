@@ -11,7 +11,6 @@ const PublicManagingCommitteeService = {
       API_ENDPOINTS.PUBLIC.GET_ALL_MANAGINGCOMMITEE,
       "GET"
     );
-
     return response.value;
   },
 };

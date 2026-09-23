@@ -23,7 +23,6 @@ const PrivacyPolicy: React.FC = () => {
 
     return (
         <>
-            {/* Hero Section */}
             <section className="policy-hero">
                 <Container>
                     <div className="policy-badge text-center text-warning"> {config?.privacyHeroBadge}</div>
@@ -32,7 +31,6 @@ const PrivacyPolicy: React.FC = () => {
                         {config?.privacyHeroSubTitle}</p>
                 </Container>
             </section>
-            {/* Content Section */}
             <Container className="policy-content">
                 <Card className="policy-card">
                     <Card.Body>

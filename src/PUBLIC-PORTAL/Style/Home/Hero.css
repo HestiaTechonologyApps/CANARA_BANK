@@ -47,7 +47,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* Heading */
 .hero-title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -58,7 +57,6 @@
   color: #ffd966;
 }
 
-/* Text */
 .hero-description {
   font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.92);
@@ -66,7 +64,6 @@
   margin-top: 15px;
 }
 
-/* Buttons */
 .hero-btn-gold {
   background: #ffd966;
   color: #0f2a55;
@@ -102,7 +99,6 @@
   color: #ebb81f !important;
 }
 
-/* Bottom Fade */
 .hero-bottom-fade {
   position: absolute;
   bottom: 0;
@@ -112,7 +108,6 @@
   background: linear-gradient(to top, #ffffff, transparent);
 }
 
-/* Animation */
 @keyframes slideUp {
   0% {
     opacity: 0;

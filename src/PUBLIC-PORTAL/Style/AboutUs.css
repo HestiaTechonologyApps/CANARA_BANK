@@ -2,7 +2,6 @@
   background-color: #f4f6f9;
 }
 
-/* HEADER */
 .about-header {
   background-color: #0f2a55;
   color: white;
@@ -13,13 +12,11 @@
   font-weight: 700;
 }
 
-/* Subtitle */
 .about-subtitle {
   font-size: 13px;
   opacity: 0.8;
 }
 
-/* CARDS */
 .about-card,
 .history-card {
   border-radius: 12px;
@@ -28,7 +25,6 @@
   box-shadow: 0 3px 10px rgba(0,0,0,0.07);
 }
 
-/* ICON BOX next to heading */
 .icon-box {
   width: 40px;
   height: 40px;
@@ -44,27 +40,23 @@
   color: #b08600;
 }
 
-/* HEADING row fix */
 .heading-row {
   display: flex;
   align-items: center;
 }
 
-/* HEADING TEXT */
 .section-heading {
   font-size: 18px;
   font-weight: 700;
   color: #0f2a55;
 }
 
-/* CONTENT TEXT */
 .section-text {
   font-size: 15px;
   line-height: 1.6;
   color: #444;
 }
 
-/* HISTORY CARD */
 .history-card {
   background-color: #eef1f5;
 }

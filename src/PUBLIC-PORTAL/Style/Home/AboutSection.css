@@ -2,7 +2,6 @@
   background: #f7f8fa;
 }
 
-/* Left side */
 .about-label {
   color: #e8b500;
   font-weight: 600;
@@ -24,7 +23,6 @@
   margin-bottom: 16px;
 }
 
-/* Stats */
 .about-stat-card {
   background: #ffffff;
   border-radius: 12px;
