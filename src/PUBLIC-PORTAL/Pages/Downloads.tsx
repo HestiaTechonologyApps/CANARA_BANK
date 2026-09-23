@@ -58,7 +58,6 @@ const Downloads: React.FC = () => {
   };
   return (
     <div className="downloads-wrapper">
-      {/* HEADER SECTION */}
       <div className="downloads-header text-center py-4">
         <h2 className="downloads-title">  {config?.downloadsHeaderTitle || "Downloads"}</h2>
         <p className="downloads-subtitle">
@@ -68,7 +67,6 @@ const Downloads: React.FC = () => {
       </div>
       <Container className="py-5">
         <Row className="g-4 justify-content-center">
-          {/* CARD COLUMN */}
           <Col lg={12} md={10}>
             <Card className="downloads-card p-4">
               <h5 className="fw-bold mb-4 d-flex align-items-center">

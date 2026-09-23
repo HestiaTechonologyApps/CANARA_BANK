@@ -1,4 +1,3 @@
-// src/Pages/Claims/Claims.tsx
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../Style/Claims.css";
@@ -82,8 +81,6 @@ const Claims: React.FC = () => {
         state.total += 1;
       }
     });
-    // Only show places that actually have a claim on record — nobody needs
-    // to scroll past a long list of zeros to find the ones that matter.
     return Array.from(stateMap.values())
       .filter((state) => state.total > 0)
       .sort((a, b) => b.total - a.total);
@@ -109,24 +106,24 @@ const Claims: React.FC = () => {
 
   const claims = config
     ? {
-        stats: [
-          {
-            icon: "check",
-            value: claimsStats?.totalClaimsSettled ?? config?.claimsStat1Value,
-            label: config?.claimsStat1Label,
-          },
-          {
-            icon: "rupee",
-            value: claimsStats?.totalAmountDisbursed ?? config.claimsStat2Value,
-            label: config.claimsStat2Label,
-          },
-          {
-            icon: "users",
-            value: claimsStats?.activeMembers ?? config?.claimsStat3Value,
-            label: config?.claimsStat3Label,
-          },
-        ],
-      }
+      stats: [
+        {
+          icon: "check",
+          value: claimsStats?.totalClaimsSettled ?? config?.claimsStat1Value,
+          label: config?.claimsStat1Label,
+        },
+        {
+          icon: "rupee",
+          value: claimsStats?.totalAmountDisbursed ?? config.claimsStat2Value,
+          label: config.claimsStat2Label,
+        },
+        {
+          icon: "users",
+          value: claimsStats?.activeMembers ?? config?.claimsStat3Value,
+          label: config?.claimsStat3Label,
+        },
+      ],
+    }
     : null;
 
   const glyphFor = (icon: string) => {
@@ -138,7 +135,6 @@ const Claims: React.FC = () => {
 
   return (
     <div className="claims-page">
-      {/* Compact header + stats in one short band */}
       <section className="claims-header">
         <Container>
           <Row className="align-items-center g-4">
@@ -164,8 +160,6 @@ const Claims: React.FC = () => {
           </Row>
         </Container>
       </section>
-
-      {/* Tabs — one table on screen at a time */}
       <Container className="claims-body">
         <div className="claims-tabs" role="tablist" aria-label="Claims breakdown">
           <button

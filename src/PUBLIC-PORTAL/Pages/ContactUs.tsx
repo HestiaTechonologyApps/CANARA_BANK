@@ -19,59 +19,7 @@ const ContactUs: React.FC = () => {
 
   const [errors, setErrors] = useState<Partial<Record<keyof ContactMessage, string>>>({});
 
-  // const validateForm = () => {
-  //   if (!formData.fullName.trim()) {
-  //     toast.error("Full Name is required");
-  //     return false;
-  //   }
-
-  //   if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
-  //     toast.error("Full Name must contain only letters");
-  //     return false;
-  //   }
-
-  //    if (formData.fullName.trim().length < 4) {
-  //     toast.error("Full Name must be at least 4 letters");
-  //     return false;
-  //   }
-
-  //   if (!formData.phoneNumber.trim()) {
-  //     toast.error("Phone Number is required");
-  //     return false;
-  //   }
-
-  //   if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
-  //     toast.error("Phone Number must be 10 digits");
-  //     return false;
-  //   }
-
-  //   if (!formData.emailAddress.trim()) {
-  //     toast.error("Email is required");
-  //     return false;
-  //   }
-
-  //   // if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress)) {
-  //   //   toast.error("Enter a valid email address");
-  //   //   return false;
-  //   // }
-  //   if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/.test(formData.emailAddress)) {
-  //     toast.error("Enter a valid email address");
-  //     return false;
-  //   }
-
-  //   if (!formData.subject.trim()) {
-  //     toast.error("Subject is required");
-  //     return false;
-  //   }
-
-  //   if (!formData.message.trim()) {
-  //     toast.error("Message is required");
-  //     return false;
-  //   }
-
-  //   return true;
-  // };
-const validateForm = () => {
+  const validateForm = () => {
     const nextErrors: Partial<Record<keyof ContactMessage, string>> = {};
 
     if (!formData.fullName.trim()) {
@@ -122,12 +70,6 @@ const validateForm = () => {
     loadContactConfig();
   }, []);
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData(prev => ({ ...prev, [name]: value }));
-  // };
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -136,28 +78,7 @@ const validateForm = () => {
     setErrors(prev => ({ ...prev, [name]: undefined }));
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   if (!validateForm()) return;
-
-  //   try {
-  //     const response = await ContactMessageService.submitMessage(formData);
-  //     toast.success(response.message);
-
-  //     setFormData({
-  //       fullName: "",
-  //       phoneNumber: "",
-  //       emailAddress: "",
-  //       subject: "",
-  //       message: "",
-  //     });
-  //   } catch (error) {
-  //     console.error("Contact message submit failed:", error);
-  //     toast.error("Failed to submit message");
-  //   }
-  // };
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;

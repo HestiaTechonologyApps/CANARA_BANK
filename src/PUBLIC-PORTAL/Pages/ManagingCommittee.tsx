@@ -16,7 +16,7 @@ const ManagingCommitteePublic: React.FC = () => {
   useEffect(() => {
     const fetchManagingCommittee = async () => {
       try {
-        
+
         const configData = await PublicPageConfigService.getPublicPageConfig();
         const activeConfig = configData.find(
           (item: PublicPage) => item.isActive === true
@@ -69,8 +69,6 @@ const ManagingCommitteePublic: React.FC = () => {
 
   return (
     <div className="committee-wrapper">
-
-      {/* HEADER SECTION */}
       <div className="committee-header text-center py-4">
         <h2 className="committee-title">{config?.committeeHeaderTitle}</h2>
         <p className="committee-subtitle">
@@ -95,32 +93,6 @@ const ManagingCommitteePublic: React.FC = () => {
                 return (
                   <Col key={index} lg={4} md={6} sm={12}>
                     <Card className="committee-card p-4 text-center">
-
-                      {/* Placeholder Avatar */}
-                      {/* <div className="avatar-circle mx-auto mb-3">
-                  <i className="bi bi-person-fill"></i>
-                </div> */}
-
-                      {/* Avatar */}
-                      {/* <div className="avatar-circle mx-auto mb-3">
-                      {member.imageLocation ? (
-                        <img
-                          src={`${API_BASE_URL
-                            .replace('http://', 'https://')
-                            .replace('/api', '')}${member.imageLocation}`}
-                          alt={member.managingComitteeName}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            borderRadius: "50%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <i className="bi bi-person-fill"></i>
-                      )}
-                    </div> */}
-
                       <div className="avatar-circle mx-auto mb-3">
                         {imageUrl ? (
                           <>
@@ -152,32 +124,13 @@ const ManagingCommitteePublic: React.FC = () => {
                           <i className="bi bi-person-fill"></i>
                         )}
                       </div>
-
-                      {/* Member Name */}
                       <h5 className="member-name">{member.managingComitteeName}</h5>
-
-                      {/* Member Role */}
                       <p className="member-role">{member.position}</p>
-
-                      {/* Location */}
                       <p className="member-location">{member.description2}</p>
-
-                      {/* CONTACT INFO */}
-                      {/* <div className="contact-info mt-3">
-                  <p className="small mb-1">
-                    <i className="bi bi-telephone-fill me-2"></i>
-                    {member.phone}
-                  </p>
-                  <p className="small mb-0">
-                    <i className="bi bi-envelope-fill me-2"></i>
-                    {member.email}
-                  </p>
-                </div> */}
                     </Card>
                   </Col>
                 )
               }))}
-
         </Row>
       </Container>
     </div>

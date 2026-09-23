@@ -10,7 +10,7 @@ const AboutUs: React.FC = () => {
     const loadAboutConfig = async () => {
       try {
         const data = await PublicPageConfigService.getPublicPageConfig();
-        
+
         const activeConfig = data.find(
           (item: PublicPage) => item.isActive === true
         );
@@ -25,8 +25,6 @@ const AboutUs: React.FC = () => {
 
   return (
     <div className="about-wrapper">
-
-      {/* HEADER */}
       <div className="about-header text-center py-4">
         <h2 className="about-title text-white mt-2 mb-0">
           {config?.aboutHeaderTitle}
@@ -36,12 +34,9 @@ const AboutUs: React.FC = () => {
         </p>
       </div>
       <Container className="py-5">
-
-        {/* MISSION + VISION */}
         <Row className="g-4 mb-4">
           <Col md={6}>
             <Card className="about-card p-4">
-              {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
                   <i className={config?.aboutMissionIcon}></i>
@@ -56,7 +51,6 @@ const AboutUs: React.FC = () => {
 
           <Col md={6}>
             <Card className="about-card p-4">
-              {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
                   <i className={config?.aboutVisionIcon}></i>
@@ -70,11 +64,9 @@ const AboutUs: React.FC = () => {
           </Col>
         </Row>
 
-        {/* HISTORY */}
         <Row>
           <Col md={12}>
             <Card className="history-card p-4">
-              {/* Icon beside heading */}
               <div className="heading-row d-flex align-items-center mb-3">
                 <div className="icon-box me-2">
                   <i className={config?.aboutHistoryIcon}></i>
