@@ -1,9 +1,6 @@
-// src/Services/Common/Lookup.services.ts
-
 import { API_ENDPOINTS } from "../CONSTANTS/API_ENDPOINTS";
 import type { BranchLookupItem, ExpenseTypeLookupItem, LookupPagedParams, LookupPagedResponse, MemberLookupItem } from "../Types/Lookup.types";
 import HttpService from "./Http.services";
-
 
 async function fetchPagedLookup<T>(
   params: LookupPagedParams
@@ -56,6 +53,5 @@ const LookupService = {
 
   get: <T>(params: LookupPagedParams) => fetchPagedLookup<T>(params),
 };
-
 
 export default LookupService;

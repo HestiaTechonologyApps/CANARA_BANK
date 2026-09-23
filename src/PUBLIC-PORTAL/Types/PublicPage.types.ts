@@ -1,5 +1,3 @@
-// src/ADMIN-PORTAL/Types/CMS/PublicPageConfig.types.ts
-
 export interface PublicPageConfig {
     publicPageId: number;
 

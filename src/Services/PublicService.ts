@@ -1,6 +1,5 @@
 export const PublicService = {
 
-    /* ============ NAVBAR (PUBLIC) =========== */
     navbar: {
         brand: {
             title: "Canara Bank Employees’ Union",
@@ -35,7 +34,7 @@ export const PublicService = {
             },
         },
     },
-    /* ========== HOME PAGE ========= */
+
     home: {
         hero: {
             badge: "✨ Celebrating 50 Years of Service",
@@ -158,7 +157,7 @@ export const PublicService = {
             },
         },
     },
-    /* ============ NEWS PAGE ============ */
+   
     newsPage: {
         hero: {
             tag: "Stay Informed",
@@ -177,7 +176,6 @@ export const PublicService = {
         },
     },
 
-    /* =========== ABOUT PAGE =========== */
     about: {
         header: {
             title: "About Us",
@@ -211,7 +209,6 @@ export const PublicService = {
         },
     },
 
-    /* ============ RULES & REGULATIONS ============ */
     rules: {
         header: {
             title: "Rules & Regulations",
@@ -234,7 +231,7 @@ export const PublicService = {
             {
                 number: 1,
                 title: "Name of the Scheme",
-                content: [ "Name of the fund shall be “Canara Bank Employees’ Union Golden Jubilee Family Welfare Scheme - a unit of Canara Bank Employees Union”, which in the following Rules and Regulations, is referred to as the “Scheme”.", ],
+                content: ["Name of the fund shall be “Canara Bank Employees’ Union Golden Jubilee Family Welfare Scheme - a unit of Canara Bank Employees Union”, which in the following Rules and Regulations, is referred to as the “Scheme”.",],
             },
             {
                 number: 2,
@@ -273,22 +270,22 @@ export const PublicService = {
             {
                 number: 6,
                 title: "President",
-                content: [ "The President will preside over meetings and may take emergency measures subject to reporting to CC.",],
+                content: ["The President will preside over meetings and may take emergency measures subject to reporting to CC.",],
             },
             {
                 number: 7,
                 title: "Secretary",
-                content: [ "Responsible for correspondence, meetings, minutes, supervision of affairs, and duties assigned by committee.",],
+                content: ["Responsible for correspondence, meetings, minutes, supervision of affairs, and duties assigned by committee.",],
             },
             {
                 number: 8,
                 title: "Treasurer",
-                content: [ "Maintains books, prepares annual balance sheet, and presents accounts for approval.", ],
+                content: ["Maintains books, prepares annual balance sheet, and presents accounts for approval.",],
             },
             {
                 number: 9,
                 title: "Administrative Office",
-                content: [ "Located at “Balakrishna Menon Smarakam”, Ambujavilasam Road, Thiruvananthapuram - 695001.", ],
+                content: ["Located at “Balakrishna Menon Smarakam”, Ambujavilasam Road, Thiruvananthapuram - 695001.",],
             },
             {
                 number: 10,
@@ -298,17 +295,17 @@ export const PublicService = {
             {
                 number: 11,
                 title: "Accounts",
-                content: ["Scheme shall have its own bank account with Canara Bank.", ],
+                content: ["Scheme shall have its own bank account with Canara Bank.",],
             },
             {
                 number: 12,
                 title: "Membership",
-                content: ["Membership open to employees of Canara Bank under age 58 who are Union members.", ],
+                content: ["Membership open to employees of Canara Bank under age 58 who are Union members.",],
             },
             {
                 number: 13,
                 title: "Subscription",
-                content: [ "Rs. 50/month for old members; Rs. 100/month from 1 Jan 2007.",],
+                content: ["Rs. 50/month for old members; Rs. 100/month from 1 Jan 2007.",],
             },
             {
                 number: 14,
@@ -323,58 +320,57 @@ export const PublicService = {
             {
                 number: 15,
                 title: "Readmission",
-                content: [ "Members may be readmitted upon payment of arrears, interest, and readmission fee.",],
+                content: ["Members may be readmitted upon payment of arrears, interest, and readmission fee.",],
             },
             {
                 number: 16,
                 title: "Entitlement of Benefits",
-                content: [ "Lump sum relief varies between Rs. 30,000 to Rs. 50,000 depending on subscription.",
-                    "Monthly pension varies from Rs. 500 to Rs. 750 based on criteria.", ],
+                content: ["Lump sum relief varies between Rs. 30,000 to Rs. 50,000 depending on subscription.",
+                    "Monthly pension varies from Rs. 500 to Rs. 750 based on criteria.",],
             },
             {
                 number: 17,
                 title: "Nomination",
-                content: [ "Each member nominates up to three beneficiaries in order of precedence.",],
+                content: ["Each member nominates up to three beneficiaries in order of precedence.",],
             },
             {
                 number: 18,
                 title: "Distribution of Benefits",
-                content: [ "Claims processed by Administrative Office after verification.",],
+                content: ["Claims processed by Administrative Office after verification.",],
             },
             {
                 number: 19,
                 title: "Representation",
-                content: [ "Secretary is authorized to file or face legal proceedings.", ],
+                content: ["Secretary is authorized to file or face legal proceedings.",],
             },
             {
                 number: 20,
                 title: "Place of Suing",
-                content: [ "Jurisdiction restricted to courts in Thiruvananthapuram.", ],
+                content: ["Jurisdiction restricted to courts in Thiruvananthapuram.",],
             },
             {
                 number: 21,
                 title: "Assets",
-                content: [ "All properties vest with the Scheme under the Managing Committee." ],
+                content: ["All properties vest with the Scheme under the Managing Committee."],
             },
             {
                 number: 22,
                 title: "Accounts (Audit)",
-                content: [ "Accounts audited annually by Chartered Accountants.", ],
+                content: ["Accounts audited annually by Chartered Accountants.",],
             },
             {
                 number: 23,
                 title: "Amendments",
-                content: [ "Rules may be amended only by the Central Committee of the Union.", ],
+                content: ["Rules may be amended only by the Central Committee of the Union.",],
             },
             {
                 number: 24,
                 title: "Dissolution",
-                content: [ "Upon dissolution, funds are distributed proportionally to members.", ],
+                content: ["Upon dissolution, funds are distributed proportionally to members.",],
             },
         ],
     },
 
-    /* =========== DOWNLOADS ========== */
     downloads: {
         header: {
             title: "Downloads",
@@ -384,7 +380,7 @@ export const PublicService = {
         card: {
             title: "Download Files",
             iconclass: "bi bi-folder2-open icon-header me-2",
-            downloadicon:""
+            downloadicon: ""
         },
         files: [
             {
@@ -413,7 +409,6 @@ export const PublicService = {
         },
     },
 
-    /* =========== MANAGING COMMITTEE ============ */
     managingCommittee: {
         header: {
             title: "Managing Committee",
@@ -465,7 +460,7 @@ export const PublicService = {
             },
         ],
     },
-    /* ============ CLAIMS PAGE =========== */
+    
     claimsPage: {
         hero: {
             title: "Claims Settled",
@@ -505,7 +500,6 @@ export const PublicService = {
         ],
     },
 
-    /* ============  CONTACT US PAGE  ============ */
     contact: {
         header: {
             title: "Contact Us",
@@ -582,7 +576,6 @@ export const PublicService = {
         },
     },
 
-    /* ============= FOOTER ============ */
     footer: {
         brand: {
             shortName: "CBEU",
@@ -633,12 +626,10 @@ export const PublicService = {
                 "© 2025 Canara Bank Employees' Union - Golden Jubilee Family Welfare Scheme. All rights reserved.",
             links: [
                 { label: "Privacy Policy", route: "/privacy-policy" },
-                // { label: "Terms of Service", route: "/terms" },
             ],
         },
     },
 
-    /* ============== PRIVACY POLICY PAGE =============== */
     privacyPolicy: {
         hero: {
             badge: "Your Privacy Matters",
@@ -676,7 +667,7 @@ export const PublicService = {
             {
                 heading4:
                     "4.How we use your information",
-                   subheading4:"We use the information we collect in various ways, including to:",
+                subheading4: "We use the information we collect in various ways, including to:",
                 lines: {
                     line1: "Provide, operate, and maintain our website",
                     line2: "Improve, personalize, and expand our website",

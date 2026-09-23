@@ -51,7 +51,6 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
           transition: "left 0.25s ease",
         }}
       >
-        {/* Left */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <button
             onClick={toggleSidebar}
@@ -71,7 +70,6 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
           </div>
         </div>
 
-        {/* Right */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <Image
             src={profilePic}

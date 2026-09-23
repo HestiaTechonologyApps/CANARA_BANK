@@ -39,8 +39,6 @@ class AuthService {
           localStorage.setItem('user', userString);
           console.log('User stored:', localStorage.getItem('user') !== null);
           console.log('Stored user data:', localStorage.getItem('user'));
-
-          // Store user role separately for easy access
           localStorage.setItem('user_role', response.value.user.role);
           console.log('User role stored:', response.value.user.role);
 

@@ -9,12 +9,10 @@ class AttachmentService {
     tableName: string,
     recordId: number | string
   ): Promise<Attachment[]> {
-
     const response: CustomResponse<Attachment[]> = await HttpService.callApi(
       API_ENDPOINTS.ATTACHMENT.GET_BY_TABLE_AND_ID(tableName, Number(recordId)),
       "GET"
     );
-
     return response.value || [];
   }
   
@@ -25,7 +23,6 @@ class AttachmentService {
       API_ENDPOINTS.ATTACHMENT.GET_BY_ID(attachmentId),
       "GET"
     );
-
     return response;
   }
 
@@ -33,12 +30,10 @@ class AttachmentService {
     attachmentId: number,
     deletedBy: string
   ): Promise<null> {
-
     const response: CustomResponse<null> = await HttpService.callApi(
       `${API_ENDPOINTS.ATTACHMENT.DELETE(attachmentId)}?deletedBy=${deletedBy}`,
       "DELETE"
     );
-
     return response.value;
   }
 

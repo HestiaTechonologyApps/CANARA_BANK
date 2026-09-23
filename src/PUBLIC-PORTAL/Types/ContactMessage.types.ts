@@ -1,5 +1,3 @@
-// src/Types/Contact/ContactMessage.types.ts
-
 export interface ContactMessage {
   fullName: string;
   phoneNumber: string;
