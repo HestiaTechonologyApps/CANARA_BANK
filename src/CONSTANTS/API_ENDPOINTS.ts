@@ -1,4 +1,3 @@
-// src/constants/apiEndpoints.ts
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.cbeugjfws.co.in/api';
 
 export const API_ENDPOINTS = {
@@ -325,7 +324,6 @@ REFUND_CONTRIBUTION: {
   },
 };
 
-// ✅ Helper function to get full image URL - FIXED VERSION
 export const getFullImageUrl = (imagePath: string | null | undefined): string => {
   console.log('getFullImageUrl called with:', imagePath);
   
@@ -334,30 +332,24 @@ export const getFullImageUrl = (imagePath: string | null | undefined): string =>
     return '';
   }
 
-  // If already a complete URL, return as is
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
     console.log('Already a full URL:', imagePath);
     return imagePath;
   }
 
-  // If it's a blob URL (from file upload preview), return as is
   if (imagePath.startsWith('blob:')) {
     console.log('Blob URL detected:', imagePath);
     return imagePath;
   }
 
-  // If it's a placeholder URL pattern or local asset
   if (imagePath.includes('placeholder') || imagePath.includes('/assets/') || imagePath.includes('/Assets/')) {
     console.log('Placeholder or asset URL detected:', imagePath);
     return imagePath;
   }
 
-  // ✅ FIXED: Always use the backend server URL directly
-  // This ensures images work regardless of which port the frontend is running on
   const backendUrl = 'http://sreenathganga-001-site16.jtempurl.com';
   console.log('Backend URL:', backendUrl);
 
-  // Ensure proper path construction - remove leading slash from imagePath if present
   const cleanPath = imagePath.replace(/^\/+/, '');
   const fullUrl = `${backendUrl}/${cleanPath}`;
   
@@ -365,7 +357,6 @@ export const getFullImageUrl = (imagePath: string | null | undefined): string =>
   return fullUrl;
 };
 
-// ✅ Get base website URL (without /api)
 export const getBaseWebsiteUrl = (): string => {
   const baseUrl = API_BASE_URL.replace('/api', '');
   return baseUrl;
