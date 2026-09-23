@@ -153,29 +153,27 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
   return (
     <Modal show={show} onHide={handleClose} centered className="auth-modal">
       <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
-      {/* ── Header ── */}
       <div className="auth-header" style={{ position: "relative" }}>
 
-       {/* ── Close button ── */}
-<button
-  type="button"
-  onClick={handleClose}
-  disabled={isSubmitting}
-  aria-label="Close"
-  style={{
-    position: "absolute",
-    top: "12px",
-    right: "16px",
-    background: "none",
-    border: "none",
-    cursor: isSubmitting ? "not-allowed" : "pointer",
-    padding: "4px",
-    lineHeight: 1,
-    zIndex: 10,
-  }}
->
-  <X size={20} color="white" opacity={isSubmitting ? 0.3 : 1} />
-</button>
+        <button
+          type="button"
+          onClick={handleClose}
+          disabled={isSubmitting}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "16px",
+            background: "none",
+            border: "none",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            padding: "4px",
+            lineHeight: 1,
+            zIndex: 10,
+          }}
+        >
+          <X size={20} color="white" opacity={isSubmitting ? 0.3 : 1} />
+        </button>
 
         <div className="auth-icon">
           <UserPlus size={23} className="auth-icon-gold" />
@@ -184,7 +182,6 @@ const SignupModal: React.FC<Props> = ({ show, onClose, onLogin }) => {
         <p className="auth-sub">Join our community of members</p>
       </div>
 
-      {/* ── Body ── */}
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
           <Row>

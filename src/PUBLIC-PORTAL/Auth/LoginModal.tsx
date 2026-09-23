@@ -17,7 +17,7 @@ interface Errors {
   password: string;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForgot }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => {
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState<string>("");
@@ -66,7 +66,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, onForg
     }
   };
 
-const handleSubmit = async (e: FormEvent): Promise<void> => {
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     setSubmitted(true);
 
@@ -90,26 +90,26 @@ const handleSubmit = async (e: FormEvent): Promise<void> => {
 
         const lockedFromValue = response.value?.user?.islocked === true;
 
-if (!response.isSucess || !response.value || lockedFromValue) {
-  console.log("DEBUG - failed at isSucess/value check, or user is locked");
+        if (!response.isSucess || !response.value || lockedFromValue) {
+          console.log("DEBUG - failed at isSucess/value check, or user is locked");
 
-  const serverMessage = (
-    response.customMessage ||
-    response.error ||
-    ""
-  ).toLowerCase();
+          const serverMessage = (
+            response.customMessage ||
+            response.error ||
+            ""
+          ).toLowerCase();
 
-  console.log("DEBUG - serverMessage:", serverMessage);
+          console.log("DEBUG - serverMessage:", serverMessage);
 
-  if (lockedFromValue || serverMessage.includes("lock") || serverMessage.includes("disabled") || serverMessage.includes("suspend")) {
-    toast.error("Your account is locked. Please contact administrator.");
-  } else if (serverMessage.includes("role")) {
-    toast.error("Invalid user role. Please contact administrator.");
-  } else {
-    toast.error("Invalid username or password");
-  }
-  return;
-}
+          if (lockedFromValue || serverMessage.includes("lock") || serverMessage.includes("disabled") || serverMessage.includes("suspend")) {
+            toast.error("Your account is locked. Please contact administrator.");
+          } else if (serverMessage.includes("role")) {
+            toast.error("Invalid user role. Please contact administrator.");
+          } else {
+            toast.error("Invalid username or password");
+          }
+          return;
+        }
 
         if (response.value.user.islocked) {
           console.log("DEBUG - login succeeded but account is locked");
@@ -163,10 +163,8 @@ if (!response.isSucess || !response.value || lockedFromValue) {
 
   return (
     <Modal show={show} onHide={handleClose} centered className="auth-modal">
-      {/* <Toaster position="top-right" toastOptions={{ duration: 2500 }} /> */}
       <div className="auth-header" style={{ position: "relative" }}>
 
-        {/* ── Close button ── */}
         <button
           type="button"
           onClick={handleClose}
@@ -196,7 +194,6 @@ if (!response.isSucess || !response.value || lockedFromValue) {
 
       <Modal.Body className="auth-body">
         <Form onSubmit={handleSubmit}>
-          {/* ── Username ── */}
           <Form.Group className="mb-4">
             <Form.Label>
               Username <span className="text-danger">*</span>
@@ -219,89 +216,71 @@ if (!response.isSucess || !response.value || lockedFromValue) {
             </div>
           </Form.Group>
 
-         {/* ── Password ── */}
-<Form.Group className="mb-4">
-  <Form.Label>
-    Password <span className="text-danger">*</span>
-  </Form.Label>
+          <Form.Group className="mb-4">
+            <Form.Label>
+              Password <span className="text-danger">*</span>
+            </Form.Label>
 
-  <div style={{ position: "relative" }}>
-    <Lock
-      size={18}
-      style={{
-        position: "absolute",
-        left: "12px",
-        top: "50%",
-        transform: "translateY(-50%)",
-        opacity: 0.45,
-        zIndex: 5,
-        pointerEvents: "none",
-      }}
-    />
+            <div style={{ position: "relative" }}>
+              <Lock
+                size={18}
+                style={{
+                  position: "absolute",
+                  left: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  opacity: 0.45,
+                  zIndex: 5,
+                  pointerEvents: "none",
+                }}
+              />
 
-    <Form.Control
-      type={showPassword ? "text" : "password"}
-      placeholder="Enter your password"
-      value={password}
-      onChange={handlePasswordChange}
-      isInvalid={submitted && !!errors.password}
-      disabled={isLoading}
-      style={{
-        paddingLeft: "38px",
-        paddingRight: "45px",
-        ...(submitted && errors.password ? { backgroundImage: "none" } : {}),
-      }}
-    />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={handlePasswordChange}
+                isInvalid={submitted && !!errors.password}
+                disabled={isLoading}
+                style={{
+                  paddingLeft: "38px",
+                  paddingRight: "45px",
+                  ...(submitted && errors.password ? { backgroundImage: "none" } : {}),
+                }}
+              />
 
-    <button
-      type="button"
-      onClick={() => !isLoading && setShowPassword(!showPassword)}
-      disabled={isLoading}
-      style={{
-        position: "absolute",
-        right: "12px",
-        top: "50%",
-        transform: "translateY(-50%)",
-        background: "none",
-        border: "none",
-        cursor: isLoading ? "not-allowed" : "pointer",
-        padding: 0,
-        opacity: isLoading ? 0.3 : 0.45,
-        zIndex: 5,
-      }}
-    >
-      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-    </button>
-  </div>
+              <button
+                type="button"
+                onClick={() => !isLoading && setShowPassword(!showPassword)}
+                disabled={isLoading}
+                style={{
+                  position: "absolute",
+                  right: "12px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  padding: 0,
+                  opacity: isLoading ? 0.3 : 0.45,
+                  zIndex: 5,
+                }}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
 
-  {submitted && errors.password && (
-    <div className="invalid-feedback d-block"  style={{ marginTop: "2px", marginBottom: 0 }}>
-      {errors.password}
-    </div>
-  )}
-</Form.Group>
+            {submitted && errors.password && (
+              <div className="invalid-feedback d-block" style={{ marginTop: "2px", marginBottom: 0 }}>
+                {errors.password}
+              </div>
+            )}
+          </Form.Group>
 
-          {/* ── Remember me / Forgot Password ── */}
           <div className="d-flex justify-content-between align-items-center mb-3">
-            {/* <Form.Check
-              type="checkbox"
-              label="Remember me"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              disabled={isLoading}
-            /> */}
             <div />
-            {/* <button
-              className="auth-link"
-              type="button"
-              onClick={onForgot}
-              disabled={isLoading}
-            >
-              Forgot Password?
-            </button> */}
           </div>
 
-          {/* ── Submit ── */}
           <Button className="auth-btn w-100" type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
