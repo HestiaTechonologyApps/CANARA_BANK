@@ -34,14 +34,11 @@ const AboutSection: React.FC = () => {
       <Container>
         <Row className="align-items-start gy-4">
 
-          {/* LEFT CONTENT */}
           <Col lg={6}>
             <span className="about-label">
-              {/* Our History */}
               {config?.homeAboutLabel}
             </span>
             <h2 className="about-title">
-              {/* A Legacy of Care & Support */}
               {config?.homeAboutTitle}
             </h2>
             <div className="about-text-wrapper">
@@ -59,7 +56,6 @@ const AboutSection: React.FC = () => {
               </p>
             </div>
           </Col>
-          {/* RIGHT STATS */}
           <Col lg={6}>
             <Row className="gy-4 mt-3">
               {aboutStats.map((stat: any, index: number) => (

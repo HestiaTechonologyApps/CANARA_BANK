@@ -49,7 +49,6 @@ const NewsSection: React.FC = () => {
     <section className="py-5 news-section">
       <Container>
         <Row className="gy-4">
-          {/* LEFT SIDE - NEWS LIST */}
           <Col lg={8}>
             <div className="mb-4">
               <span className="news-label">
@@ -91,7 +90,6 @@ const NewsSection: React.FC = () => {
             </Button>
           </Col>
 
-          {/* RIGHT SIDE - SIDEBAR */}
           <Col lg={4} className="sidebar-wrapper">
             {(quoteTitle || quoteBody) && (
               <Card className="p-4 border-0 sidebar-gold shadow-sm">

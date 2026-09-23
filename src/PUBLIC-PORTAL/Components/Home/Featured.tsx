@@ -47,7 +47,6 @@ const FeaturesSection: React.FC = () => {
   return (
     <section className="py-5 features-section">
       <Container>
-        {/* Heading */}
         <div className="text-center mb-5">
           <span className="feature-label">{config?.homeFeatureHeading || "Our Commitment"}</span>
           <h2 className="feature-heading"> {config?.homeFeatureTitle || "Why Join Our Scheme?"}</h2>
@@ -57,7 +56,6 @@ const FeaturesSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Feature Boxes */}
         <Row className="gy-4">
           {features.map((feature, index) => (
             <Col md={6} lg={3} key={index}>
