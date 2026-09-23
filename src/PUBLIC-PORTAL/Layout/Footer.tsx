@@ -96,7 +96,6 @@ const Footer: React.FC = () => {
         </Row>
       </Container>
 
-      {/* Bottom Bar */}
       <div className="footer-bottom text-white py-3 px-3">
         <Container className="d-flex justify-content-between align-items-center flex-wrap text-center gap-2">
           <div className="d-flex align-items-center gap-2 small">
