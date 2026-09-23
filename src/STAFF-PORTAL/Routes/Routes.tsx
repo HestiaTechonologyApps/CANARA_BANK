@@ -1,4 +1,3 @@
-// STAFF-PORTAL/Routes/Routes.tsx
 import { Route } from 'react-router-dom';
 import StaffLayout from '../Layout/Layout';
 import Profile from '../Pages/Profile';
@@ -26,7 +25,6 @@ export const staffRoutes = (
   }
 >
     <Route index element={<Profile />} />
-    {/* <Route path="nominee" element={<UpdateNominee />} /> */}
     <Route path="staff-edit/:memberId" element={<StaffEdit />} />
     <Route path="contribution-list" element={<StaffAccountDirectEntryList />} />
     <Route path="contributions/staffaccountDirectEntry-create" element={<StaffAccountDirectEntryCreate />} />
