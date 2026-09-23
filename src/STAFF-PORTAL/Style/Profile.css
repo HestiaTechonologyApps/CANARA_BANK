@@ -4,12 +4,10 @@
   background: #fff;
 }
 
-/* Container */
 .profile-details {
   width: 100%;
 }
 
-/* EACH FIELD BOX */
 .profile-row {
   display: flex;
   flex-direction: column;
@@ -21,7 +19,6 @@
   margin-bottom: 12px;
 }
 
-/* Label (small blue text) */
 .profile-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -29,7 +26,6 @@
   margin-bottom: 4px;
 }
 
-/* Value box */
 .profile-value {
   font-size: 0.85rem;
   color: #000;
@@ -41,12 +37,10 @@
   align-items: center;
 }
 
-/* Action area */
 .profile-action {
   margin-top: 16px;
 }
 
-/* FULL WIDTH BUTTON */
 .profile-btn {
   width: 25%;
   background-color: #f2b827;
@@ -61,13 +55,11 @@
   background-color: #e0aa20;
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .profile-row {
     padding: 10px;
   }
 }
-
 
 .profile-row-horizontal {
   flex-direction: row !important;

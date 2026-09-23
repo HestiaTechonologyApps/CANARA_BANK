@@ -6,7 +6,6 @@
   background: #fff;
 }
 
-/* Header */
 .account-header {
   background: linear-gradient(180deg, #173a6a, #1f4e8c);
   color: #fff;
@@ -15,41 +14,35 @@
   text-align: center;
 }
 
-/* Labels */
 .account-card .form-label {
   font-size: 0.78rem;
   font-weight: 600;
   color: #1f3d6b;
 }
 
-/* Inputs */
 .account-card .form-control {
   font-size: 0.82rem;
   background-color: #f8f9fb;
   border-radius: 6px;
 }
 
-/* Disabled fields */
 .account-card .form-control:disabled {
   background-color: #f1f3f6;
   color: #6c757d;
 }
 
-/* Eye icon */
 .eye-icon {
   background: #f8f9fb;
   cursor: pointer;
   color: #6c757d;
 }
 
-/* Actions */
 .account-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
 }
 
-/* Update button */
 .btn-update {
   background-color: #f2b827;
   border: none;
@@ -62,7 +55,6 @@
   background-color: #e0aa20;
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .account-card {
     max-width: 100%;

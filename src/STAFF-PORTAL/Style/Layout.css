@@ -1,28 +1,23 @@
-/* Root layout */
 .staff-layout {
   display: flex;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
 
-/* Main area (right side of sidebar) */
 .staff-main {
   flex: 1;
   transition: margin-left 0.3s ease;
   min-height: 100vh;
 }
 
-/* When sidebar is open */
 .staff-main.expanded {
   margin-left: 210px; 
 }
 
-/* When sidebar is collapsed */
 .staff-main.collapsed {
   margin-left: 70px; 
 }
 
-/* Page content area below navbar */
 .staff-content {
   padding-top: 70px; 
   padding-left: 18px;
@@ -30,7 +25,6 @@
   padding-bottom: 24px;
 }
 
-/* Mobile handling */
 @media (max-width: 768px) {
   .staff-main.expanded {
     margin-left: 0;

@@ -12,20 +12,17 @@
   text-align: center;
 }
 
-/* Labels – dark & readable */
 .update-nominee-card .form-label {
   font-size: 0.8rem;
   font-weight: 500;
   color: #1f3d6b;
 }
 
-/* Inputs */
 .update-nominee-card .form-control,
 .update-nominee-card .form-select {
   font-size: 0.85rem;
 }
 
-/* Action buttons */
 .update-nominee-actions {
   display: flex;
   justify-content: flex-end;

@@ -54,11 +54,6 @@
   text-align: left;
 }
 
-/* =========================
-   RESPONSIVE SIDEBAR
-   ========================= */
-
-/* Tablet & below */
 @media (max-width: 1024px) {
   .staff-sidebar.open {
     width: 210px;
@@ -69,7 +64,6 @@
   }
 }
 
-/* Mobile view */
 @media (max-width: 768px) {
   .staff-sidebar {
     transform: translateX(-100%);
