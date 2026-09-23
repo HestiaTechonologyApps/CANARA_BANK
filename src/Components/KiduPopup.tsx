@@ -131,7 +131,6 @@ function KiduPopup<T extends Record<string, any>>({
     pageSize: number;
     searchTerm: string;
   }) => {
-    // Filter data client-side
     let filteredData = allData;
     
     if (params.searchTerm && params.searchTerm.trim()) {
@@ -249,7 +248,6 @@ const backdropClass = z ? `kdp-bd-${z}` : undefined;
         </Modal.Body>
       </Modal>
 
-      {/* Add Modal */}
       {AddModalComponent && (
         <AddModalComponent
           show={showAddModal}

@@ -2,14 +2,9 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { Button, Row, Col, Container, Pagination } from "react-bootstrap";
 import { FaEdit, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  flexRender,
+import { useReactTable, getCoreRowModel, getSortedRowModel, flexRender,
   type SortingState,
-  type ColumnDef,
-} from "@tanstack/react-table";
+  type ColumnDef,} from "@tanstack/react-table";
 import KiduLoader from "./KiduLoader";
 import KiduSearchBar from "./KiduSearchBar";
 import KiduButton from "./KiduButton";
@@ -144,21 +139,16 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     } finally {
       setLoading(false);
     }
-  }, []); // ✅ No deps — loadData never recreates, useEffect never re-runs unexpectedly
+  }, []);
 
-  // ✅ Initial load only once on mount
   useEffect(() => {
     loadData();
   }, [loadData]);
 
-  // ✅ Page or rowsPerPage changed — fetch immediately
   const goToPage = useCallback((page: number) => {
     currentPageRef.current = page;
     setCurrentPage(page);
     loadData();
-    // if (tableRef.current) {
-    //   tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    // }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [loadData]);
 
@@ -170,17 +160,9 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     loadData();
   }, [loadData]);
 
-  // ✅ NEW — guards so the search/filters effects below don't re-fire
-  // loadData() on the initial mount. Without these, every table/popup
-  // fired loadData() THREE times on mount (mount effect + filters effect
-  // + debounced search effect). That was masked on cheap/cached popups
-  // but very visible on heavier server-side lookups (e.g. Member), where
-  // the redundant calls made the popup look slow even though it was only
-  // ever meant to fetch 10 rows.
   const isInitialSearchRender = useRef(true);
   const isInitialFilterRender = useRef(true);
 
-  // ✅ Search: debounced, resets to page 1
   useEffect(() => {
     if (isInitialSearchRender.current) {
       isInitialSearchRender.current = false;
@@ -195,7 +177,6 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     return () => clearTimeout(timeoutId);
   }, [searchTerm, loadData]);
 
-  // ✅ Filters changed — fetch immediately
   useEffect(() => {
     if (isInitialFilterRender.current) {
       isInitialFilterRender.current = false;
@@ -218,7 +199,7 @@ const KiduServerTable: React.FC<KiduServerTableProps> = ({
     changeRowsPerPage(newRowsPerPage);
   };
 
-const handleFilterChange = (newFilters: Record<string, any>) => {
+  const handleFilterChange = (newFilters: Record<string, any>) => {
     setFilters((prev) => {
       const prevKeys = Object.keys(prev);
       const newKeys = Object.keys(newFilters);
@@ -248,20 +229,7 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
                 style={{ width: '18px', height: '18px', cursor: 'not-allowed', accentColor: '#1B3763' }} />
             );
           }
-        //  case 'image': {
-        //     const imageSrc = typeof rawValue === 'string' && rawValue ? rawValue : defaultProfileImage;
-        //     return (
-        //       <img src={imageSrc} alt="Profile"
-        //         style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: "2px solid #1B3763" }}
-        //         onError={(e: any) => {
-        //           if (e.target.src !== defaultProfileImage) {
-        //             e.target.src = defaultProfileImage;
-        //           }
-        //           e.target.onerror = null;
-        //         }} />
-        //     );
-        //   }
-        case 'image': {
+          case 'image': {
             const imageSrc = typeof rawValue === 'string' && rawValue ? rawValue : defaultProfileImage;
             return (
               <img src={imageSrc} alt="Profile"
@@ -302,12 +270,12 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
             );
           }
           case 'date': {
-  try {
-    const date = new Date(String(rawValue));
-    if (!isNaN(date.getTime())) return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-  } catch (e) { /* fall through */ }
-  break;
-}
+            try {
+              const date = new Date(String(rawValue));
+              if (!isNaN(date.getTime())) return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            } catch (e) { /* fall through */ }
+            break;
+          }
           case 'text':
           default:
             return String(rawValue);
@@ -316,45 +284,12 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
       },
     }));
 
-  //   if (showActions) {
-  //     cols.push({
-  //       id: "actions",
-  //       header: "Action",
-  //       enableSorting: false,
-  //       cell: ({ row }) => (
-  //         <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
-  //           {editRoute && (
-  //             <Button size="sm"
-  //             //added to diable the edit button in list page of monthly contribution only
-  //             disabled={!!row.original._disableEdit}
-  //               style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
-  //               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; }}
-  //               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; }}
-  //               onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
-  //               <FaEdit className="me-1" /> Edit
-  //             </Button>
-  //           )}
-  //           {viewRoute && (
-  //             <Button size="sm"
-  //               style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
-  //               onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
-  //               <FaEye className="me-1" /> View
-  //             </Button>
-  //           )}
-  //         </div>
-  //       ),
-  //     });
-  //   }
-  //   return cols;
-  // }, [columns, showActions, editRoute, viewRoute, navigate, idKey]);
-  if (showActions) {
+    if (showActions) {
       cols.push({
         id: "actions",
         header: "Action",
         enableSorting: false,
         cell: ({ row }) => {
-          // NEW — respects both the legacy per-row flag (Monthly Contribution)
-          // and the new generic disableEditWhen prop, so either mechanism disables Edit.
           const isEditDisabled =
             !!row.original._disableEdit ||
             !!(disableEditWhen && disableEditWhen(row.original));
@@ -362,14 +297,10 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
           return (
             <div className="d-flex justify-content-center gap-2" onClick={(e) => e.stopPropagation()}>
               {editRoute && (
-                // NEW — span wrapper so `title` tooltip still shows on hover
-                // even while the button itself is disabled (disabled buttons
-                // don't fire native title tooltips in most browsers)
                 <span title={isEditDisabled ? disabledEditTooltip : undefined}>
                   <Button size="sm"
                     disabled={isEditDisabled}
-                    // style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
-                   style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "14px", padding: "5px 12px", fontWeight: 500 }}
+                    style={{ backgroundColor: "transparent", border: "1px solid #1B3763", color: "#1B3763", fontSize: "14px", padding: "5px 12px", fontWeight: 500 }}
                     onMouseEnter={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "#1B3763"; e.currentTarget.style.color = "white"; } }}
                     onMouseLeave={(e) => { if (!isEditDisabled) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1B3763"; } }}
                     onClick={() => navigate(`${editRoute}/${row.original[idKey]}`)}>
@@ -379,7 +310,6 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
               )}
               {viewRoute && (
                 <Button size="sm"
-                 // style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "12px", padding: "4px 10px", fontWeight: 500 }}
                   style={{ backgroundColor: "#1B3763", border: "none", color: "white", fontSize: "14px", padding: "5px 12px", fontWeight: 500 }}
                   onClick={() => navigate(`${viewRoute}/${row.original[idKey]}`)}>
                   <FaEye className="me-1" /> View
@@ -462,16 +392,14 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
       <Row>
         <Col>
           <div ref={tableRef} className="table-responsive">
-            {/* <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "13px" }}> */}
-              <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "15px" }}>
+            <table className="table table-striped table-bordered table-hover align-middle mb-0" style={{ fontSize: "15px" }}>
               <thead className="text-center" style={{ fontFamily: "Urbanist" }}>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th key={header.id}
-                        // style={{ padding: "10px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "13px", fontWeight: 600 }}
-                       style={{ padding: "12px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "15px", fontWeight: 600 }}
-                       onClick={header.column.getToggleSortingHandler()}>
+                        style={{ padding: "12px 8px", cursor: header.column.getCanSort() ? "pointer" : "default", borderBottom: "2px solid #1B3763", verticalAlign: "middle", fontSize: "15px", fontWeight: 600 }}
+                        onClick={header.column.getToggleSortingHandler()}>
                         <div className="d-flex align-items-center justify-content-center gap-1">
                           {flexRender(header.column.columnDef.header, header.getContext())}
                           {header.column.getCanSort() && (
@@ -522,37 +450,13 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
         </Col>
       </Row>
 
-      {/* {totalPages > 1 && (
+      {totalPages > 1 && (
         <div className="d-flex justify-content-between align-items-center mt-3">
           <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "15px" }}>
             Page {currentPage} of {totalPages} (Total: {total} records)
           </span>
-          <Pagination className="m-0" size="sm"> */}
-                {totalPages > 1 && (
-        <div className="d-flex justify-content-between align-items-center mt-3">
-          <span style={{ fontFamily: "Urbanist", color: "#1B3763", fontWeight: 600, fontSize: "15px" }}>
-            Page {currentPage} of {totalPages} (Total: {total} records)
-          </span>
-          {/* <style>{`
-            .kidu-pagination .page-item.active .page-link {
-              background-color: #1B3763 !important;
-              border-color: #1B3763 !important;
-              color: #ffffff !important;
-            }
-            .kidu-pagination .page-item .page-link {
-              color: #1B3763;
-              border-color: #1B3763;
-            }
-            .kidu-pagination .page-item .page-link:hover {
-              background-color: #eef2f7;
-              color: #1B3763;
-            }
-            .kidu-pagination .page-item.disabled .page-link {
-              color: #a9b4c4;
-              border-color: #dbe1ea;
-            }
-          `}</style> */}
-                    <style>{`
+
+          <style>{`
             .kidu-pagination {
               gap: 6px;
             }
@@ -609,14 +513,8 @@ const handleFilterChange = (newFilters: Record<string, any>) => {
               else if (currentPage <= 3) pageNum = i + 1;
               else if (currentPage >= totalPages - 2) pageNum = totalPages - 4 + i;
               else pageNum = currentPage - 2 + i;
-              // return (
-              //   <Pagination.Item key={pageNum} active={pageNum === currentPage}
-              //     onClick={() => handlePageChange(pageNum)}
-              //     style={{ backgroundColor: pageNum === currentPage ? "#1B3763" : "transparent", borderColor: "#1B3763", color: pageNum === currentPage ? "white" : "#1B3763" }}>
-              //     {pageNum}
-              //   </Pagination.Item>
-              // );
-                            return (
+
+              return (
                 <Pagination.Item key={pageNum} active={pageNum === currentPage}
                   onClick={() => handlePageChange(pageNum)}>
                   {pageNum}

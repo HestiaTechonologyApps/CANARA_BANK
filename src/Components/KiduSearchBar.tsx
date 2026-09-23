@@ -41,7 +41,6 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
           type="text"
           placeholder={placeholder}
           value={value}
-          //onChange={(e) => setValue(e.target.value)}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
           style={{
@@ -77,8 +76,6 @@ const KiduSearchBar: React.FC<KiduSearchBarProps> = ({
             border: "none",
             color: "white",
             transition: "transform 0.15s ease, box-shadow 0.15s ease",
-            // paddingLeft: "1rem",
-            // paddingRight: "1rem",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "scale(1.1)";

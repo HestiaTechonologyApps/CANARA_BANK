@@ -9,7 +9,7 @@ interface AddDropDown {
 }
 
 const AddDropDown: React.FC<AddDropDown> = ({ values, onChange }) => {
-  // FIX: Guarantee values is always an array
+  
   const safeValues = Array.isArray(values) ? values : [""];
 
   const handleAddInput = () => {

@@ -1,12 +1,11 @@
 import React from "react";
 import { Row, Col, Dropdown, ButtonGroup } from "react-bootstrap";
 import { BsPrinter, BsFiletypeCsv, BsFiletypePdf } from "react-icons/bs";
-import { FaColumns, FaCopy, FaDownload, FaFileExcel} from "react-icons/fa";
+import { FaColumns, FaCopy, FaDownload, FaFileExcel } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
-// ✅ Toastify imports
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { FilterColumn } from "./KiduTableFilter";
@@ -22,7 +21,6 @@ interface KiduServerTableNavbarProps {
   onRowsPerPageChange?: (rows: number) => void;
   rowsPerPageOptions?: number[];
   additionalButtons?: React.ReactNode;
-  //Filter props
   showFilter?: boolean;
   filterColumns?: FilterColumn[];
   onFilterChange?: (filters: Record<string, any>) => void;
@@ -47,7 +45,6 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
   const cleanCellValue = (value: any, columnType?: string): string => {
     if (value === null || value === undefined || value === "") return "";
     if (typeof value === "boolean") return value ? "Yes" : "No";
-
     if (columnType === "checkbox") {
       const boolValue =
         typeof value === "boolean"
@@ -65,7 +62,6 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
     return String(value).trim();
   };
 
-  // ✅ Copy to clipboard with Toastify
   const handleCopy = () => {
     if (data.length === 0) return;
 
@@ -221,23 +217,6 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
       <Row className="mb-3 align-items-center">
         <Col xs="auto">
           <div className="d-flex gap-2 flex-wrap align-items-center">
-            {/* 
-             <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle size="sm" variant="outline" style={{color  : "#1B3763", fontFamily: "Urbanist", fontSize: "13px", fontWeight: 600}}>
-               <FaFilter/>  Filter
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {rowsPerPageOptions.map((opt) => (
-                    <Dropdown.Item
-                      key={opt}
-                      active={rowsPerPage === opt}
-                      onClick={() => onRowsPerPageChange?.(opt)}
-                    >
-                      {opt} rows
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown> */}
 
             {showFilter && filterColumns.length > 0 && onFilterChange && (
               <KiduTableFilter
@@ -246,84 +225,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                 initialFilters={initialFilters}
               />
             )}
-           {showRowsPerPageSelector && (
-  <Dropdown as={ButtonGroup}>
-       <Dropdown.Toggle size="sm" variant="outline" style={{
-      color: "#1B3763",
-      fontFamily: "Urbanist",
-      fontSize: "13px",
-      fontWeight: 600,
-      borderColor: "#1B3763",
-      display: "flex",
-      alignItems: "center",
-      gap: "6px",
-    }}>
-      <FaColumns />  {rowsPerPage === -1 ? "Show All rows" : `Show ${rowsPerPage} rows`}
-    </Dropdown.Toggle>
-    <Dropdown.Menu style={{
-      fontFamily: "Urbanist",
-      fontSize: "13px",
-      fontWeight: 600,
-      border: "1px solid #1B3763",
-      borderRadius: "6px",
-      boxShadow: "0 4px 10px rgba(27, 55, 99, 0.15)",
-      padding: "4px",
-      minWidth: "140px",
-    }}>
-      {rowsPerPageOptions.map((opt) => {
-        const isActive = rowsPerPage === opt;
-        return (
-          <Dropdown.Item
-            key={opt}
-            active={isActive}
-            onClick={() => onRowsPerPageChange?.(opt)}
-            style={{
-              color: isActive ? "#fff" : "#1B3763",
-              backgroundColor: isActive ? "#1B3763" : "transparent",
-              borderRadius: "4px",
-              fontWeight: isActive ? 700 : 500,
-              padding: "6px 10px",
-              marginBottom: "2px",
-            }}
-            onMouseEnter={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.backgroundColor = "#eef2f7";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isActive) {
-                e.currentTarget.style.backgroundColor = "transparent";
-              }
-            }}
-                   >
-            {opt === -1 ? "All" : `${opt} rows`}
-          </Dropdown.Item>
-        );
-      })}
-    </Dropdown.Menu>
-  </Dropdown>
-)}
-
-            {/* {showExportButtons && (
-              <>
-                <Button size="sm" variant="secondary" onClick={handleCopy}>
-                  <FaCopy /> Copy
-                </Button>
-                <Button size="sm" variant="secondary" onClick={handleCSV}>
-                  <BsFiletypeCsv /> CSV
-                </Button>
-                <Button size="sm" variant="secondary" onClick={handleExcel}>
-                  <FaFileExcel /> Excel
-                </Button>
-                <Button size="sm" variant="secondary" onClick={handlePDF}>
-                  <BsFiletypePdf /> PDF
-                </Button>
-                <Button size="sm" variant="secondary" onClick={handlePrint}>
-                  <BsPrinter /> Print
-                </Button>
-              </>
-            )} */}
-            {/* {showExportButtons && (
+            {showRowsPerPageSelector && (
               <Dropdown as={ButtonGroup}>
                 <Dropdown.Toggle size="sm" variant="outline" style={{
                   color: "#1B3763",
@@ -334,35 +236,54 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                }}> */}
-                  {/* <FaDownload /> Export
+                }}>
+                  <FaColumns />  {rowsPerPage === -1 ? "Show All rows" : `Show ${rowsPerPage} rows`}
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{
-                  color: "#1B3763",
                   fontFamily: "Urbanist",
                   fontSize: "13px",
                   fontWeight: 600,
-                  borderColor: "#1B3763",
-                }}> */}
-                  {/* <Dropdown.Item onClick={handleCopy}>
-                  <span className="text-primary">  <FaCopy /></span> Copy
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handleCSV}>
-                   <span className="text-warning"> <BsFiletypeCsv /> </span>CSV
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handleExcel}>
-                   <span className="text-success"> <FaFileExcel /></span> Excel
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handlePDF}>
-                  <span className="text-danger">  <BsFiletypePdf /></span> PDF
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handlePrint}>
-                    <BsPrinter /> Print
-                  </Dropdown.Item>
+                  border: "1px solid #1B3763",
+                  borderRadius: "6px",
+                  boxShadow: "0 4px 10px rgba(27, 55, 99, 0.15)",
+                  padding: "4px",
+                  minWidth: "140px",
+                }}>
+                  {rowsPerPageOptions.map((opt) => {
+                    const isActive = rowsPerPage === opt;
+                    return (
+                      <Dropdown.Item
+                        key={opt}
+                        active={isActive}
+                        onClick={() => onRowsPerPageChange?.(opt)}
+                        style={{
+                          color: isActive ? "#fff" : "#1B3763",
+                          backgroundColor: isActive ? "#1B3763" : "transparent",
+                          borderRadius: "4px",
+                          fontWeight: isActive ? 700 : 500,
+                          padding: "6px 10px",
+                          marginBottom: "2px",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.backgroundColor = "#eef2f7";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                          }
+                        }}
+                      >
+                        {opt === -1 ? "All" : `${opt} rows`}
+                      </Dropdown.Item>
+                    );
+                  })}
                 </Dropdown.Menu>
               </Dropdown>
-            )} */}
-                        {showExportButtons && (
+            )}
+
+            {showExportButtons && (
               <Dropdown as={ButtonGroup}>
                 <Dropdown.Toggle size="sm" variant="outline" className="kidu-export-toggle" style={{
                   color: "#1B3763",
@@ -377,38 +298,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                   <FaDownload /> Export
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="kidu-export-menu">
-                  {/* <Dropdown.Item onClick={handleCopy} className="kidu-export-item">
-                    <span className="kidu-export-icon" style={{ background: "#eef2ff", color: "#4f46e5" }}>
-                      <FaCopy size={13} />
-                    </span>
-                    <span>Copy</span>
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handleCSV} className="kidu-export-item">
-                    <span className="kidu-export-icon" style={{ background: "#fef9e7", color: "#c9930a" }}>
-                      <BsFiletypeCsv size={14} />
-                    </span>
-                    <span>CSV</span>
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handleExcel} className="kidu-export-item">
-                    <span className="kidu-export-icon" style={{ background: "#e9f9ef", color: "#1e8e4e" }}>
-                      <FaFileExcel size={13} />
-                    </span>
-                    <span>Excel</span>
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={handlePDF} className="kidu-export-item">
-                    <span className="kidu-export-icon" style={{ background: "#fdeceb", color: "#dc3545" }}>
-                      <BsFiletypePdf size={14} />
-                    </span>
-                    <span>PDF</span>
-                  </Dropdown.Item>
-                  <Dropdown.Divider className="kidu-export-divider" />
-                  <Dropdown.Item onClick={handlePrint} className="kidu-export-item">
-                    <span className="kidu-export-icon" style={{ background: "#eef2f7", color: "#1B3763" }}>
-                      <BsPrinter size={13} />
-                    </span>
-                    <span>Print</span>
-                  </Dropdown.Item> */}
-                                    <Dropdown.Item onClick={handleCopy} className="kidu-export-item">
+                  <Dropdown.Item onClick={handleCopy} className="kidu-export-item">
                     <span className="kidu-export-icon" style={{ background: "#eef2ff", color: "#4f46e5" }}>
                       <FaCopy size={11} />
                     </span>
@@ -442,8 +332,6 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
                 </Dropdown.Menu>
               </Dropdown>
             )}
-
-
           </div>
         </Col>
 
@@ -453,8 +341,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
           </Col>
         )}
       </Row>
-
-            <style>{`
+      <style>{`
         .kidu-export-menu {
           padding: 4px;
           border-radius: 6px;
@@ -494,8 +381,6 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
           border-color: #eef1f6;
         }
       `}</style>
-
-      {/* ✅ Toast container */}
       <ToastContainer />
     </>
   );

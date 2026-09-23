@@ -1,15 +1,9 @@
 import { useState, useCallback, forwardRef, useImperativeHandle } from "react";
 import { Button, Modal, Form, Table, Alert, Card, Collapse, Spinner } from "react-bootstrap";
-import {
-  Upload, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive,
-  FileAudio, FileVideo, FileJson, FileCode, FileType, Paperclip,
-  ChevronDown, ChevronUp, Clock,
-  Download,
-} from "lucide-react";
+import { Upload, Trash2, FileText, X, FileSpreadsheet, FileImage, FileArchive, FileAudio, FileVideo, FileJson, FileCode,
+   FileType, Paperclip, ChevronDown, ChevronUp, Clock, Download,} from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import AttachmentService from "../Services/Attachment.services";
-
-// ── Types ────────────────────────────────────────────────────────────────
 
 export interface StagedAttachment {
   id: string;           
@@ -29,8 +23,6 @@ interface AttachmentsStagingProps {
   onChange?: (files: StagedAttachment[]) => void;
   maxSize?: number;
 }
-
-// ── Helpers ──────────────────────────────────────────────────────────────
 
 const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return "0 Bytes";
@@ -70,8 +62,6 @@ const getFileIcon = (fileName: string) => {
   }
 };
 
-// ── Component ─────────────────────────────
-
 const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagingProps>(
   ({ onChange, maxSize = 10485760 }, ref) => {
     const [staged, setStaged] = useState<StagedAttachment[]>([]);
@@ -90,7 +80,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
       onChange?.(next);
     };
 
-    // ── Dropzone (picking a file, before it's added to the staged list) ──
     const onDrop = useCallback((acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         setPendingFile(acceptedFiles[0]);
@@ -155,7 +144,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
       emitChange(staged.map((s) => (s.id === id ? { ...s, description } : s)));
     };
 
-    // ── Imperative API for the parent create-page/modal ───────────────────
     useImperativeHandle(ref, () => ({
       getStagedFiles: () => staged,
       hasFiles: () => staged.length > 0,
@@ -330,7 +318,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
           </Collapse>
         </Card>
 
-        {/* Add-to-staging Modal */}
         <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
           <Modal.Header closeButton className="border-0 pb-2">
             <Modal.Title className="d-flex align-items-center gap-2" style={{ fontSize: "1.1rem" }}>
@@ -443,7 +430,6 @@ const AttachmentsStaging = forwardRef<AttachmentsStagingHandle, AttachmentsStagi
           </Modal.Footer>
         </Modal>
 
-        {/* Remove Confirmation Modal */}
         <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered size="sm">
           <Modal.Header closeButton className="border-0 pb-2">
             <Modal.Title style={{ fontSize: "1rem" }}>Remove File</Modal.Title>

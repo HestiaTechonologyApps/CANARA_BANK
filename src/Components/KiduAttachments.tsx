@@ -558,7 +558,6 @@ const Attachments = forwardRef<AttachmentsHandle, AttachmentsProps>(({
                 </Modal.Footer>
             </Modal>
 
-            {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered size="sm">
                 <Modal.Header closeButton className="border-0 pb-2">
                     <Modal.Title style={{ fontSize: '1rem' }}>Confirm Delete</Modal.Title>

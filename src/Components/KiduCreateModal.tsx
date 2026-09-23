@@ -79,13 +79,11 @@ function KiduCreateModal<T>({
     return values;
   };
 
-  // ── ALL hooks must run on every render, unconditionally, in this exact order ──
   const [formData, setFormData] = useState<Record<string, any>>(buildInitialValues());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const zIndexRef = useRef<number | null>(null);
-  // ── end hooks — no hook may be declared below this line ──
   const [openSelect, setOpenSelect] = useState<string | null>(null);
 
   if (show && zIndexRef.current === null) {

@@ -121,12 +121,11 @@ const KiduServerTableList: React.FC<KiduServerTableListProps> = ({
       const itemValue = item[key];
       if (itemValue === null || itemValue === undefined) return false;
 
-      // Use exact match for select filters, partial match for text filters
       const filterCol = filterColumns.find(f => f.key === key);
       if (filterCol?.type === "select") {
-        return String(itemValue).toLowerCase() === String(value).toLowerCase(); // 👈 exact
+        return String(itemValue).toLowerCase() === String(value).toLowerCase();
       }
-      return String(itemValue).toLowerCase().includes(String(value).toLowerCase()); // 👈 partial
+      return String(itemValue).toLowerCase().includes(String(value).toLowerCase()); 
     })
   );
 }

@@ -10,7 +10,7 @@ const KiduPrevious: React.FC = () => {
     <button
       className="btn d-flex align-items-center justify-content-center shadow-sm"
       style={{
-        backgroundColor: "#173a6a", // primary dark teal
+        backgroundColor: "#173a6a", 
         color: "#ffffff",
         border: "none",
         borderRadius: "6px",
@@ -20,8 +20,8 @@ const KiduPrevious: React.FC = () => {
       }}
       onClick={() => navigate(-1)}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "#f7f0f0ff"; // hover light blue
-        e.currentTarget.style.color = "#173a6a"; // icon color on hover
+        e.currentTarget.style.backgroundColor = "#f7f0f0ff"; 
+        e.currentTarget.style.color = "#173a6a"; 
         e.currentTarget.style.boxShadow = "0 4px 10px #173a6a";
         e.currentTarget.style.transform = "scale(1.05)";
       }}

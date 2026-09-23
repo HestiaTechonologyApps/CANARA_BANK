@@ -1,4 +1,3 @@
-// KiduTableFilter.tsx - Reusable filter component for tables
 import React, { useState, useEffect } from "react";
 import { Dropdown, Badge, Form, Button, Row, Col } from "react-bootstrap";
 import { FaFilter, FaTimes } from "react-icons/fa";
@@ -7,7 +6,7 @@ export interface FilterColumn {
     key: string;
     label: string;
     type?: 'text' | 'select' | 'date' | 'number';
-    options?: Array<{ value: string; label: string }>; // For select type
+    options?: Array<{ value: string; label: string }>;
     placeholder?: string;
 }
 
@@ -25,12 +24,10 @@ const KiduTableFilter: React.FC<KiduTableFilterProps> = ({
     const [filters, setFilters] = useState<Record<string, any>>(initialFilters);
     const [show, setShow] = useState(false);
 
-    // Count active filters
     const activeFilterCount = Object.values(filters).filter(
         (value) => value !== "" && value !== null && value !== undefined
     ).length;
 
-    // Update parent when filters change
     useEffect(() => {
         onFilterChange(filters);
     }, [filters, onFilterChange]);

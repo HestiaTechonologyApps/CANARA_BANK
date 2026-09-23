@@ -23,7 +23,6 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
       dialogClassName="auth-modal"
     >
       <Modal.Body style={{ position: "relative" }}>
-        {/* Close button */}
                 <button
           type="button"
           onClick={onCancel}
@@ -51,7 +50,6 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
           <X size={15} />
         </button>
 
-        {/* HEADER (same style as login) */}
         <div className="auth-div">
           <div className="auth-icon">
             <LogOut size={30} className="auth-icon-red" />
@@ -62,7 +60,6 @@ const KiduLogoutModal: React.FC<KiduLogoutModalProps> = ({
           </div>
         </div>
 
-        {/* BODY */}
         <div className="auth-body text-center">
           <p className="mb-4 text-muted">
             Are you sure you want to logout?

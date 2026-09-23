@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Dropdown, ButtonGroup } from "react-bootstrap";
 
 interface YearDropdownProps {
-  startYear?: number; // optional, defaults to 2023
-  onYearSelect: (year: number) => void; // callback when a year is selected
-  defaultYear?: number; // optional, defaults to current year
+  startYear?: number; 
+  onYearSelect: (year: number) => void; 
+  defaultYear?: number; 
 }
 
 const KiduYearSelector: React.FC<YearDropdownProps> = ({

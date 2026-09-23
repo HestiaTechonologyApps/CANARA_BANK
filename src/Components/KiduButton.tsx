@@ -34,7 +34,6 @@ const KiduButton: React.FC<KiduButtonProps> = ({
         borderRadius: 6,
         height: 33,
         fontSize: "12px",
-        // padding: "0 16px",
         textDecoration: "none", 
         ...style,
       }}

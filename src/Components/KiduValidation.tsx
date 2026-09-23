@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 
 export interface ValidationResult {
@@ -60,7 +59,6 @@ export const KiduValidation = {
     }
 
     if (rules.type === "toggle" || rules.type === "checkbox") {
-      // Toggle/checkbox validation - usually boolean values
       if (rules.required && !val)
         return { isValid: false, message: `${rawLabel} is required.`, label };
       return { isValid: true, label };
@@ -93,16 +91,6 @@ export const KiduValidation = {
       return { isValid: false, message: `Please enter a valid website URL.`, label };
 
     if (rules.type === "password" && strVal) {
-      // if (strVal.length < 8)
-      //   return { isValid: false, message: `${rawLabel} must be at least 8 characters.`, label };
-      // if (!/[A-Z]/.test(strVal))
-      //   return { isValid: false, message: `${rawLabel} must contain an uppercase letter.`, label };
-      // if (!/[a-z]/.test(strVal))
-      //   return { isValid: false, message: `${rawLabel} must contain a lowercase letter.`, label };
-      // if (!/[0-9]/.test(strVal))
-      //   return { isValid: false, message: `${rawLabel} must contain a number.`, label };
-      // if (!/[!@#$%^&*(),.?":{}|<>]/.test(strVal))
-      //   return { isValid: false, message: `${rawLabel} must contain a special character.`, label };
     }
 
     if (rules.minLength && strVal.length < rules.minLength)
