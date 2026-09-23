@@ -1,5 +1,3 @@
-// src/Types/Common/Lookup.types.ts
-
 export type LookupEntityName = "member" | "branch" | "expensetype";
 
 export interface MemberLookupItem {

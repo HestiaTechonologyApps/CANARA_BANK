@@ -1,4 +1,3 @@
-// src/types/Auth.types.ts
 import type { AuditTrails } from "./AuditLog.types";
 
 export interface LoginRequest {

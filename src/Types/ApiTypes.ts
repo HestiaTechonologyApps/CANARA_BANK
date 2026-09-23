@@ -1,4 +1,3 @@
-// src/types/ApiTypes.ts
 export interface CustomResponse<T> {
   statusCode: number;
   error: string | null;

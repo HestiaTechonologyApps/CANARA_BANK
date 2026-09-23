@@ -1,4 +1,3 @@
-// types/Attachment.types.ts
 export interface Attachment {
     existingFileUrl: string;
     existingFileName: string;
