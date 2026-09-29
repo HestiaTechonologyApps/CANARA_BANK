@@ -68,6 +68,10 @@ const Profile: React.FC = () => {
     navigate("/staff-portal/history");
   };
 
+  const handleStaffNoClick = () => {
+    if (user?.memberId) navigate(`/staff-portal/staff-edit/${user.memberId}`);
+  };
+
   if (loading) {
     return (
       <Card className="profile-card mt-2">
@@ -103,7 +107,15 @@ const Profile: React.FC = () => {
           <Row>
             <Col md={4} className="profile-row">
               <span className="profile-label">{fields[0].label}</span>
-              <span className="profile-value">{user?.staffNo || "—"}</span>
+              {/* <span className="profile-value">{user?.staffNo || "—"}</span> */}
+              <span
+                className="profile-value"
+                onClick={handleStaffNoClick}
+                style={{ cursor: "pointer" }}
+                title="Update profile"
+              >
+                {user?.staffNo || "—"}
+              </span>
             </Col>
 
             <Col md={4} className="profile-row">

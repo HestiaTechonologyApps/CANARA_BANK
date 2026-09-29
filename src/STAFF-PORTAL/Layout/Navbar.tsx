@@ -27,6 +27,11 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
 
   const userName = parsedUser?.userName || "—";
   const staffNo = parsedUser?.staffNo ?? "—";
+  const memberId = parsedUser?.memberId;
+
+  const goToUpdateProfile = () => {
+    if (memberId) navigate(`/staff-portal/staff-edit/${memberId}`);
+  };
   const profilePic = parsedUser?.profileImageSrc ? getFullImageUrl(parsedUser.profileImageSrc) : profiledefaultImg;
 
   const handleLogout = () => setShowLogoutModal(true);
@@ -77,7 +82,15 @@ const StaffNavbar = ({ sidebarOpen, toggleSidebar }: Props) => {
             style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover", border: "2px solid #f0f4ff" }}
           />
 
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+          {/* <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em" }}>Staff No.</span>
+            <strong style={{ fontSize: 13, fontFamily: "'JetBrains Mono',monospace", color: "#0f172a" }}>{staffNo}</strong>
+          </div> */}
+          <div
+            onClick={goToUpdateProfile}
+            style={{ display: "flex", flexDirection: "column", lineHeight: 1.2, cursor: "pointer" }}
+            title="Update profile"
+          >
             <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.06em" }}>Staff No.</span>
             <strong style={{ fontSize: 13, fontFamily: "'JetBrains Mono',monospace", color: "#0f172a" }}>{staffNo}</strong>
           </div>
