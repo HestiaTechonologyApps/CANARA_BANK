@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { User, UserCog, CreditCard, Settings, BarChart, LogOut } from "lucide-react";
+import { User, UserCog, CreditCard, HandCoins, Settings, BarChart, LogOut } from "lucide-react";
 import "../Style/Sidebar.css";
 import AuthService from "../../Services/Auth.services";
 import { useState } from "react";
@@ -133,7 +133,7 @@ const StaffSidebar = ({ open }: Props) => {
           <NavLink to="/staff-portal" end><User size={ICON_SIZE} /> {open && "Profile"}</NavLink>
           <NavLink to={`staff-edit/${memberId}`}><UserCog size={ICON_SIZE} /> {open && "Update Profile"}</NavLink>
           <NavLink to="contribution-list"><CreditCard size={ICON_SIZE} /> {open && "Direct Contribution"}</NavLink>
-          <NavLink to="refund-list"><CreditCard size={ICON_SIZE} /> {open && "Refund"}</NavLink>
+          <NavLink to="refund-list"><HandCoins size={ICON_SIZE} /> {open && "Refund"}</NavLink>
           <NavLink to="settings"><Settings size={ICON_SIZE} /> {open && "Account Settings"}</NavLink>
           <NavLink to="history"><BarChart size={ICON_SIZE} /> {open && "Contribution History"}</NavLink>
         </nav>
