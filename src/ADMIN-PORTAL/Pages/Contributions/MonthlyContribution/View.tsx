@@ -241,8 +241,8 @@ const ParkReasonModal: React.FC<{
       await ContributionDetailService.park(row.contributionDetailId, { parkReason: reason.trim() });
       onSuccess();
       onClose();
-    } catch (err: any) {
-      setErrorMsg(err?.message || "Failed to park item.");
+       } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to park item.");
     } finally {
       setSubmitting(false);
     }
@@ -330,8 +330,8 @@ const UnparkConfirmModal: React.FC<{
     try {
       await ContributionDetailService.unpark({ detailId: row.contributionDetailId, currentUserId: CURRENT_USER_ID });
       onSuccess(); onClose();
-    } catch (err: any) {
-      setErrorMsg(err?.message || "Failed to unpark item.");
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to unpark item.");
     } finally { setSubmitting(false); }
   };
 
@@ -729,7 +729,6 @@ const FormSection: React.FC<{ title?: string; children: React.ReactNode; span?: 
   </div>
 );
 
-const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
 const todayStr = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD", matches <input type="date"> format
 
 const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {
@@ -766,7 +765,7 @@ const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
       } as Omit<Member, "memberId" | "auditLogs">);
       setSuccessMsg("Member created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
-    } catch (err: any) { setErrorMsg(err?.message || "Failed to create member."); } finally { setSubmitting(false); }
+    } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Failed to create member."); } finally { setSubmitting(false); }
   };
 
   return (
@@ -808,7 +807,7 @@ const BranchCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
   const [status, setStatus] = useState("Active");
   const [isRegCompleted, setIsRegCompleted] = useState(false);
   const [selectedState, setSelectedState] = useState<State | null>(null);
-  const [selectedCircle, setSelectedCircle] = useState<any | null>(null);
+  const [selectedCircle, setSelectedCircle] = useState<Circle | null>(null);
   const [showStatePopup, setShowStatePopup] = useState(false);
   const [showCirclePopup, setShowCirclePopup] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -822,7 +821,7 @@ const BranchCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
       await BranchService.createBranch({ dpCode: Number(dpCode), name: name.trim(), district: district.trim(), address1: address1.trim(), address2: address2.trim(), address3: address3.trim(), stateId: selectedState.stateId, circleId: selectedCircle.circleId, status, isRegCompleted, stateName: selectedState.name, circleName: selectedCircle.name } as Omit<Branch, "branchId" | "auditLogs">);
       setSuccessMsg("Branch created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
-    } catch (err: any) { setErrorMsg(err?.message || "Failed to create branch."); } finally { setSubmitting(false); }
+    } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Failed to create branch."); } finally { setSubmitting(false); }
   };
 
   return (
@@ -868,7 +867,7 @@ const CircleCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClos
       await CircleService.createCircle({ circleCode: Number(circleCode), name: name.trim(), abbreviation: abbreviation.trim(), stateId: selectedState.stateId, stateName: selectedState.name, dateFrom, dateFromString: "", dateTo, dateToString: "", isActive } as Omit<Circle, "circleId" | "auditLogs">);
       setSuccessMsg("Circle created successfully!");
       setTimeout(() => { onSuccess(); onClose(); }, 1500);
-    } catch (err: any) { setErrorMsg(err?.message || "Failed to create circle."); } finally { setSubmitting(false); }
+    } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Failed to create circle."); } finally { setSubmitting(false); }
   };
 
   return (
@@ -964,9 +963,14 @@ const MasterPanel: React.FC<{
   }, [master?.approvedBy]);
 
 
-  const totalAmount = parseFloat((master as any).totalamount ?? master.totalAmount ?? "0") || 0;
-  const totalEntry = parseInt((master as any).totalentry ?? master.totalEntry ?? "0", 10) || 0;
+  const rawMaster = master as unknown as { totalamount?: string | number; totalentry?: string | number };
+  const totalAmount = parseFloat(String(rawMaster.totalamount ?? master.totalAmount ?? "0")) || 0;
+  const totalEntry = parseInt(String(rawMaster.totalentry ?? master.totalEntry ?? "0"), 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
+
+  // TODO: replace with real API values once parked amount / parked items are available
+  const parkedAmountDisplay = "—";
+  const parkedItemsDisplay = "—";
 
   const isAlreadyForwarded =
     master.contributionStatus === "FORWARD" ||
@@ -1005,7 +1009,13 @@ const MasterPanel: React.FC<{
     }
   };
 
-  const fields = [
+  const fields: Array<{
+    label: string;
+    value: React.ReactNode;
+    full?: boolean;
+    accent?: string;
+    isStatus?: boolean;
+  }> = [
     { label: "File Name", value: master.fileName, full: true },
     { label: "File Type", value: master.fileType },
     { label: "Extension", value: master.fileExtension },
@@ -1016,10 +1026,13 @@ const MasterPanel: React.FC<{
     { label: "Total Amount", value: fmt(totalAmount), accent: "#0d7377" },
     { label: "Total Entries", value: String(totalEntry) },
     { label: "New Members", value: String(newMemberCount) },
+    { label: "Parked Member", value: parkedItemsDisplay },
+    { label: "Parked Amount", value: parkedAmountDisplay },
+    
     { label: "Status", value: master.contributionStatus, isStatus: true },
     { label: "Approved By", value: approvedByName },
     { label: "Approved Date", value: fmtDate(master.approvedDate) },
-  ] as any[];
+  ] ;
 
   return (
     <>
@@ -1083,7 +1096,7 @@ const MasterPanel: React.FC<{
           </div>
         </div>
         <div style={{ padding: "24px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: "18px 28px" }}>
-          {fields.map((f: any) => (
+          {fields.map((f) => (
             <div key={f.label} style={f.full ? { gridColumn: "1 / -1" } : {}}>
               <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>{f.label}</p>
               <p style={{ margin: "4px 0 0", fontSize: 14, fontWeight: 600, color: f.accent ? f.accent : f.isStatus ? (master.contributionStatus === "Processed" ? "#0d7377" : "#f59e0b") : "#1e293b", fontFamily: f.label.includes("Amount") ? "'JetBrains Mono',monospace" : "inherit" }}>
@@ -1465,47 +1478,41 @@ const ContributionMasterView: React.FC = () => {
 
   const PAGE_SIZE = 12;
 
-  const loadDiscrepancyIds = useCallback(async () => {
-    if (!masterId) return;
-    try {
-      const fetches = PARK_ELIGIBLE_REPORT_TYPES.map(type =>
-        MonthlyContributionMasterService.getReport({
-          id: masterId,
-          reportType: type,
-          pageNumber: 1,
-          pageSize: 9999,
-        }).catch(() => ({ data: [] as ContributionDetail[] }))
-      );
-      const results = await Promise.all(fetches);
-      const ids = new Set<number>();
-      results.forEach(r => r.data.forEach((d: ContributionDetail) => ids.add(d.contributionDetailId)));
-      setDiscrepancyIds(ids);
-    } catch {
-      // silently fail
-    }
-  }, [masterId]);
-
-  useEffect(() => { loadDiscrepancyIds(); }, [loadDiscrepancyIds]);
-
-  const loadInitialCounts = useCallback(async () => {
+  // One loader for both jobs: Park-button IDs and Forward-gate counts.
+  // Both need the same 3 reports (PARK_ELIGIBLE_REPORT_TYPES == blocksForward tabs).
+  // If those two lists ever differ, split this loader again.
+  const loadDiscrepancyData = useCallback(async () => {
     if (!masterId) return;
     setCountsLoading(true);
     try {
       const results = await Promise.all(
-
-        REPORT_TABS.filter(t => t.blocksForward).map(tab =>
-          MonthlyContributionMasterService.getReport({ id: masterId, reportType: tab.type, pageNumber: 1, pageSize: 9999 })
-            .then(r => ({ type: tab.type, count: r.data.filter(d => !d.isParked).length }))
-            .catch(() => ({ type: tab.type, count: 0 }))
+        PARK_ELIGIBLE_REPORT_TYPES.map(type =>
+          MonthlyContributionMasterService.getReport({
+            id: masterId,
+            reportType: type,
+            pageNumber: 1,
+            pageSize: 9999,
+          })
+            .then(r => ({ type, data: r.data as ContributionDetail[] }))
+            .catch(() => ({ type, data: [] as ContributionDetail[] }))
         )
       );
+
+      const ids = new Set<number>();
       const counts: Partial<Record<ContributionReportType, number>> = {};
-      results.forEach(r => { counts[r.type] = r.count; });
-      setReportCounts(counts);
-    } finally { setCountsLoading(false); }
+      results.forEach(({ type, data }) => {
+        data.forEach(d => ids.add(d.contributionDetailId));  // all rows -> Park button
+        counts[type] = data.filter(d => !d.isParked).length; // open problems -> Forward gate
+      });
+
+      setDiscrepancyIds(ids);
+      setReportCounts(prev => ({ ...prev, ...counts }));
+    } finally {
+      setCountsLoading(false);
+    }
   }, [masterId]);
 
-  useEffect(() => { loadInitialCounts(); }, [loadInitialCounts]);
+  useEffect(() => { loadDiscrepancyData(); }, [loadDiscrepancyData]);
 
   const handleForward = async () => {
     if (!masterId) return;
@@ -1518,9 +1525,9 @@ const ContributionMasterView: React.FC = () => {
       if (updated) setMaster(updated as unknown as MonthlyContributionMaster);
 
       setForwardDone(true);
-    } catch (err: any) {
-      setForwardError(err?.message || "Failed to forward. Please try again.");
-    } finally {
+    } catch (err: unknown) {
+  setForwardError(err instanceof Error ? err.message : "Failed to forward. Please try again.");
+} finally {
       setForwarding(false);
     }
   };
@@ -1590,21 +1597,19 @@ const ContributionMasterView: React.FC = () => {
     .map(t => ({ type: t.type, label: t.label, count: reportCounts[t.type] || 0, icon: t.icon, accent: t.accent }))
     .filter(b => b.count > 0);
 
-  const handleGoToReport = (_type: ContributionReportType) => {
-    setMainSection("reports");
-  };
+  const handleGoToReport = () => {
+  setMainSection("reports");
+ };
 
   const handleParkSuccess = () => {
     setParkRow(null);
     loadDetails();
-    loadInitialCounts();
-    loadDiscrepancyIds();
+    loadDiscrepancyData();
   };
   const handleUnparkSuccess = () => {
     setUnparkRow(null);
     loadDetails();
-    loadInitialCounts();
-    loadDiscrepancyIds();
+    loadDiscrepancyData();
   };
 
   return (

@@ -91,7 +91,7 @@ class AuthService {
     console.log('Logout complete');
   }
 
-  static getCurrentUser(): any | null {
+  static getCurrentUser(): LoginResponse["user"] | null {
     try {
       const userStr = localStorage.getItem('user');
       console.log('Getting current user, raw string:', userStr);
@@ -268,10 +268,10 @@ static isAdmin(): boolean {
     return role.trim().toLowerCase() === 'systemadmin';
   }
 
-  static async changePassword(currentPassword: string, newPassword: string): Promise<CustomResponse<any>> {
+  static async changePassword(currentPassword: string, newPassword: string): Promise<CustomResponse<unknown>> {
     try {
       const payload = { currentPassword, newPassword };
-      const response = await HttpService.callApi<CustomResponse<any>>(
+      const response = await HttpService.callApi<CustomResponse<unknown>>(
         API_ENDPOINTS.AUTH.CHANGE_PASSWORD,
         "POST",
         payload

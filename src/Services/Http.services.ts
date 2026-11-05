@@ -2,7 +2,7 @@ export class HttpService {
   static async callApi<T>(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'GET',
-    data?: any,
+    data?: unknown,
     isPublic: boolean = false,
     isFormData: boolean = false
   ): Promise<T> {
@@ -20,7 +20,7 @@ export class HttpService {
     const response = await fetch(endpoint, {
       method,
       headers,
-      body: method !== 'GET' ? (isFormData ? data : JSON.stringify(data)) : undefined,
+      body: method !== 'GET' ? (isFormData ? (data as BodyInit) : JSON.stringify(data)) : undefined,
     });
 
     if (response.status === 401) {

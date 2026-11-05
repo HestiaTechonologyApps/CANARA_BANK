@@ -361,6 +361,3 @@ export const adminRoutes = (
   </>
 );
 
-export default function AdminRoutes() {
-  return adminRoutes;
-}
