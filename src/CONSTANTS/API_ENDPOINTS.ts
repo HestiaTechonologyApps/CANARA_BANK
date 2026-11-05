@@ -181,6 +181,7 @@ LOOKUP: {
    GET_BY_ID:(id:number)=>`${API_BASE_URL}/MonthlyContribution/${id}/details`,
    GET_ALL:`${API_BASE_URL}/MonthlyContribution/ContributionMasters`,
    GET_BY_REPORT:(id: number) => `${API_BASE_URL}/MonthlyContribution/${id}/report`,
+   GET_PARKED_COUNT:(id: number) => `${API_BASE_URL}/MonthlyContribution/${id}/parked-count`,
   },
   CONTRIBUTION_MASTER:{
    GET_ALL:`${API_BASE_URL}/ContributionMaster/getall-forwarded-contributions`,

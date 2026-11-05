@@ -1028,7 +1028,6 @@ const MasterPanel: React.FC<{
     { label: "New Members", value: String(newMemberCount) },
     { label: "Parked Member", value: parkedItemsDisplay },
     { label: "Parked Amount", value: parkedAmountDisplay },
-    
     { label: "Status", value: master.contributionStatus, isStatus: true },
     { label: "Approved By", value: approvedByName },
     { label: "Approved Date", value: fmtDate(master.approvedDate) },
