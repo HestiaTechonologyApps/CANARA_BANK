@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Form, Spinner, Badge } from "react-bootstrap";
-import { FaEnvelope, FaUser, FaCheckCircle, FaReply } from "react-icons/fa";
+import { Container, Row, Col, Card, Button, Spinner, Badge } from "react-bootstrap";
+import { FaEnvelope, FaUser, FaCheckCircle } from "react-icons/fa";
 import ContactMessageService from "../../../Services/CMS/ContactMessages.services";
 import { toast } from "react-toastify";
 import type { ContactMessage } from "../../../Types/CMS/ContactMessages.types";
@@ -15,7 +15,7 @@ const ContactMessageView: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [actionLoading, setActionLoading] = useState<boolean>(false);
   const [adminNotes, setAdminNotes] = useState<string>("");
-  const [showNotesInput, setShowNotesInput] = useState<boolean>(false);
+  const [, setShowNotesInput] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
@@ -71,6 +71,9 @@ const ContactMessageView: React.FC = () => {
       setActionLoading(false);
     }
   };
+
+  // Not wired to a button yet; kept for the planned "mark as replied" action.
+  void handleMarkAsReplied;
 
   // const formatDate = (dateString: Date | string) => {
   //   const date = new Date(dateString);

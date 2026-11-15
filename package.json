@@ -5,15 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "tsc && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "start-admin": "vite --mode admin",
     "start-public": "vite --mode public",
     "start-staff": "vite --mode staff",
-    "build-admin": "tsc && vite build --mode admin",
-    "build-public": "tsc && vite build --mode public",
-    "build-staff": "tsc && vite build --mode staff",
+    "build-admin": "tsc -b && vite build --mode admin",
+    "build-public": "tsc -b && vite build --mode public",
+    "build-staff": "tsc -b && vite build --mode staff",
     "deploy:smarterasp": "node scripts/deploy-ftp.mjs"
   },
   "dependencies": {

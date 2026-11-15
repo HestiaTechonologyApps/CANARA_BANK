@@ -26,7 +26,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => 
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [, setRememberMe] = useState<boolean>(false);
 
   useEffect(() => {
     if (show) {
@@ -85,8 +85,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => 
           toast.error("Invalid username or password");
           return;
         }
-
-        console.log("DEBUG 1 - FULL response object:", JSON.stringify(response, null, 2));
 
         const lockedFromValue = response.value?.user?.islocked === true;
 

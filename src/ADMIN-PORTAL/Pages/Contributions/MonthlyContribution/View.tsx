@@ -729,7 +729,6 @@ const FormSection: React.FC<{ title?: string; children: React.ReactNode; span?: 
   </div>
 );
 
-const toIso = (v?: string) => (v ? `${v}T00:00:00` : "");
 const todayStr = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD", matches <input type="date"> format
 
 const MemberCreateModal: React.FC<{ prefill: Partial<ContributionDetail>; onClose: () => void; onSuccess: () => void }> = ({ prefill, onClose, onSuccess }) => {

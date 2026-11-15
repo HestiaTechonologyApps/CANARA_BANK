@@ -14,8 +14,6 @@ class AuthService {
         true 
       );
 
-      console.log('API Response:', response);
-
       if (response.isSucess && response.value) {
         console.log('Login successful, storing data...');
 
@@ -35,10 +33,12 @@ class AuthService {
         }
 
         if (response.value.user) {
-          const userString = JSON.stringify(response.value.user);
+          // Never persist a password hash in the browser, even if the API returns one.
+          const { passwordHash: _omitPasswordHash, ...safeUser } = response.value.user as typeof response.value.user & { passwordHash?: unknown };
+          void _omitPasswordHash;
+          const userString = JSON.stringify(safeUser);
           localStorage.setItem('user', userString);
           console.log('User stored:', localStorage.getItem('user') !== null);
-          console.log('Stored user data:', localStorage.getItem('user'));
           localStorage.setItem('user_role', response.value.user.role);
           console.log('User role stored:', response.value.user.role);
 
@@ -94,7 +94,6 @@ class AuthService {
   static getCurrentUser(): any | null {
     try {
       const userStr = localStorage.getItem('user');
-      console.log('Getting current user, raw string:', userStr);
 
       if (!userStr) {
         console.log('No user found in localStorage');
@@ -102,7 +101,6 @@ class AuthService {
       }
 
       const user = JSON.parse(userStr);
-      console.log('Parsed user:', user);
 
       if (!isValidUserRole(user?.role)) {
         console.error('Stored user has invalid role, clearing storage');
