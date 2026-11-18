@@ -36,6 +36,10 @@ export default class ContributionMasterService {
       "POST"
     );
 
+    if (response && response.isSucess === false) {
+      throw new Error(response.customMessage || response.error || "Failed to forward contribution.");
+    }
+
     return response?.value ?? response;
   }
 

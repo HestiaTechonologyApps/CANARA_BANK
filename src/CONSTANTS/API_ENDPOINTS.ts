@@ -198,6 +198,7 @@ LOOKUP: {
    GET_BY_DETAIL_ID: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}`,
    CREATE_PARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/park`,
    CREATE_UNPARK: (detailId: number) => `${API_BASE_URL}/ContributionDetail/${detailId}/unpark`,
+   CREATE_PARK_BULK: (masterId: number) => `${API_BASE_URL}/ContributionDetail/master/${masterId}/park-bulk`,
   },
   //CLAIMS
   DEATH_CLAIMS: {
@@ -323,6 +324,7 @@ REFUND_CONTRIBUTION: {
     GET_ALL_ATTACHMENTS: `${API_BASE_URL}/Public/attachment`,
     GET_ATTACHMENTS_BY_ID: (id: number)=> `${API_BASE_URL}/Public/download/${id}`,
   },
+  
 };
 
 export const getFullImageUrl = (imagePath: string | null | undefined): string => {

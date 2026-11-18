@@ -26,7 +26,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => 
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [, setRememberMe] = useState<boolean>(false);
 
   useEffect(() => {
     if (show) {
@@ -80,13 +80,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => 
         let response;
         try {
           response = await AuthService.login({ userName, password });
-        } catch (loginErr: any) {
+        } catch (loginErr: unknown) {
           console.error("Login API error:", loginErr);
           toast.error("Invalid username or password");
           return;
         }
-
-        console.log("DEBUG 1 - FULL response object:", JSON.stringify(response, null, 2));
 
         const lockedFromValue = response.value?.user?.islocked === true;
 
@@ -142,9 +140,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onClose, onSignup, }) => 
           navigate(dashboardRoute, { replace: true });
         }, 1000);
 
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Post-login error:", error);
-        toast.error(error?.message || "Login succeeded but something failed after. Check console.");
+        toast.error(error instanceof Error ? error.message : "Login succeeded but something failed after. Check console.");
       } finally {
         setIsLoading(false);
       }

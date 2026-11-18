@@ -5,6 +5,8 @@ import type {
   ContributionDetailItem,
   ParkPayload,
   UnparkParams,
+  BulkParkRequest,
+  BulkParkResponse,
 } from "../../Types/Contributions/ContributionDetail.types";
 
 export default class ContributionDetailService {
@@ -25,6 +27,17 @@ export default class ContributionDetailService {
   ): Promise<void> {
     await HttpService.callApi<CustomResponse<void>>(
       API_ENDPOINTS.CONTRIBUTION_DETAIL.CREATE_PARK(detailId),
+      "POST",
+      payload
+    );
+  }
+
+  static async parkBulk(
+    masterId: number,
+    payload: BulkParkRequest
+  ): Promise<CustomResponse<BulkParkResponse>> {
+    return HttpService.callApi<CustomResponse<BulkParkResponse>>(
+      API_ENDPOINTS.CONTRIBUTION_DETAIL.CREATE_PARK_BULK(masterId),
       "POST",
       payload
     );

@@ -182,15 +182,25 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
     const printWindow = window.open("", "_blank");
     if (!printWindow) return;
 
+    // Row values come from the API (names, messages, etc.). The print window shares this
+    // app's origin, so everything written into it must be HTML-escaped to prevent stored XSS.
+    const esc = (v: unknown): string =>
+      String(v ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
     const cols = columns.filter((c) => c.type !== "image");
     printWindow.document.write(`
       <html>
-        <head><title>${title}</title></head>
+        <head><title>${esc(title)}</title></head>
         <body onload="window.print();window.close();">
-          <h2>${title}</h2>
+          <h2>${esc(title)}</h2>
           <table border="1" width="100%" cellspacing="0" cellpadding="5">
             <thead>
-              <tr>${cols.map((c) => `<th>${c.label}</th>`).join("")}</tr>
+              <tr>${cols.map((c) => `<th>${esc(c.label)}</th>`).join("")}</tr>
             </thead>
             <tbody>
               ${data
@@ -199,7 +209,7 @@ const KiduServerTableNavbar: React.FC<KiduServerTableNavbarProps> = ({
             `<tr>${cols
               .map(
                 (c) =>
-                  `<td>${cleanCellValue(row[c.key], c.type) || "-"}</td>`
+                  `<td>${esc(cleanCellValue(row[c.key], c.type) || "-")}</td>`
               )
               .join("")}</tr>`
         )

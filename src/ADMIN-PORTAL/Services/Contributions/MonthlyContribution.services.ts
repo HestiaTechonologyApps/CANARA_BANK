@@ -52,6 +52,22 @@ const MonthlyContributionService = {
     );
   },
 
+  async getParkedCount(id: number): Promise<number> {
+    type ParkedCountValue = number | { parkedCount?: number; count?: number };
+
+    const response = await HttpService.callApi<CustomResponse<ParkedCountValue>>(
+      API_ENDPOINTS.MONTHLY_CONTRIBUTION_MASTERS.GET_PARKED_COUNT(id),
+      "GET"
+    );
+
+    const result: unknown = response?.value ?? response;
+
+    if (typeof result === "number") return result;
+
+    const obj = result as { parkedCount?: number; count?: number } | null;
+    return Number(obj?.parkedCount ?? obj?.count ?? 0);
+  },
+
   async uploadFile(
     file: File,
     monthCode: number,

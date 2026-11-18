@@ -24,9 +24,11 @@ import type {
   MonthlyContributionMaster,
 } from "../../../Types/Contributions/MonthlyContributionMasters.types";
 import MonthlyContributionMasterService from "../../../Services/Contributions/MonthlyContributionMasters.services";
+import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services";
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
 import UserService from "../../../Services/Settings/User.services";
 import KiduServerTableNavbar from "../../../../Components/KiduServerTableNavbar";
+import toast from "react-hot-toast";
 
 const fmt = (n: number | string) => {
   const num = typeof n === "string" ? parseFloat(n) : n;
@@ -284,6 +286,82 @@ const ParkReasonModal: React.FC<{
             style={{ padding: "9px 22px", borderRadius: 9, border: "none", background: "#f59e0b", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
             {submitting && <div style={{ width: 12, height: 12, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />}
             {submitting ? "Parking…" : "🅿️ Park Item"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BulkParkModal: React.FC<{
+  masterId: number;
+  detailIds: number[];
+  onClose: () => void;
+  onSuccess: () => void;
+}> = ({ masterId, detailIds, onClose, onSuccess }) => {
+  const [reason, setReason] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleBulkPark = async () => {
+    if (!reason.trim()) { setErrorMsg("Please provide a reason for parking."); return; }
+    setSubmitting(true); setErrorMsg("");
+    try {
+      const response = await ContributionDetailService.parkBulk(masterId, {
+        detailIds,
+        parkReason: reason.trim(),
+      });
+      if (response.isSucess && response.value) {
+        const { requested, parked, skipped } = response.value;
+        const msg = `Parked ${parked} of ${requested} records${skipped > 0 ? ` (${skipped} skipped)` : ""}`;
+        if (parked > 0) toast.success(msg); else toast.error(msg);
+        onSuccess();
+      } else {
+        toast.error(response.customMessage || response.error || "Failed to park selected records.");
+      }
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to park selected records.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 1100, background: "rgba(15,23,42,0.6)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeIn 0.2s ease", backdropFilter: "blur(4px)", padding: "16px" }}
+      onClick={(e) => { if (e.target === e.currentTarget && !submitting) onClose(); }}
+    >
+      <div style={{ background: "#fff", borderRadius: 18, width: "100%", maxWidth: 460, animation: "slideUp 0.25s ease", boxShadow: "0 25px 60px rgba(0,0,0,0.2)", fontFamily: "'Sora',sans-serif", overflow: "hidden" }}>
+        <div style={{ background: "linear-gradient(135deg,#f59e0b,#d97706)", padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🅿️</div>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: "#fff" }}>Park Selected</h2>
+              <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.75)" }}>{detailIds.length} record(s) selected</p>
+            </div>
+          </div>
+          <button className="modal-close-btn" onClick={onClose} disabled={submitting} style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.3)", color: "#fff", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", fontWeight: 700 }}>✕</button>
+        </div>
+        <div style={{ padding: "20px 24px" }}>
+          {errorMsg && <div style={{ background: "#fee2e2", border: "1.5px solid #fca5a5", borderRadius: 8, padding: "10px 14px", marginBottom: 14, color: "#991b1b", fontSize: 12, fontWeight: 600 }}>❌ {errorMsg}</div>}
+          <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.06em" }}>Reason for Parking <span style={{ color: "#ef4444" }}>*</span></p>
+          <textarea
+            className="modal-input"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Describe why these items are being parked…"
+            rows={3}
+            style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0", borderRadius: 10, fontSize: 13, color: "#1e293b", background: "#fff", transition: "all 0.2s", boxSizing: "border-box", fontFamily: "'Sora',sans-serif", resize: "vertical" }}
+          />
+        </div>
+        <div style={{ padding: "12px 24px 20px", display: "flex", gap: 10, justifyContent: "flex-end", borderTop: "1.5px solid #f1f5f9" }}>
+          <button className="modal-cancel-btn" onClick={onClose} disabled={submitting} style={{ padding: "9px 20px", borderRadius: 9, border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>Cancel</button>
+          <button
+            onClick={handleBulkPark}
+            disabled={submitting}
+            style={{ padding: "9px 22px", borderRadius: 9, border: "none", background: "#f59e0b", color: "#fff", fontSize: 13, fontWeight: 700, cursor: submitting ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: submitting ? 0.7 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+            {submitting && <div style={{ width: 12, height: 12, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />}
+            {submitting ? "Parking…" : `🅿️ Park ${detailIds.length} Item(s)`}
           </button>
         </div>
       </div>
@@ -936,7 +1014,8 @@ const MasterPanel: React.FC<{
   countsLoading: boolean;
   onGoToReport: (type: ContributionReportType) => void;
   onDelete: () => void;
-}> = ({ master, onForward, forwarding, forwardDone, forwardError, tabCounts, countsLoading, onDelete }) => {
+  parkedRefreshKey?: number;
+}> = ({ master, onForward, forwarding, forwardDone, forwardError, tabCounts, countsLoading, onDelete, parkedRefreshKey = 0 }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -968,29 +1047,45 @@ const MasterPanel: React.FC<{
   const totalEntry = parseInt(String(rawMaster.totalentry ?? master.totalEntry ?? "0"), 10) || 0;
   const newMemberCount = parseInt(master.newMemberCount ?? "0", 10) || 0;
 
-  // TODO: replace with real API values once parked amount / parked items are available
-  const parkedAmountDisplay = "—";
-  const parkedItemsDisplay = "—";
+  const [parkedCount, setParkedCount] = useState<number | null>(null);
+  const [parkedAmount, setParkedAmount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const id = master.contributionMasterId;
+    if (!id) return;
+
+    MonthlyContributionService.getParkedCount(id)
+      .then(setParkedCount)
+      .catch(() => setParkedCount(null));
+
+    MonthlyContributionMasterService.getReport({
+      id,
+      reportType: "PARKEDITEMS",
+      pageNumber: 1,
+      pageSize: 9999,
+    })
+      .then(r => setParkedAmount(r.data.reduce((s, d) => s + (Number(d.amount) || 0), 0)))
+      .catch(() => setParkedAmount(null));
+  }, [master.contributionMasterId, tabCounts, parkedRefreshKey]);
+
+  const parkedItemsDisplay = parkedCount === null ? "—" : String(parkedCount);
+  const parkedAmountDisplay = parkedAmount === null ? "—" : fmt(parkedAmount);
 
   const isAlreadyForwarded =
     master.contributionStatus === "FORWARD" ||
     master.contributionStatus === "Forwarded" ||
     master.contributionStatus === "forwarded";
 
-  const blockers = REPORT_TABS
-    .filter(t => t.blocksForward)
-    .map(t => ({ type: t.type, label: t.label, count: tabCounts[t.type] || 0, icon: t.icon, accent: t.accent }))
-    .filter(b => b.count > 0);
+  const nonParkedCount = Math.max(0, totalEntry - (parkedCount ?? 0));
 
-  const canForward = !countsLoading && blockers.length === 0 && !isAlreadyForwarded && !forwardDone;
+  const canForward = !countsLoading && nonParkedCount > 0 && !isAlreadyForwarded && !forwardDone;
 
   const handleForwardButtonClick = () => {
     if (isAlreadyForwarded || forwardDone) return;
     if (!canForward && !countsLoading) {
       showToast(
         "Cannot forward yet",
-        "Resolve all discrepancies before this contribution can be forwarded.",
-        blockers.map(b => ({ ...b, label: b.label }))
+        "There are no non-parked members to forward in this contribution."
       );
       return;
     }
@@ -1026,7 +1121,7 @@ const MasterPanel: React.FC<{
     { label: "Total Amount", value: fmt(totalAmount), accent: "#0d7377" },
     { label: "Total Entries", value: String(totalEntry) },
     { label: "New Members", value: String(newMemberCount) },
-    { label: "Parked Member", value: parkedItemsDisplay },
+    { label: "Parked Members", value: parkedItemsDisplay },
     { label: "Parked Amount", value: parkedAmountDisplay },
     { label: "Status", value: master.contributionStatus, isStatus: true },
     { label: "Approved By", value: approvedByName },
@@ -1081,7 +1176,8 @@ const MasterPanel: React.FC<{
               <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "18px 22px", minWidth: 280, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                 <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Confirm Forward</p>
                 <p style={{ margin: "0 0 14px", fontSize: 13, color: "#475569", lineHeight: 1.5 }}>
-                  This will forward the contribution for <strong>{toMonthName(master.month)} {toFullYear(master.year)}</strong>.<br />Are you sure?
+                  This will forward <strong>{nonParkedCount}</strong> non-parked member(s) for <strong>{toMonthName(master.month)} {toFullYear(master.year)}</strong>.<br />
+                  {parkedCount ?? 0} parked member(s) will stay excluded.<br />Are you sure?
                 </p>
                 <div style={{ display: "flex", gap: 10 }}>
                   <button className="fwd-confirm-no" onClick={() => setConfirmOpen(false)} style={{ flex: 1, padding: "11px 0", borderRadius: 10, border: "none", background: "#e2e8f0", color: "#334155", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>✕ Cancel</button>
@@ -1206,7 +1302,10 @@ const ReportRow: React.FC<{
   accent: string;
   onPark: (row: ContributionDetail) => void;
   onUnpark: (row: ContributionDetail) => void;
-}> = ({ row, rank, reportType, onAction, actionLabel, accent, onPark, onUnpark }) => {
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: number) => void;
+}> = ({ row, rank, reportType, onAction, actionLabel, accent, onPark, onUnpark, selectable, selected, onToggleSelect }) => {
   const isParkedItemsTab = reportType === "PARKEDITEMS";
 
   const renderActions = () => {
@@ -1252,8 +1351,20 @@ const ReportRow: React.FC<{
   };
 
   return (
-    <div className="cmv-list-row" style={{ display: "grid", gridTemplateColumns: "40px 2fr 1fr 1fr 1fr 1fr 110px 1fr", padding: "11px 20px", borderBottom: "1px solid #f1f5f9", alignItems: "center", gap: 10, transition: "background 0.15s", fontSize: 13, background: row.isParked && !isParkedItemsTab ? "#fffdf0" : "transparent" }}>
-      <span style={{ fontSize: 11, color: "#cbd5e1", fontWeight: 600 }}>{rank}</span>
+    <div className="cmv-list-row" style={{ display: "grid", gridTemplateColumns: "64px 2fr 1fr 1fr 1fr 1fr 110px 1fr", padding: "11px 20px", borderBottom: "1px solid #f1f5f9", alignItems: "center", gap: 10, transition: "background 0.15s", fontSize: 13, background: row.isParked && !isParkedItemsTab ? "#fffdf0" : "transparent" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        {selectable ? (
+          <input
+            type="checkbox"
+            checked={!!selected}
+            onChange={() => onToggleSelect?.(row.contributionDetailId)}
+            style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#1B3763" }}
+          />
+        ) : (
+          <span style={{ display: "inline-block", width: 16 }} />
+        )}
+        <span style={{ fontSize: 11, color: "#cbd5e1", fontWeight: 600 }}>{rank}</span>
+      </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ width: 32, height: 32, borderRadius: 9, background: avatarColor(row.name), color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0 }}>{initials(row.name)}</div>
         <div>
@@ -1292,7 +1403,8 @@ const ReportPanel: React.FC<{
   masterId: number;
   onCountsChange: (counts: Partial<Record<ContributionReportType, number>>) => void;
   onGoToReport: (type: ContributionReportType) => void;
-}> = ({ masterId, onCountsChange, onGoToReport }) => {
+  onUnparked?: (row: ContributionDetail) => void;
+}> = ({ masterId, onCountsChange, onGoToReport, onUnparked }) => {
   const [activeReport, setActiveReport] = useState<ContributionReportType>("NEWMEMBERS");
   const [rows, setRows] = useState<ContributionDetail[]>([]);
   const [total, setTotal] = useState(0);
@@ -1305,6 +1417,9 @@ const ReportPanel: React.FC<{
   const [modalPrefill, setModalPrefill] = useState<Partial<ContributionDetail>>({});
   const [parkRow, setParkRow] = useState<ContributionDetail | null>(null);
   const [unparkRow, setUnparkRow] = useState<ContributionDetail | null>(null);
+  const [selectedDetailIds, setSelectedDetailIds] = useState<number[]>([]);
+  const [bulkParkOpen, setBulkParkOpen] = useState(false);
+  const [parkAllLoading, setParkAllLoading] = useState(false);
 
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
@@ -1346,7 +1461,7 @@ const ReportPanel: React.FC<{
   }, [masterId, activeReport, page]);
 
   useEffect(() => { loadReport(); }, [loadReport]);
-  useEffect(() => { setPage(1); }, [activeReport]);
+  useEffect(() => { setPage(1); setSelectedDetailIds([]); }, [activeReport]);
 
   const handleAction = (row: ContributionDetail) => {
     setModalPrefill(row);
@@ -1358,6 +1473,58 @@ const ReportPanel: React.FC<{
   };
   const refreshAll = () => { loadReport(); loadTabCounts(); };
 
+  const eligibleIds =
+    activeReport === "PARKEDITEMS"
+      ? []
+      : rows.filter(r => !r.isParked).map(r => r.contributionDetailId);
+  const allEligibleSelected =
+    eligibleIds.length > 0 && eligibleIds.every(id => selectedDetailIds.includes(id));
+
+  const toggleSelectOne = (id: number) => {
+    setSelectedDetailIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+  const toggleSelectAll = () => {
+    setSelectedDetailIds(prev =>
+      allEligibleSelected
+        ? prev.filter(id => !eligibleIds.includes(id))
+        : Array.from(new Set([...prev, ...eligibleIds]))
+    );
+  };
+  const handleBulkParkSuccess = () => {
+    setSelectedDetailIds([]);
+    setBulkParkOpen(false);
+    refreshAll();
+  };
+
+  const handleParkAll = async () => {
+    setParkAllLoading(true);
+    try {
+      const result = await MonthlyContributionMasterService.getReport({
+        id: masterId,
+        reportType: activeReport,
+        pageNumber: 1,
+        pageSize: 9999,
+      });
+      const ids = (result.data as ContributionDetail[])
+        .filter(d => !d.isParked)
+        .map(d => d.contributionDetailId);
+      if (ids.length === 0) {
+        toast.error("No unparked records to park in this tab.");
+        return;
+      }
+      setSelectedDetailIds(ids);
+      setBulkParkOpen(true);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to load records.");
+    } finally {
+      setParkAllLoading(false);
+    }
+  };
+  const handleUnparkSuccess = () => {
+    if (unparkRow) onUnparked?.(unparkRow);
+    refreshAll();
+  };
+
   return (
     <>
       <div style={{ background: "#fff", border: "1.5px solid #e8edf5", borderRadius: 18, overflow: "hidden", animation: "fadeUp 0.5s ease 0.2s both" }}>
@@ -1367,7 +1534,15 @@ const ReportPanel: React.FC<{
               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.4px" }}>Discrepancy Reports</h2>
               <p style={{ margin: "3px 0 0", fontSize: 13, color: "#64748b" }}>{currentTab.description}</p>
             </div>
-            {total > 0 && <span style={{ background: `${currentTab.accent}14`, color: currentTab.accent, fontWeight: 700, fontSize: 13, padding: "6px 16px", borderRadius: 99 }}>{total.toLocaleString()} records</span>}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              {currentTab.blocksForward && (tabCounts[activeReport] ?? 0) > 0 && (
+                <button className="park-btn" onClick={handleParkAll} disabled={parkAllLoading}
+                  style={{ padding: "7px 14px", borderRadius: 8, border: "1.5px solid #f59e0b", background: "#fffbeb", color: "#b45309", fontSize: 12, fontWeight: 700, cursor: parkAllLoading ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: parkAllLoading ? 0.7 : 1 }}>
+                  {parkAllLoading ? "Loading…" : `🅿️ Park All (${(tabCounts[activeReport] ?? 0).toLocaleString()})`}
+                </button>
+              )}
+              {total > 0 && <span style={{ background: `${currentTab.accent}14`, color: currentTab.accent, fontWeight: 700, fontSize: 13, padding: "6px 16px", borderRadius: 99 }}>{total.toLocaleString()} records</span>}
+            </div>
           </div>
           <div style={{ display: "flex", gap: 4, overflowX: "auto" }}>
             {REPORT_TABS.map(tab => {
@@ -1385,10 +1560,37 @@ const ReportPanel: React.FC<{
           </div>
         </div>
         <div style={{ background: "#f1f5f9" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "40px 2fr 1fr 1fr 1fr 1fr 110px 1fr", padding: "10px 20px", fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", gap: 10, borderBottom: "1.5px solid #e8edf5" }}>
-            <span>#</span><span>Name</span><span>Staff No</span><span>DP Code</span><span>Circle</span><span>Period</span><span>Amount</span><span>Actions</span>
+          <div style={{ display: "grid", gridTemplateColumns: "64px 2fr 1fr 1fr 1fr 1fr 110px 1fr", padding: "10px 20px", fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", gap: 10, borderBottom: "1.5px solid #e8edf5" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              {eligibleIds.length > 0 ? (
+                <input
+                  type="checkbox"
+                  checked={allEligibleSelected}
+                  onChange={toggleSelectAll}
+                  title={allEligibleSelected ? "Deselect all" : "Select all on this page"}
+                  style={{ width: 16, height: 16, cursor: "pointer", accentColor: "#1B3763" }}
+                />
+              ) : (
+                <span style={{ display: "inline-block", width: 16 }} />
+              )}
+              <span>#</span>
+            </div>
+            <span>Name</span><span>Staff No</span><span>DP Code</span><span>Circle</span><span>Period</span><span>Amount</span><span>Actions</span>
           </div>
         </div>
+        {selectedDetailIds.length > 0 && (
+          <div style={{ background: "#fff", borderBottom: "1.5px solid #e8edf5", padding: "10px 20px", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#475569" }}>{selectedDetailIds.length} selected</span>
+            <button className="park-btn" onClick={() => setBulkParkOpen(true)}
+              style={{ padding: "7px 14px", borderRadius: 8, border: "1.5px solid #f59e0b", background: "#fffbeb", color: "#b45309", fontSize: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
+              🅿️ Park Selected ({selectedDetailIds.length})
+            </button>
+            <button className="cmv-sort" onClick={() => setSelectedDetailIds([])}
+              style={{ padding: "7px 14px", borderRadius: 8, border: "1.5px solid #e2e8f0", background: "#f8fafc", color: "#475569", fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif" }}>
+              Clear Selection
+            </button>
+          </div>
+        )}
         {loading ? (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 0", gap: 12 }}>
             <div style={{ width: 36, height: 36, border: "3px solid #e2e8f0", borderTop: `3px solid ${currentTab.accent}`, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
@@ -1413,6 +1615,9 @@ const ReportPanel: React.FC<{
                 accent={currentTab.accent}
                 onPark={r => setParkRow(r)}
                 onUnpark={r => setUnparkRow(r)}
+                selectable={activeReport !== "PARKEDITEMS" && !row.isParked}
+                selected={selectedDetailIds.includes(row.contributionDetailId)}
+                onToggleSelect={toggleSelectOne}
               />
             ))}
           </div>
@@ -1433,12 +1638,20 @@ const ReportPanel: React.FC<{
       {parkRow && (
         <ParkReasonModal row={parkRow} onClose={() => setParkRow(null)} onSuccess={refreshAll} />
       )}
+      {bulkParkOpen && (
+        <BulkParkModal
+          masterId={masterId}
+          detailIds={selectedDetailIds}
+          onClose={() => setBulkParkOpen(false)}
+          onSuccess={handleBulkParkSuccess}
+        />
+      )}
       {unparkRow && (
         <UnparkConfirmModal
           row={unparkRow}
           masterId={masterId}
           onClose={() => setUnparkRow(null)}
-          onSuccess={refreshAll}
+          onSuccess={handleUnparkSuccess}
           onGoToReport={(type) => { setUnparkRow(null); onGoToReport(type); setActiveReport(type); }}
         />
       )}
@@ -1474,6 +1687,7 @@ const ContributionMasterView: React.FC = () => {
   const [unparkRow, setUnparkRow] = useState<ContributionDetail | null>(null);
 
   const [discrepancyIds, setDiscrepancyIds] = useState<Set<number>>(new Set());
+  const [parkedRefreshKey, setParkedRefreshKey] = useState(0);
 
   const PAGE_SIZE = 12;
 
@@ -1524,8 +1738,13 @@ const ContributionMasterView: React.FC = () => {
       if (updated) setMaster(updated as unknown as MonthlyContributionMaster);
 
       setForwardDone(true);
+      toast.success("Contribution forwarded successfully");
+      
     } catch (err: unknown) {
-  setForwardError(err instanceof Error ? err.message : "Failed to forward. Please try again.");
+  const msg = err instanceof Error ? err.message : "Failed to forward. Please try again.";
+  setForwardError(msg);
+  toast.error(msg);
+  setTimeout(() => setForwardError(""), 5000);
 } finally {
       setForwarding(false);
     }
@@ -1605,7 +1824,25 @@ const ContributionMasterView: React.FC = () => {
     loadDetails();
     loadDiscrepancyData();
   };
+  const applyUnparkToMaster = (row: ContributionDetail) => {
+    setMaster(prev => {
+      if (!prev) return prev;
+      const raw = prev as unknown as { totalamount?: string | number };
+      const currentTotal = parseFloat(String(raw.totalamount ?? prev.totalAmount ?? "0")) || 0;
+      const nextTotal = currentTotal + (Number(row.amount) || 0);
+      const nextNew = Math.max(0, (parseInt(prev.newMemberCount ?? "0", 10) || 0) - 1);
+      return {
+        ...prev,
+        totalAmount: typeof prev.totalAmount === "number" ? nextTotal : String(nextTotal),
+        ...(raw.totalamount !== undefined ? { totalamount: nextTotal } : {}),
+        newMemberCount: String(nextNew),
+      } as unknown as MonthlyContributionMaster;
+    });
+    setParkedRefreshKey(k => k + 1);
+  };
+
   const handleUnparkSuccess = () => {
+    if (unparkRow) applyUnparkToMaster(unparkRow);
     setUnparkRow(null);
     loadDetails();
     loadDiscrepancyData();
@@ -1647,6 +1884,7 @@ const ContributionMasterView: React.FC = () => {
             countsLoading={countsLoading}
             onGoToReport={handleGoToReport}
             onDelete={handleDelete}
+            parkedRefreshKey={parkedRefreshKey}
           />
         ) : (
           <div style={{ background: "#fff", borderRadius: 18, padding: "32px", textAlign: "center", marginBottom: 28, border: "1.5px solid #e8edf5" }}>

@@ -69,7 +69,7 @@ const UserApprovalView: React.FC = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<UserRegistrationDetail | null>(null);
-  const [companyName, setCompanyName] = useState<string>("—");
+  const [companyName] = useState<string>("—");
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
 

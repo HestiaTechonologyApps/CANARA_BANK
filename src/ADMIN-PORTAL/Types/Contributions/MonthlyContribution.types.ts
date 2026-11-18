@@ -51,3 +51,7 @@ export interface MonthlyContributionCreateResponse {
   monthId: number;
   filePath?: string;
 }
+
+export interface MonthlyContributionParkedCountResponse {
+  parkedCount: number;
+}

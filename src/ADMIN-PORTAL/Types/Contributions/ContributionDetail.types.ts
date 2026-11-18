@@ -25,3 +25,13 @@ export interface UnparkParams {
   detailId:      number;
   currentUserId: number;
 }
+export interface BulkParkRequest {
+  detailIds: number[];
+  parkReason: string;
+}
+
+export interface BulkParkResponse {
+  requested: number;
+  parked: number;
+  skipped: number;
+}
