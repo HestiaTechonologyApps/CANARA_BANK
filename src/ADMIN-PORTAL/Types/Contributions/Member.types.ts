@@ -14,10 +14,10 @@ export interface Member {
   genderId: number;
   gender?:string;
   dpCode?:string;
-  dob: Date | string; 
-  dobString?: string;
-  doj: Date | string; 
-  dojString?: string;
+  dob?: Date | string | null; 
+  dobString?: string | null;
+  doj?: Date | string | null; 
+  dojString?: string | null;
   dojtoScheme: Date | string; 
   dojtoSchemeString?: string;
   statusId: number;

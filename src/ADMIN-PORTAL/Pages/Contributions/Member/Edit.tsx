@@ -45,8 +45,8 @@ const MemberEdit: React.FC = () => {
     { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
-    { name: "dob", rules: { type: "date", label: "Date of Birth", required: true, colWidth: 4, max: today } },
-    { name: "doj", rules: { type: "date", label: "Date of Joining", required: true, colWidth: 4, max: today } },
+    { name: "dob", rules: { type: "date", label: "Date of Birth", colWidth: 4, max: today } }, // CHANGED: required removed
+    { name: "doj", rules: { type: "date", label: "Date of Joining", colWidth: 4, max: today } }, // CHANGED: required removed
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
@@ -80,6 +80,7 @@ const MemberEdit: React.FC = () => {
   ]
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
+  const toIsoMidnightOrNull = (val?: string) => (val ? `${val}T00:00:00` : null); // CHANGED: helper (indent fixed)
 
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
@@ -157,10 +158,10 @@ const MemberEdit: React.FC = () => {
       categoryId: selectedCategory.categoryId,
       branchId: selectedBranch.branchId,
       statusId: selectedStatus.statusId,
-      dob: toIsoMidnight(formData.dob),
-      dobString: toIsoMidnight(formData.dob),
-      doj: toIsoMidnight(formData.doj),
-      dojString: toIsoMidnight(formData.doj),
+      dob: toIsoMidnightOrNull(formData.dob), // CHANGED
+      dobString: toIsoMidnightOrNull(formData.dob), // CHANGED
+      doj: toIsoMidnightOrNull(formData.doj), // CHANGED
+      dojString: toIsoMidnightOrNull(formData.doj), // CHANGED
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
