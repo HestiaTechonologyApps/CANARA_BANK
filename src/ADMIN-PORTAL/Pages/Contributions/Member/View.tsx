@@ -59,7 +59,7 @@ interface MemberDetail {
   [key: string]: any;
 }
 
-const formatDateOnly = (value?: string) => {
+const formatDateOnly = (value?: string | null) => {
   if (!value) return "—";
   const d = new Date(value);
   if (isNaN(d.getTime())) return value;

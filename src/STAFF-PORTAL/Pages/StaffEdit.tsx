@@ -77,7 +77,7 @@ const StaffEdit: React.FC = () => {
     { value: "Grandparent", label: "Grandparent" }
   ]
 
-  const fromIso = (isoString?: string | Date) => {
+  const fromIso = (isoString?: string | Date | null) => {
     if (!isoString) return "";
     const dateString = isoString instanceof Date ? isoString.toISOString() : isoString;
     return dateString.split('T')[0]; 
