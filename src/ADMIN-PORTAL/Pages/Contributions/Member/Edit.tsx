@@ -25,7 +25,6 @@ const MemberEdit: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
 
-  const [_isUploading, setIsUploading] = useState(false);
   const [initialNominee, setInitialNominee] = useState("");
 
   const [initialBranch, setInitialBranch] = useState<Branch | null>(null);
@@ -45,8 +44,8 @@ const MemberEdit: React.FC = () => {
     { name: "categoryId", rules: { type: "popup", label: "Category", required: true, colWidth: 4 } },
     { name: "branchId", rules: { type: "popup", label: "Branch", required: true, colWidth: 4 } },
     { name: "statusId", rules: { type: "popup", label: "Status", required: true, colWidth: 4 } },
-    { name: "dob", rules: { type: "date", label: "Date of Birth", colWidth: 4, max: today } }, // CHANGED: required removed
-    { name: "doj", rules: { type: "date", label: "Date of Joining", colWidth: 4, max: today } }, // CHANGED: required removed
+    { name: "dob", rules: { type: "date", label: "Date of Birth", colWidth: 4, max: today } },
+    { name: "doj", rules: { type: "date", label: "Date of Joining", colWidth: 4, max: today } },
     { name: "dojtoScheme", rules: { type: "date", label: "DOJ to Scheme", required: true, colWidth: 4 } },
     { name: "isRegCompleted", rules: { type: "toggle", label: "Registration Completed" } },
     { name: "nominee", rules: { type: "text", label: "Nominee Name", colWidth: 4, pattern: /^[a-zA-Z\s]+$/ } },
@@ -80,7 +79,7 @@ const MemberEdit: React.FC = () => {
   ]
 
   const toIsoMidnight = (val?: string) => (val ? `${val}T00:00:00` : "");
-  const toIsoMidnightOrNull = (val?: string) => (val ? `${val}T00:00:00` : null); // CHANGED: helper (indent fixed)
+  const toIsoMidnightOrNull = (val?: string) => (val ? `${val}T00:00:00` : null);
 
   const handleFetch = async (id: string) => {
     const response = await MemberService.getMemberById(Number(id));
@@ -158,10 +157,10 @@ const MemberEdit: React.FC = () => {
       categoryId: selectedCategory.categoryId,
       branchId: selectedBranch.branchId,
       statusId: selectedStatus.statusId,
-      dob: toIsoMidnightOrNull(formData.dob), // CHANGED
-      dobString: toIsoMidnightOrNull(formData.dob), // CHANGED
-      doj: toIsoMidnightOrNull(formData.doj), // CHANGED
-      dojString: toIsoMidnightOrNull(formData.doj), // CHANGED
+      dob: toIsoMidnightOrNull(formData.dob),
+      dobString: toIsoMidnightOrNull(formData.dob),
+      doj: toIsoMidnightOrNull(formData.doj),
+      dojString: toIsoMidnightOrNull(formData.doj),
       dojtoScheme: toIsoMidnight(formData.dojtoScheme),
       dojtoSchemeString: toIsoMidnight(formData.dojtoScheme),
       isRegCompleted: Boolean(formData.isRegCompleted),
@@ -182,12 +181,10 @@ const MemberEdit: React.FC = () => {
     await MemberService.updateMember(Number(id), payload);
 
     if (formData.profileImage instanceof File) {
-      setIsUploading(true);
       await MemberService.uploadProfilePicture(
         formData.profileImage,
         Number(id)
       );
-      setIsUploading(false);
     }
   };
 

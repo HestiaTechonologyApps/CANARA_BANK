@@ -219,12 +219,24 @@ const REPORT_TABS: Array<{
 
 const ENTRY_EXPORT_COLUMNS = [
   { key: "name", label: "Name" },
+  { key: "designation", label: "Designation" },
   { key: "staffNo", label: "Staff No" },
   { key: "dpCode", label: "DP Code" },
   { key: "circle", label: "Circle" },
-  { key: "month", label: "Month" },
-  { key: "year", label: "Year" },
+  { key: "period", label: "Period" },
   { key: "amount", label: "Amount" },
+  { key: "status", label: "Status" },
+];
+
+const PARKED_EXPORT_COLUMNS = [
+  { key: "name", label: "Name" },
+  { key: "designation", label: "Designation" },
+  { key: "staffNo", label: "Staff No" },
+  { key: "dpCode", label: "DP Code" },
+  { key: "circle", label: "Circle" },
+  { key: "period", label: "Period" },
+  { key: "amount", label: "Amount" },
+  { key: "parkReason", label: "Park Reason" },
 ];
 
 const ParkReasonModal: React.FC<{
@@ -1420,6 +1432,7 @@ const ReportPanel: React.FC<{
   const [selectedDetailIds, setSelectedDetailIds] = useState<number[]>([]);
   const [bulkParkOpen, setBulkParkOpen] = useState(false);
   const [parkAllLoading, setParkAllLoading] = useState(false);
+  const [parkedExportRows, setParkedExportRows] = useState<Record<string, string>[]>([]);
 
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
@@ -1468,10 +1481,43 @@ const ReportPanel: React.FC<{
     setModalType(currentTab.modalType || null);
   };
 
+  const loadParkedExport = useCallback(async () => {
+    try {
+      const result = await MonthlyContributionMasterService.getReport({
+        id: masterId,
+        reportType: "PARKEDITEMS",
+        pageNumber: 1,
+        pageSize: 9999,
+      });
+      setParkedExportRows(
+        (result.data as ContributionDetail[]).map((d) => ({
+          name: d.name,
+          designation: d.designation,
+          staffNo: d.staffNo,
+          dpCode: d.dpCode,
+          circle: String(d.circle),
+          period: `${toMonthName(d.month)} ${toFullYear(d.year)}`,
+          amount: String(Number(d.amount) || 0),
+          parkReason: d.parkReason || "",
+        }))
+      );
+    } catch {
+      setParkedExportRows([]);
+    }
+  }, [masterId]);
+
+  useEffect(() => {
+    if (activeReport === "PARKEDITEMS") loadParkedExport();
+  }, [activeReport, loadParkedExport]);
+
   const handleCreateSuccess = () => {
     refreshAll();
   };
-  const refreshAll = () => { loadReport(); loadTabCounts(); };
+  const refreshAll = () => {
+    loadReport();
+    loadTabCounts();
+    if (activeReport === "PARKEDITEMS") loadParkedExport();
+  };
 
   const eligibleIds =
     activeReport === "PARKEDITEMS"
@@ -1535,6 +1581,24 @@ const ReportPanel: React.FC<{
               <p style={{ margin: "3px 0 0", fontSize: 13, color: "#64748b" }}>{currentTab.description}</p>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              {activeReport === "PARKEDITEMS" && (
+                <div className="cmv-export-wrap">
+                  <KiduServerTableNavbar
+                    data={parkedExportRows}
+                    columns={PARKED_EXPORT_COLUMNS}
+                    title={`Parked_Items_${masterId}`}
+                    showExportButtons={true}
+                    showRowsPerPageSelector={false}
+                    rowsPerPage={PAGE_SIZE}
+                    onRowsPerPageChange={() => { }}
+                    rowsPerPageOptions={[PAGE_SIZE]}
+                    showFilter={false}
+                    filterColumns={[]}
+                    onFilterChange={() => { }}
+                    initialFilters={{}}
+                  />
+                </div>
+              )}
               {currentTab.blocksForward && (tabCounts[activeReport] ?? 0) > 0 && (
                 <button className="park-btn" onClick={handleParkAll} disabled={parkAllLoading}
                   style={{ padding: "7px 14px", borderRadius: 8, border: "1.5px solid #f59e0b", background: "#fffbeb", color: "#b45309", fontSize: 12, fontWeight: 700, cursor: parkAllLoading ? "not-allowed" : "pointer", transition: "all 0.15s", fontFamily: "'Sora',sans-serif", opacity: parkAllLoading ? 0.7 : 1 }}>
@@ -1688,6 +1752,7 @@ const ContributionMasterView: React.FC = () => {
 
   const [discrepancyIds, setDiscrepancyIds] = useState<Set<number>>(new Set());
   const [parkedRefreshKey, setParkedRefreshKey] = useState(0);
+  const [exportRows, setExportRows] = useState<Record<string, string>[]>([]);
 
   const PAGE_SIZE = 12;
 
@@ -1799,6 +1864,37 @@ const ContributionMasterView: React.FC = () => {
   useEffect(() => { loadDetails(); }, [loadDetails]);
   useEffect(() => { setPage(1); }, [debouncedSearch, filterParked]);
 
+  const loadExportRows = useCallback(async () => {
+    if (!masterId) return;
+    try {
+      const result = await MonthlyContributionMasterService.getById({
+        id: masterId,
+        PageNumber: 1,
+        PageSize: 9999,
+        SearchTerm: debouncedSearch || undefined,
+        IsParked: filterParked === "true" ? true : filterParked === "false" ? false : undefined,
+        SortDescending: sortDesc,
+      });
+      const data = result.data as unknown as ContributionDetail[];
+      setExportRows(
+        data.map((d) => ({
+          name: d.name,
+          designation: d.designation,
+          staffNo: d.staffNo,
+          dpCode: d.dpCode,
+          circle: String(d.circle),
+          period: `${toMonthName(d.month)} ${toFullYear(d.year)}`,
+          amount: String(Number(d.amount) || 0),
+          status: d.isParked ? "Parked" : "Active",
+        }))
+      );
+    } catch {
+      setExportRows([]);
+    }
+  }, [masterId, debouncedSearch, filterParked, sortDesc]);
+
+  useEffect(() => { loadExportRows(); }, [loadExportRows]);
+
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const totalAmt = rows.reduce((s, r) => s + (r.amount || 0), 0);
   const parkedCnt = rows.filter(r => r.isParked).length;
@@ -1823,6 +1919,7 @@ const ContributionMasterView: React.FC = () => {
     setParkRow(null);
     loadDetails();
     loadDiscrepancyData();
+    loadExportRows();
   };
   const applyUnparkToMaster = (row: ContributionDetail) => {
     setMaster(prev => {
@@ -1846,6 +1943,7 @@ const ContributionMasterView: React.FC = () => {
     setUnparkRow(null);
     loadDetails();
     loadDiscrepancyData();
+    loadExportRows();
   };
 
   return (
@@ -2000,24 +2098,22 @@ const ContributionMasterView: React.FC = () => {
                     ))}
                   </div>
 
-                  {activeTab === "list" && (
-                    <div className="cmv-export-wrap">
-                      <KiduServerTableNavbar
-                        data={rows}
-                        columns={ENTRY_EXPORT_COLUMNS}
-                        title={`Contribution_${master?.month ?? ""}_${master?.year ?? ""}`}
-                        showExportButtons={true}
-                        showRowsPerPageSelector={false}
-                        rowsPerPage={PAGE_SIZE}
-                        onRowsPerPageChange={() => { }}
-                        rowsPerPageOptions={[PAGE_SIZE]}
-                        showFilter={false}
-                        filterColumns={[]}
-                        onFilterChange={() => { }}
-                        initialFilters={{}}
-                      />
-                    </div>
-                  )}
+                  <div className="cmv-export-wrap">
+                    <KiduServerTableNavbar
+                      data={exportRows}
+                      columns={ENTRY_EXPORT_COLUMNS}
+                      title={`Contribution_${master?.month ?? ""}_${master?.year ?? ""}`}
+                      showExportButtons={true}
+                      showRowsPerPageSelector={false}
+                      rowsPerPage={PAGE_SIZE}
+                      onRowsPerPageChange={() => { }}
+                      rowsPerPageOptions={[PAGE_SIZE]}
+                      showFilter={false}
+                      filterColumns={[]}
+                      onFilterChange={() => { }}
+                      initialFilters={{}}
+                    />
+                  </div>
                 </div>
 
                 {loading ? (
