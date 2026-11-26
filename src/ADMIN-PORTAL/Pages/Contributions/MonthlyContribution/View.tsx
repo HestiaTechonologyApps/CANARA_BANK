@@ -1505,6 +1505,7 @@ const ReportPanel: React.FC<{
         toast.error("No unparked records to park in this tab.");
         return;
       }
+      
       setSelectedDetailIds(ids);
       setBulkParkOpen(true);
     } catch (err: unknown) {
