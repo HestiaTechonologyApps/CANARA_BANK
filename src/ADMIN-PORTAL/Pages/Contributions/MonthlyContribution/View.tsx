@@ -27,7 +27,7 @@ import MonthlyContributionMasterService from "../../../Services/Contributions/Mo
 import MonthlyContributionService from "../../../Services/Contributions/MonthlyContribution.services";
 import ContributionMasterService from "../../../Services/Contributions/ContributionMaster.services";
 import UserService from "../../../Services/Settings/User.services";
-import KiduServerTableNavbar from "../../../../Components/KiduServerTableNavbar";
+import { ExportButtons } from "../../../Utils/ContributionExport";
 import toast from "react-hot-toast";
 
 const fmt = (n: number | string) => {
@@ -216,28 +216,6 @@ const REPORT_TABS: Array<{
     { type: "PARKEDITEMS", label: "Parked Items", icon: "🅿️", accent: "#f59e0b", description: "All records that have been parked and are awaiting resolution." },
     { type: "ALL", label: "All Records", icon: "📋", accent: "#1B3763", description: "Complete list of all contribution detail records." },
   ];
-
-const ENTRY_EXPORT_COLUMNS = [
-  { key: "name", label: "Name" },
-  { key: "designation", label: "Designation" },
-  { key: "staffNo", label: "Staff No" },
-  { key: "dpCode", label: "DP Code" },
-  { key: "circle", label: "Circle" },
-  { key: "period", label: "Period" },
-  { key: "amount", label: "Amount" },
-  { key: "status", label: "Status" },
-];
-
-const PARKED_EXPORT_COLUMNS = [
-  { key: "name", label: "Name" },
-  { key: "designation", label: "Designation" },
-  { key: "staffNo", label: "Staff No" },
-  { key: "dpCode", label: "DP Code" },
-  { key: "circle", label: "Circle" },
-  { key: "period", label: "Period" },
-  { key: "amount", label: "Amount" },
-  { key: "parkReason", label: "Park Reason" },
-];
 
 const ParkReasonModal: React.FC<{
   row: ContributionDetail;
@@ -1432,7 +1410,6 @@ const ReportPanel: React.FC<{
   const [selectedDetailIds, setSelectedDetailIds] = useState<number[]>([]);
   const [bulkParkOpen, setBulkParkOpen] = useState(false);
   const [parkAllLoading, setParkAllLoading] = useState(false);
-  const [parkedExportRows, setParkedExportRows] = useState<Record<string, string>[]>([]);
 
   const PAGE_SIZE = 10;
   const currentTab = REPORT_TABS.find(t => t.type === activeReport)!;
@@ -1481,42 +1458,12 @@ const ReportPanel: React.FC<{
     setModalType(currentTab.modalType || null);
   };
 
-  const loadParkedExport = useCallback(async () => {
-    try {
-      const result = await MonthlyContributionMasterService.getReport({
-        id: masterId,
-        reportType: "PARKEDITEMS",
-        pageNumber: 1,
-        pageSize: 9999,
-      });
-      setParkedExportRows(
-        (result.data as ContributionDetail[]).map((d) => ({
-          name: d.name,
-          designation: d.designation,
-          staffNo: d.staffNo,
-          dpCode: d.dpCode,
-          circle: String(d.circle),
-          period: `${toMonthName(d.month)} ${toFullYear(d.year)}`,
-          amount: String(Number(d.amount) || 0),
-          parkReason: d.parkReason || "",
-        }))
-      );
-    } catch {
-      setParkedExportRows([]);
-    }
-  }, [masterId]);
-
-  useEffect(() => {
-    if (activeReport === "PARKEDITEMS") loadParkedExport();
-  }, [activeReport, loadParkedExport]);
-
   const handleCreateSuccess = () => {
     refreshAll();
   };
   const refreshAll = () => {
     loadReport();
     loadTabCounts();
-    if (activeReport === "PARKEDITEMS") loadParkedExport();
   };
 
   const eligibleIds =
@@ -1582,22 +1529,24 @@ const ReportPanel: React.FC<{
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
               {activeReport === "PARKEDITEMS" && (
-                <div className="cmv-export-wrap">
-                  <KiduServerTableNavbar
-                    data={parkedExportRows}
-                    columns={PARKED_EXPORT_COLUMNS}
-                    title={`Parked_Items_${masterId}`}
-                    showExportButtons={true}
-                    showRowsPerPageSelector={false}
-                    rowsPerPage={PAGE_SIZE}
-                    onRowsPerPageChange={() => { }}
-                    rowsPerPageOptions={[PAGE_SIZE]}
-                    showFilter={false}
-                    filterColumns={[]}
-                    onFilterChange={() => { }}
-                    initialFilters={{}}
-                  />
-                </div>
+                <ExportButtons
+                  title="Parked Members"
+                  includeParkReason
+                  fileName={`Parked_Members_${masterId}`}
+                  context={`ID #${masterId} | Parked items`}
+                  disabled={loading || total === 0}
+                  getRows={async () => {
+                    const result = await MonthlyContributionMasterService.getReport({
+                      id: masterId,
+                      reportType: "PARKEDITEMS",
+                      pageNumber: 1,
+                      pageSize: 9999,
+                    });
+                    return Array.isArray(result?.data)
+                      ? (result.data as ContributionDetail[])
+                      : [];
+                  }}
+                />
               )}
               {currentTab.blocksForward && (tabCounts[activeReport] ?? 0) > 0 && (
                 <button className="park-btn" onClick={handleParkAll} disabled={parkAllLoading}
@@ -1752,7 +1701,6 @@ const ContributionMasterView: React.FC = () => {
 
   const [discrepancyIds, setDiscrepancyIds] = useState<Set<number>>(new Set());
   const [parkedRefreshKey, setParkedRefreshKey] = useState(0);
-  const [exportRows, setExportRows] = useState<Record<string, string>[]>([]);
 
   const PAGE_SIZE = 12;
 
@@ -1864,37 +1812,6 @@ const ContributionMasterView: React.FC = () => {
   useEffect(() => { loadDetails(); }, [loadDetails]);
   useEffect(() => { setPage(1); }, [debouncedSearch, filterParked]);
 
-  const loadExportRows = useCallback(async () => {
-    if (!masterId) return;
-    try {
-      const result = await MonthlyContributionMasterService.getById({
-        id: masterId,
-        PageNumber: 1,
-        PageSize: 9999,
-        SearchTerm: debouncedSearch || undefined,
-        IsParked: filterParked === "true" ? true : filterParked === "false" ? false : undefined,
-        SortDescending: sortDesc,
-      });
-      const data = result.data as unknown as ContributionDetail[];
-      setExportRows(
-        data.map((d) => ({
-          name: d.name,
-          designation: d.designation,
-          staffNo: d.staffNo,
-          dpCode: d.dpCode,
-          circle: String(d.circle),
-          period: `${toMonthName(d.month)} ${toFullYear(d.year)}`,
-          amount: String(Number(d.amount) || 0),
-          status: d.isParked ? "Parked" : "Active",
-        }))
-      );
-    } catch {
-      setExportRows([]);
-    }
-  }, [masterId, debouncedSearch, filterParked, sortDesc]);
-
-  useEffect(() => { loadExportRows(); }, [loadExportRows]);
-
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const totalAmt = rows.reduce((s, r) => s + (r.amount || 0), 0);
   const parkedCnt = rows.filter(r => r.isParked).length;
@@ -1919,7 +1836,6 @@ const ContributionMasterView: React.FC = () => {
     setParkRow(null);
     loadDetails();
     loadDiscrepancyData();
-    loadExportRows();
   };
   const applyUnparkToMaster = (row: ContributionDetail) => {
     setMaster(prev => {
@@ -1943,7 +1859,6 @@ const ContributionMasterView: React.FC = () => {
     setUnparkRow(null);
     loadDetails();
     loadDiscrepancyData();
-    loadExportRows();
   };
 
   return (
@@ -2098,22 +2013,25 @@ const ContributionMasterView: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="cmv-export-wrap">
-                    <KiduServerTableNavbar
-                      data={exportRows}
-                      columns={ENTRY_EXPORT_COLUMNS}
-                      title={`Contribution_${master?.month ?? ""}_${master?.year ?? ""}`}
-                      showExportButtons={true}
-                      showRowsPerPageSelector={false}
-                      rowsPerPage={PAGE_SIZE}
-                      onRowsPerPageChange={() => { }}
-                      rowsPerPageOptions={[PAGE_SIZE]}
-                      showFilter={false}
-                      filterColumns={[]}
-                      onFilterChange={() => { }}
-                      initialFilters={{}}
-                    />
-                  </div>
+                  <ExportButtons
+                    title="Individual Contributions"
+                    fileName={`Contribution_${masterId}_${master?.month ?? ""}_${master?.year ?? ""}`}
+                    context={`ID #${masterId} | ${master ? `${toMonthName(master.month)} ${toFullYear(master.year)}` : ""} | ${master?.circle ?? ""} | Filter: ${filterParked === "all" ? "All" : filterParked === "true" ? "Parked" : "Active"}${debouncedSearch ? ` | Search: ${debouncedSearch}` : ""}`}
+                    disabled={loading || total === 0}
+                    getRows={async () => {
+                      const result = await MonthlyContributionMasterService.getById({
+                        id: masterId,
+                        PageNumber: 1,
+                        PageSize: 9999,
+                        SearchTerm: debouncedSearch || undefined,
+                        IsParked: filterParked === "true" ? true : filterParked === "false" ? false : undefined,
+                        SortDescending: sortDesc,
+                      });
+                      return Array.isArray(result?.data)
+                        ? (result.data as unknown as ContributionDetail[])
+                        : [];
+                    }}
+                  />
                 </div>
 
                 {loading ? (
